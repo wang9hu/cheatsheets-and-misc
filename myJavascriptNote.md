@@ -1115,3 +1115,6 @@ function eitherCallback(callback1, callback2) {
 </details>
 
 ---
+
+5. Capitalize a string
+   `
