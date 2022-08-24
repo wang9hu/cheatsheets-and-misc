@@ -1128,6 +1128,6 @@ function eitherCallback(callback1, callback2) {
 
    2. The future decisions depend on earlier decisions
 
-   - distinguish DP problem from a greedy algorithm problem
+   - distinguish DP problem from greedy algorithm / divide and conquer problem
 
 </details>
