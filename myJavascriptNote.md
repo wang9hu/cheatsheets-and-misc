@@ -1112,9 +1112,22 @@ function eitherCallback(callback1, callback2) {
 4. Deep copy an array
    `arrayCopy = [...array]`
 
-</details>
-
 ---
 
 5. Capitalize a string
    `
+
+---
+
+6. DP problem common characteristics:
+
+   1. Ask for optimum value:
+
+   - Ask for max/min/longest etc. of something;
+   - Ask for the number of ways to do something;
+
+   2. The future decisions depend on earlier decisions
+
+   - distinguish DP problem from a greedy algorithm problem
+
+</details>
