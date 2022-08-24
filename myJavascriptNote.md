@@ -1115,7 +1115,7 @@ function eitherCallback(callback1, callback2) {
 ---
 
 5. Capitalize a string
-   `
+   `string.charAt(0).toUpperCase() + string.slice(1)`
 
 ---
 
