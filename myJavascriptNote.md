@@ -1,6 +1,28 @@
 # Javascript notes
 
-## Js Primitive Types: Number, String, Boolean, null, undefined, BigInt, Symbol
+## Table {#table}
+
+- [Js Primitive Types](#js-primitive)
+- [Boolean](#boolean)
+- [Null](#null)
+- [Undefined](#undefined)
+- [Numbers](#number)
+- [String](#string)
+- [Symbol](#symbol)
+- [Array](#array)
+- [Object](#object)
+- [Function](#function)
+- [Hoist](#hoist)
+- [Promise](#promise)
+- [Async/await](#async_await)
+- [Regular Expression](#RegExp)
+- [Interesting topics](#interesting)
+
+---
+
+## Js Primitive Types {#js-primitive}
+
+- Number, String, Boolean, null, undefined, BigInt, Symbol (#js primitive)
 
 - `var.valueOf()`: return the primitive value
 - `typeof var`: return the variable type in `string` format
@@ -10,11 +32,12 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
     var str = "cool";
     str[2] = "l"; /*This doesn't work*/
 
+##### **[Back to table](#table)**
+
 ---
 
-### Boolean
+### Boolean {#boolean}
 
-<details>
 boolean
 : `true` or `false`, no quotes, any value in JS can be used for boolean
 
@@ -32,48 +55,38 @@ boolean
 
     - check if `object` (or its prototype chain) contains the property with specified name `prop`.
 
-      <br>
+<br>
 
-    </details>
+##### **[Back to table](#table)**
 
 ---
 
-### null
-
-<details>
+### Null {#null}
 
 null
 : Intentional absence of any value, **must be assigned**
 
-</details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-### undefined
-
-<details>
+### Undefined {#undefined}
 
 undefined
 : Variables that do not have an assigned value, from values that **hasn't been defined** or **doesn't exist**
 
-</details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-### Numbers
-
-<details>
+### Numbers {#number}
 
 - No positive/negative/integers/decimal classes, uses **double-precision 64-bit binary format IEEE 754**
 - `NaN` is in also `number` type;
 - Two zeros: `0` & `-0`
 - Two infinities: `Infinity` & `-Infinity`
 
-##### Number type related methods (commomly used):
-
-  <details>
-
-<summary>Math Object</summary>
+#### Math Object (commomly used)
 
 ##### Properties:
 
@@ -100,11 +113,8 @@ undefined
   - random number among [ 1, N ]: `Math.floor(Math.random()*N+1)`
 - `Math.max/min(1,2,3) // 3, 1` : max/min value of inputs
   <br>
-  </details>
 
-    <details>
-
-<summary>Number methods</summary>
+#### Number methods (commomly used)
 
 ##### Static Methods
 
@@ -147,16 +157,13 @@ undefined
 - **.toPrecision()**: `123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4` : return a ==string== representing fixed-point or exponential notation rounded to precision significant digits
   <br>
 - **.toString()**: `123.456.toString(b) = '443.212' // b = 5` : return a ==string== representing the object in the specified radix (base), default [b] = 10
-<br>
+  <br>
 
-  </details>
-</details>
+##### **[Back to table](#table)**
 
 ---
 
-### String
-
-<details>
+### String {#string}
 
 - quoted, single or double, consistent
 - concatenate: `"hello" + ", " + "world!"` = `"hello, world!"`
@@ -173,9 +180,7 @@ undefined
   | `\'` |  `'`   | Single quote |
   | `\"` |  `"`   | Double quote |
 
-<details>
-
-<summary> String methods</summary>
+#### **String methods**
 
 - **str.length** : return the length of str`
 
@@ -318,17 +323,14 @@ undefined
   - return: An Array whose contents depend on the presence or absence of the global (`g`) flag, or `null` if no matches are found.
     - with `g` : all matches
     - without `g`: the first match
-      <br>
 
-</details>
+<br>
 
-</details>
+##### **[Back to table](#table)**
 
 ---
 
-### Symbol
-
-<details>
+### Symbol {#symbol}
 
 - can only be created with `Symbol([lable])`
   - `label` is optional, only a note for this symbol
@@ -348,23 +350,20 @@ undefined
     ```
 - Symbols are not enumerable, so it will not show up in `for...in` loop or `Object.getOwnPropertyNames()`
 - Symbols can be accessed by `Object.getOwnPropertySymbols()`
-  <br>
 
-</details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-## Arrays
-
-<details>
+## Array {#array}
 
 - resizable
 - integers as indexes
 - has **built-in iterator** which can be used to iterate over the array
 - pass as reference
-<br>
-<details>
-<summary>Array static methods</summary>
+  <br>
+
+#### **Array static methods**
 
 - array-like objects:
 
@@ -406,14 +405,23 @@ undefined
 
   - return a new `Array` instance
   - for array-like object specifically.
-    <br>
+
+    - object with a `length` property
+    - indexed elements
+
+    ```
+    Array.from({length: 3}) // [undefined, undefined, undefined]
+    Array.from({length: 3}, (v,i) => i) // [0, 1, 2]
+
+    Array.from('hello') // ['h', 'e', 'l', 'l', 'o']
+    ```
 
 - **Array.isArray()**: determine whether the passed value is an `Array`
+
   - return: true if the value is an Array; otherwise, false.
-  <br>
-  </details>
-  <details>
-  <summary>Array instance methods</summary>
+    <br>
+
+#### **Array instance methods**
 
 `const arr = [1,2,3,'a','b','c']`
 <br>
@@ -523,11 +531,9 @@ undefined
     > // arr is []
     > // removed is [1,2,3]
 
-  <br>
+<br>
 
-</details>
-<details>
-<summary>Array callback methods</summary>
+#### **Array callback methods**
 
 - `CallbackFn` types (_f_): (`thisArg` is used as `this` when executing `callbackFn`)
 
@@ -535,6 +541,7 @@ undefined
   - Callback function: `callbackFn[, thisArg]`
   - Inline callback funciton: `function(element[, index][, array]) {/*...*/} [,thisArg]`
 
+- ==Note==: `index` manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
   <br>
 
 - **.every(_f_)**: return `true` if `callbackFn` returns a truthy value for ==every== `element`
@@ -567,17 +574,12 @@ undefined
 - **.sort(_f_)**: return the ==sorted array==
 
   - `arr.sort([compareFn(a,b)])` - `compareFn` return negative: a placed before b - `compareFn` return positive: b placed before a - `compareFn` return `0`: a, b order unchange - if omit `compareFn`, a & b are converted to strings, then sorted according to each `char` Unicode value
-    <br>
 
-  </details>
-
-</details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-## Object
-
-<details>
+## Object {#object}
 
 - { key : value } pair
   - key: string (identifier)
@@ -606,8 +608,9 @@ undefined
 
     <br>
 
-**Methods**: functions in objects
+#### **Methods**:
 
+- functions in objects
 - `obj[methodName] = function () {/*...*/}`
 - shorthand: `const obj = { methodName(){/*...*/} }`
 - method invoke: `obj.methodName()`
@@ -753,15 +756,13 @@ undefined
     - return: `true` if the specified object has directly defined the specified property. Otherwise `false`
     - `Object.hasOwn()` is recommended over `Object.prototype.hasOwnProperty()` because it works for objects created using `Object.create(null)` and with objects that have overridden the inherited `hasOwnProperty()` method.
 
-  - </details>
+  - <br>
 
-</details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-## Function
-
-<details>
+## Function {#function}
 
 Every JS function is a `Function` object: `(function(){}).constructor === Function //true`
 
@@ -780,11 +781,7 @@ Every JS function is a `Function` object: `(function(){}).constructor === Functi
 
   - setter:
 
----
-
-**factory function**
-
-<details>
+#### **factory function**
 
 (==not recommanded==): a function creates and returns a new object
 
@@ -818,13 +815,9 @@ function createPerson(name, age) {
 }
 ```
 
-</details>
+<br>
 
----
-
-**Constructor**
-
-<details>
+#### **Constructor**
 
 A special function that can only be called with `new` operator
 
@@ -868,13 +861,8 @@ without `new` operator, `this` refers to global object.
 (In constructor definition, use `try ... catch` with `new.target` to detect whether a function or constructor was called using `new` operator)
 
 <br>
-</details>
 
----
-
-**Class**
-
-<details>
+#### **Class**
 
 (==introduced after ES6==) Declared with keyword `class`, encapsulates constructor(can only have one constructor) and shared methods
 
@@ -899,7 +887,7 @@ class Person {
 |  &#8970; writable  |              true              |                         false                         |
 | &#8970; enumerable |              true              |                         false                         |
 
-==**Note**==: **non-writable** (`writable: false`) means it cannot be assigned to something else, but it still **can be changed** by adding or deleting properties from inside
+**==Note==**: **non-writable** (`writable: false`) means it cannot be assigned to something else, but it still **can be changed** by adding or deleting properties from inside
 
 - **instanceof**: `object instancof constructor/class`
 
@@ -930,25 +918,17 @@ class Person {
     - when used in "property lookup" form
       - access methods and properties of an object literal's or class's `[[Prototype]]`
 
-    </details>
-
-</details>
-
----
+    <br>
 
 **Public class fields**
 
-<details>
-
 Public static fields
 
-</details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-## Hoist
-
-<details>
+## Hoist {#hoist}
 
 Take part of the code and move it to the top of the file
 
@@ -972,13 +952,11 @@ console.log(x) // 1
 
 ```
 
-</details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-## Promise
-
-<details>
+## Promise {#promise}
 
 Promise is a object represents the resulting value of an asynchronous operation, working as a proxy for a value that was not necessarily known when the promise is created.
 
@@ -1006,13 +984,11 @@ Promises uses microtasks queue to handle `.then/catch/finally`
   - only resolved/rejected promise handlers can be enqueued, pending
   - Execution of a task is initialted only when nothing else is running (empty call stack)
 
-</details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-## Async/await
-
-<details>
+## Async/await {#async_await}
 
 - `async` functions always return a `promise`. If the return value of an `async` function is not explicitly a `promise`, it will be implicitly wrapped in a `promise`.
 - The body of an `async function` can be thought of as being split by zero or more `await` expressions.
@@ -1035,13 +1011,12 @@ async function name (args) {
 }
 ```
 
-</details>
+<br>
+##### **[Back to table](#table)**
+---
+## Regular expression {#RegExp}
 
-## Regular expression (RegExp)
-
-<details>
-
-- Patterns used to ==**match**== character combinations in strings
+- Patterns used to ==match== character combinations in strings
 - Regular expressions are also objects
 - Regular expressions are used with the RegExp methods
 - Two ways to create a `RegExp` object: a literal notation and a constructor:
@@ -1050,40 +1025,33 @@ async function name (args) {
   - **constructor function**: two parameters(a string or a RegExp object as its first parameter, and a string of optional flags as its second parameter)
     - `let re = new RegExp('ab+c', 'i')`
 
-<details>
-<summary>Assertion</summary>
+Assertion
 
-</details>
+<br>
 
-<details>
-<summary>Character classes</summary>
+Character classes
 
-</details>
+<br>
 
-<details>
-<summary>Quantifiers</summary>
+Quantifiers
 
 - **x?**: 0 or 1
 - **x+**: 1 or more
 - **x\***: 0 or more
-</details>
+  <br>
 
-<details>
-<summary>RegExp methods</summary>
+RegExp methods
+
 - re.test()
 -
 
-</details>
-
- </details>
-
+<br>
+##### **[Back to table](#table)**
 ---
 
-## Interesting concepts
+## Interesting concepts {#interesting}
 
-<details>
-
-1. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
+1. **A function to return one of two functions based on their execution results, which can only be decided during function invocation.**
 
 ```
 
@@ -1096,38 +1064,64 @@ function eitherCallback(callback1, callback2) {
 
 ---
 
-2. There are two types of expressions:
+2. **There are two types of expressions**:
 
    1. those that assign value to a variable with side effects: `x = 1`
    2. those that in some sense evaluate and therefore resolve to a value `1 + 2`
 
 ---
 
-3. Check if a Character is a Letter
+3. **Check if a Character is a Letter**
    Compare the lowercase and uppercase variants of the character
    `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
 
 ---
 
-4. Deep copy an array
+4. **Deep copy an array**
    `arrayCopy = [...array]`
 
 ---
 
-5. Capitalize a string
+5. **Capitalize a string**
    `string.charAt(0).toUpperCase() + string.slice(1)`
 
 ---
 
-6. DP problem common characteristics:
+6. **DP problem common characteristics:**
 
-   1. Ask for optimum value:
+   - Ask for optimum value:
 
-   - Ask for max/min/longest etc. of something;
-   - Ask for the number of ways to do something;
+     - Ask for max/min/longest etc. of something;
+     - Ask for the number of ways to do something;
 
-   2. The future decisions depend on earlier decisions
+   - The future decisions depend on earlier decisions
 
-   - distinguish DP problem from greedy algorithm / divide and conquer problem
+     - distinguish DP problem from greedy algorithm / divide and conquer problem
 
-</details>
+    <br>
+
+   - tips:
+     - DP[i] should have close connection to nums[i];
+
+---
+
+7. **In `for` loop, the condition could be anything, it doesn't have to be related to `i`.**
+
+```
+let y = 3;
+for (let i = 0; y < 5; i++) {
+    y += i;
+    console.log(y);
+}
+
+// 3
+// 4
+// 6
+```
+
+---
+
+8. **Create an array with**
+   <br>
+
+##### **[Back to table](#table)**
