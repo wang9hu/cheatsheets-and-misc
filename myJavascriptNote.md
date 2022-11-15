@@ -13,9 +13,13 @@
 - [Object](#object)
 - [Function](#function)
 - [Hoist](#hoist)
+- [Asynchronous Javascript](#asynchronous-js)
 - [Promise](#promise)
 - [Async/await](#async_await)
+- [Event loop and macrotask vs microtask](#eventloop)
 - [Regular Expression](#RegExp)
+- [DOM Traversal](#dom)
+- [Web AIPs](#webapis)
 - [Interesting topics](#interesting)
 
 ---
@@ -132,10 +136,13 @@ undefined
   2. if `number` type => test for `finite`/`NaN`
 
   - `Number.isNaN('3') // false`
+  - `Number.isNaN('a') // false`
 
 - `isFinite() / isNaN()` : coerced to `number` type, then test for `finite`/`NaN`
 
-  - `isNaN('3') //true`
+  - `isNaN()` will only give `false` when the input is `number` or number in string type.
+  - `isNaN('3') // false`
+  - `isNAN('a') // true`;
     <br>
 
 - **Number.parseInt() / parseInt()**: From left to right, return starting integer part
@@ -172,7 +179,7 @@ undefined
 - unchangeable (immutable), but reassignable;
 - quotes in strings: `'He said "Hello!"'` or `"She says 'Goodbye'"`
 - String template literals: <code> \`${expression}\` </code>
-- use `\` to escape `'`, `"` and `\` in string:
+- Backslash (\\) turns special characters (such as quote) into string characters. Use `\` to escape `'`, `"` and `\` in string:
 
   | Code | Result | Description  |
   | :--: | :----: | :----------: |
@@ -718,7 +725,7 @@ undefined
 
     - return: A new object whose properties are given by the entries of the iterable.
 
-  - `Object.fromEntries()` performs the reverse of `Object.entries()`:
+    - `Object.fromEntries()` performs the reverse of `Object.entries()`:
 
     ```
     const entries = [
@@ -956,52 +963,235 @@ console.log(x) // 1
 ##### **[Back to table](#table)**
 ---
 
+## Asynchronous Javascript {#asynchronous-js}
+
+- AJAX is **asynchronous javascript and XML**, it is a combination of:
+  - A browser built-in `XMLHttpRequest` object (to request data from a web server)
+  - JavaScript and HTML DOM (to display or use the data without the necessity to reloading the page).
+  <br>
+- _**Asynchronous**_ means something happens in the future, not right now.
+- Javascript is just a programming language that is implemented in browsers.
+- Browsers are usually written by C++, which can do things that JS is bad at, hence ==Web APIs== in general.
+<br>
+- XML vs JSON
+    - XML (eXtensible Markup Language) is a data format, similar to HTML, but it does not describe presentation like HTML.
+      - The name of the tag is to represent data meaning, it is meaningless to the browser
+      ```
+      <pin>
+        <title>This is a title</title>
+        <author>This is the author</author>
+        <year>This is when it is wrote</year>
+      </pin>
+      ```
+    - JSON (Javascript Object Notation) is a more commonly used data format, much easier for API's to parse, so AJAX(XML) is basically AJAJ(JSON) nowadays.
+      - JSON doesn't support comments, all the strings must be **double quoted**.
+      - Data is in name / value pairs, separated by commas.
+      - Values must be string, number, object, array, boolean or null.
+      - No function, date or undefined.
+      ```
+      "book": {
+        "title": "Three body problem",
+        "author": "Cixin Liu",
+        "year": 2008
+      }
+      ```
+      <br>
+
+- ==Macrotask queue== (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
+<br>
+
+1. In early days, asynchronous APIs used event handler (AJAX). 
+    - Browser APIs — constructs built into the browser that sits on top of the JavaScript language and allows you to implement functionality more easily.
+    <br>
+    - APIs don't respond with HTML. APIs respond with **pure data** (XML and JSON), not structure.
+    <br>
+    - **Event handler**:  the function that will be called when the event happens. 
+      - `XMLHttpRequest` is a constructor, `new` operator required: 
+        -   `const xhr = new XMLHttpRequest()`;
+      - `xhr.readyState`: returns the state an XHR client is in.
+
+      | Value | State | Description |
+      | :---: | --- | --- |
+      | 0 | UNSENT | Client has been created, `open()` not called yet |
+      | 1 | OPENED | `open()` has been called  |
+      | 2 | HEADERS_RECEIVED | `send()` has been called, and headers and status are available |
+      | 3 | LOADING | Downloading; `responseText` holds partial data |
+      | 4 | DONE | The operation is complete |
+
+      - `xhr.onreadystatechange` is an event handler, it defines a function that **will be called** ==whenever== `readyState` changes
+        - check when if the request is done:
+          ```
+          xhr.onreadystatechange = function () { 
+            if (xhr.readyState === 4) { 
+              // do something when XMLHttpRequest is done 
+            }
+          }
+          ```
+      - `xhr.status` returns the numerical HTTP status code of the `XMLHttpRequest`'s response
+        - [HTTP Status Codes Cheat Sheet](https://www.restapitutorial.com/httpstatuscodes.html)
+        - check if xhr is succeeded: `if (xhr.status === 200) { ... }`
+      - `xhr.responseText` returns the text received from a server following a request being sent.
+        - the return is string, and it needs to be parsed before getting access to the actual data
+        - JSON parser: `const data = JSON.parse(xhr.responseText)` 
+      ```
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log(xhr.responseText);
+        }
+      }
+
+      xhr.open(method, url); // methods: "GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", etc.
+      xhr.send(data); // 
+      ```
+      <br>
+    - Problems with XHR: 
+      - bulky syntax
+      - old
+      - no streaming 
+      <br>
+1. **Fetch API** (an update to XHR) based on promise
+    - nice and clean
+    - more powerful functionalites
+    ```
+    fetch(url)
+    .then(function(res) {
+      return res.json();
+    }).then(function(data) {
+      console.log(data);
+    }).catch(function(e) {
+      console.log('problem!')
+    });
+    ```
+
+##### **[Back to table](#table)**
+
+---
+
 ## Promise {#promise}
 
-Promise is a object represents the resulting value of an asynchronous operation, working as a proxy for a value that was not necessarily known when the promise is created.
-
-```
-
-new Promise(executor)
-new Promise((resolve, reject) => {
-  // do something asynchronous which eventually calls either:
-  // resolve(someValue) // fulfilled
-  // or
-  // reject("failure reason") // rejected
-})
-
-```
-
+Promise is an object represents the resulting value of an ==asynchronous operation==, working as a proxy for a value that was not necessarily known when the promise is created.
 - return: a promise object, has three states:
   - pending: initial state, neither fulfilled nor rejected.
   - resolved: meaning that the operation was completed successfully.
   - rejected: meaning that the operation failed.
-- executor: a function called "executor function", which takes two functions as parameters (resolve, reject)
+- executor: a function called "executor function", which takes two functions as parameters (resolve, reject
+<br>
 
-  <br>
-Promises uses microtasks queue to handle `.then/catch/finally`
+Promises are handled by [microtasks queue](#eventloop) 
   - The queue is first-in-first-out(FIFO);
   - only resolved/rejected promise handlers can be enqueued, pending
   - Execution of a task is initialted only when nothing else is running (empty call stack)
+  <br>
 
+
+```
+new Promise(executor)
+new Promise((resolve, reject) => {
+  // do something asynchronous which eventually calls either:
+  // resolve(someValue) -- fulfilled
+  // or
+  // reject("failure reason") -- rejected
+})
+```
 <br>
+
+Chained Promises:  `Promise.prototype.then/catch/finally`<br>
+
+  - `then(onFulfilled[, onRejected])`: Returns a new `Promise` immediately. This new promise is always pending when returned, regardless of the current promise's status.
+    ```
+    promise.then(onFulfilled[, onRejected])
+
+    promise.then(
+      (value) => { /* fulfillment handler */},
+      [(reason) => { /* rejection handler */},]
+    )
+    ```
+    - If `onFulfilled` / `onRejected` is not a function, it will be internally replaced with an _identity_ function `(x) => x` / _thrower_ function `(x) => throw x`, which passes / throw the `fulfillmentValue` / `receivedRejectionReason`
+    <br>
+    - Assuming `x` is the return of `onFulfilled` / `onRejected`, and `p` is the return promise of `then`:
+        - `x` is a value ==> `p` is resolved with value `x`
+        - `x` is `undefined` ==> `p` is resolved with `undefined` 
+        - `x` is an error throwed by handler ==> `p` is rejected with value `x`
+        - `x` is a resolevd promise ==> `p` is resovled with `x`'s value
+        - `x` is a rejected promise ==> `p` is rejected with `x`'s value
+        - `x` is pending promise ==> `p` is pending until `x` is settled, then apply rules above
+    <br>
+
+  - `catch(onRejected)`: Internally calls `Promise.prototype.then` on the object upon which it was called, passing the parameters `undefined` and the received `onRejected` handler. Returns the value of that call, which is a `Promise`.
+    ```
+    promise.catch(function(reason) {
+      // rejection
+    })
+    ```
+      - equals to `Promise.prototype.then(undefined, onRejected)`
+      - The `Promise` returned by `catch()` will be ==fulfilled== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already ==rejected== `Promise`.
+
+    - Example with comments
+    ```
+    const promise = new Promise((resolve, reject) => {
+      reject('wrong');
+    });
+
+    promise.then(1, 2)  
+      .catch((e) => {
+        console.log(e);
+        return 'right';
+      })
+      .then((n) => {
+        console.log(n);
+      });
+
+    // Here 'promise' is a rejected promise with rejected reason of 'wrong'
+    // Since first 'then' has no onRejected handler, 
+        // number '2' is internally replaced with a thrower function ((x) => { throw x; }), 
+        // so the first 'then' returns a rejected promise with reason 'wrong'.
+    // The following 'catch' has a onRejected handler, 
+        // but it doesn't throw an error or return a rejected promise, 
+        // instead it returns a string 'right'
+        // therefore 'catch' returns a resolved promise with result value 'right'
+    // The second 'then' following the resolved 'catch' promise, has a onFullfilled handler, 
+        // it receives the resolved value of 'right' and loggs it out, 
+        // but because it doesn't return anything,
+        // the second 'then' will return a resolved promise with value of undefined
+    ```
+    <br>
+
+  - `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function.
+      - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already ==rejected== `Promise`.
+      - `onFinally` callback does not receive any argument.
+      ```
+      promise.finally(() => {
+        // Code that will run after promise is settled (fulfilled or rejected)
+      })
+      ```
+      - `then` vs `finally`:
+      ```
+      Promise.resolve(2).then(() => 77, () => {}) // resolved with result 77
+      Promise.resolve(2).finally(() => 77) // resolved with result 2
+
+      Promise.reject(3).then(() => {}, () => 88) // resolved with result 88 
+      Promise.reject(3).finally(() => 88) // rejected with reason 3
+
+      // Both return a rejected promise with reason 99
+      Promise.reject(3).finally(() => {throw 99}) 
+      Promise.reject(3).finally(() => Promise.reject(99))
+      ```
+  <br>
+
 ##### **[Back to table](#table)**
 ---
 
-## Async/await {#async_await}
+## Async / await {#async_await}
 
 - `async` functions always return a `promise`. If the return value of an `async` function is not explicitly a `promise`, it will be implicitly wrapped in a `promise`.
-- The body of an `async function` can be thought of as being split by zero or more `await` expressions.
-- ==Top-level code==, up to and including the first `await` expression (if there is one), is run ==synchronously==.
-  - an `async` function ==without== an `await expression` will run ==synchronously==.
-  - when there is an `await expression` inside the function body, the `async` function will always complete ==asynchronously==.
-- An `await` splits execution flow, allowing the caller of the `async` function to resume execution.
-  - **Important**: only when `expression` is resolved, the function can resume
-  - **Imagine**: `await expression` wraps the rest of codes in current function as a promise handler callback, and only when `await expression` resolve/reject, this handler callback is pushed in the microtask queue
-- After the `await` defers the continuation of the `async` function, execution of following statements resumes.
-
+<br>
+- `await` is an ==operator==, its operand is a promise, a thenable object, or any value to wait for.
+  - **return**: the ==fulfillment value== of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved
+  - It can only be used inside an async function or a JavaScript module.
+  <br>
 ```
-
 async function name (args) {
   // ...statement...
   // [...await... ] // execute synchronously
@@ -1011,9 +1201,42 @@ async function name (args) {
 }
 ```
 
+- The body of an `async function` can be thought of as being split by zero or more `await` expressions.
+  <br>
+- ==Top-level code==, up to and including the first `await` expression (if there is one), is executed ==synchronously==.
+  - an `async` function ==without== an `await expression` will run ==synchronously==.
+  - when there is an `await expression` inside the function body, the `async` function will always complete ==asynchronously==.
+    <br>
+- An `await` splits execution flow, allowing the caller of the `async` function to resume execution.
+  - **Important**: only when `expression` is resolved, the function can resume
+  - **Imagine**: `await expression` wraps the rest of codes in current function as a promise handler callback, and only when `await expression` resolve/reject, this handler callback is pushed in the ==microtask queue==
+    <br>
+- After the `await` defers the continuation of the `async` function, execution of following statements resumes.
+
 <br>
 ##### **[Back to table](#table)**
 ---
+## Event loop and macrotask vs microtask {#eventloop}
+
+- Event loop algorithm:
+
+  1. Dequeue and run the oldest task from the ==_macrotask_== queue (Attention: ==main script execution== is considered a ==_macrotask_==, so this part holds true).
+  1. Execute all ==_microtasks_==:
+     - While the microtask queue is not empty:
+       - Dequeue and run the oldest microtask.
+  1. Render changes if any.
+  1. If the macrotask queue is empty, wait till a macrotask appears.
+  1. Go to step 1.
+     <br>
+
+- Tasks in ==*macrotask*== queue or ==_microtask_== queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.
+  <br>
+- In general, after main script is finished, all ==microtasks== will be executed before any ==macrotask==.
+<br>
+
+##### **[Back to table](#table)**
+---
+
 ## Regular expression {#RegExp}
 
 - Patterns used to ==match== character combinations in strings
@@ -1048,80 +1271,185 @@ RegExp methods
 <br>
 ##### **[Back to table](#table)**
 ---
+## DOM Traversal {#dom}
+
+[JS DOM Traversal Cheat Sheet](./JS%20DOM%20Traversal%20Cheat%20Sheet%20-%20Dark.pdf)
+<br>
+In DOM:
+- Everything is **node**;
+- Tags are **elements**;
+- **Element** is a specical type of **node**;
+  - ==HTMLCollection== is a live collection of **elements**, it is automatically updated when DOM changes;
+  - ==NodeList== is a collection of **nodes**;
+<br>
+- A token is a string representing the token you want to check for the existence of in the list.
+<br>
+- DOMTokenList: represent a set of space-separated tokens in a form of JS array objects with instance methods.
+  - `DOMTokenList.item(index)`: return the item in the list by its index
+  - `DOMTokenList.contains(token)`: return `true` / `false` 
+  - `DOMTokenList.supports(token)`: return `true` / `false` 
+  - `DOMTokenList.forEach()`: callback function just like `array.forEach()`
+  - `DOMTokenList.keys()`: returns an `iterator`
+  - `DOMTokenList.values()`: returns an `iterator`
+  - `DOMTokenList.add(token0, token1, /* … ,*/ tokenN)`: add specificed token(s)
+  - `DOMTokenList.remove(token1, token2, /* … ,*/ tokenN)`: remove specificed token(s)
+  - `DOMTokenList.replace(oldToken, newToken)`: replaces an existing token, or return `false` if oldToken doesn't exist.
+  - `DOMTokenList.toggle(token[, force])`: removes or adds token, return `true` or `false` indicating whether `token` is in the list or not after the call.
+    - if token existed already, removes it and return `false`;
+    - if token doesn't existed, adds it and return `true`;
+    - `force`: can be `true` or `false`, force toggle() to behave as its boolean return
+  - `DOMTokenList.entries()`
+<br>
+
+
+##### **[Back to table](#table)**
+
+---
+
+## Web APIs {#webapis}
+
+- `Element.className`: a string representing the class(s) of the element, seperated by space.
+- `Element.classList`: (read-only) returns a live `DOMTokenList` collection of the class attribute of the element.
+  ```
+  const div = document.createElement('div');
+  div.className = 'col border text-center'; // A string.
+  div.classList = ['col', 'border', 'text-center'] // A DOMTokenList, not an array
+  ```
+  - To turn `DOMTokenList` into an `array`, use `const elementArray = Array.from(DOMTokenList)`
+  <br>
+- `Element.scrollHeight`: (read-only) returns the minimum height the element would require in order to fit all the content in the viewport without using a vertical scrollbar, including content not visible on the screen due to overflow.
+- `Element.clientHeigth`: (read-only) returns the height of an element's content. 
+  - both including padding but excludes borders, margins, and horizontal scrollbars.
+  - `scrollHeight` doesn't care about the text content if `Element` is a `textarea`, if no content inside `textarea`, it will just show the rendered `height`.
+  - If the element's content can fit without a need for a vertical scrollbar, its `scrollHeight` equal to its `clientHeight`
+- `Element.offsetHeight`: (read-only) returns the viewable height of an element (in pixels), including padding, border and scrollbar, but not the margin.
+<br>
+
+- `Element.innerHTML`: The text content of the element, including all spacing and inner HTML tags.
+- `Element.innerText`: Just the text content of the element and all its children, without CSS hidden text spacing and tags, except `<script>` and `<style>` elements.
+- `Element.TextContent`: The text content of the element and all descendaces, with spacing and CSS hidden text, but without tags.
+<br>
+
+- `Element.querySelector()`: returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
+  - Selectors:
+    - Universal selector: `*`
+    - Type selector: `tagname`
+    - Class selector: `.classname`
+    - ID seletor: `#id`
+    - Attribute selector: 
+      - `[attr]`: has attribute
+      - `[attr=value]`: equal to value
+      - `[attr~=value]`: contain and space-separated
+      - `[attr|=value]`: contain and as a whole or be followed by `-`
+      - `[attr^=value]`: contain and starts with value, not necessarily have to be a whole word
+      - `[attr$=value]`: contain and ends with value, not necessarily have to be a whole word
+      - `[attr*=value]`: contain, no other limits.
+  - Grouping selectors:
+    - Selector list: `,`
+  - Combinators:
+    - Descendant combinator: space '` `'
+    - Child combinator: `>`
+    - General sibling combinator: `~`
+    - Adjacent sibling combinator: `+`
+    - Column combinator: `||`
+  - Pseudo-classes and pseudo-elements: `:` / `::`
+
+<br>
+
+
+
+##### **[Back to table](#table)**
+---
+
+## Web-related terms
+
+- **URI** (Uniform Resource Identifier): a string that refers to a resource
+- **URL** (Uniform Rsource Locator): a type of URI, specifies where a resource can be found on the Internet (Web address).
+<br>
+- **Origin**: defined by the scheme(protocol), hostname(domain), and port of the URL
+ `http://example.com:8080`
+  - `http`: called "scheme", 
+    - http: resources transported over unencrypted connections using HTTP protocol.
+    - https: resource is transported using the HTTP protocol, but over a secure TLS channel.
+  - `example.com`: called domain name, it is hosted on a server where the document resides
+  - `8080`: called ports
+  - `wwww.example.com` is actually a subdomain of example.com
+<br>
+- **Server**: could refer to hardware, software, or both.
+  - **Hardware**: a web server is a computer that stores web server software and a websites's component files. It connnects to the Internet and supports phy sical data interchange with other devvices connected to the web
+  - **Software**: a web server includes several parts that control how web users access hosted files. At a minimum, this is an HTTP server.
+    - An HTTP server is software that understands URLs (web addresses) and HTTP (the protocol your browser uses to view webpages). 
+    - An HTTP server can be accessed through the domain names of the websites it stores, and it delivers the content of these hosted websites to the end user's device.
+  <br>
+  - **A static web server** (stack): consists of hardware with an HTTP server(software). Static server sends its hosted files as-is to your browser
+  - **A dynamic web server**: consists of a static web server plus extra software, most commonly an _**application server**_ and a **_database_**. The application server updates the hosted files before sending content to your browser via the HTTP server.
+<br>
+- **Static Media**: refers to content that never or rarely change, like images, movies, audio, etc
+<br>
+- **Domain Name System** (DNS): the protocol used to translate human readable hostnames into IP addresses. 
+<br>
+- **Streaming** involves breaking a resource that you want to receive over a network down into small chunks, then processing it bit by bit.
+
+##### **[Back to table](#table)**
+---
 
 ## Interesting concepts {#interesting}
 
-1. **A function to return one of two functions based on their execution results, which can only be decided during function invocation.**
-
-```
-
-function eitherCallback(callback1, callback2) {
-  return (x)=>{
-    return callback1(x) || callback2(x)
-  }
-}
-```
-
----
-
-2. **There are two types of expressions**:
-
-   1. those that assign value to a variable with side effects: `x = 1`
-   2. those that in some sense evaluate and therefore resolve to a value `1 + 2`
-
----
-
-3. **Check if a Character is a Letter**
-   Compare the lowercase and uppercase variants of the character
-   `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
-
----
-
-4. **Deep copy an array**
-   `arrayCopy = [...array]`
-
----
-
-5. **Capitalize a string**
-   `string.charAt(0).toUpperCase() + string.slice(1)`
-
----
-
-6. **DP problem common characteristics:**
-
-   - Ask for optimum value:
-
-     - Ask for max/min/longest etc. of something;
-     - Ask for the number of ways to do something;
-
-   - The future decisions depend on earlier decisions
-
-     - distinguish DP problem from greedy algorithm / divide and conquer problem
-
+1. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
+    ```
+    function eitherCallback(callback1, callback2) {
+      return (x)=>{
+        return callback1(x) || callback2(x)
+      }
+    }
+    ```
     <br>
 
-   - tips:
-     - DP[i] should have close connection to nums[i];
+1. There are two types of ==expressions==
+    1. those that assign value to a variable with side effects: `x = 1`
+    1. those that in some sense evaluate and therefore resolve to a value `1 + 2`
+<br>
 
----
+1. Check if a Character is a Letter
+   Compare the lowercase and uppercase variants of the character
+   `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
+<br>
 
-7. **In `for` loop, the condition could be anything, it doesn't have to be related to `i`.**
+1. **Deep copy an array**
+    `arrayCopy = [...array]`
+<br>
 
-```
-let y = 3;
-for (let i = 0; y < 5; i++) {
-    y += i;
-    console.log(y);
-}
+1. **Capitalize a string**
+    `string.charAt(0).toUpperCase() + string.slice(1)`
+<br>
 
-// 3
-// 4
-// 6
-```
+1. **DP problem common characteristics:**
+    - Ask for optimum value:
+      - Ask for max/min/longest etc. of something;
+      - Ask for the number of ways to do something;
+    - The future decisions depend on earlier decisions
+      - distinguish DP problem from greedy algorithm / divide and conquer problem
+    - Tips:
+      - DP[i] should have close connection to nums[i];
+      <br>
 
----
+1. **In `for` loop, the condition could be anything, it doesn't have to be related to `i`.**
+    ```
+    let y = 3;
+    for (let i = 0; y < 5; i++) {
+        y += i;
+        console.log(y);
+    }
 
-8. **Create an array with**
+    // 3
+    // 4
+    // 6
+    ```
+    <br>
+1. Find the checked radio `input` element: `document.querySelector('input:checked')`
+<br>
+
+1. **Create an array with**
    <br>
 
 ##### **[Back to table](#table)**

@@ -20,12 +20,12 @@ For element tag
 </form>
 ```
 
-CSS selectors:
+### CSS selectors:
 
 1. Simple:
 
-   - by element: `a { color: red }`
-   - by class: `.className { color: red }`
+   - by tag name: `a { color: red }`
+   - by class name: `.className { color: red }`
    - by id: `#idName { color: red }`
    - universal: `* { color: red }`
    - grouping: `a, p { color: red }`
@@ -33,10 +33,10 @@ CSS selectors:
 
 2. Combinators:
 
-   - descendant(space): `div p { color: red }` **Text 1** and **Text 2** will change
-   - child(>): `div > p { color: red }` only **Text 1** will change
-   - adjacent sibling(+): `div + p { color: red }` only **Text 3** will change
-   - general sibling(~): `div ~ p { color: red }` **Text 3** and **Text 4** will change
+   - descendant (space): `div p { color: red }` **Text 1** and **Text 2** will change
+   - child (>): `div > p { color: red }` only **Text 1** will change
+   - adjacent sibling (+): `div + p { color: red }` only **Text 3** will change
+   - general sibling (~): `div ~ p { color: red }` **Text 3** and **Text 4** will change
      <br>
 
 3. Pseudo-classes selector (**:**) style an element when it is (commonly used):
@@ -64,3 +64,70 @@ CSS selectors:
    - attribute value: `a[id='idName'] { background-color: yellow }`
      ... atrribute value variants
      <br>
+
+### Things that are Good to Know
+1. Precedence of style: 
+   1. Inline style (in HTML style attribute)
+   1. ID selector 
+   1. Class selector
+   1. Element selector
+<br>
+1. Block-element-modifier ( ==BEM== ) class naming rule:
+   - Names are written in **lowercase** Latin letters.
+   - Words are separated by a hyphen (-).
+   - The **block name** defines the namespace for its elements and modifiers.
+   - The **element name** is separated from the block name by a double underscore (\_\_)
+     - `block-name__elem-name`
+     - ==Elements don't have hierarchy, parent and child html tags should be on the same level when naming class==
+   - The **modifier name** is separated from the block or element name by a single underscore (\_).
+     - `block-name__elem-name_elem-mod-name`
+     - `block-name_block-mod-name__elem-name`
+     - ==Modifier should never be used alone, only add modifiers with the original class==
+   - The **modifier value** is separated from the modifier name by a single underscore (\_).
+     - `block-name__elem-name_mod-name_mod-val`
+   - For boolean modifiers, the value is not included in the name.
+   <br>
+1. ==At-rules== (@idnetifier (RULE)): instruct CSS how to behave.
+   - Regular: `@charset`, `@import`, `@namespace`
+   - Nested: A subset of nested statements, which can be used as a statement of a style sheet as well as inside of conditional group rules: `@media`, `@keyframe`, `@supports`, `@document`, `@page`, `@font-face`, `@viewport`, `@counter-style`, `@font-feature-values`, `@layer`
+   - Conditional group rules: statements that share a common syntax and each can include nested statements, conveying a common semantic meaning which evaluates to either true or false, and the statements will apply under true condition: `@media`, `@supports`, `@document`.
+   <br>
+1. Use ==Media Queries== when
+   - conditionally apply styles with CSS `@media` and `@import` at-rules
+   - target specific media for the `<style>`, `<link>`, `<source>`, and other HTML element with the `meida=` attribute
+   - test and monitor media states using the `Window.matchMedia()` and `MediaQueryList.addListener()` JavaScript methods
+   <br>
+1. Some attributes can be ==inherited== from parent element. See `inherited: Yes/no`
+in MDN
+   <br>
+
+1. `<script>` should be put right before the end tag of `<body>`, which is `</body>`, so that DOM could be ready when executing script.
+
+   <br>
+
+1. `position: absolute` is positioned relative to its closest positioned ancestor (whose `position` value is not `static`)
+
+   <br>
+
+1. `box-sizing`: sets how the total width and height of an element is calculated
+   - `content-box`: (default) content width/height is fixed as element's `width`/`height`, border width and paddings are added upon content width/height
+   - `border-box`: element's `width`/`height` includes border width and padding, content width will adapt accordingly.
+   <br>
+1. `white-space` attribute controls if text could be wrapped.
+   <br>
+
+1. `auto` is not a valid value for `padding` attribute;
+   <br>
+
+1. ==Bootstrap==:
+   1. **Content delivery network** ( ==CDN== ) is a quick and easy way of applying css framework, like bootstrap e.g.
+      ```
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+      ```
+      - pros: simple & convenient
+      - cons: can't customize bootstrap css
+   1. another way to use bootstrap is to download bootstrap source file (sass source files) and make customized sass and compile it in sass compiler
+   1. bootstrap 5 doesn't require jquery as a dependency
+
+1. ==CSS grid==:
