@@ -9,6 +9,7 @@
 - [Numbers](#number)
 - [String](#string)
 - [Symbol](#symbol)
+- [Regular Expression](#RegExp)
 - [Array](#array)
 - [Object](#object)
 - [Function](#function)
@@ -17,9 +18,9 @@
 - [Promise](#promise)
 - [Async/await](#async_await)
 - [Event loop and macrotask vs microtask](#eventloop)
-- [Regular Expression](#RegExp)
 - [DOM Traversal](#dom)
 - [Web AIPs](#webapis)
+- [Web-related terms](#webterms)
 - [Interesting topics](#interesting)
 
 ---
@@ -179,17 +180,24 @@ undefined
 - unchangeable (immutable), but reassignable;
 - quotes in strings: `'He said "Hello!"'` or `"She says 'Goodbye'"`
 - String template literals: <code> \`${expression}\` </code>
-- Backslash (\\) turns special characters (such as quote) into string characters. Use `\` to escape `'`, `"` and `\` in string:
+- Backslash (`\`) turns special characters (such as quote `'` or double quote `"`) into string characters. Use `\` to escape `'`, `"` and `\` in string (the escape backslash will only exist in the string value, it is not a string character and it can not be printed out by console.log):
 
   | Code | Result | Description  |
   | :--: | :----: | :----------: |
   | `\\` |  `\`   |  Backslash   |
   | `\'` |  `'`   | Single quote |
   | `\"` |  `"`   | Double quote |
+  | `\t` |        |     Tab      |
+  | `\n` |        |   Newline    |
+  | ...  |        |   and more   |
+
+  - `'\'` can not be printed out, because it escapes the closing single quote (`'`), which turns into a string character not a funcitonal character
+
+  <br>
 
 #### **String methods**
 
-- **str.length** : return the length of str`
+- **str.length** : return the length of `str`
 
   <br>
 
@@ -360,6 +368,42 @@ undefined
 
 <br>
 ##### **[Back to table](#table)**
+---
+## Regular expression {#RegExp}
+
+- Patterns used to ==match== character combinations in strings
+- Regular expressions are also objects
+- Regular expressions are used with the RegExp methods
+- Two ways to create a `RegExp` object: a literal notation and a constructor:
+  - **literal notation** : a pattern between two slashes, followed by optional flags
+    - `let re = /ab+c/i`
+  - **constructor function**: two parameters(a string or a RegExp object as its first parameter, and a string of optional flags as its second parameter)
+    - `let re = new RegExp('ab+c', 'i')`
+
+Assertion
+
+<br>
+
+Character classes
+
+<br>
+
+Quantifiers
+
+- **x?**: 0 or 1
+- **x+**: 1 or more
+- **x\***: 0 or more
+  <br>
+
+RegExp methods
+
+- re.test()
+-
+
+<br>
+
+##### **[Back to table](#table)**
+
 ---
 
 ## Array {#array}
@@ -574,9 +618,9 @@ undefined
 - **.reduceRight(_f_)**: same as `.reduce()`, but the order is right-to-left
   <br>
 
-- **.find(_f_)**: return the ==first== `element` in array which makes `callbackFn` return `true`, or `undefined` if not found
-- **.findIndex(_f_)**: return ==index of the first== `element` in the array which makes `callbackFn` return `true`, or `-1` if not found
-- **.filter(_f_)**: return a ==new array== with all the `elements` which makes `callbackFn` return `true`, or `[]` if no `element` is found
+- **.find(_f_)**: return the **first** `element` in array which makes `callbackFn` return `true`, or `undefined` if not found
+- **.findIndex(_f_)**: return **index** of the first `element` in the array which makes `callbackFn` return `true`, or `-1` if not found
+- **.filter(_f_)**: return a **new array** with all the `elements` which makes `callbackFn` return `true`, or `[]` if no `element` is found
   <br>
 - **.sort(_f_)**: return the ==sorted array==
 
@@ -837,7 +881,7 @@ function ConstructorName(prop) {
 }
 ```
 
-**Note**: methods created in constructor definition is ==duplicated in every instance==
+**Note**: methods created in constructor definition is ==duplicated== in every instance
 <br>
 
 - **Add shared methods**:
@@ -968,71 +1012,128 @@ console.log(x) // 1
 - AJAX is **asynchronous javascript and XML**, it is a combination of:
   - A browser built-in `XMLHttpRequest` object (to request data from a web server)
   - JavaScript and HTML DOM (to display or use the data without the necessity to reloading the page).
-  <br>
+    <br>
 - _**Asynchronous**_ means something happens in the future, not right now.
 - Javascript is just a programming language that is implemented in browsers.
 - Browsers are usually written by C++, which can do things that JS is bad at, hence ==Web APIs== in general.
-<br>
+  <br>
 - XML vs JSON
-    - XML (eXtensible Markup Language) is a data format, similar to HTML, but it does not describe presentation like HTML.
-      - The name of the tag is to represent data meaning, it is meaningless to the browser
+
+  - XML (eXtensible Markup Language) is a data format, similar to HTML, but it does not describe presentation like HTML.
+    - The name of the tag is to represent data meaning, it is meaningless to the browser
+    ```
+    <pin>
+      <title>This is a title</title>
+      <author>This is the author</author>
+      <year>This is when it is wrote</year>
+    </pin>
+    ```
+  - JSON (Javascript Object Notation) is a more commonly used data format, much easier for API's to parse, so AJAX(XML) is basically AJAJ(JSON) nowadays.
+
+    - JSON doesn't support comments, all the strings must be **double quoted**.
+    - Data is in name / value pairs, separated by commas.
+    - Values must be string, number, object, array, boolean or null.
+    - No function, date or undefined.
+    - pros:
+      - lightweight (small file size) and easy to read/write
+      - integrates easily with most languages
+
+    ```
+    "book": {
+      "title": "Three body problem",
+      "author": "Cixin Liu",
+      "year": 2008
+    }
+    ```
+
+    - `JSON.stringify(value[, replacer][, space])`
+
+      - `Boolean`, `Number`, `String` and `BigInt` are converted to the corresponding primitive values during stringification
+      - `Object` (including `Array`) is recursively stringified
+      - `undefiend`, `Function` and `Symbol` value will be omitted (in object) or changed to `null` (in array) or return `undefined` (directly passed in)
+      - `Infinity`, `NaN` and `null` are all considered `null` and will not be omitted.
+
+      - My understanding: Since strings in JSON data are all double quoted, to make valid json string and to avoid the conflict of meanings, `JSON.stringify()` works as:
+        1. turn all string syntax (`'`, `` ` ``) into double quotes (`"`)
+        2. For all string character double quotes`"`, preattach a backslash (`\`) to make it non-syntax character.
+        3. stringify everyting, use a second `\` to escape any `\`, `"`, and the second `\` will not be printed out by console.log, cause they are escape character.
+
       ```
-      <pin>
-        <title>This is a title</title>
-        <author>This is the author</author>
-        <year>This is when it is wrote</year>
-      </pin>
+      const str_error = """;  // SyntaxError
+
+      const str1 = '"';
+      const jsonStr1 = JSON.stringify(str1);   // jsonStr1 = '"\\""'
+      console.log(jsonStr1);    // output: "\"" , only one backslash when printing
+
+      jsonStr1 === JSON.stringify("\"");  // true
       ```
-    - JSON (Javascript Object Notation) is a more commonly used data format, much easier for API's to parse, so AJAX(XML) is basically AJAJ(JSON) nowadays.
-      - JSON doesn't support comments, all the strings must be **double quoted**.
-      - Data is in name / value pairs, separated by commas.
-      - Values must be string, number, object, array, boolean or null.
-      - No function, date or undefined.
-      ```
-      "book": {
-        "title": "Three body problem",
-        "author": "Cixin Liu",
-        "year": 2008
-      }
-      ```
+
       <br>
 
 - ==Macrotask queue== (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
-<br>
+  <br>
 
-1. In early days, asynchronous APIs used event handler (AJAX). 
+1.  In early days, asynchronous APIs used event handler (AJAX).
+
     - Browser APIs — constructs built into the browser that sits on top of the JavaScript language and allows you to implement functionality more easily.
-    <br>
+      <br>
     - APIs don't respond with HTML. APIs respond with **pure data** (XML and JSON), not structure.
-    <br>
-    - **Event handler**:  the function that will be called when the event happens. 
-      - `XMLHttpRequest` is a constructor, `new` operator required: 
-        -   `const xhr = new XMLHttpRequest()`;
+      <br>
+    - **Event handler**: the function that will be called when the event happens.
+
+      - `XMLHttpRequest` is a constructor, `new` operator required:
+        - `const xhr = new XMLHttpRequest()` : returns a `XMLHttpRequest` object, which is not a promise
+          <br>
       - `xhr.readyState`: returns the state an XHR client is in.
 
-      | Value | State | Description |
-      | :---: | --- | --- |
-      | 0 | UNSENT | Client has been created, `open()` not called yet |
-      | 1 | OPENED | `open()` has been called  |
-      | 2 | HEADERS_RECEIVED | `send()` has been called, and headers and status are available |
-      | 3 | LOADING | Downloading; `responseText` holds partial data |
-      | 4 | DONE | The operation is complete |
+      | Value | State            | Description                                                    |
+      | :---: | ---------------- | -------------------------------------------------------------- |
+      |   0   | UNSENT           | Client has been created, `open()` not called yet               |
+      |   1   | OPENED           | `open()` has been called                                       |
+      |   2   | HEADERS_RECEIVED | `send()` has been called, and headers and status are available |
+      |   3   | LOADING          | Downloading; `responseText` holds partial data                 |
+      |   4   | DONE             | The operation is complete                                      |
+
+      <br>
 
       - `xhr.onreadystatechange` is an event handler, it defines a function that **will be called** ==whenever== `readyState` changes
+
         - check when if the request is done:
           ```
-          xhr.onreadystatechange = function () { 
-            if (xhr.readyState === 4) { 
-              // do something when XMLHttpRequest is done 
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              // do something when XMLHttpRequest is done
             }
           }
           ```
+          <br>
+
+      - `xhr.addEventListener('event', (e) => {})` other XHR events (or just use event handler):
+
+        - `loadstart`, `xhr.onloadstart = (e) => {}` : fired when a request has started to load data
+        - `load`, `xhr.onload = (e) => {}` : fired when a request transaction completes successfully
+        - `loadend`, `xhr.onloadend = (e) => {}` : fired when a request has completed (`load`/`abort`/`error`)
+        - `progress`, `xhr.onprogress = (e) => {}` : fired periodically when a request receives more data.
+        - `error`, `xhr.onerror = (e) => {}` : fired when the request encountered an error
+        - `abort`, `xhr.onabort = (e) => {}` : fired when a request has been aborted
+        - `timeout`, `xhr.ontimeout = (e) => {}` : fired when progression is terminated due to preset time expiring
+          <br>
+
       - `xhr.status` returns the numerical HTTP status code of the `XMLHttpRequest`'s response
+
         - [HTTP Status Codes Cheat Sheet](https://www.restapitutorial.com/httpstatuscodes.html)
+          - successful responses: 200-299
+          - Redirection message: 300-399
+          - Client error responses: 400-499
+          - Server error responses: 500-599
         - check if xhr is succeeded: `if (xhr.status === 200) { ... }`
+          <br>
+
       - `xhr.responseText` returns the text received from a server following a request being sent.
         - the return is string, and it needs to be parsed before getting access to the actual data
-        - JSON parser: `const data = JSON.parse(xhr.responseText)` 
+        - JSON parser: `const data = JSON.parse(xhr.responseText)`
+          <br>
+
       ```
       var xhr = new XMLHttpRequest();
 
@@ -1043,20 +1144,25 @@ console.log(x) // 1
       }
 
       xhr.open(method, url); // methods: "GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", etc.
-      xhr.send(data); // 
+      xhr.send([data]); //
       ```
+
       <br>
-    - Problems with XHR: 
+
+    - Problems with XHR:
       - bulky syntax
       - old
-      - no streaming 
-      <br>
-1. **Fetch API** (an update to XHR) based on promise
+      - no streaming
+        <br>
+
+1.  **Fetch API** (an update to XHR) is provided by browsers (webapi) based on [chained promise](#promise)
+
     - nice and clean
     - more powerful functionalites
+
     ```
-    fetch(url)
-    .then(function(res) {
+    fetch(url)                    // That's it, no XMLHttpRequest() constructor, no open(), no send()
+    .then(function(res) {         // fetch will return a promise, whose resolved value is a 'response' object,
       return res.json();
     }).then(function(data) {
       console.log(data);
@@ -1065,6 +1171,112 @@ console.log(x) // 1
     });
     ```
 
+    - Fetch Intefaces
+      - `fetch(resource[, options])`: method used to fetch a resource.
+        - return: a `Promise` that resolves to a `Response` object
+        - options: an object, can include {parameters / value} pairs
+        - ==only reject== when a network error is encountered (does not reject on HTTP errores)
+      - `Headers`: Represents response/request headers, allowing you to query them and take different actions depending on the results.
+      - `Request`: Represents a resource request.
+      - `Response`: Represents the response to a request.
+        - `Res.json()`: Returns a `Promise` that resolves with the result of parsing the response body text as JSON.
+      - [more details](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+        <br>
+
+1.  **jQuery AJAX**: jQuery is 'The Write Less, Do More JavaScript **Library**' (based on JS)
+
+    - [Docs](https://api.jquery.com/)
+    - Install: npm or CDN (content delivery network) or many other ways
+      <br>
+    - **jQuery AJAX** is another way of sending http request (evetually based on `XHR`), mainly differs from **fetch**:
+      - jQuery AJAX could respond to HTTP error
+      - jQuery AJAX could receive cookies from server
+        <br>
+    - The 'base' jQuery AJAX Method: `$.ajax([url][, settings])`
+
+      - `$.ajax()` is the same as `jQuery.ajax()`
+      - settings`{ ... }`: A set of key/value pairs that configure the Ajax request
+        - common settings:
+          - method: HTTP method to use for the request (default: `GET`)
+          - url: the URL to which the request is sent (default: `The current page`)
+          - data: data to be sent to the server
+          - datatype: type of data expected from the server (default: `Intelligent Guess (xml, json, script, or html)`)
+          - cache: If set to `false`, it will force requested pages not to be cached by the browser. (default: `true, false for dataType 'script' and 'jsonp'`)
+          - success: A function to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
+            ...
+            <br>
+
+    - 3 Shorthand methods that are commonly used:
+
+      - `$.get(url[, data][, success][, dataType])` same as:
+        - success: Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.
+
+      ```
+      $.ajax({
+        url: url,
+        data: data,
+        success: success,
+        dataType: dataType
+      });
+      ```
+
+      <br>
+
+      - `$.post(url[, data][, success][, dataType])` same as:
+        - success: Required if dataType is provided, but you can use null
+
+      ```
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        success: success,
+        dataType: dataType
+      });
+      ```
+
+      <br>
+
+      - `$.getJSON(url[, data][, success])` same as:
+
+      ```
+      $.ajax({
+        dataType: "json",
+        url: url,
+        data: data,
+        success: success
+      });
+      ```
+
+      <br>
+
+1.  **Axios**: a lightweight HTTP request **library** (HTTP request only)
+    - [Docs](https://axios-http.com/docs/intro)
+    - Install: npm or CDN
+    - get request:
+      ```
+      axios.get(url)
+      .then(function(res){ ... })
+      .catch(function(err){ ... })
+      ```
+      - have nice error handlers: `error.request` / `error.response`
+      - Axios vs Fetch
+        | Axios | Fetch |
+        | :--- | :--- |
+        | Axios has `url` in request object.| Fetch has no `url` in request object. |
+        | Axios is a **stand-alone third party package** that can be easily installed. |Fetch is built into most modern browsers; **no installation** is required as such.|
+        | Axios enjoys built-in XSRF protection. |Fetch does not.|
+        | Axios uses the `data` property. |Fetch uses the `body` property.|
+        | Axios’ data contains the `Object`. |Fetch’s body has to be **stringified**.|
+        | Axios request is ok when `status` is `200` and `statusText` is `OK`. |Fetch request is `ok` when **response object contains** the `ok` property.|
+        | Axios performs **automatic transforms of JSON data**. |Fetch is a **two-step process** when handling JSON data- first, to make the actual request; second, to call the .json() method on the response.|
+        | Axios allows **cancelling request and request timeout**. |Fetch does not.|
+        | Axios has the ability to **intercept HTTP requests**. |Fetch, by default, doesn’t provide a way to intercept requests.|
+        | Axios has **built-in support for download progress**. |Fetch does not support upload progress.|
+        | Axios has **wide browser support**. |Fetch only supports Chrome 42+, Firefox 39+, Edge 14+, and Safari 10.1+ (This is known as Backward Compatibility).|
+        | Axios `GET` call can have body Content |Fetch `GET` call cannot have body Content|
+        <br>
+
 ##### **[Back to table](#table)**
 
 ---
@@ -1072,125 +1284,133 @@ console.log(x) // 1
 ## Promise {#promise}
 
 Promise is an object represents the resulting value of an ==asynchronous operation==, working as a proxy for a value that was not necessarily known when the promise is created.
+
 - return: a promise object, has three states:
   - pending: initial state, neither fulfilled nor rejected.
-  - resolved: meaning that the operation was completed successfully.
+  - resolved: meaning that the operation was completed successfully. (Colloquially, 'resolved' equals 'fulfilled')
   - rejected: meaning that the operation failed.
-- executor: a function called "executor function", which takes two functions as parameters (resolve, reject
-<br>
-
-Promises are handled by [microtasks queue](#eventloop) 
-  - The queue is first-in-first-out(FIFO);
-  - only resolved/rejected promise handlers can be enqueued, pending
-  - Execution of a task is initialted only when nothing else is running (empty call stack)
-  <br>
-
+- executor: a function called "executor function", which takes two functions as parameters (resolveFunc, rejectFunc)
+  - executors are called synchronously, as soon as the Promise is `constructed`
+    <br>
 
 ```
-new Promise(executor)
-new Promise((resolve, reject) => {
+new Promise(executor) // only work with 'new' operator
+new Promise((resolveFunc, rejectFunc) => {
   // do something asynchronous which eventually calls either:
-  // resolve(someValue) -- fulfilled
+  // resolveFunc(someValue) -- fulfilled
   // or
-  // reject("failure reason") -- rejected
+  // rejectFunc(reason) -- rejected
 })
 ```
+
 <br>
 
-Chained Promises:  `Promise.prototype.then/catch/finally`<br>
+Promises are handled by [microtasks queue](#eventloop)
 
-  - `then(onFulfilled[, onRejected])`: Returns a new `Promise` immediately. This new promise is always pending when returned, regardless of the current promise's status.
-    ```
-    promise.then(onFulfilled[, onRejected])
+- The queue is first-in-first-out(FIFO);
+- only resolved/rejected promise handlers can be enqueued, pending
+- Execution of a task is initialted only when nothing else is running (empty call stack)
+  <br>
 
-    promise.then(
-      (value) => { /* fulfillment handler */},
-      [(reason) => { /* rejection handler */},]
-    )
-    ```
-    - If `onFulfilled` / `onRejected` is not a function, it will be internally replaced with an _identity_ function `(x) => x` / _thrower_ function `(x) => throw x`, which passes / throw the `fulfillmentValue` / `receivedRejectionReason`
+==Chained Promises==: `Promise.prototype.then/catch/finally`<br>
+
+- `then(onFulfilled[, onRejected])`: Returns a new `Promise` immediately. This new promise is always `pending` when returned, regardless of the current promise's status.
+
+  ```
+  promise.then(onFulfilled[, onRejected])
+
+  promise.then(
+    (value) => { /* fulfillment handler */},
+    [(reason) => { /* rejection handler */}]
+  )
+  ```
+
+  - When `onFulfilled` is not a function: internally replaced with an **_identity_** function `(x) => x`, which ==passes== the `fulfillmentValue`
+  - When `onRejected` is not a function: internally replaced with an **_thrower_** function `(x) => throw x`, which ==throws== the `receivedRejectionReason`
     <br>
-    - Assuming `x` is the return of `onFulfilled` / `onRejected`, and `p` is the return promise of `then`:
-        - `x` is a value ==> `p` is resolved with value `x`
-        - `x` is `undefined` ==> `p` is resolved with `undefined` 
-        - `x` is an error throwed by handler ==> `p` is rejected with value `x`
-        - `x` is a resolevd promise ==> `p` is resovled with `x`'s value
-        - `x` is a rejected promise ==> `p` is rejected with `x`'s value
-        - `x` is pending promise ==> `p` is pending until `x` is settled, then apply rules above
-    <br>
+  - Assuming `x` is the return of `onFulfilled` / `onRejected`, and `p` is the return promise of `then()`:
+    - `x` is a value ==> `p` is resolved with value `x`
+    - `x` is `undefined` ==> `p` is resolved with `undefined`
+    - `x` is an error throwed by handler ==> `p` is rejected with value `x`
+    - `x` is a resolevd promise ==> `p` is resovled with `x`'s value
+    - `x` is a rejected promise ==> `p` is rejected with `x`'s value
+    - `x` is pending promise ==> `p` is pending until `x` is settled, then apply rules above
+      <br>
 
-  - `catch(onRejected)`: Internally calls `Promise.prototype.then` on the object upon which it was called, passing the parameters `undefined` and the received `onRejected` handler. Returns the value of that call, which is a `Promise`.
-    ```
-    promise.catch(function(reason) {
-      // rejection
+- `catch(onRejected)`: Internally calls `Promise.prototype.then` on the object upon which it was called, passing the parameters `undefined` and the received `onRejected` handler. Returns the value of that call, which is a `Promise`.
+
+  ```
+  promise.catch(function(reason) {
+    // rejection
+  })
+  ```
+
+  - equals to `Promise.prototype.then(undefined, onRejected)`
+  - The `Promise` returned by `catch()` will be ==fulfilled== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already ==rejected== `Promise`.
+
+  - Example with comments
+
+  ```
+  const promise = new Promise((resolve, reject) => {
+    reject('wrong');
+  });
+
+  promise.then(1, 2)
+    .catch((e) => {
+      console.log(e);
+      return 'right';
     })
-    ```
-      - equals to `Promise.prototype.then(undefined, onRejected)`
-      - The `Promise` returned by `catch()` will be ==fulfilled== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already ==rejected== `Promise`.
-
-    - Example with comments
-    ```
-    const promise = new Promise((resolve, reject) => {
-      reject('wrong');
+    .then((n) => {
+      console.log(n);
     });
 
-    promise.then(1, 2)  
-      .catch((e) => {
-        console.log(e);
-        return 'right';
-      })
-      .then((n) => {
-        console.log(n);
-      });
+  // Here 'promise' is a rejected promise with rejected reason of 'wrong'
+  // Since first 'then' has no onRejected handler,
+      // number '2' is internally replaced with a thrower function ((x) => { throw x; }),
+      // so the first 'then' returns a rejected promise with reason 'wrong'.
+  // The following 'catch' has a onRejected handler,
+      // but it doesn't throw an error or return a rejected promise,
+      // instead it returns a string 'right'
+      // therefore 'catch' returns a resolved promise with result value 'right'
+  // The second 'then' following the resolved 'catch' promise, has a onFullfilled handler,
+      // it receives the resolved value of 'right' and loggs it out,
+      // but because it doesn't return anything,
+      // the second 'then' will return a resolved promise with value of undefined
+  ```
 
-    // Here 'promise' is a rejected promise with rejected reason of 'wrong'
-    // Since first 'then' has no onRejected handler, 
-        // number '2' is internally replaced with a thrower function ((x) => { throw x; }), 
-        // so the first 'then' returns a rejected promise with reason 'wrong'.
-    // The following 'catch' has a onRejected handler, 
-        // but it doesn't throw an error or return a rejected promise, 
-        // instead it returns a string 'right'
-        // therefore 'catch' returns a resolved promise with result value 'right'
-    // The second 'then' following the resolved 'catch' promise, has a onFullfilled handler, 
-        // it receives the resolved value of 'right' and loggs it out, 
-        // but because it doesn't return anything,
-        // the second 'then' will return a resolved promise with value of undefined
-    ```
-    <br>
+  <br>
 
-  - `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function.
-      - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already ==rejected== `Promise`.
-      - `onFinally` callback does not receive any argument.
-      ```
-      promise.finally(() => {
-        // Code that will run after promise is settled (fulfilled or rejected)
-      })
-      ```
-      - `then` vs `finally`:
-      ```
-      Promise.resolve(2).then(() => 77, () => {}) // resolved with result 77
-      Promise.resolve(2).finally(() => 77) // resolved with result 2
+- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already ==rejected== `Promise`. - `onFinally` callback does not receive any argument.
+  `promise.finally(() => { // Code that will run after promise is settled (fulfilled or rejected) })` - `then` vs `finally`:
 
-      Promise.reject(3).then(() => {}, () => 88) // resolved with result 88 
+  ````
+  Promise.resolve(2).then(() => 77, () => {}) // resolved with result 77
+  Promise.resolve(2).finally(() => 77) // resolved with result 2
+
+      Promise.reject(3).then(() => {}, () => 88) // resolved with result 88
       Promise.reject(3).finally(() => 88) // rejected with reason 3
 
       // Both return a rejected promise with reason 99
-      Promise.reject(3).finally(() => {throw 99}) 
+      Promise.reject(3).finally(() => {throw 99})
       Promise.reject(3).finally(() => Promise.reject(99))
       ```
+
   <br>
+  ````
 
 ##### **[Back to table](#table)**
+
 ---
 
 ## Async / await {#async_await}
 
 - `async` functions always return a `promise`. If the return value of an `async` function is not explicitly a `promise`, it will be implicitly wrapped in a `promise`.
-<br>
+  <br>
 - `await` is an ==operator==, its operand is a promise, a thenable object, or any value to wait for.
   - **return**: the ==fulfillment value== of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved
   - It can only be used inside an async function or a JavaScript module.
-  <br>
+    <br>
+
 ```
 async function name (args) {
   // ...statement...
@@ -1229,65 +1449,33 @@ async function name (args) {
   1. Go to step 1.
      <br>
 
-- Tasks in ==*macrotask*== queue or ==_microtask_== queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.
+- Tasks in ==_macrotask_== queue or ==_microtask_== queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.
   <br>
 - In general, after main script is finished, all ==microtasks== will be executed before any ==macrotask==.
-<br>
-
-##### **[Back to table](#table)**
----
-
-## Regular expression {#RegExp}
-
-- Patterns used to ==match== character combinations in strings
-- Regular expressions are also objects
-- Regular expressions are used with the RegExp methods
-- Two ways to create a `RegExp` object: a literal notation and a constructor:
-  - **literal notation** : a pattern between two slashes, followed by optional flags
-    - `let re = /ab+c/i`
-  - **constructor function**: two parameters(a string or a RegExp object as its first parameter, and a string of optional flags as its second parameter)
-    - `let re = new RegExp('ab+c', 'i')`
-
-Assertion
-
-<br>
-
-Character classes
-
-<br>
-
-Quantifiers
-
-- **x?**: 0 or 1
-- **x+**: 1 or more
-- **x\***: 0 or more
   <br>
 
-RegExp methods
-
-- re.test()
--
-
-<br>
 ##### **[Back to table](#table)**
+
 ---
+
 ## DOM Traversal {#dom}
 
 [JS DOM Traversal Cheat Sheet](./JS%20DOM%20Traversal%20Cheat%20Sheet%20-%20Dark.pdf)
 <br>
 In DOM:
+
 - Everything is **node**;
 - Tags are **elements**;
 - **Element** is a specical type of **node**;
   - ==HTMLCollection== is a live collection of **elements**, it is automatically updated when DOM changes;
   - ==NodeList== is a collection of **nodes**;
-<br>
-- A token is a string representing the token you want to check for the existence of in the list.
-<br>
-- DOMTokenList: represent a set of space-separated tokens in a form of JS array objects with instance methods.
+    <br>
+- A ==token== is a string representing the token you want to check for the existence of in the list.
+  <br>
+- ==DOMTokenList==: represent a set of space-separated tokens in a form of JS array objects with instance methods.
   - `DOMTokenList.item(index)`: return the item in the list by its index
-  - `DOMTokenList.contains(token)`: return `true` / `false` 
-  - `DOMTokenList.supports(token)`: return `true` / `false` 
+  - `DOMTokenList.contains(token)`: return `true` / `false`
+  - `DOMTokenList.supports(token)`: return `true` / `false`
   - `DOMTokenList.forEach()`: callback function just like `array.forEach()`
   - `DOMTokenList.keys()`: returns an `iterator`
   - `DOMTokenList.values()`: returns an `iterator`
@@ -1299,8 +1487,7 @@ In DOM:
     - if token doesn't existed, adds it and return `true`;
     - `force`: can be `true` or `false`, force toggle() to behave as its boolean return
   - `DOMTokenList.entries()`
-<br>
-
+    <br>
 
 ##### **[Back to table](#table)**
 
@@ -1316,19 +1503,19 @@ In DOM:
   div.classList = ['col', 'border', 'text-center'] // A DOMTokenList, not an array
   ```
   - To turn `DOMTokenList` into an `array`, use `const elementArray = Array.from(DOMTokenList)`
-  <br>
+    <br>
 - `Element.scrollHeight`: (read-only) returns the minimum height the element would require in order to fit all the content in the viewport without using a vertical scrollbar, including content not visible on the screen due to overflow.
-- `Element.clientHeigth`: (read-only) returns the height of an element's content. 
+- `Element.clientHeigth`: (read-only) returns the height of an element's content.
   - both including padding but excludes borders, margins, and horizontal scrollbars.
   - `scrollHeight` doesn't care about the text content if `Element` is a `textarea`, if no content inside `textarea`, it will just show the rendered `height`.
   - If the element's content can fit without a need for a vertical scrollbar, its `scrollHeight` equal to its `clientHeight`
 - `Element.offsetHeight`: (read-only) returns the viewable height of an element (in pixels), including padding, border and scrollbar, but not the margin.
-<br>
+  <br>
 
 - `Element.innerHTML`: The text content of the element, including all spacing and inner HTML tags.
 - `Element.innerText`: Just the text content of the element and all its children, without CSS hidden text spacing and tags, except `<script>` and `<style>` elements.
 - `Element.TextContent`: The text content of the element and all descendaces, with spacing and CSS hidden text, but without tags.
-<br>
+  <br>
 
 - `Element.querySelector()`: returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
   - Selectors:
@@ -1336,7 +1523,7 @@ In DOM:
     - Type selector: `tagname`
     - Class selector: `.classname`
     - ID seletor: `#id`
-    - Attribute selector: 
+    - Attribute selector:
       - `[attr]`: has attribute
       - `[attr=value]`: equal to value
       - `[attr~=value]`: contain and space-separated
@@ -1356,98 +1543,116 @@ In DOM:
 
 <br>
 
-
-
 ##### **[Back to table](#table)**
+
 ---
 
-## Web-related terms
+## Web-related terms {#webterms}
 
 - **URI** (Uniform Resource Identifier): a string that refers to a resource
 - **URL** (Uniform Rsource Locator): a type of URI, specifies where a resource can be found on the Internet (Web address).
-<br>
-- **Origin**: defined by the scheme(protocol), hostname(domain), and port of the URL
- `http://example.com:8080`
-  - `http`: called "scheme", 
-    - http: resources transported over unencrypted connections using HTTP protocol.
-    - https: resource is transported using the HTTP protocol, but over a secure TLS channel.
-  - `example.com`: called domain name, it is hosted on a server where the document resides
-  - `8080`: called ports
-  - `wwww.example.com` is actually a subdomain of example.com
-<br>
+  <br>
+- `Host`: a device connected to the Internet (or a local network).
+
+  - clients and servers are just programs that run on a host
+
+  <br>
+
+- **Origin**: `[scheme]://[hostname]:[port]`
+
+  - defined by the scheme (**protocol**), hostname (**domain**), and port of the URL
+  - `http://example.com:8080`
+    - `http`: called "scheme",
+      - http: resources transported over unencrypted connections using HTTP protocol.
+      - https: resource is transported using the HTTP protocol, but over a secure TLS (Transport Layer Security) channel.
+    - `example.com`: called domain name, it is hosted on a server where the document resides
+    - `8080`: called ports
+    - `wwww.example.com` is actually a subdomain of example.com
+  - "Same-origin" means the client has the same origin as the server it's calling
+  - "Cross-origin" means the client origin is different than the server it's calling
+  - CORS (Cross-Origin Resource Sharing) is a system, consisting of transmitting HTTP headers, that determines whether browsers block frontend JavaScript code from accessing responses for cross-origin requests.
+    <br>
+
 - **Server**: could refer to hardware, software, or both.
   - **Hardware**: a web server is a computer that stores web server software and a websites's component files. It connnects to the Internet and supports phy sical data interchange with other devvices connected to the web
   - **Software**: a web server includes several parts that control how web users access hosted files. At a minimum, this is an HTTP server.
-    - An HTTP server is software that understands URLs (web addresses) and HTTP (the protocol your browser uses to view webpages). 
+    - An HTTP server is software that understands URLs (web addresses) and HTTP (the protocol your browser uses to view webpages).
     - An HTTP server can be accessed through the domain names of the websites it stores, and it delivers the content of these hosted websites to the end user's device.
-  <br>
+      <br>
   - **A static web server** (stack): consists of hardware with an HTTP server(software). Static server sends its hosted files as-is to your browser
   - **A dynamic web server**: consists of a static web server plus extra software, most commonly an _**application server**_ and a **_database_**. The application server updates the hosted files before sending content to your browser via the HTTP server.
-<br>
+    <br>
 - **Static Media**: refers to content that never or rarely change, like images, movies, audio, etc
-<br>
-- **Domain Name System** (DNS): the protocol used to translate human readable hostnames into IP addresses. 
-<br>
+  <br>
+- **Domain Name System** (DNS): the protocol used to translate human readable hostnames into IP addresses.
+  <br>
 - **Streaming** involves breaking a resource that you want to receive over a network down into small chunks, then processing it bit by bit.
+  <br>
+- **CDN**: content delivery network
 
 ##### **[Back to table](#table)**
+
 ---
 
 ## Interesting concepts {#interesting}
 
 1. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
-    ```
-    function eitherCallback(callback1, callback2) {
-      return (x)=>{
-        return callback1(x) || callback2(x)
-      }
-    }
-    ```
-    <br>
 
-1. There are two types of ==expressions==
-    1. those that assign value to a variable with side effects: `x = 1`
-    1. those that in some sense evaluate and therefore resolve to a value `1 + 2`
-<br>
+   ```
+   function eitherCallback(callback1, callback2) {
+     return (x)=>{
+       return callback1(x) || callback2(x)
+     }
+   }
+   ```
 
-1. Check if a Character is a Letter
+   <br>
+
+1. There are two types of ==expressions== 1. those that assign value to a variable with side effects: `x = 1` 1. those that in some sense evaluate and therefore resolve to a value `1 + 2`
+   <br>
+
+1. **Check if a Character is a Letter**
    Compare the lowercase and uppercase variants of the character
    `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
-<br>
+   <br>
 
 1. **Deep copy an array**
-    `arrayCopy = [...array]`
-<br>
+   `arrayCopy = [...array]`
+   <br>
 
 1. **Capitalize a string**
-    `string.charAt(0).toUpperCase() + string.slice(1)`
-<br>
+   `string.charAt(0).toUpperCase() + string.slice(1)`
+   <br>
 
 1. **DP problem common characteristics:**
-    - Ask for optimum value:
-      - Ask for max/min/longest etc. of something;
-      - Ask for the number of ways to do something;
-    - The future decisions depend on earlier decisions
-      - distinguish DP problem from greedy algorithm / divide and conquer problem
-    - Tips:
-      - DP[i] should have close connection to nums[i];
-      <br>
+
+   - Ask for optimum value:
+     - Ask for max/min/longest etc. of something;
+     - Ask for the number of ways to do something;
+   - The future decisions depend on earlier decisions
+     - distinguish DP problem from greedy algorithm / divide and conquer problem
+   - Tips:
+     - DP[i] should have close connection to nums[i];
+       <br>
 
 1. **In `for` loop, the condition could be anything, it doesn't have to be related to `i`.**
-    ```
-    let y = 3;
-    for (let i = 0; y < 5; i++) {
-        y += i;
-        console.log(y);
-    }
 
-    // 3
-    // 4
-    // 6
-    ```
-    <br>
+   ```
+   let y = 3;
+   for (let i = 0; y < 5; i++) {
+       y += i;
+       console.log(y);
+   }
+
+   // 3
+   // 4
+   // 6
+   ```
+
+   <br>
+
 1. Find the checked radio `input` element: `document.querySelector('input:checked')`
-<br>
+   <br>
 
 1. **Create an array with**
    <br>

@@ -109,7 +109,7 @@
 
 ## Miscellaneous
 
-- Element `id` and `name` must start with letter, can have numbers, hypens (`-`), underscores (`_`), colons (`:`) and period (`.`)
+- Element `id` and `name` must **start with letter**, can have numbers, hypens (`-`), underscores (`_`), colons (`:`) and period (`.`)
 <br>
 - For `<input type="radio">`, a **radio group** is defined by giving each of radio buttons in the group the same `name`, so that a radio group is established, selecting any radio button in that group **automatically deselects** any currently-selected radio button in the same group.
 <br>
@@ -130,3 +130,10 @@
   - &_entity_name_
   - &#_entity_number_ (decimal)
   - &#==x==_entity_number_ (hex)
+  <br>
+
+- MouseEvent: clientX vs pageX vs screenX vs offsetX
+   - clientX: visible area on the page
+   - pageX: entire page area, scrolling doesn't matter
+   - screenX: entire screen area
+   - offsetX: relative to the position of the padding edge of the target node

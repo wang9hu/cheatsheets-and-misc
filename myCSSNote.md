@@ -31,7 +31,7 @@ For element tag
    - grouping: `a, p { color: red }`
      <br>
 
-2. Combinators:
+1. Combinators:
 
    - descendant (space): `div p { color: red }` **Text 1** and **Text 2** will change
    - child (>): `div > p { color: red }` only **Text 1** will change
@@ -39,7 +39,7 @@ For element tag
    - general sibling (~): `div ~ p { color: red }` **Text 3** and **Text 4** will change
      <br>
 
-3. Pseudo-classes selector (**:**) style an element when it is (commonly used):
+1. Pseudo-classes selector (**:**) style an element when it is (commonly used):
 
    - mouse hovered: `div:hover { background-color: green }`
    - being clicked: `a:active { background-color: green }`
@@ -49,7 +49,7 @@ For element tag
      ...
      <br>
 
-4. Pseudo-elements selector (**::**) style specified parts of an element:
+1. Pseudo-elements selector (**::**) style specified parts of an element:
 
    - first letter: `p::first-letter { color: #ff0000 }`
    - first line: `p::first-line { color: #ff0000 }`
@@ -59,7 +59,7 @@ For element tag
    - marker of list items: `::marker { color: red }`
      <br>
 
-5. Attribute selector style elements with specific attributes or attribute values:
+1. Attribute selector style elements with specific attributes or attribute values:
    - attribute: `a[id] { background-color: yellow }`
    - attribute value: `a[id='idName'] { background-color: yellow }`
      ... atrribute value variants
@@ -118,6 +118,46 @@ in MDN
 
 1. `auto` is not a valid value for `padding` attribute;
    <br>
+1. To change element color in `<svg>`, add `fill = 'currentColor'` attribute in its tag and change the font color in CSS.
+<br>
+1. `transition` defines the transition between two states of an ==element==, it is a shorthand property for:
+   - `transition-property`
+   - `transition-duration`
+   - `transition-timing-function`
+   - `transition-delay` 
+   <br>
+1. To make the `height` of an element change with `tansition` by toggle classname, don't use `height`, use `max-height` in the transition and set a value on `max-height` to something bigger than your box will ever get.
+   ```
+   .item-base {
+      max-height: 0;
+      transition: all 1s ease;
+   }
+
+   .item-changes {
+      max-height: 300px; /* this is way larger than it should reach */
+   }
+   ```
+   <br>
+1. `display: flex`
+   1. defaults: 
+      - `flex-direction: row`
+      - `justify-content: flex-start`
+      - `align-items`: stretch`
+      - `flex-wrap: nowrap`
+      - `flex-grow: 0`
+      - `flex-shrink: 1`
+   1. `flex-basis`  vs `width` / `height`:
+      - `flex-basis` only applies to flex items, sets the initial main size of a flex item
+         - can be specific value or percentage: `10em` / `3px` / `50%`
+         - can be intrinsic sizing keywords: `max-content` / `min-content` / `fit-content`
+      - `flex-basis` only works with main axis:
+         - when `flex-direction` is `row` or `row-reverse`: `flex-basis` control `width`
+         - when `flex-direction` is `column` or `column-reverse`: `flex-basis` control `height`
+      - when applied, has higher priority than `width` / `height`, but not higher than `max/min-width/heigth` 
+      - `flex-basis` has no effect on absolutely-positioned flex items, of which `width` and `height` properties would be necessary
+      - `flex` is a shorthand property for `flex-grow`, `flex-shrink` and `flex-basis`.
+      <br>
+
 
 1. ==Bootstrap==:
    1. **Content delivery network** ( ==CDN== ) is a quick and easy way of applying css framework, like bootstrap e.g.
@@ -129,5 +169,5 @@ in MDN
       - cons: can't customize bootstrap css
    1. another way to use bootstrap is to download bootstrap source file (sass source files) and make customized sass and compile it in sass compiler
    1. bootstrap 5 doesn't require jquery as a dependency
-
+<br>
 1. ==CSS grid==:
