@@ -696,13 +696,13 @@ RegExp methods
 
   - **Object.create()**: `Object.create(proto[, propertiesObject])`
 
-    - return: a new object with the specified prototype object [and properties]
+    - return: always return an empty object, with the specified \_\_proto\_\_ object [and properties]
     - `propertiesObject`:
 
       ```
       {
         propName:{
-        /* Data descriptors or accessor descriptors */
+          /* Data descriptors or accessor descriptors */
         }
       }
       ```
@@ -820,17 +820,17 @@ Every JS function is a `Function` object: `(function(){}).constructor === Functi
 - **argument**: value passed to function during function invocation
 - **parameter**: placeholder in function definition
 
-- function properties:
+- function default properties:
 
   - length: the number of parameters expected by the function
 
   - name: the name of the function
 
-  - prototype: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.
+  - ==prototype==: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.
 
-  - getter:
+  - getter:??
 
-  - setter:
+  - setter:??
 
 #### **factory function**
 
@@ -870,7 +870,7 @@ function createPerson(name, age) {
 
 #### **Constructor**
 
-A special function that can only be called with `new` operator
+A special function that can only be called with `new` operator, capitcalized first letter
 
 - **Create constructor**:
 
@@ -890,7 +890,7 @@ function ConstructorName(prop) {
 ConstructorName.prototype.method2 = function () {};
 ```
 
-methods created inside of constructor prototype is shared with all instances.
+methods created inside of constructor prototype is ==shared== with all instances.
 
 <br>
 
@@ -915,14 +915,15 @@ without `new` operator, `this` refers to global object.
 
 #### **Class**
 
-(==introduced after ES6==) Declared with keyword `class`, encapsulates constructor(can only have one constructor) and shared methods
+(==introduced after ES6==) Declared with keyword `class`, encapsulates `constructor` (reserved key word, can only have one) and shared methods
 
 ```
 class Person {
   constructor(name) {
     this.name = name;
+    ObjectLiteralMethod: function(){};
   }
-  getName() {
+  classPrototypeProperty() {
     return this.name;
   }
 }
@@ -1000,7 +1001,6 @@ function funcName(){}
 console.log(x) // undefined
 var x = 1
 console.log(x) // 1
-
 ```
 
 <br>
@@ -1616,7 +1616,7 @@ In DOM:
    `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
    <br>
 
-1. **Deep copy an array**
+1. **Deep copy an array with primitive elements**
    `arrayCopy = [...array]`
    <br>
 
