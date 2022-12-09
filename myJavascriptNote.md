@@ -9,6 +9,7 @@
 - [Numbers](#number)
 - [String](#string)
 - [Symbol](#symbol)
+- [Operator](#operator)
 - [Regular Expression](#RegExp)
 - [Array](#array)
 - [Object](#object)
@@ -36,6 +37,9 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
     var str = "cool";
     str[2] = "l"; /*This doesn't work*/
+
+- Another data type is **composite** (reference) type: constructed using primitive data types
+  and other composite types.
 
 ##### **[Back to table](#table)**
 
@@ -321,6 +325,7 @@ undefined
 - **.split()**: `str.split([seperator][,limit])`
 
   - return: an `array` whose elements are substrings of `str` seperated by `[seperator]`, and `array.length` <= `[limit]`
+  - `[seperator]`: if leave blank, will put entire string as only element in an array, `'abc'.split(); // ['abc']`
   - `[limit]`: Maximum number of elements in the returned subarray. If `limit` is `0`, `[]` is returned
   - `"a b c d e f".split(' ',4) // ['a','b','c','d']` : 4 elements
   - `"a b c d e f".split(',') // ['a b c d e f']` : 1 element cause `['a b c d e f']` has no `','`
@@ -365,6 +370,11 @@ undefined
     ```
 - Symbols are not enumerable, so it will not show up in `for...in` loop or `Object.getOwnPropertyNames()`
 - Symbols can be accessed by `Object.getOwnPropertySymbols()`
+
+<br>
+##### **[Back to table](#table)**
+---
+## Operator {#operator}
 
 <br>
 ##### **[Back to table](#table)**
@@ -633,7 +643,7 @@ RegExp methods
 ## Object {#object}
 
 - { key : value } pair
-  - key: string (identifier)
+  - key: string (identifier), anything other than string will be forced to string type
   - value: anything (primitive data, array, function, other objects)
     <br>
 - property accessors: dot(`.`) & bracket notation(`[]`)
