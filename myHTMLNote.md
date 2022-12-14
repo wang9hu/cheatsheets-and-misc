@@ -4,7 +4,7 @@
 1. `<head>`: machine-readable information about the document
    1. `<title>`: documents's title shown in a browser's title bar
    1. `<script>`: executable code or data or external resource (e.g. JS files)
-   1. `<style>`: style info
+   1. `<style>`: style info, just like in CSS
    1. `<link>`: relationships between the current document and an external resource (e.g. CSS files)
       - self-closing tag
    1. `<meta>`: metadata (data about data) that cannot be represented by other elements.

@@ -12,3 +12,4 @@
 1. binary search tree
    - can't have duplicate values
      <br>
+1. benefit of recursion

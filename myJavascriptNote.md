@@ -13,6 +13,8 @@
 - [Regular Expression](#RegExp)
 - [Array](#array)
 - [Object](#object)
+- [Set](#set)
+- [Map](#map)
 - [Function](#function)
 - [Hoist](#hoist)
 - [Asynchronous Javascript](#asynchronous-js)
@@ -725,16 +727,16 @@ RegExp methods
     - `prop`: the name or Symbol of the property to be defined or modified
     - `descriptor`: objects, could be data descriptor or accessor descriptor
 
-      - _**data descritpor**_: a property that has a value
-        - configurable [false]: true if this `prop` descriptor may be changed and this `prop` could be deleted from object
-        - enumerable [false]: true if this `prop` shows up during enumeration (e.g., `for...in` loop, `console.log()` and `Object.keys()` returns enumerable properties only)
-        - ==value== [undefined]: property value
-        - ==writable== [false]: true if value can be changed with an assignment operator
+      - _**data descritpor**_: a property that has a value [default]
+        - configurable [`false`]: true if this `prop` descriptor may be changed and this `prop` could be deleted from object
+        - enumerable [`false`]: true if this `prop` shows up during enumeration (e.g., `for...in` loop, `console.log()` and `Object.keys()` returns enumerable properties only)
+        - ==value== [`undefined`]: property value
+        - ==writable== [`false`]: true if value can be changed with an assignment operator
       - _**accessor descriptor**_ : a property described by a getter-setter pair of functions
-        - configurable [false]: same as in _data decsriptor_
-        - enumerable [false]: same as in _data decsriptor_
-        - ==get== [undefined]: a function serves as a _getter_ for the property
-        - ==set== [undefined]: a function serves as a _setter_ for the property
+        - configurable [`false`]: same as in _data decsriptor_
+        - enumerable [`false`]: same as in _data decsriptor_
+        - ==get== [`undefined`]: a function serves as a _getter_ for the property
+        - ==set== [`undefined`]: a function serves as a _setter_ for the property
 
     ```
     const object1 = {};
@@ -764,6 +766,7 @@ RegExp methods
   - **Object.keys()**: `Object.keys(obj)`
 
     - return: an array of strings representing all the ==enumerable== properties
+    - **non-negative integer** keys will be stored **_in front of_** `String` keys or float or negative number keys when using `Object.keys()`
 
   - **Object.values()**: `Object.values(obj)`
 
@@ -821,6 +824,25 @@ RegExp methods
 
 <br>
 ##### **[Back to table](#table)**
+---
+## Set {#set}
+The Set object lets you store **unique** values of any type, whether primitive values or object references.
+
+- `Set`: set constructor, work with `new` to creates a new Set object.
+  <br>
+
+##### **[Back to table](#table)**
+
+---
+
+## Map {#map}
+
+- The `Map` object holds key-value pairs and remembers the ==original insertion order== of the keys.
+- Any value (both **objects** and **primitive values**) may be used as either a **key** or a **value**.
+
+<br>
+##### **[Back to table](#table)**
+
 ---
 
 ## Function {#function}
@@ -1142,6 +1164,13 @@ console.log(x) // 1
       - `xhr.responseText` returns the text received from a server following a request being sent.
         - the return is string, and it needs to be parsed before getting access to the actual data
         - JSON parser: `const data = JSON.parse(xhr.responseText)`
+          <br>
+      - `method`: request type, these are equivalent to the **CRUD** operations (create, read, update, and delete).
+        - `GET`: retrieve some data
+        - `POST`: give data to the server
+        - `PUT`: update entire entry
+        - `PATCH`: update a piece of an entry
+        - `DELETE`: delete an entry
           <br>
 
       ```
@@ -1471,7 +1500,7 @@ async function name (args) {
 ## DOM Traversal {#dom}
 
 [JS DOM Traversal Cheat Sheet](./JS%20DOM%20Traversal%20Cheat%20Sheet%20-%20Dark.pdf)
-<br>
+
 In DOM:
 
 - Everything is **node**;
@@ -1505,53 +1534,58 @@ In DOM:
 
 ## Web APIs {#webapis}
 
-- `Element.className`: a string representing the class(s) of the element, seperated by space.
-- `Element.classList`: (read-only) returns a live `DOMTokenList` collection of the class attribute of the element.
-  ```
-  const div = document.createElement('div');
-  div.className = 'col border text-center'; // A string.
-  div.classList = ['col', 'border', 'text-center'] // A DOMTokenList, not an array
-  ```
-  - To turn `DOMTokenList` into an `array`, use `const elementArray = Array.from(DOMTokenList)`
+- **className vs classList**:
+  - `Element.className`: a string representing the class(s) of the element, seperated by space.
+  - `Element.classList`: (read-only) returns a live `DOMTokenList` collection of the class attribute of the element.
+    ```
+    const div = document.createElement('div');
+    div.className = 'col border text-center'; // A string.
+    div.classList = ['col', 'border', 'text-center'] // A DOMTokenList, not an array
+    ```
+    - To turn `DOMTokenList` into an `array`, use `const elementArray = Array.from(DOMTokenList)`
+      <br>
+- **srollHeight vs clientHeight vs offsetHeight**:
+  - `Element.scrollHeight`: (read-only) returns the minimum height the element would require in order to fit all the content in the viewport without using a vertical scrollbar, including content not visible on the screen due to overflow.
+  - `Element.clientHeigth`: (read-only) returns the height of an element's content.
+    - both including padding but excludes borders, margins, and horizontal scrollbars.
+    - `scrollHeight` doesn't care about the text content if `Element` is a `textarea`, if no content inside `textarea`, it will just show the rendered `height`.
+    - If the element's content can fit without a need for a vertical scrollbar, its `scrollHeight` equal to its `clientHeight`
+  - `Element.offsetHeight`: (read-only) returns the viewable height of an element (in pixels), including padding, border and scrollbar, but not the margin.
     <br>
-- `Element.scrollHeight`: (read-only) returns the minimum height the element would require in order to fit all the content in the viewport without using a vertical scrollbar, including content not visible on the screen due to overflow.
-- `Element.clientHeigth`: (read-only) returns the height of an element's content.
-  - both including padding but excludes borders, margins, and horizontal scrollbars.
-  - `scrollHeight` doesn't care about the text content if `Element` is a `textarea`, if no content inside `textarea`, it will just show the rendered `height`.
-  - If the element's content can fit without a need for a vertical scrollbar, its `scrollHeight` equal to its `clientHeight`
-- `Element.offsetHeight`: (read-only) returns the viewable height of an element (in pixels), including padding, border and scrollbar, but not the margin.
+- **innerHTML vs innerText vs textContent**:
+
+  - `Element.innerHTML`: The text content of the element, including all spacing and inner HTML tags.
+  - `Element.innerText`: Just the text content of the element and all its children, without CSS hidden text spacing and tags, except `<script>` and `<style>` elements.
+  - `Element.textContent`: The text content of the element and all descendaces, with spacing and CSS hidden text, but without tags.
+    <br>
+
+- **querySelector**:
+
+  - `Element.querySelector()`: returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
+    - Selectors:
+      - Universal selector: `*`
+      - Type selector: `tagname`
+      - Class selector: `.classname`
+      - ID seletor: `#id`
+      - Attribute selector:
+        - `[attr]`: has attribute
+        - `[attr=value]`: equal to value
+        - `[attr~=value]`: contain and space-separated
+        - `[attr|=value]`: contain and as a whole or be followed by `-`
+        - `[attr^=value]`: contain and starts with value, not necessarily have to be a whole word
+        - `[attr$=value]`: contain and ends with value, not necessarily have to be a whole word
+        - `[attr*=value]`: contain, no other limits.
+    - Grouping selectors:
+      - Selector list: `,`
+    - Combinators:
+      - Descendant combinator: space '` `'
+      - Child combinator: `>`
+      - General sibling combinator: `~`
+      - Adjacent sibling combinator: `+`
+      - Column combinator: `||`
+    - Pseudo-classes and pseudo-elements: `:` / `::`
+
   <br>
-
-- `Element.innerHTML`: The text content of the element, including all spacing and inner HTML tags.
-- `Element.innerText`: Just the text content of the element and all its children, without CSS hidden text spacing and tags, except `<script>` and `<style>` elements.
-- `Element.TextContent`: The text content of the element and all descendaces, with spacing and CSS hidden text, but without tags.
-  <br>
-
-- `Element.querySelector()`: returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
-  - Selectors:
-    - Universal selector: `*`
-    - Type selector: `tagname`
-    - Class selector: `.classname`
-    - ID seletor: `#id`
-    - Attribute selector:
-      - `[attr]`: has attribute
-      - `[attr=value]`: equal to value
-      - `[attr~=value]`: contain and space-separated
-      - `[attr|=value]`: contain and as a whole or be followed by `-`
-      - `[attr^=value]`: contain and starts with value, not necessarily have to be a whole word
-      - `[attr$=value]`: contain and ends with value, not necessarily have to be a whole word
-      - `[attr*=value]`: contain, no other limits.
-  - Grouping selectors:
-    - Selector list: `,`
-  - Combinators:
-    - Descendant combinator: space '` `'
-    - Child combinator: `>`
-    - General sibling combinator: `~`
-    - Adjacent sibling combinator: `+`
-    - Column combinator: `||`
-  - Pseudo-classes and pseudo-elements: `:` / `::`
-
-<br>
 
 ##### **[Back to table](#table)**
 
@@ -1583,7 +1617,8 @@ In DOM:
   - CORS (Cross-Origin Resource Sharing) is a system, consisting of transmitting HTTP headers, that determines whether browsers block frontend JavaScript code from accessing responses for cross-origin requests.
     <br>
 
-- **Server**: could refer to hardware, software, or both.
+- **Client**: Any device that can send request to server, and receive respond from server;
+- **Server**: Any device that can receive a request and respond to it. Server could refer to hardware, software, or both.
   - **Hardware**: a web server is a computer that stores web server software and a websites's component files. It connnects to the Internet and supports phy sical data interchange with other devvices connected to the web
   - **Software**: a web server includes several parts that control how web users access hosted files. At a minimum, this is an HTTP server.
     - An HTTP server is software that understands URLs (web addresses) and HTTP (the protocol your browser uses to view webpages).
@@ -1606,6 +1641,8 @@ In DOM:
 
 ## Interesting concepts {#interesting}
 
+1. [Big O Cheatsheet](./Big%20O%20cheatsheet.png)
+   <br>
 1. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
 
    ```
@@ -1666,5 +1703,9 @@ In DOM:
 
 1. **Create an array with**
    <br>
+
+1. **imperative** vs **declarative**:
+   - imperative code focuses on writing an explicit sequence of commands to describe how you want the computer to do things
+   - declarative code focuses on specifying the result of what you want
 
 ##### **[Back to table](#table)**
