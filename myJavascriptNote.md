@@ -22,7 +22,7 @@
 - [Async/await](#async_await)
 - [Event loop and macrotask vs microtask](#eventloop)
 - [DOM Traversal](#dom)
-- [Web AIPs](#webapis)
+- [Web APIs](#webapis)
 - [Web-related terms](#webterms)
 - [Interesting topics](#interesting)
 
@@ -1140,17 +1140,21 @@ console.log(x) // 1
           ```
           <br>
 
-      - `xhr.addEventListener('event', (e) => {})` other XHR events (or just use event handler):
+      - `xhr.addEventListener('event', (e) => {})` other XHR 'events' (or just use event handler):
 
-        - `loadstart`, `xhr.onloadstart = (e) => {}` : fired when a request has started to load data
-        - `load`, `xhr.onload = (e) => {}` : fired when a request transaction completes successfully
-        - `loadend`, `xhr.onloadend = (e) => {}` : fired when a request has completed (`load`/`abort`/`error`)
-        - `progress`, `xhr.onprogress = (e) => {}` : fired periodically when a request receives more data.
-        - `error`, `xhr.onerror = (e) => {}` : fired when the request encountered an error
-        - `abort`, `xhr.onabort = (e) => {}` : fired when a request has been aborted
-        - `timeout`, `xhr.ontimeout = (e) => {}` : fired when progression is terminated due to preset time expiring
+        - `'loadstart'`, `xhr.onloadstart = (e) => {}` : fired when a request has started to load data
+        - `'load'`, `xhr.onload = (e) => {}` : fired when a request transaction completes successfully
+        - `'loadend'`, `xhr.onloadend = (e) => {}` : fired when a request has completed (`load`/`abort`/`error`)
+        - `'progress'`, `xhr.onprogress = (e) => {}` : fired periodically when a request receives more data.
+        - `'error'`, `xhr.onerror = (e) => {}` : fired when the request encountered an error
+        - `'abort'`, `xhr.onabort = (e) => {}` : fired when a request has been aborted
+        - `'timeout'`, `xhr.ontimeout = (e) => {}` : fired when progression is terminated due to preset time expiring
           <br>
 
+      - `xhr.open()`: initializes a newly-created request, or re-initializes an existing one.
+        <br>
+      - `xhr.send([data])`: sends the request to the server.
+        <br>
       - `xhr.status` returns the numerical HTTP status code of the `XMLHttpRequest`'s response
 
         - [HTTP Status Codes Cheat Sheet](https://www.restapitutorial.com/httpstatuscodes.html)
@@ -1158,6 +1162,7 @@ console.log(x) // 1
           - Redirection message: 300-399
           - Client error responses: 400-499
           - Server error responses: 500-599
+          - [Cut puppy reference](https://httpstatusdogs.com/)
         - check if xhr is succeeded: `if (xhr.status === 200) { ... }`
           <br>
 
@@ -1247,7 +1252,8 @@ console.log(x) // 1
 
     - 3 Shorthand methods that are commonly used:
 
-      - `$.get(url[, data][, success][, dataType])` same as:
+      - `$.get(url[, data][, success][, dataType])`
+        - same as: `$.ajax({ url: url, data: data, success: success, dataType: dataType });`
         - success: Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.
 
       ```
@@ -1534,6 +1540,8 @@ In DOM:
 
 ## Web APIs {#webapis}
 
+- **API**: application programming interface
+  <br>
 - **className vs classList**:
   - `Element.className`: a string representing the class(s) of the element, seperated by space.
   - `Element.classList`: (read-only) returns a live `DOMTokenList` collection of the class attribute of the element.
@@ -1599,8 +1607,7 @@ In DOM:
 - `Host`: a device connected to the Internet (or a local network).
 
   - clients and servers are just programs that run on a host
-
-  <br>
+    <br>
 
 - **Origin**: `[scheme]://[hostname]:[port]`
 
@@ -1619,6 +1626,7 @@ In DOM:
 
 - **Client**: Any device that can send request to server, and receive respond from server;
 - **Server**: Any device that can receive a request and respond to it. Server could refer to hardware, software, or both.
+
   - **Hardware**: a web server is a computer that stores web server software and a websites's component files. It connnects to the Internet and supports phy sical data interchange with other devvices connected to the web
   - **Software**: a web server includes several parts that control how web users access hosted files. At a minimum, this is an HTTP server.
     - An HTTP server is software that understands URLs (web addresses) and HTTP (the protocol your browser uses to view webpages).
@@ -1627,13 +1635,28 @@ In DOM:
   - **A static web server** (stack): consists of hardware with an HTTP server(software). Static server sends its hosted files as-is to your browser
   - **A dynamic web server**: consists of a static web server plus extra software, most commonly an _**application server**_ and a **_database_**. The application server updates the hosted files before sending content to your browser via the HTTP server.
     <br>
+  - **Routing**: determines which handler receives a specific request.
+
+    - A handler is a function dedicated to receiving and acting on certain requests.
+    - Requests are routed based on two pieces of information: the HTTP request method, and the request path.
+    - A route refers to an HTTP method, path, and handler combination.
+    - Routes are created and added to the server before it starts listening for requests.
+      <br>
+
+  - **REST**: representational state transfer, a software **architectural** style that describes a uniform interface between physically separate components, often across the Internet in a client-server architecture.
+    - RESTful routes:
+      <br>
+
 - **Static Media**: refers to content that never or rarely change, like images, movies, audio, etc
   <br>
-- **Domain Name System** (DNS): the protocol used to translate human readable hostnames into IP addresses.
+- **Domain Name System** (DNS): the protocol used to translate **human readable hostnames** into **IP addresses**.
   <br>
 - **Streaming** involves breaking a resource that you want to receive over a network down into small chunks, then processing it bit by bit.
   <br>
 - **CDN**: content delivery network
+  <br>
+- **SPA**:single page application
+  <br>
 
 ##### **[Back to table](#table)**
 
