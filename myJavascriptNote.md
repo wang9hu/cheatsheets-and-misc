@@ -1102,96 +1102,97 @@ console.log(x) // 1
 
       <br>
 
-- ==Macrotask queue== (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
-  <br>
-
 1.  In early days, asynchronous APIs used event handler (AJAX).
 
     - Browser APIs — constructs built into the browser that sits on top of the JavaScript language and allows you to implement functionality more easily.
       <br>
     - APIs don't respond with HTML. APIs respond with **pure data** (XML and JSON), not structure.
       <br>
-    - **Event handler**: the function that will be called when the event happens.
 
-      - `XMLHttpRequest` is a constructor, `new` operator required:
-        - `const xhr = new XMLHttpRequest()` : returns a `XMLHttpRequest` object, which is not a promise
-          <br>
-      - `xhr.readyState`: returns the state an XHR client is in.
+    ```
+    var xhr = new XMLHttpRequest();
 
-      | Value | State            | Description                                                    |
-      | :---: | ---------------- | -------------------------------------------------------------- |
-      |   0   | UNSENT           | Client has been created, `open()` not called yet               |
-      |   1   | OPENED           | `open()` has been called                                       |
-      |   2   | HEADERS_RECEIVED | `send()` has been called, and headers and status are available |
-      |   3   | LOADING          | Downloading; `responseText` holds partial data                 |
-      |   4   | DONE             | The operation is complete                                      |
-
-      <br>
-
-      - `xhr.onreadystatechange` is an event handler, it defines a function that **will be called** ==whenever== `readyState` changes
-
-        - check when if the request is done:
-          ```
-          xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-              // do something when XMLHttpRequest is done
-            }
-          }
-          ```
-          <br>
-
-      - `xhr.addEventListener('event', (e) => {})` other XHR 'events' (or just use event handler):
-
-        - `'loadstart'`, `xhr.onloadstart = (e) => {}` : fired when a request has started to load data
-        - `'load'`, `xhr.onload = (e) => {}` : fired when a request transaction completes successfully
-        - `'loadend'`, `xhr.onloadend = (e) => {}` : fired when a request has completed (`load`/`abort`/`error`)
-        - `'progress'`, `xhr.onprogress = (e) => {}` : fired periodically when a request receives more data.
-        - `'error'`, `xhr.onerror = (e) => {}` : fired when the request encountered an error
-        - `'abort'`, `xhr.onabort = (e) => {}` : fired when a request has been aborted
-        - `'timeout'`, `xhr.ontimeout = (e) => {}` : fired when progression is terminated due to preset time expiring
-          <br>
-
-      - `xhr.open()`: initializes a newly-created request, or re-initializes an existing one.
-        <br>
-      - `xhr.send([data])`: sends the request to the server.
-        <br>
-      - `xhr.status` returns the numerical HTTP status code of the `XMLHttpRequest`'s response
-
-        - [HTTP Status Codes Cheat Sheet](https://www.restapitutorial.com/httpstatuscodes.html)
-          - successful responses: 200-299
-          - Redirection message: 300-399
-          - Client error responses: 400-499
-          - Server error responses: 500-599
-          - [Cut puppy reference](https://httpstatusdogs.com/)
-        - check if xhr is succeeded: `if (xhr.status === 200) { ... }`
-          <br>
-
-      - `xhr.responseText` returns the text received from a server following a request being sent.
-        - the return is string, and it needs to be parsed before getting access to the actual data
-        - JSON parser: `const data = JSON.parse(xhr.responseText)`
-          <br>
-      - `method`: request type, these are equivalent to the **CRUD** operations (create, read, update, and delete).
-        - `GET`: retrieve some data
-        - `POST`: give data to the server
-        - `PUT`: update entire entry
-        - `PATCH`: update a piece of an entry
-        - `DELETE`: delete an entry
-          <br>
-
-      ```
-      var xhr = new XMLHttpRequest();
-
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log(xhr.responseText);
-        }
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText);
       }
+    }
 
-      xhr.open(method, url); // methods: "GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", etc.
-      xhr.send([data]); //
-      ```
+    xhr.open(method, url); // methods: "GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS", etc.
+    xhr.send([data]); //
+    ```
 
       <br>
+
+    - [XMLHttpRequest docs](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/XMLHttpRequest)
+      <br>
+    - **Event handler**: the function that will be called when the event happens.
+      <br>
+    - `XMLHttpRequest` is a constructor, `new` operator required:
+      - `const xhr = new XMLHttpRequest()` : returns a `XMLHttpRequest` object, which is not a promise
+        <br>
+    - `xhr.readyState`: returns the state an XHR client is in.
+
+    | Value | State            | Description                                                    |
+    | :---: | ---------------- | -------------------------------------------------------------- |
+    |   0   | UNSENT           | Client has been created, `open()` not called yet               |
+    |   1   | OPENED           | `open()` has been called                                       |
+    |   2   | HEADERS_RECEIVED | `send()` has been called, and headers and status are available |
+    |   3   | LOADING          | Downloading; `responseText` holds partial data                 |
+    |   4   | DONE             | The operation is complete                                      |
+
+      <br>
+
+    - `xhr.onreadystatechange` is an event handler, it defines a function that **will be called** ==whenever== `readyState` changes
+
+      - check when if the request is done:
+        ```
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            // do something when XMLHttpRequest is done
+          }
+        }
+        ```
+        <br>
+
+    - `xhr.addEventListener('event', (e) => {})` other XHR 'events' (or just use event handler):
+
+      - `'loadstart'`, `xhr.onloadstart = (e) => {}` : fired when a request has started to load data
+      - `'load'`, `xhr.onload = (e) => {}` : fired when a request transaction completes successfully
+      - `'loadend'`, `xhr.onloadend = (e) => {}` : fired when a request has completed (`load`/`abort`/`error`)
+      - `'progress'`, `xhr.onprogress = (e) => {}` : fired periodically when a request receives more data.
+      - `'error'`, `xhr.onerror = (e) => {}` : fired when the request encountered an error
+      - `'abort'`, `xhr.onabort = (e) => {}` : fired when a request has been aborted
+      - `'timeout'`, `xhr.ontimeout = (e) => {}` : fired when progression is terminated due to preset time expiring
+        <br>
+
+    - `xhr.open()`: initializes a newly-created request, or re-initializes an existing one.
+      <br>
+    - `xhr.send([data])`: sends the request to the server.
+      <br>
+    - `xhr.status` returns the numerical HTTP status code of the `XMLHttpRequest`'s response
+
+      - [HTTP Status Codes Cheat Sheet](https://www.restapitutorial.com/httpstatuscodes.html)
+        - successful responses: 200-299
+        - Redirection message: 300-399
+        - Client error responses: 400-499
+        - Server error responses: 500-599
+        - [Cut puppy reference](https://httpstatusdogs.com/)
+      - check if xhr is succeeded: `if (xhr.status === 200) { ... }`
+        <br>
+
+    - `xhr.responseText` returns the text received from a server following a request being sent.
+      - the return is string, and it needs to be parsed before getting access to the actual data
+      - JSON parser: `const data = JSON.parse(xhr.responseText)`
+        <br>
+    - `method`: request type, these are equivalent to the **CRUD** operations (create, read, update, and delete).
+
+      - `GET`: retrieve some data
+      - `POST`: give data to the server
+      - `PUT`: update entire entry
+      - `PATCH`: update a piece of an entry
+      - `DELETE`: delete an entry
+        <br>
 
     - Problems with XHR:
       - bulky syntax
@@ -1230,6 +1231,8 @@ console.log(x) // 1
 1.  **jQuery AJAX**: jQuery is 'The Write Less, Do More JavaScript **Library**' (based on JS)
 
     - [Docs](https://api.jquery.com/)
+    - tons of functionality, not just AJAX
+    - heavy library
     - Install: npm or CDN (content delivery network) or many other ways
       <br>
     - **jQuery AJAX** is another way of sending http request (evetually based on `XHR`), mainly differs from **fetch**:
@@ -1246,15 +1249,14 @@ console.log(x) // 1
           - data: data to be sent to the server
           - datatype: type of data expected from the server (default: `Intelligent Guess (xml, json, script, or html)`)
           - cache: If set to `false`, it will force requested pages not to be cached by the browser. (default: `true, false for dataType 'script' and 'jsonp'`)
-          - success: A function to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
+          - `success`: A ==function== to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
             ...
             <br>
 
     - 3 Shorthand methods that are commonly used:
 
-      - `$.get(url[, data][, success][, dataType])`
-        - same as: `$.ajax({ url: url, data: data, success: success, dataType: dataType });`
-        - success: Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.
+      - `$.get(url[, data][, success][, dataType])` same as below:
+        - `success`: cb, Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.
 
       ```
       $.ajax({
@@ -1267,8 +1269,8 @@ console.log(x) // 1
 
       <br>
 
-      - `$.post(url[, data][, success][, dataType])` same as:
-        - success: Required if dataType is provided, but you can use null
+      - `$.post(url[, data][, success][, dataType])` same as below:
+        - `success`: cb, Required if dataType is provided, but you can use null
 
       ```
       $.ajax({
@@ -1282,7 +1284,7 @@ console.log(x) // 1
 
       <br>
 
-      - `$.getJSON(url[, data][, success])` same as:
+      - `$.getJSON(url[, data][, success])` same as below:
 
       ```
       $.ajax({
@@ -1483,7 +1485,17 @@ async function name (args) {
 ---
 ## Event loop and macrotask vs microtask {#eventloop}
 
+- ==Macrotask queue== (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
+  <br>
+- Promises are handled by ==microtasks queue==
+  - The queue is first-in-first-out(FIFO);
+  - only resolved/rejected promise handlers can be enqueued, pending
+  - Execution of a task is initialted only when nothing else is running (empty call stack)
+    <br>
 - Event loop algorithm:
+
+  - JavaScript has a concurrency model based on an event loop, which is responsible for executing the code, collecting and processing events, and executing queued sub-tasks.
+    <br>
 
   1. Dequeue and run the oldest task from the ==_macrotask_== queue (Attention: ==main script execution== is considered a ==_macrotask_==, so this part holds true).
   1. Execute all ==_microtasks_==:
