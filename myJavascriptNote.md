@@ -950,6 +950,7 @@ without `new` operator, `this` refers to global object.
 (==introduced after ES6==) Declared with keyword `class`, encapsulates `constructor` (reserved key word, can only have one) and shared methods
 
 ```
+// class declaration
 class Person {
   constructor(name) {
     this.name = name;
@@ -959,7 +960,21 @@ class Person {
     return this.name;
   }
 }
+
+// class expression
+const Person = class [className] {
+  constructor(name) {
+    this.name = name;
+    ObjectLiteralMethod: function(){};
+  }
+  classPrototypeProperty() {
+    return this.name;
+  }
+}
 ```
+
+To declare a variable within a class, it needs to be a property of the class or, scoped within a method in the class. It's all about scoping and **variables are not supported in the scope definition of a class**
+<br>
 
 - Main differences with constructor function:
 

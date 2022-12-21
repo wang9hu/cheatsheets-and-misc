@@ -16,71 +16,46 @@
    <br>
 1. DRY principle: don't repeat yourself
    <br>
-1. React
-   - [Docs](https://reactjs.org/docs/getting-started.html)
-   - component is essentially function
-   - component:
-     - splite UI into independent, reusable pieces
-     - a component represent a part of DOM
-     - component can have DOM elements
-     - component can have other component inside
-     - need to npm install react and import before use
-     - use class to create React component
-     - class need to `extends React.Component`
-     - in class, `render() {}` is a special method and it will show whatever is being returned on the DOM
-     - set parameter in child component on `{this.props}` object in the return DOM element statement, e.g., `return <h1>Hello, {this.props.anykeylabel}</h1>;`
-     - use `<childComponent anykeylaber = data />` to assign parameter with data in the parent component
-     - may need other library (npm & import)
-       <br>
-   - JSX: javascript XML (file name): precompiled syntax exntension to JS, React 'element' can be rendered into HTML element on DOM by JSX
-     - e.g., `<h1>Hello, {this.props.anykeylabel}</h1>`
-     - could have js inside of DOM element, wrapped in {}
-     - JSX attribute: key value pair: used to pass in data
-     - JSX can interpret an array of JSX statements and take each individule out e.g., `{boxes}`
-       <br>
-   - State: top down, uni-directional data flow, used to pass data
-     - accessible and easily maintained
-     - **State** maintained in top level components (as an obj called `State`) and passed down (through `props`) to child component
-     - `props` never go upstream or to sibling component.
-     - values in props are **immutable**
-     - use `setState()` in order to update **State**, **never** manually set `state`.
-     - only use `setState()` where `state` is defined
-     - Any changes to the state will trigger an update, or "re-render", of components that depends on it.
-       <br>
-   - virtual DOM: representing DOM elements purely in a lightweight JS form.
-     - use **React-DOM** library,
-     - achieve fast render time
-     - React processes changes very quickly, only rendering to the real DOM when and where needed.
+1. Class variable declaration: where should it be and why it cannot be in class definition scope outside of constructor
+   <br>
+1. So in normal constructor function, we use `this.newProp = ....` to declare the variables inside of the object that is constructed by this constructor.
 
-ReactComponent: Class vs Function Declaration vs ES6 Function Expression
+So, in the class constructor, `this.FunctionName = this.method.bind(this)`, works similarly, the first `this.FunctionName` is sort of like declaring a variable for the component constructed by this class, but we don't actually use it as a component property, we just declare it so that we can still access it inside of class definition but outside of class constructor. The second `this` is referring to the class itself, so `this.method` is the method that is defined in the class definition but outside of constructor. The third `this` is, again, referring to the component that is about to be constructed by the class. (for now we haven't use the properties outside of the class definition after component is constructed)
+Overall this statement means that you are binding the component (that is going to be constructed by the class) to the method (that is declared in the class), and assign the 'binded function' to be as another property of the component.
 
-- Class:
-  - life cycle component
-  - have state
-- Stateless Functional Component
-  - Pros:
-    - No need to use this this keyword! You don't have to deal with state / methods, and your props are passed in as a parameter.
-    - Less boilerplate. As your component is simply a function, free of the constraints of a React component class, the amount of boilerplate in creating a stateless functional component is greatly reduced. This makes it so the resulting code for you component is concise and and clear.
-    - Clearly separates your concerns. This is important when you're separating your application into container and presentational components.
-  - Cons
-    - No access to component lifecycle methods (ie ComponentDidMount).
+```
+// define a Class called ClassName
+class ClassName {
+   constructor() {
+      this.name = 'xiao';
 
-React Hooks: functions that allow functional components the ability to
-do things that were typically only reserved for class components.
+      // the two methods below are both from the same 'consoleThis' method, the difference is that one binds with 'this'
+      this.consoleNoBindThis = this.consoleThis;
+      this.consoleBindThis = this.consoleThis.bind(this);
+   }
 
-- useState: state
-  ```
-  const [state, updateState] = React.useState('initial state');
-  console.log(state); // 'initial state'
-  console.log(updateState); // 'Function(){}' that can be used to update that state, it accepts a new state value and enqueues a re-render of the component.
-  updateState('next state'); // update the state
-  ```
-- useEffect: Equivalent of lifecycle methods:
-  - componentDidMount
-  - componentDidUpdate
-  - componentWillUnmount
-  ```
-  Reach.useEffect(() => {
-     console.log('component updated');
-  })
-  ```
+   consoleThis() {
+      console.log(this)
+   }
+}
+
+// create a ClassName instance
+const classInstance = new ClassName();
+
+// if invoke directly from ClassName instance, both methods works the same
+classInstance.consoleNoBindThis(); // ClassName { name: 'xiao', consoleBindThis : ƒ, consoleNoBindThis : ƒ }
+classInstance.consoleBindThis(); // ClassName { name: 'xiao', consoleBindThis : ƒ, consoleNoBindThis : ƒ }
+
+// reassign both instance methods to global variables
+const newConsoleNoBindThis = classInstance.consoleNoBindThis;
+const newConsoleBindThis = classInstance.consoleBindThis;
+
+// the one doesn't bind with 'this' will give 'undefined', and the one bind with 'this' still work the same as before
+newConsoleNoBindThis(); // undefined
+newConsoleBindThis(); // ClassName { name: 'xiao', consoleBindThis : ƒ, consoleNoBindThis : ƒ }
+```
+
+<br>
+- use import and export to split code in different jsx files
+<br>
+- {boolean evaluate statement && (<component to be renderred/>)}
