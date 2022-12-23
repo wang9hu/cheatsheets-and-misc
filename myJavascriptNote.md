@@ -1370,7 +1370,7 @@ new Promise((resolveFunc, rejectFunc) => {
 Promises are handled by [microtasks queue](#eventloop)
 
 - The queue is first-in-first-out(FIFO);
-- only resolved/rejected promise handlers can be enqueued, pending
+- only resolved/rejected promise handlers can be enqueued, pending promises will not be enqueued until settled
 - Execution of a task is initialted only when nothing else is running (empty call stack)
   <br>
 

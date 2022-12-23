@@ -113,7 +113,7 @@ React Hooks: functions that allow functional components the ability to do things
   - **Action**: object {type(reserved key):....[, payload(**not** reserved key): ....]}
   - **Dispatcher**: function (send action to reducers)
   - **Reducer**: function (apply action to state, update data, return new state)
-    - f(cur state, action) = new state
+    - `f(state = initialState, action) = new state`
       - cannot mutate the original state, make a copy of it and make changes on the copy and return the copy
     - all fire when dispacth is invoked
     - initialized store
@@ -200,7 +200,7 @@ Access store from within components:
     <br>
 
 - `connect` (from react-redux):
-
+  `
   - This ties our component to the redux store.
   - receives `mapStateToProps` and `mapDispatchToProps` as input ans return a function that takes component as input
   - `export default connect(mapStateToProps, mapDispatchToProps)(Component)`
@@ -217,6 +217,8 @@ Write action createors:
 put on UI:
 
 - use render(components, HTMLelement) (from react-dom)
-
+  <br>
 - presentational component vs container component
   - if component is connected to the store
+    <br>
+- use Hooks as a more popular method instead of `mapStateToProps`

@@ -59,3 +59,9 @@ newConsoleBindThis(); // ClassName { name: 'xiao', consoleBindThis : ƒ, console
 - use import and export to split code in different jsx files
 <br>
 - {boolean evaluate statement && (<component to be renderred/>)}
+<br>
+## Sass
+   - variables
+   - functions
+## CSS
+   - grid-template-column: repeat(autofill, .....)
