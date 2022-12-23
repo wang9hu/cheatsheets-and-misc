@@ -1408,7 +1408,7 @@ Promises are handled by [microtasks queue](#eventloop)
   ```
 
   - equals to `Promise.prototype.then(undefined, onRejected)`
-  - The `Promise` returned by `catch()` will be ==fulfilled== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already ==rejected== `Promise`.
+  - The `Promise` returned by `catch()` will be ==fulfilled (resovled)== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already ==rejected== `Promise`.
 
   - Example with comments
 
@@ -1442,23 +1442,34 @@ Promises are handled by [microtasks queue](#eventloop)
 
   <br>
 
-- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already ==rejected== `Promise`. - `onFinally` callback does not receive any argument.
-  `promise.finally(() => { // Code that will run after promise is settled (fulfilled or rejected) })` - `then` vs `finally`:
+- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already ==rejected== `Promise`.
 
-  ````
-  Promise.resolve(2).then(() => 77, () => {}) // resolved with result 77
-  Promise.resolve(2).finally(() => 77) // resolved with result 2
+  - `onFinally` callback does not receive any argument.
+    `promise.finally(() => { // Code that will run after promise is settled (fulfilled or rejected) })`
+    <br>
 
-      Promise.reject(3).then(() => {}, () => 88) // resolved with result 88
-      Promise.reject(3).finally(() => 88) // rejected with reason 3
+  - `then` vs `reject` vs `finally`:
 
-      // Both return a rejected promise with reason 99
-      Promise.reject(3).finally(() => {throw 99})
-      Promise.reject(3).finally(() => Promise.reject(99))
-      ```
+    ```
+    Promise.resolve(2).then(() => 77, () => 88) // resolved with result 77
+    Promise.resolve(2).finally(() => 77) // resolved with result 2
+
+    Promise.reject(3).then(() => 77, () => 88) // resolved with result 88
+    Promise.reject(3).finally(() => 88) // rejected with reason 3
+
+    // Both return a rejected promise with reason 99
+    Promise.reject(3).finally(() => {throw 99})
+    Promise.reject(3).finally(() => Promise.reject(99))
+
+    ```
 
   <br>
-  ````
+
+- `Promise.all([an array of promises])`: only ==resolve== when ==all== promises inside is ==resolved==, and it will resolve to an array of resolved values. It rejects when any of the input's promises rejects, with this first rejection reason.
+- `Promise.any([an array of promises])`: will ==resolve== when ==any== promise inside is ==resolved==, and it will resolve to that resolved values. If all promises are rejected, it will reject with `AggregateError`, which is an object containing an array of rejection reasons.
+- `Promise.race([an array of promises])`: will ==settle== when ==any== promise inside is ==settled==, and it will settles with the eventual state of the first promise that settles (resolved or rejected).
+
+  <br>
 
 ##### **[Back to table](#table)**
 
