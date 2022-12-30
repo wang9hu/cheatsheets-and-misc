@@ -1480,7 +1480,7 @@ Promises are handled by [microtasks queue](#eventloop)
 - `async` functions always return a `promise`. If the return value of an `async` function is not explicitly a `promise`, it will be implicitly wrapped in a `promise`.
   <br>
 - `await` is an ==operator==, its operand is a promise, a thenable object, or any value to wait for.
-  - **return**: the ==fulfillment value== of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved
+  - **return**: the ==fulfillment value== of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved, the await expression throws the rejected value.
   - It can only be used inside an async function or a JavaScript module.
     <br>
 

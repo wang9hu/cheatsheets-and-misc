@@ -69,7 +69,7 @@
             - _value_= "input_initial_value" - optional
             - _id_= "identification"
               - must be unique
-            - _placeholder_= "hint *for* `text`\_type_input"
+            - _placeholder_= "hint _for_ `text`\_type_input"
             - _required_: must fill before submitting for `text` type input
             - _checked_: for `checkbox` type input
         - `<label>`: a caption for an item
@@ -110,9 +110,9 @@
 ## Miscellaneous
 
 - Element `id` and `name` must **start with letter**, can have numbers, hypens (`-`), underscores (`_`), colons (`:`) and period (`.`)
-<br>
+  <br>
 - For `<input type="radio">`, a **radio group** is defined by giving each of radio buttons in the group the same `name`, so that a radio group is established, selecting any radio button in that group **automatically deselects** any currently-selected radio button in the same group.
-<br>
+  <br>
 - ==inline-level== elements: do not force a new line to begin
   - on seperate lines in `html` code creates an extra space to the right of the first elements
 - ==block-level== elements: take up entire widith of parent element
@@ -127,13 +127,40 @@
   <br>
 
 - HTML entities: reserved characters in HTML
+
   - &_entity_name_
   - &#_entity_number_ (decimal)
   - &#==x==_entity_number_ (hex)
-  <br>
+    <br>
 
 - MouseEvent: clientX vs pageX vs screenX vs offsetX
-   - clientX: visible area on the page
-   - pageX: entire page area, scrolling doesn't matter
-   - screenX: entire screen area
-   - offsetX: relative to the position of the padding edge of the target node
+  - clientX: visible area on the page
+  - pageX: entire page area, scrolling doesn't matter
+  - screenX: entire screen area
+  - offsetX: relative to the position of the padding edge of the target node
+    <br>
+- Difference between ==node== and ==element== in DOM
+
+  - a DOM document consists of a hierarchy of **nodes**, each node can have a parent and/or children.
+  - There are several types of nodes, which can be represented in `Node.nodetype` property:
+    - `Node.ELEMENT_NODE`
+    - `Node.ATTRIBUTE_NODE`
+    - `Node.TEXT_NODE`
+    - `Node.CDATA_SECTION_NODE`
+    - `Node.PROCESSING_INSTRUCTION_NODE`
+    - `Node.COMMENT_NODE`
+    - `Node.DOCUMENT_NODE`
+    - `Node.DOCUMENT_TYPE_NODE`
+    - `Node.DOCUMENT_FRAGMENT_NODE`
+
+  ```
+  <p>Thank you for visiting my web page!</p>
+
+  const paragraph = document.querySelector('p');
+  paragraph.nodeType === Node.ELEMENT_NODE; // => true
+
+  // This p tag also has one child node, which is the text 'Thank you for visiting my web page!'
+  paragraph.firstChild.nodeType === Node.TEXT_NODE // => true
+  ```
+
+  - An **element** is just a node that's written using a tag in the HTML document.
