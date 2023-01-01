@@ -634,9 +634,13 @@ RegExp methods
 - **.findIndex(_f_)**: return **index** of the first `element` in the array which makes `callbackFn` return `true`, or `-1` if not found
 - **.filter(_f_)**: return a **new array** with all the `elements` which makes `callbackFn` return `true`, or `[]` if no `element` is found
   <br>
-- **.sort(_f_)**: return the ==sorted array==
+- **.sort(_f_)**: return the sorted array (==mutator method==)
 
-  - `arr.sort([compareFn(a,b)])` - `compareFn` return negative: a placed before b - `compareFn` return positive: b placed before a - `compareFn` return `0`: a, b order unchange - if omit `compareFn`, a & b are converted to strings, then sorted according to each `char` Unicode value
+  - `arr.sort([compareFn(a,b)])`
+  - `compareFn` return negative: a placed before b
+  - `compareFn` return positive: b placed before a
+  - `compareFn` return `0`: a, b order unchange
+  - if omit `compareFn`, a & b are converted to strings, then sorted according to each `char` Unicode value
 
 <br>
 ##### **[Back to table](#table)**
@@ -820,12 +824,51 @@ RegExp methods
     - return: `true` if the specified object has directly defined the specified property. Otherwise `false`
     - `Object.hasOwn()` is recommended over `Object.prototype.hasOwnProperty()` because it works for objects created using `Object.create(null)` and with objects that have overridden the inherited `hasOwnProperty()` method.
 
-  - <br>
+  <br>
 
-<br>
+#### **Error Object**:
+
+`Error` objects are thrown when runtime errors occur. The `Error` object can also be used as a base object for user-defined exceptions.
+
+- **Constructor**: `Error([message, options])`
+  - `Error()` can be called with or without `new`. Both create a new `Error` instance.
+    <br>
+- **Instance properties**:
+  - `err.message`: string, for user-created Error objects, this is the string provided as the constructor's first argument.
+    ```
+    const e = new Error("Could not parse input"); // e.message is 'Could not parse input'
+    throw e; // get error: 'Uncaught Error: Could not parse input'
+    ```
+  - `err.name`: string, the initial value is `'Error'`, can be redefined
+    ```
+    const e = Error()
+    console.log(e.name) // 'Error'
+    e.name = 'ParseError';
+    console.log(e.name) // 'ParseError'
+    ```
+  - `err.casue`: The value of cause can be of any type. The value that was passed to the `Error()` constructor in the `options.cause` argument. It may not be present. If presents, it indicates the specific original cause of the error.
+    ```
+    try {
+      connectToDatabase();
+    } catch (err) {
+      throw new Error('Connecting to database failed.', { cause: err });
+    }
+    ```
+- **Instance methods**:
+  - `err.toString()`: return a string representing the specified `Error` object.
+    ```
+    const e = new Error("Could not parse input");
+    e.name = 'ParseError';
+    e.toString(); // 'ParseError: Could not parse input'
+    ```
+    <br>
+
 ##### **[Back to table](#table)**
+
 ---
+
 ## Set {#set}
+
 The Set object lets you store **unique** values of any type, whether primitive values or object references.
 
 - `Set`: set constructor, work with `new` to creates a new Set object.
@@ -1603,6 +1646,34 @@ In DOM:
   - `Element.innerHTML`: The text content of the element, including all spacing and inner HTML tags.
   - `Element.innerText`: Just the text content of the element and all its children, without CSS hidden text spacing and tags, except `<script>` and `<style>` elements.
   - `Element.textContent`: The text content of the element and all descendaces, with spacing and CSS hidden text, but without tags.
+
+  ```
+  // HTML
+  <div id="mylinks">
+    This is my <b>link collection</b>:
+    <ul>
+      <li><a href="www.borland.com">Bye bye <b>Borland</b> </a></li>
+      <li><a href="www.microfocus.com">Welcome to <b>Micro Focus</b></a></li>
+    </ul>
+  </div>
+  ```
+
+  ```
+  // JS
+  const div = document.getElementById('mylinks');
+
+  console.log(div.textContent) // This is my link collection:
+
+  console.log(div.innerText) // This is my link collection:Bye bye Borland Welcome to Micro Focus
+
+  console.log(div.innerHTML)
+  // This is my <b>link collection</b>:
+  // <ul>
+  //   <li><a href="www.borland.com">Bye bye <b>Borland</b></a></li>
+  //   <li><a href="www.microfocus.com">Welcome to <b>Micro Focus</b></a></li>
+  // </ul>
+  ```
+
     <br>
 
 - **querySelector**:
