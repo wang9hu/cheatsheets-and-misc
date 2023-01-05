@@ -29,6 +29,12 @@ req.query
 - greate for sorting, pagination, filtering
 - `/something?age=senior&size=small`
 
+req.get()
+
+- get information from request header
+
+<br>
+
 middleware: never close out a request in a reusable middleware function
 
 ```
@@ -64,7 +70,8 @@ request: `'.../api/characters/3'`
 
 - `app.use('.../api/', route)`
   - `route('.../characters', (req. res) => {}):` will run
-  - `route('.../characters/:id', (req, res) => {}) : req.params.id = 3`
+  - `route('.../characters/:id', (req, res) => {}) // req.params.id = 3 if id in url is 3`
+  - `route('.../characters?id=3', (req, res) => {}) // req.query.id = 3`
 
 ## things need to address later:
 

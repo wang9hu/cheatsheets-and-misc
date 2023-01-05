@@ -658,6 +658,7 @@ RegExp methods
     - ~~`obj.2`~~
   - `obj['name'] = 'Xiao'`
   - `obj[2] = 2`
+  - `obj['2'] = 2`
     - ~~`obj[name]`~~
   - when working with variables: `let key = 'name'`
     - `obj[key] = 'Xiao'`
