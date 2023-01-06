@@ -77,7 +77,7 @@ newConsoleBindThis(); // ClassName { name: 'xiao', consoleBindThis : ƒ, console
 ## Authentication
 
 - encryption vs hashing
-- Bcrypt: a hashing algorithm
+- Bcrypt: a hashing algorithm ([npm library](https://github.com/kelektiv/node.bcrypt.js))
   - salt: random add-on characters
   - work factor: how many times hash function is going to run
 
@@ -121,3 +121,15 @@ a small string created by the server and stored in the browser/database
 - JWT allow use to avoid continually querying a database to authorize users, created by the server and send back to browser,
   - payload: contains user information as JSON object
   - signature: used to confirm the validity of the payload, essentially a one-way hash of payload plus a secret stored on the server
+
+### OAuth
+
+- a communication protocal for 3rd-party access to other servers. e.g., login with google, login with facebook....
+- can use google, twitter, FB... api's on behalf of your client
+- potentially access some data
+  <br>
+  To build authentication with 3rd party, firt party need to register the app with the oAuth API provider
+- key conceptys:
+  - Get your client_id from 3rd party
+  - Get your client_secret from 3rd party
+  - Register a redirect URI

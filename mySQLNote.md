@@ -222,7 +222,7 @@ Install `npm install pg`
           - { upsert: true }: for update only
         - callback: for callback style only
 
-      - Read:
+      - Read: (will return a query, use **promise style** or **callback style** to process the results)
 
         - Model.find
         - Model.findOne
@@ -248,14 +248,61 @@ Install `npm install pg`
     <br>
 
 - **Mongosh**: the MongoDB Shell, a fully functional Javascript and Node.js REPL environment for interacting with MongoDB.
-  - Commands:
+
+  - Commands ([Docs](https://www.mongodb.com/docs/mongodb-shell/reference/methods/)):
+
+    - `cls`: clear screen
+    - `exit`: exit mongosh
     - `db`: display current database
-    - `use <database>`: switch database
+    - `use <database>`: switch to `<database>`, even if it doesn't exist
     - `show dbs`: list the databases
     - `show collections`: list all the collections
-    - `db.<collectionName>.CRUD`: perform CRUD operation on this collection
+    - `db.dropDatabase()`: delete current database (when inside of target database)
+    - `db.<collection>.CRUD`: perform CRUD operation on this collection
+
+      - `db.<collection>.insertOne(<Object>)`: create one document
+        - will add to `<collection>` of current database, will create database if not exist before
+      - `db.<collection>.insertMany([<Object>, <Object>, <Object>, ...])`: create many documents
+        <br>
+      - `db.<collection>.find([...])`: return a \<cursor\>, which auto iterates up to 20 times to show the first 20 document
+        - \<cursor\> has many methods that can be chained together, like `.sort()`, `.limit()`, `.skip()`, ...
+      - `db.<collection>.find({ name: "Xiao" }, { age: 1 })`: returned all documents with `name` value of `"Xiao"` containing only the `age` and the `_id` (by default) of the document
+      - `db.<collection>.find({ name: "Xiao" }, { _id: 0 })`: returned all documents with `name` value of `"Xiao"`containing everything but the `_id`
+      - `db.<collection>.count({ name: "Xiao" }, { _id: 0 })`: returned the number of above documents
+        <br>
+      - `db.<collection>.updateOne({ name: "Xiao" }, { $set: { name: "Wang" } })`: update the document, change its `name` value
+      - `db.<collection>.updateOne({ _id: ObjectId(".....") }, { $inc: { age: 3 } })`: update the document, increment `age` by 3
+      - `db.<collection>.updateOne({ _id: ObjectId(".....") }, { $rename: { name: "firstName" } })`: update the document, rename its `name` to `firstName`
+      - `db.<collection>.updateOne({ _id: ObjectId(".....") }, { $unset: { name: "" } })`: update the document, remove its `name` property
+      - `db.<collection>.updateOne({ _id: ObjectId(".....") }, { $push: { hobbies: "cooking" } })`: update the first fit document, push `"cooking"` inside of `hobbies` value array
+      - `db.<collection>.updateOne({ _id: ObjectId(".....") }, { $pull: { hobbies: "cooking" } })`: update the first fit document, remove `"cooking"` from `hobbies` value array
+      - `db.<collection>.updateMany({ address: { $exist: true }}, { $unset: { address: "" } })`: update all document that has `address` key and remove `address` property
+        <br>
+      - `db.<collection>.replaceOne({ name: "Xiao"}, { age: 33 })`: replace the first fit document entirely with `{ age: 33 }`(don't use normally)
+        <br>
+      - `db.<collection>.deleteOne({ name: "Xiao"})`: delete the first fit document entirely
+      - `db.<collection>.deleteMany({ name: "Xiao"})`: delete all documents that fits entirely
+        <br>
+
+        ...
 
 <br>
+  - Also can use [aggregation Operations](https://www.mongodb.com/docs/manual/aggregation/) to process multiple documents and return computed results.
+    - `$eq`: `db.<collection>.find({name: { $eq: "Xiao" }})`: return all documents with `name` is `"Xiao"`
+    - `$ne`: `db.<collection>.find({name: { $ne: "Xiao" }})`: return all documents with `name` is not `"Xiao"`
+    - `$in`: `db.<collection>.find({name: { $in: ["Xiao", "Wang"] }})`: return all documents with `name` is either `"Xiao"` or `"Wang"`
+    - `$nin`: `db.<collection>.find({name: { $nin: ["Xiao", "Wang"] }})`: return all documents with `name` is neither `"Xiao"` nor `"Wang"`
+    - `$exist`: `db.<collection>.find({age: { $exist: true }})`: return all documents that have `age` key
+    - `$exist`: `db.<collection>.find({age: { $exist: false }})`: return all documents that do not have `age` key
+    - `$gt / $lt`: `db.<collection>.find({age: { $gt: 20, $lt: 40 }})`: return all documents whose `age` key have value between 20 and 40 (exclusively)
+    - `$gte / $lte`: `db.<collection>.find({age: { $gte: 20, $lte: 40 }})`: return all documents whose `age` key have value between 20 and 40 (inclusively)
+    - `$or`: `db.<collection>.find($or: [{age: {$gte: 20}}, {name: "Xiao"}])`: return all documents that either has an `age` value that is greater than or equal to 20, or has a `name` value of `"Xiao"`
+    - `$not`: `db.<collection>.find({ age: { $not : { $gte: 20 } } })`: return all documents that has `age` value that is smaller than 20 (not (greater than or equal to))
+    - `$expr`: `db.<collection>.find({ $expr: { $gt : ["$apple", "$banana"] } })`: return all documents whose `apple` value is greater than `banana` value (`expr`: expression)
+    - `<nested_property>`: `db.<collection>.find({ "address.street": "123 Main st" })`: return all documents whose `address` nested `street` value is `"123 Main st"`
+      ...
+
+( ==kill port after close vscode==: `npx kill-port 3000`)
 
 - MongoDB vs SQL
 
