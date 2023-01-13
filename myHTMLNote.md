@@ -7,6 +7,7 @@
    1. `<style>`: style info, just like in CSS
    1. `<link>`: relationships between the current document and an external resource (e.g. CSS files)
       - self-closing tag
+      - e.g., `<link rel="stylesheet" href="./css/index.css" />`
    1. `<meta>`: metadata (data about data) that cannot be represented by other elements.
       - self-closing tag
       - can have multiple `<meta>` for one doc

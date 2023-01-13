@@ -133,3 +133,133 @@ a small string created by the server and stored in the browser/database
   - Get your client_id from 3rd party
   - Get your client_secret from 3rd party
   - Register a redirect URI
+
+## Testing
+
+- test-driven development (TDD)
+  <br>
+- testing frameworks features:
+
+  - Coordination
+  - Assertion
+  - Isolation
+    <br>
+
+- Codesmith use **Jest** as testing framework
+
+  - global variables: e.g., `describe`, `it` / `test`, `before`, `beforeEach`, `after`, `afterEach`, `expect`, ....
+  - run tests in parallel
+  - build-in features:
+    - assertions
+    - data mocking
+      - Mock: a function that returns fake data
+      - Stub: the fake result that’s returned from the mock
+      - Spy: recording metadata for a test subject function (i.e. spying on it)
+    - clearer console output
+      ...
+      <br>
+  - Testing Node and express:
+    - Supertest/Superagent: supertest is an extension of superagent specifically for testing
+      <br>
+  - Front end testing
+    - Headless brwsers
+      - Only supplies the DOM
+      - lightweight and fast
+    - Browser automator
+      - Provide full browser functionality (actually paints out the DOM)
+      - These are slower!
+        <br>
+    - use React Testing Libaray (RTL) for Reach testing
+      - Enzyme is shit for React testing
+
+<br>
+
+- Other assertion library: Chai, Should.js, ...
+
+<br>
+
+Content-Type
+
+## Webpack
+
+Module/Code bundler
+
+- reason to use:
+
+  - uglifying and minifying: save resources
+  - can use Modularity, which prevents global namespace polluting, and converts to one file ( bundle.js ) when uploading
+  - can use newest tech for building: e.g., can transfer JSX to JS, Html, and CSS
+
+- Modules: Common JS (CJS) vs ES6 modules (ESM)
+
+  - CJS: `require` & `module.exports`
+    - Node.js modules:
+      - three types: **Modules you write**, **build-in**, **community npm**
+      - all based on `require` and `module.exports`
+  - ESM: `import` & `export`
+
+    - mostly use in frontend ( ==React== application)
+    - can `export` multiple things
+    - also has `export default`:
+
+    ```
+    // fruits.js
+    export default Apple = props => {};
+    export const Banana = props => {};
+    export const Cherry = props => {};
+
+    // fruit_stand.js
+    import fruitOne from 'fruits; // fruitOne is Apple
+    import fruitOne, * as myModule from 'fruits'; // fruitOne is still Apple, myModule is { Apple, Banana, Cherry }
+    import fruitOne, { Cherry } from 'fruits'; // Cherry is Cherry
+    ```
+
+- webpack bundling starts in the terminal and gives an entry point
+
+  - `npm run bundle`
+  - `dist/main.js`
+  - webpack loaders
+    - babel-loaders: for transpiling JS code
+    - css-loaders: for modulaized CSS
+  - webpack plugins: do things loaders cannot do
+    - minifying code: stripping whitespaces
+    - uglifying code: code download faster
+  - webpack-dev-server
+
+    - live-reloading
+    - won't create bundle.js, instead save it in memory
+    - in development, usually utilize two server:
+      - webpack-dev-server: localhost:8080
+      - express server: localhost:3000
+
+  - node react set up:
+    - commands:
+      ```
+      npm install react
+      npm install react-dom
+      npm install webpack --save-dev
+      npm install webpack-cli --save-dev
+      npm install webpack-dev-server --save-dev
+      npm install @babel/core --save-dev
+      npm install babel-loader --save-dev
+      npm install @babel/preset-react --save-dev
+      npm install @babel/preset-env --save-dev
+      npm install html-webpack-plugin --save-dev
+      ```
+    - script:
+      ```
+       "dependencies": {
+          "react": "^18.2.0",
+          "react-dom": "^18.2.0"
+        },
+        "devDependencies": {
+          "@babel/core": "^7.20.12",
+          "@babel/preset-env": "^7.20.2",
+          "@babel/preset-react": "^7.18.6",
+          "babel-loader": "^9.1.2",
+          "html-webpack-plugin": "^5.5.0",
+          "webpack": "^5.75.0",
+          "webpack-cli": "^5.0.1",
+          "webpack-dev-server": "^4.11.1"
+        }
+      ```

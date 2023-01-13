@@ -118,7 +118,7 @@ SQL: Structured Querry Language, a relational database
   - `AND`:
   - `OR`:
   - `NOT`:
-  - `AS`: rename a column or table with an alias which will show up in the result and only exists for the duration of the query.
+  - `AS`: rename a column or table with an alias which will show up in the result and only exists for the duration of the query. ( [SQL Alias](https://www.sqltutorial.org/sql-alias/) )
     <br>
   - join tables: set up search area
     - `INNER JOIN`: only overlapping part of two tables
@@ -139,7 +139,7 @@ SQL: Structured Querry Language, a relational database
     - `INSERT INTO` table-name (col-name)
     - `VALUES` (col-valumes)
   - update:
-    - `UPDATE table-name
+    - `UPDATE` table-name
     - `SET` col-name `=` col-new-value
     - `WHERE` condition
   - delete:
@@ -205,14 +205,22 @@ Install `npm install pg`
     quote: String,
     data: Mixed
   });
-  const Person = mongoose.model('Person', personSchema);
+  ```
+
+  <br>
+
+  - mongoose will by default produces a collection name based on the pluralized name when setting the model
+
+  ```
+  // here passing 'person' when setting the mode, and its collection will be called 'people' (pluralized)
+  const Person = mongoose.model('person', personSchema);
   ```
 
   - CRUD operation
 
     - use [mongoose library api](https://mongoosejs.com/) to perform queries on the model to create/read/update/delete items
 
-      - callback style vs promise style
+      - **callback style** vs **promise style**
 
         - conditions
         - update: for update only
@@ -287,20 +295,21 @@ Install `npm install pg`
         ...
 
 <br>
-  - Also can use [aggregation Operations](https://www.mongodb.com/docs/manual/aggregation/) to process multiple documents and return computed results.
-    - `$eq`: `db.<collection>.find({name: { $eq: "Xiao" }})`: return all documents with `name` is `"Xiao"`
-    - `$ne`: `db.<collection>.find({name: { $ne: "Xiao" }})`: return all documents with `name` is not `"Xiao"`
-    - `$in`: `db.<collection>.find({name: { $in: ["Xiao", "Wang"] }})`: return all documents with `name` is either `"Xiao"` or `"Wang"`
-    - `$nin`: `db.<collection>.find({name: { $nin: ["Xiao", "Wang"] }})`: return all documents with `name` is neither `"Xiao"` nor `"Wang"`
-    - `$exist`: `db.<collection>.find({age: { $exist: true }})`: return all documents that have `age` key
-    - `$exist`: `db.<collection>.find({age: { $exist: false }})`: return all documents that do not have `age` key
-    - `$gt / $lt`: `db.<collection>.find({age: { $gt: 20, $lt: 40 }})`: return all documents whose `age` key have value between 20 and 40 (exclusively)
-    - `$gte / $lte`: `db.<collection>.find({age: { $gte: 20, $lte: 40 }})`: return all documents whose `age` key have value between 20 and 40 (inclusively)
-    - `$or`: `db.<collection>.find($or: [{age: {$gte: 20}}, {name: "Xiao"}])`: return all documents that either has an `age` value that is greater than or equal to 20, or has a `name` value of `"Xiao"`
-    - `$not`: `db.<collection>.find({ age: { $not : { $gte: 20 } } })`: return all documents that has `age` value that is smaller than 20 (not (greater than or equal to))
-    - `$expr`: `db.<collection>.find({ $expr: { $gt : ["$apple", "$banana"] } })`: return all documents whose `apple` value is greater than `banana` value (`expr`: expression)
-    - `<nested_property>`: `db.<collection>.find({ "address.street": "123 Main st" })`: return all documents whose `address` nested `street` value is `"123 Main st"`
-      ...
+
+- Also can use [aggregation Operations](https://www.mongodb.com/docs/manual/aggregation/) to process multiple documents and return computed results.
+  - `$eq`: `db.<collection>.find({name: { $eq: "Xiao" }})`: return all documents with `name` is `"Xiao"`
+  - `$ne`: `db.<collection>.find({name: { $ne: "Xiao" }})`: return all documents with `name` is not `"Xiao"`
+  - `$in`: `db.<collection>.find({name: { $in: ["Xiao", "Wang"] }})`: return all documents with `name` is either `"Xiao"` or `"Wang"`
+  - `$nin`: `db.<collection>.find({name: { $nin: ["Xiao", "Wang"] }})`: return all documents with `name` is neither `"Xiao"` nor `"Wang"`
+  - `$exist`: `db.<collection>.find({age: { $exist: true }})`: return all documents that have `age` key
+  - `$exist`: `db.<collection>.find({age: { $exist: false }})`: return all documents that do not have `age` key
+  - `$gt / $lt`: `db.<collection>.find({age: { $gt: 20, $lt: 40 }})`: return all documents whose `age` key have value between 20 and 40 (exclusively)
+  - `$gte / $lte`: `db.<collection>.find({age: { $gte: 20, $lte: 40 }})`: return all documents whose `age` key have value between 20 and 40 (inclusively)
+  - `$or`: `db.<collection>.find($or: [{age: {$gte: 20}}, {name: "Xiao"}])`: return all documents that either has an `age` value that is greater than or equal to 20, or has a `name` value of `"Xiao"`
+  - `$not`: `db.<collection>.find({ age: { $not : { $gte: 20 } } })`: return all documents that has `age` value that is smaller than 20 (not (greater than or equal to))
+  - `$expr`: `db.<collection>.find({ $expr: { $gt : ["$apple", "$banana"] } })`: return all documents whose `apple` value is greater than `banana` value (`expr`: expression)
+  - `<nested_property>`: `db.<collection>.find({ "address.street": "123 Main st" })`: return all documents whose `address` nested `street` value is `"123 Main st"`
+    ...
 
 ( ==kill port after close vscode==: `npx kill-port 3000`)
 

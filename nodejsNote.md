@@ -1,5 +1,7 @@
 # Node related notes
 
+- npm initialize: `npm init -y`
+  - `-y`: use default
 - Execute files in the same directory in node: read contents in filename, and execute them
 
   - _(cli)_ `$ node filename`
@@ -59,3 +61,11 @@
 
 - err handle first callbacks
 - post data: stream
+- commnad line: set variables in command
+  ```
+  // in package.json, set up process.env.NODE_ENV
+  "scripts": {
+    "start": "NODE_ENV=production node server/server.js",
+    ...
+  }
+  ```
