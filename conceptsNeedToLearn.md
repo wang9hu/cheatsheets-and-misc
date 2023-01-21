@@ -190,7 +190,7 @@ Module/Code bundler
   - can use Modularity, which prevents global namespace polluting, and converts to one file ( bundle.js ) when uploading
   - can use newest tech for building: e.g., can transfer JSX to JS, Html, and CSS
 
-- Modules: Common JS (CJS) vs ES6 modules (ESM)
+- Modules: ==Common JS== (CJS) vs ==ES6 modules== (ESM)
 
   - CJS: `require` & `module.exports`
     - Node.js modules:
@@ -233,7 +233,7 @@ Module/Code bundler
       - express server: localhost:3000
 
   - node react set up:
-    - commands:
+    - commands: (could repalce `-D` for `--save-dev`)
       ```
       npm install react
       npm install react-dom

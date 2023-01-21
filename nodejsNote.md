@@ -69,3 +69,7 @@
     ...
   }
   ```
+- check for ports that are listening:
+  `sudo lsof -i -P -n | grep LISTEN`
+- kill port:
+  `npx kill-port 3000`

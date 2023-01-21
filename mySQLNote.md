@@ -136,7 +136,8 @@ SQL: Structured Querry Language, a relational database
     - `ORDER BY` sort-order
     - use `;` to end a query
   - create:
-    - `INSERT INTO` table-name (col-name)
+    - `INSERT INTO` table-name (col-name) //
+      - for postgres, INSERT INTO does not return anything in `response.rows`, need to add `RETURNING *` at the end to have the inserted data in `response.rows`
     - `VALUES` (col-valumes)
   - update:
     - `UPDATE` table-name
@@ -297,6 +298,7 @@ Install `npm install pg`
 <br>
 
 - Also can use [aggregation Operations](https://www.mongodb.com/docs/manual/aggregation/) to process multiple documents and return computed results.
+
   - `$eq`: `db.<collection>.find({name: { $eq: "Xiao" }})`: return all documents with `name` is `"Xiao"`
   - `$ne`: `db.<collection>.find({name: { $ne: "Xiao" }})`: return all documents with `name` is not `"Xiao"`
   - `$in`: `db.<collection>.find({name: { $in: ["Xiao", "Wang"] }})`: return all documents with `name` is either `"Xiao"` or `"Wang"`
@@ -310,8 +312,6 @@ Install `npm install pg`
   - `$expr`: `db.<collection>.find({ $expr: { $gt : ["$apple", "$banana"] } })`: return all documents whose `apple` value is greater than `banana` value (`expr`: expression)
   - `<nested_property>`: `db.<collection>.find({ "address.street": "123 Main st" })`: return all documents whose `address` nested `street` value is `"123 Main st"`
     ...
-
-( ==kill port after close vscode==: `npx kill-port 3000`)
 
 - MongoDB vs SQL
 

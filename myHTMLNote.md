@@ -47,8 +47,8 @@
         - _href_= "url"
         - _target_= "where_to_display"
         - "url": could be the following values:
-          - a absolute URL (like "http://www.example.com")
-          - a relative URL (like "default.html")
+          - a absolute URL (like `http://www.example.com`)
+          - a relative URL (like `default.html`)
           - an element with an id within the page (like "#section2")
           - a script
           - other protocols

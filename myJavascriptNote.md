@@ -1728,7 +1728,7 @@ In DOM:
       - https: resource is transported using the HTTP protocol, but over a secure TLS (Transport Layer Security) channel.
     - `example.com`: called domain name, it is hosted on a server where the document resides
     - `8080`: called ports
-    - `wwww.example.com` is actually a subdomain of example.com
+    - `wwww.example.com` is actually a subdomain of `example.com`
   - "Same-origin" means the client has the same origin as the server it's calling
   - "Cross-origin" means the client origin is different than the server it's calling
   - CORS (Cross-Origin Resource Sharing) is a system, consisting of transmitting HTTP headers, that determines whether browsers block frontend JavaScript code from accessing responses for cross-origin requests.
@@ -1774,8 +1774,29 @@ In DOM:
 
 ## Interesting concepts {#interesting}
 
-1. [Big O Cheatsheet](./Big%20O%20cheatsheet.png)
+1. ![Big O Cheatsheet](./Big_O_cheatsheet.png)
    <br>
+1. let js file execute after html is loaded (3 ways):
+
+   - add `defer` to `<script>` tag:
+     - `<script defer type='text/javascript' src='feed.js'></script>`
+     - notice its difference with `async`
+       ![](./script%20async%20defer.png)
+       <br>
+   - in js file, put everything in the callback body
+     `addEventListener('DOMContentLoaded', (event) => {});`
+     <br>
+   - put `<script>` at the end of `<body>`
+
+     ```
+     <body>
+       ...
+       <script type='text/javascript' src='feed.js'></script>
+     </body>
+     ```
+
+     <br>
+
 1. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
 
    ```
