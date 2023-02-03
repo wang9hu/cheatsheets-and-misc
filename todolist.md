@@ -2,6 +2,8 @@
    <br>
 1. set
    <br>
+1. Optional chaining (?.)
+   <br>
 1. map
    <br>
 1. linkedlist

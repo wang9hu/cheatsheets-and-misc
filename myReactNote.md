@@ -54,14 +54,15 @@ React
 
 ReactComponent: Class vs Function Declaration vs ES6 Function Expression
 
-- Class:
+- **Class**:
   - **Life cycle component**: if the function definition is given in the component class
     - `componentDidMount(){ /.../ }`: this will run the **first time** component is rendered on the DOM
     - `componentDidUpdate(){ /.../ }`: this will run **after updating** is complete, but not for the initial rendering
     - `componentWillUnmount( /.../ )`: this will run **before the removal** of rendered Box from DOM
   - **Can have state**
     <br>
-- Stateless Functional Component
+- **Stateless Functional Component**
+
   - Pros:
     - No need to use `this` keyword! You don't have to deal with `state` / `methods`, and your `props` are passed in as a parameter.
     - Less boilerplate. As your component is simply a function, free of the constraints of a React component class, the amount of boilerplate in creating a stateless functional component is greatly reduced. This makes it so the resulting code for you component is concise and and clear.
@@ -69,6 +70,9 @@ ReactComponent: Class vs Function Declaration vs ES6 Function Expression
   - Cons
     - No access to component lifecycle methods (ie `ComponentDidMount`).
       <br>
+
+- **Higher-Order Components**
+  - a higher-order component is a function that takes a component and returns a new component.
 
 React Hooks: functions that allow functional components the ability to do things that were typically only reserved for class components.
 <br>

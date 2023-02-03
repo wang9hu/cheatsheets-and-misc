@@ -59,6 +59,12 @@
 
 ### things need to address later
 
+- Node version manager: `nvm`
+  - install other version: `nvm install latest` or `nvm install vX.Y.Z`
+  - make a version default: `nvm alias default vX.Y.Z`
+  - use other verison: `nvm use [version]`
+  - all versiona available: `nvm ls`
+    <br>
 - err handle first callbacks
 - post data: stream
 - commnad line: set variables in command

@@ -120,6 +120,9 @@ SQL: Structured Querry Language, a relational database
   - `NOT`:
   - `AS`: rename a column or table with an alias which will show up in the result and only exists for the duration of the query. ( [SQL Alias](https://www.sqltutorial.org/sql-alias/) )
     <br>
+  - create table:
+    - CREATE TABLE [ IF NOT EXISTS ] table_name (column_name data_type, ....)
+      <br>
   - join tables: set up search area
     - `INNER JOIN`: only overlapping part of two tables
     - `LEFT OUTER JOIN`: all left table and overlapping part of right table

@@ -207,7 +207,11 @@ undefined
 
   <br>
 
-- **.charAt()**: `'hello'.charAt(x) = "l"; // x = 2` :
+- **.charAt()**: `'hello'.charAt(2) = "l";` :
+
+  <br>
+
+- **.charCodeAt()**: return UTF-16 code of the first letter `'hello'.charCodeAt(1) = "101";`
 
   <br>
 
@@ -377,6 +381,44 @@ undefined
 ##### **[Back to table](#table)**
 ---
 ## Operator {#operator}
+
+- Logical AND (`&&`):
+
+  - `expr1 && expr2 && expr3 && ....`
+  - from left to right, return immediately with the value of the first falsy operand (`false`, `null`, `NaN`, `0`, emtpy string, `undefined`)
+  - if all values are truthy, the value of the last operand is returned.
+    <br>
+
+- Logical OR (`||`)
+
+  - `expr1 || expr2 || expr3 || ....`
+  - from left to right, return immediately with the value of the first truthy operand (anything that is not falsy)
+  - if all values are falsy, the value of the last operand is returned.
+    <br>
+
+- Nullish coalescing operator (`??`)
+
+  - `leftExpr ?? rightExpr`
+  - from left to right, return immediately with the value of the first operand that is **not** `null` or `undefined`
+  - if all values are `null/undefined`, the value of the last operand is returned.
+  - cannot directly be used with `&&` or `||`, must use parenthesis to explicityly indicate precedence.
+    <br>
+
+- Logical AND assignment (`&&=`)
+
+  - `expr1 &&= expr2`
+  - equivalent to `expr1 && (expr1 = expr2)`, meaning if `expr1` is truthy, assign the evaluated value of `expr2` to `expr1`;
+    <br>
+
+- Logical OR assignment (`||=`)
+
+  - `expr1 ||= expr2`
+  - equivalent to `expr1 || (expr1 = expr2)`, meaning if `expr1` is falsy, assign the evaluated value of `expr2` to `expr1`;
+    <br>
+
+- Nullish coalescing assignment (`??=`)
+  - `expr1 ??= expr2`
+  - equivalent to `expr1 ?? (expr1 = expr2)`, meaning if `expr1` is `null/undefined`, assign the evaluated value of `expr2` to `expr1`;
 
 <br>
 ##### **[Back to table](#table)**
@@ -1600,6 +1642,8 @@ In DOM:
 - A ==token== is a string representing the token you want to check for the existence of in the list.
   <br>
 - ==DOMTokenList==: represent a set of space-separated tokens in a form of JS array objects with instance methods.
+  e.g., `Element.classList` is a live `DOMTokenList`
+  <br>
   - `DOMTokenList.item(index)`: return the item in the list by its index
   - `DOMTokenList.contains(token)`: return `true` / `false`
   - `DOMTokenList.supports(token)`: return `true` / `false`
@@ -1613,7 +1657,7 @@ In DOM:
     - if token existed already, removes it and return `false`;
     - if token doesn't existed, adds it and return `true`;
     - `force`: can be `true` or `false`, force toggle() to behave as its boolean return
-  - `DOMTokenList.entries()`
+  - `DOMTokenList.entries()` returns an `iterator`
     <br>
 
 ##### **[Back to table](#table)**
@@ -1709,69 +1753,6 @@ In DOM:
 
 ---
 
-## Web-related terms {#webterms}
-
-- **URI** (Uniform Resource Identifier): a string that refers to a resource
-- **URL** (Uniform Rsource Locator): a type of URI, specifies where a resource can be found on the Internet (Web address).
-  <br>
-- `Host`: a device connected to the Internet (or a local network).
-
-  - clients and servers are just programs that run on a host
-    <br>
-
-- **Origin**: `[scheme]://[hostname]:[port]`
-
-  - defined by the scheme (**protocol**), hostname (**domain**), and port of the URL
-  - `http://example.com:8080`
-    - `http`: called "scheme",
-      - http: resources transported over unencrypted connections using HTTP protocol.
-      - https: resource is transported using the HTTP protocol, but over a secure TLS (Transport Layer Security) channel.
-    - `example.com`: called domain name, it is hosted on a server where the document resides
-    - `8080`: called ports
-    - `wwww.example.com` is actually a subdomain of `example.com`
-  - "Same-origin" means the client has the same origin as the server it's calling
-  - "Cross-origin" means the client origin is different than the server it's calling
-  - CORS (Cross-Origin Resource Sharing) is a system, consisting of transmitting HTTP headers, that determines whether browsers block frontend JavaScript code from accessing responses for cross-origin requests.
-    <br>
-
-- **Client**: Any device that can send request to server, and receive respond from server;
-- **Server**: Any device that can receive a request and respond to it. Server could refer to hardware, software, or both.
-
-  - **Hardware**: a web server is a computer that stores web server software and a websites's component files. It connnects to the Internet and supports phy sical data interchange with other devvices connected to the web
-  - **Software**: a web server includes several parts that control how web users access hosted files. At a minimum, this is an HTTP server.
-    - An HTTP server is software that understands URLs (web addresses) and HTTP (the protocol your browser uses to view webpages).
-    - An HTTP server can be accessed through the domain names of the websites it stores, and it delivers the content of these hosted websites to the end user's device.
-      <br>
-  - **A static web server** (stack): consists of hardware with an HTTP server(software). Static server sends its hosted files as-is to your browser
-  - **A dynamic web server**: consists of a static web server plus extra software, most commonly an _**application server**_ and a **_database_**. The application server updates the hosted files before sending content to your browser via the HTTP server.
-    <br>
-  - **Routing**: determines which handler receives a specific request.
-
-    - A handler is a function dedicated to receiving and acting on certain requests.
-    - Requests are routed based on two pieces of information: the HTTP request method, and the request path.
-    - A route refers to an HTTP method, path, and handler combination.
-    - Routes are created and added to the server before it starts listening for requests.
-      <br>
-
-  - **REST**: representational state transfer, a software **architectural** style that describes a uniform interface between physically separate components, often across the Internet in a client-server architecture.
-    - RESTful routes:
-      <br>
-
-- **Static Media**: refers to content that never or rarely change, like images, movies, audio, etc
-  <br>
-- **Domain Name System** (DNS): the protocol used to translate **human readable hostnames** into **IP addresses**.
-  <br>
-- **Streaming** involves breaking a resource that you want to receive over a network down into small chunks, then processing it bit by bit.
-  <br>
-- **CDN**: content delivery network
-  <br>
-- **SPA**:single page application
-  <br>
-
-##### **[Back to table](#table)**
-
----
-
 ## Interesting concepts {#interesting}
 
 1. ![Big O Cheatsheet](./Big_O_cheatsheet.png)
@@ -1784,7 +1765,7 @@ In DOM:
        ![](./script%20async%20defer.png)
        <br>
    - in js file, put everything in the callback body
-     `addEventListener('DOMContentLoaded', (event) => {});`
+     `document.addEventListener('DOMContentLoaded', (event) => {});`
      <br>
    - put `<script>` at the end of `<body>`
 
@@ -1809,16 +1790,15 @@ In DOM:
 
    <br>
 
-1. There are two types of ==expressions== 1. those that assign value to a variable with side effects: `x = 1` 1. those that in some sense evaluate and therefore resolve to a value `1 + 2`
-   <br>
+1. There are two types of ==expressions==
+
+   1. those that assign value to a variable with side effects: `x = 1`
+   1. those that in some sense evaluate and therefore resolve to a value `1 + 2`
+      <br>
 
 1. **Check if a Character is a Letter**
    Compare the lowercase and uppercase variants of the character
    `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
-   <br>
-
-1. **Deep copy an array with primitive elements**
-   `arrayCopy = [...array]`
    <br>
 
 1. **Capitalize a string**
@@ -1855,11 +1835,15 @@ In DOM:
 1. Find the checked radio `input` element: `document.querySelector('input:checked')`
    <br>
 
-1. **Create an array with**
-   <br>
+1. for any array, you can use index at any position to set a value at that index
 
-1. **imperative** vs **declarative**:
-   - imperative code focuses on writing an explicit sequence of commands to describe how you want the computer to do things
-   - declarative code focuses on specifying the result of what you want
+   ```
+   const arr = [];
+   arr[3] = 4;
+   console.log(arr) // [empty * 3, 4]
+   console.log(arr.length) // 4
+   ```
+
+   <br>
 
 ##### **[Back to table](#table)**
