@@ -247,6 +247,8 @@ type Metric = 'cm' | 'inch';
 **Optional Chaining**:
 
 - use `?.` to access the property that may or may not exist, return `undefined` if not.
+- this can also be used with array if the target array may or may not exist
+- this can also be used with function if the function may or may not match the invocation.
 
 ```
 type Customer = { birthday: Date }
@@ -257,4 +259,9 @@ function getCustomer(id: number): Customer | null | undefined {
 
 console.log(getCustomer(0)?.birthday); // undefined
 console.log(getCustomer(1)?.birthday); // Date for now
+
+customer?.[0] // access its first element if customer is an array, or return undefined
+
+let log: any = null;
+log?.('a') // will execute only log is a actual function, or return undefined
 ```
