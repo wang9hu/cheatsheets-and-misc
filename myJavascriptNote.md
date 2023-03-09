@@ -707,6 +707,12 @@ RegExp methods
     - ~~`obj.key`~~
       <br>
 - Properties can be enumerated (for...in loop) if they are enumerable
+  <br>
+- **Optional chaining (?.)**: If the object accessed or function called using this operator is `undefined` or `null`, the expression short circuits and evaluates to undefined instead of throwing an error.
+
+  - `obj.val?.prop`:
+  - `obj.val?.[expr]`:
+  - `obj.func?.(args)`:
 
   <br>
 

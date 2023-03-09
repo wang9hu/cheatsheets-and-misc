@@ -45,6 +45,7 @@ React
   - values in props are **immutable**
   - use `setState()` in order to update **State**, **never** manually set `state`.
   - only use `setState()` where `state` is defined
+  - `setState()` will only update what is passed in, the rest stay the same
   - Any changes to the state will trigger an update, or "re-render", of components that depends on it.
     <br>
 - virtual DOM: representing DOM elements purely in a lightweight JS form.

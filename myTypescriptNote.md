@@ -82,8 +82,9 @@ if only `let x` without assignment, x will have the type of `any`, which just li
 
 **Arrays**:
 
-- typescript can annotate the array element type
+- typescript can annotate the array element type (two ways)
   - `let numbers: number[] = [1, 2, 3]`
+  - `let numbers: Array<number> = [1, 2, 3]`
 - add `readonly` to prevent arrays from being changed:
   - `let numbers: readonly number[] = [1, 2, 3]`
 - if assigned value is an array of same types, then the type annotation of the variable can be omitted: `let numbers = [1, 2, 3]`
@@ -129,13 +130,36 @@ Best Practice: annotate every parameters and variables in functions
   - if type of return value is `void`, meaning it does not return any value;
 
 - default value could be given to parameters just like javascript, no need to annotate type if default value is given
+- Optional parameters can be used if add `?` after
 
 ```
-function calculatedTax(income: number, taxYear = 2023): number {
+function calculatedTax(income: number, taxYear = 2023, name?: string): number {
   if (taxYear < 2022) return income * 1.2;
   return income * 1.3;
 }
 ```
+
+Generics Types: (==???==)
+
+- When invoking, depending on what `Type` is (_name is arbitrary,could be anything_), and the function will take that `Type` as input or returns
+
+```
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+
+function map<Input, Output>(array: Input[], callback: (Input) => Output): Output[] {
+  const newArray: Output[] = [];
+  for (let item of array) {
+    newArray.push(callback(item));
+  }
+  return newArray
+}
+
+map<>
+```
+
+<br>
 
 **Object**:
 
@@ -157,6 +181,21 @@ let emplyee: {
 }
 employee.name = 'xiao';
 employee.fax = '123-456-7890';
+```
+
+<br>
+
+**Class**:
+
+- when define classes, specifiy the type of each property **above the constructor method**
+- access modifiers: optional
+  - `public`: can be accessed anywhere
+  - `private`: can only be accessed from within the class itself
+
+```
+clas User {
+
+}
 ```
 
 <br>
@@ -202,6 +241,8 @@ function kgToLbs (weigth: number | string): number {
   if (typeof weight === 'number') return weight.[...] // will have all methdos for number object
   else return parseInt(weight) * 2.2
 }
+
+const numAndStr: (number | string)[] = [1, 'apple', 2, 'banana']
 ```
 
 <br>

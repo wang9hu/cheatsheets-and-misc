@@ -9,6 +9,9 @@
 1. linkedlist
    - singly
    - doubly
+   - somehow destructuring assignement order matters
+     - [cur.next, cur.next.prev] = [null, null] //this won't work
+     - [cur.next.prev, cur.next] = [null, null] //this works
 1. hash table
    <br>
 1. binary search tree
