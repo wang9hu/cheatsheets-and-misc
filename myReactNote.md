@@ -1,4 +1,4 @@
-React
+## React
 
 - [Docs](https://reactjs.org/docs/getting-started.html)
 - component is essentially function
@@ -13,18 +13,18 @@ React
   - class need to `extends React.Component`
     <br>
 
-  Component Class:
+### Component Class:
 
-  - in class, `render() {}` is a special method and it will show whatever is being returned on the DOM
-    <br>
-  - child component can set parameters on `{this.props}` object in the return DOM element statement, e.g., `return <h1>Hello, {this.props.childComponentlaber}</h1>;`
-  - parent component can use `<childComponent childComponentlaber = data />` to assign data value to the parameter in the parent component
-    <br>
-  - Class component with constructor and `this.state` could use `{this.state.propertyName}` to access data in its own state
-    <br>
-  - Methods can be defined inside of
-  - may need other library (npm & import)
-    <br>
+- in class, `render() {}` is a special method and it will show whatever is being returned on the DOM
+  <br>
+- child component can set parameters on `{this.props}` object in the return DOM element statement, e.g., `return <h1>Hello, {this.props.childComponentlaber}</h1>;`
+- parent component can use `<childComponent childComponentlaber = data />` to assign data value to the parameter in the parent component
+  <br>
+- Class component with constructor and `this.state` could use `{this.state.propertyName}` to access data in its own state
+  <br>
+- Methods can be defined inside of
+- may need other library (npm & import)
+  <br>
 
 - JSX: javascript XML (file name): precompiled syntax exntension to JS, React 'element' can be rendered into HTML element on DOM by JSX
   - e.g., `<h1>Hello, {this.props.anykeylabel}</h1>`
@@ -53,7 +53,7 @@ React
   - achieve fast render time
   - React processes changes very quickly, only rendering to the real DOM when and where needed.
 
-ReactComponent: Class vs Function Declaration vs ES6 Function Expression
+### ReactComponent: Class vs Function Declaration vs ES6 Function Expression
 
 - **Class**:
   - **Life cycle component**: if the function definition is given in the component class
@@ -77,26 +77,106 @@ ReactComponent: Class vs Function Declaration vs ES6 Function Expression
 
 React Hooks: functions that allow functional components the ability to do things that were typically only reserved for class components.
 <br>
-**Basic hooks**:
 
-- useState: state
+### React Hooks
+
+- ==useState==: state and the function that can changed the state
+  - make sure the passed-in ==reference is different== from the original state reference
+  - use a new reference or use spread syntax
   ```
   const [state, updateState] = React.useState('initial state');
   console.log(state); // 'initial state'
   console.log(updateState); // 'Function(){}' that can be used to update that state, it accepts a new state value and enqueues a re-render of the component.
   updateState('next state'); // update the state
   ```
-- useEffect: Equivalent of lifecycle methods:
+- ==useEffect==: Equivalent of lifecycle methods
+
+  - Needs to do something **after render** (initial or update).
+  - `[dependencies]`, only run if dependencies changed
+  - if `[dependencie]` omitted, only run for the initial render
 
   ```
   React.useEffect(() => {
     console.log('component updated');
-  })
+  },[dependencies])
   ```
+
+- ==useMemo==: cache the result of a calculation between re-renders.
+
+  - first parameter is the function that calculating the value, should take no input and return a value
+  - second parameter is the array of dependencies that triggered the useMemo
+  - useMemo will return previous value if dependencies are the same for rerender
+
+  ```
+  const cachedValue = React.useMemo(calculateValue, [dependicies])
+
+  ```
+
+  useMemo hook common cases:
+
+  1. make a slow function wrap inside useMemo so that doesn't re-compute for every re-render
+  1. make sure the reference of an object or an array is exactly the same as it was in the last rendered
+     <br>
+
+- ==useCallback==: cache a function definition between re-renders.
+
+  - just like useMemo, but it return the first paramenter, which is the entire function, instead of the return value of the function, and the function could have input
+
+  ```
+  const [number, setNumber] = useState(1);
+
+  // below will reassign to getItems function for other unrelated re-render
+  const getItems = () => {
+    return [number, number + 1, number + 2]
+  }
+
+  // below will not recreate getItems function for re-render if number doesn't change
+  const getItems = React.useCallback(() => {
+    return [number, number + 1, number + 2]
+  }, [number])
+  ```
+
+  useCallback hook common case:
+
+  1. make sure the reference of an function is exactly the same as it was in the last rendered, such as passing function to child component
+  1. for some reason creating a function is really slow for each re-render (rarely)
+     <br>
+
+- ==useContext==: lets you read and subscribe to context from your component
+
+  - Context lets the parent component make some information available to **any** component in the tree below it—no matter how deep—without passing it explicitly through props.
+  - The context is created by `createContext` function
+    - if no defaultValue, specify `null`
+    - return a context object that doesn't hold any information, it represents which context other components read or provide.
+
+  ```
+  // call createContext outside of any components to create a context
+  import { createContext } from 'react';
+
+  const SomeContext = createContext(defaultValue)
+
+  //
+  ```
+
+  - Has two parts: context provider and useContext
+
+  ```
+
+  ```
+
+- useReducer
 
   <br>
 
   React Problem: props drilling
+
+### When does rerender trigger
+
+Initial render: when a component first appears on the screen
+
+1. The props passed in component changed
+1. Internal state change (useState)
+1. Parent component rerendered
 
 ## Redux:
 

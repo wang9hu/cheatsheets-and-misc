@@ -79,3 +79,46 @@
   `sudo lsof -i -P -n | grep LISTEN`
 - kill port:
   `npx kill-port 3000`
+
+### Common JS vs ES6 Module
+
+CJS and ESM are two module systesm in JavaScript that are actively being used.
+
+- CJS was introduced as the default module system for Node.js
+
+  ```
+  // importing
+  const fs = require("fs");
+
+  // exporting
+  module.exports = function() { return "Hi there!";}
+  ```
+
+  CJS was initially specific for Nodejs when browser did not have a module system yet.
+  <br>
+
+- ESM was introduced by ECMAScript 2015 (ES6) as the standardized module system for working in browsers.
+
+  ```
+  // importing
+  import fs, { nonDefaultExport1, nonDefaultExport2 } from "fs"
+
+  // exporting
+  export default function() { return "Hi there!";}
+  export nonDefaultExport1() { return "Hi there!";}
+  ```
+
+  ESM as the standard in browser-land, and CJS as the standard in node-land.
+  Frontend frameworks like React or Vue have been using the ESM syntax even before it became a standard in the browser. Though they used tools like Babel to transpile it to CommonJS syntax
+  <br>
+
+- Since most modules were initially written in CommonJS, It is possible to import CJS modules in ESM (`import * as CJS from 'cjs-module'`), but ESM cannot be used in CJS modules.
+
+Ways to adopt ESM in Node:
+
+- use `.mjs` file extension for all ESM files
+- use `.js` file and in nearest parent `package.json`, contains a top-level `"type": "module"`, this will tell Node that all `.js` files are written with ESM
+
+Tell HTML file that you are using module:
+
+- in `<script></script>` tag, add `type="module"` (probably also add `defer` to wait for script to load)

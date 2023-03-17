@@ -23,7 +23,7 @@ TypeScript: Javascript with type checking
   - `tsc -v` // check typescript version
   - `tsc filename.ts` // to transpile filename.ts and create a filename.js
   - `tsc` // compile all the ts file
-- .ts:
+- `.ts`:
   - let variable: type = value;
     - `let age: number = 20`;
 - Configure typescript compiler:
@@ -53,15 +53,15 @@ TypeScript: Javascript with type checking
 
 TypeScript new types:
 
-- any
-- unknown
+- any: if not assigned any type, it will be any type
+- unknown:
 - never
 - enum
 - tuple
 
 in typescript, large number can be seperated using `_`: `let num: number = 123_456_789;`
 
-for `number`, `string` and `boolean` types, no type notation is needed cause compiler will figure it out based on the value.
+for `number`, `string` and `boolean` types, no type notation is needed cause compiler will figure it out based on the value (implicit type assignment)
 
 ```
 // below is explicit types

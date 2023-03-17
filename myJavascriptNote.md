@@ -201,13 +201,19 @@ undefined
 
   <br>
 
-#### **String methods**
+#### **Static methods**
 
-- **str.length** : return the length of `str`
+- **String.fromCharCode(num1, [num2, ..., numN])**: returns a string created from the specified sequence of UTF-16 code units.
+  - `num1, ..., numN`: A sequence of numbers that are UTF-16 code units. The range is between 0 and 65535
+    <br>
+
+#### **Instance methods**
+
+- **.length** : return the length of string
 
   <br>
 
-- **.charAt()**: `'hello'.charAt(2) = "l";` :
+- **.charAt()**: `'hello'.charAt(1) = "e";` :
 
   <br>
 
@@ -295,13 +301,13 @@ undefined
 
   <br>
 
-- **.replace()**: `"Aaa".replace('a', '-')`
+- **.replace()**: `"Aaa".replace('a', '-') // "A-a"`
 
-  - return: a modified ==copy== of `str` with ==first== occurance replaced (`"A-a"`)
+  - return: a modified ==copy== of `str` with ==first== occurance replaced
 
-- **.replaceAll()**: `"Aaa".replaceAll('a', '-')`
+- **.replaceAll()**: `"Aaa".replaceAll('a', '-') // "A--"`
 
-  - return: a modified ==copy== of `str` with ==all== occurance replaced (`"A--"`)
+  - return: a modified ==copy== of `str` with ==all== occurance replaced
 
   <br>
 
