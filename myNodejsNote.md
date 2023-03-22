@@ -117,7 +117,7 @@ CJS and ESM are two module systesm in JavaScript that are actively being used.
 Ways to adopt ESM in Node:
 
 - use `.mjs` file extension for all ESM files
-- use `.js` file and in nearest parent `package.json`, contains a top-level `"type": "module"`, this will tell Node that all `.js` files are written with ESM
+- use `.js` file and in nearest parent `package.json`, contains a top-level `"type": "module"` (default is `"commonjs"`), this will tell Node that all `.js` files are written with ESM
 
 Tell HTML file that you are using module:
 

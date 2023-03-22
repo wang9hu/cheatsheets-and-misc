@@ -26,6 +26,8 @@ TypeScript: Javascript with type checking
 - `.ts`:
   - let variable: type = value;
     - `let age: number = 20`;
+- `.d.ts`: type declaration files, only contain type information used for type checking.
+  <br>
 - Configure typescript compiler:
   - in terminal: `tsc --init` // create a tsconfig.json file, in it:
     - Language and Environment sesson:

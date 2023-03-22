@@ -13,6 +13,7 @@
 - [Regular Expression](#RegExp)
 - [Array](#array)
 - [Object](#object)
+- [Generators](#generatorsanditerators)
 - [Set](#set)
 - [Map](#map)
 - [Function](#function)
@@ -922,12 +923,102 @@ RegExp methods
 
 ---
 
+## Generator and Iterator {#generatorsanditerators}
+
+**Generator function**:
+  - The `function*` declaration (`function` keyword followed by an asterisk `*`) defines a generator function, which returns a `Generator` object if invoked.
+  ```
+  function* generateId(id) {
+    while(id <= 7) {
+      const increment = yield id          // will stop at yield operator each time
+      if (increment !== undefined) {
+        id += increment
+      } else {
+        id += 1;
+      }
+    }
+  }
+  ```
+  - `yield [expression]` operator: pause and resume a generator function.
+    - `expression`: the value to yield from generator function via the iterator protocal. yield `undefined` if omitted.
+    <br>
+
+**Generator object**:
+  - returned by a generator function 
+  ```
+  // create a Generator object
+  const generatorObj = generateId(1);
+
+  console.log(generatorObj.next());   // { value: 1, done: false }
+  console.log(generatorObj.next(4));  // { value: 5, done: false }
+  console.log(generatorObj.next());   // { value: 6, done: false }
+  console.log(generatorObj.next());   // { value: 7, done: false }
+  console.log(generatorObj.next());   // { value: undefined, done: true }
+  ```
+  - `genObj.next([nextValue])`: keep running the generator function until reaching the next yield, or reach the end of the function
+    - return `{ value: [expression], done: false }` or `{ value: undefined, done: true }`
+    - if pass in a value, this `nextValue` will be the return value of the latest `yield` operator
+    <br>
+  - `genObj.return(returnValue)`: as if add `return value` in the generator, finishes the generator and return the object with `returnValue` as the `value`
+    - return `{ value: returnValue, done: true }`
+    <br>
+  - `genObj.throw(exception)`: as if a `throw exception`; statement is inserted in the generator's body at the current suspended position, where `exception` is the exception passed to the `throw()` method.
+  <br>
+
+**Iterator**
+  - an iterator is any object which implements the Iterator protocol by having a `next()` method that returns an object with two properties:
+    - `value`: The next value in the iteration sequence.
+    - `done`: This is `true` if the last value in the sequence has already been consumed. If `value` is present alongside `done`, it is the iterator's return value.
+
+
+##### **[Back to table](#table)**
+
+---
+
 ## Set {#set}
 
-The Set object lets you store **unique** values of any type, whether primitive values or object references.
+The Set object lets you store ==unique== values of any type, whether primitive values or object references.
 
 - `Set`: set constructor, work with `new` to creates a new Set object.
+  ```
+  // Create a new empty Set
+  const setObj = new Set()
+  
+  // Pass an iterable object to Set, duplicated will only add once
+  const arr = ['a', 'a', 'b', 'c'];
+  const setObj = new Set(arr); // Set(3) {'a', 'b', 'c'}
+  ```
   <br>
+
+- **Add**: `setObj.add(value1)[.add(value2)]`
+  - return the Set object with added value
+  - chainable, but can only add one element at a time
+  - if pass multiple values, it will only try to add the first value
+  <br>
+
+- **Delete**: `setObj.delete(value)`
+  - return `true` if value was found and removed in Set object; otherwise `false`
+  <br>
+
+- **Clear**: `setObj.clear()`
+  - return `undefined`
+  <br>
+
+- **Check**: `setObj.has(value)`
+  - return `true` if value exists in the Set object; otherwise `false`
+  <br>
+
+- **Iterators**: 
+  - `setObj.valuse()` and `setObj.keys()` both return an iterator that contains the values for each element in Set object
+  - `setObj.entries()` return an iterator that contains an array of `[value, value]` for each element in Set Object, in **insertion** order.
+  <br>
+
+- **forEach**: `setObj.forEach(fn)`
+  - executes a provided function once for each value in the Set object, in **insertion** order.
+  - `fn`:
+    - `(value[, key, set]) => { /* ... */ }` 
+    - `function(value[, key, set]) { /* ... */ }[, thisArg]` 
+    - `callbackFn[, thisArg]`
 
 ##### **[Back to table](#table)**
 
@@ -1857,5 +1948,20 @@ In DOM:
    ```
 
    <br>
+
+1. ES6 (ECMAScript 6 or ECMAScript 2015) added features:
+  - `let` and `const`
+  - arrow function
+  - spread and rest operator `...`
+  - `for` (const key `of` obj)
+  - Map Object
+  - Set Object
+  - `Object.entries()`
+  - Classes
+  - Promise
+  - Symbol
+  - Default parameters
+  - JavaScript Modules
+  - ... 
 
 ##### **[Back to table](#table)**
