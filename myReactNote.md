@@ -26,7 +26,7 @@
 - may need other library (npm & import)
   <br>
 
-- JSX: javascript XML (file name): precompiled syntax exntension to JS, React 'element' can be rendered into HTML element on DOM by JSX
+- **JSX**: javascript XML (file name): precompiled syntax exntension to JS, React 'element' can be rendered into HTML element on DOM by JSX
   - e.g., `<h1>Hello, {this.props.anykeylabel}</h1>`
   - could have js inside of DOM element, wrapped in `{}`
     - `<h1>{2 + 2}</h1>`
@@ -38,7 +38,7 @@
     - in parent component, use `childVariable = {js exoression}`
   - JSX can interpret an array of JSX statements and take each individule out e.g., `{boxes}`
     <br>
-- State: top down, uni-directional data flow, used to pass data
+- **State**: top down, uni-directional data flow, used to pass data
   - accessible and easily maintained
   - **State** maintained in top level components (as an obj called `State`) and passed down (through `props`) to child component
   - `props` never go upstream or to sibling component.
@@ -75,7 +75,7 @@
 - **Higher-Order Components**
   - a higher-order component is a function that takes a component and returns a new component.
 
-React Hooks: functions that allow functional components the ability to do things that were typically only reserved for class components.
+**React Hooks**: functions that allow functional components the ability to do things that were typically only reserved for class components.
 <br>
 
 ### React Hooks
@@ -145,26 +145,67 @@ React Hooks: functions that allow functional components the ability to do things
 - ==useContext==: lets you read and subscribe to context from your component
 
   - Context lets the parent component make some information available to **any** component in the tree below it—no matter how deep—without passing it explicitly through props.
-  - The context is created by `createContext` function
+  - The context is created by `createContext` function (`React.createContext()`)
     - if no defaultValue, specify `null`
     - return a context object that doesn't hold any information, it represents which context other components read or provide.
 
   ```
-  // call createContext outside of any components to create a context
+  // In contextcreator file (could also integrated in parent component file)
+  // call createContext to create a context and export it
   import { createContext } from 'react';
 
-  const SomeContext = createContext(defaultValue)
+  export const SomeContext = createContext(defaultValue)
 
-  //
+  ------------------------------------------------------------------------------------------------------------
+
+  // In parent component 
+  import { useState } from 'react';
+  import { SomeContext } from '[path to contextCreator file]';
+  import Child from '[path to ChildComp file]';
+
+  function ParentComp(props) {
+    const [someState, setSomeState] = useState(someValue)       // where state is created, usually from other hooks
+    return (
+      <SomeContext.Provider value={[someState, setSomeState]}>   // where state is provided to all child 
+        <Child>                                                  // compnents, can be any value (array, obj)
+      </SomeContext.Provider value={someState}>
+    )
+  }
+
+  ------------------------------------------------------------------------------------------------------------
+
+  // In child component 
+  import { useContext } from 'react';
+  import { SomeContext } from '[path to contextCreator file]';
+
+  function Child(props) {
+    const [someState, setSomeState] = useContext(SomeContext);                    // where state is being used 
+    return (
+      <>
+        {...}
+      </>
+    )
+  }
   ```
-
-  - Has two parts: context provider and useContext
-
-  ```
-
-  ```
+<br>
 
 - useReducer
+
+<br>
+
+- ==useRef==: reference a value that’s not needed for rendering.
+  ```
+  const ref = useRef(initialValue);
+  ```
+  - return: an object with a single property: `{ current: initialValue }`
+  - `initialValue`: the value ref object's current property to be initialled. This value is ignored after ref initialization.
+  - change ref value: `ref.current = newValue`, changing it does not trigger a re-render, so refs are not appropriate for storing information you want to display on the screen
+  - It’s particularly common to use a ref to ==manipulate the DOM==. React has built-in support for this.
+    - first initial ref to null `const inputRef = useRef(null);`
+    - Then pass your ref object as the ref attribute to the JSX of the DOM node you want to manipulate: `return <input ref={inputRef} />;`
+    - After React creates the DOM node and puts it on the screen, React will set the `current` property of your ref object to that DOM node: `inputRef.current.focus();`
+    - React will set the current property back to null when the node is removed from the screen.
+  
 
   <br>
 
@@ -176,7 +217,7 @@ Initial render: when a component first appears on the screen
 
 1. The props passed in component changed
 1. Internal state change (useState)
-1. Parent component rerendered
+1. Parent component rerendered (unless React.memo() is called for a component)
 
 ## Redux:
 
@@ -291,7 +332,7 @@ Access store from within components:
   - `export default connect(mapStateToProps, mapDispatchToProps)(Component)`
     <br>
 
-Write action createors:
+Write action creators:
 
 - Create a file and export constant variables that represent all of the ways we want to change state. These will be the values passed as the type properties in your action objects.
 - All processing of side effects (ajax calls) should be handled in Action Creators. Once all the data necessary to facilitate the state change is derived, the value should be passed as the payload in your action objects. ○ In order to implement asynchronous functionality in Redux, you’ll need to employ middleware like redux-thunk or redux-saga

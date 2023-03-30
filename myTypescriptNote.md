@@ -141,9 +141,9 @@ function calculatedTax(income: number, taxYear = 2023, name?: string): number {
 }
 ```
 
-Generics Types: (==???==)
+**Generics Types**:
 
-- When invoking, depending on what `Type` is (_name is arbitrary,could be anything_), and the function will take that `Type` as input or returns
+- When invoking, depending on what `Type` is (_name is arbitrary, could be anything_), and the function will take that `Type` as input or returns
 
 ```
 function identity<Type>(arg: Type): Type {

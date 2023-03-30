@@ -114,18 +114,6 @@
   <br>
 - For `<input type="radio">`, a **radio group** is defined by giving each of radio buttons in the group the same `name`, so that a radio group is established, selecting any radio button in that group **automatically deselects** any currently-selected radio button in the same group.
   <br>
-- ==inline-level== elements: do not force a new line to begin
-  - on seperate lines in `html` code creates an extra space to the right of the first elements
-- ==block-level== elements: take up entire widith of parent element
-  - in this file, elements that not labeled as inline elements are block-level elements
-    <br>
-- To prevent parent-child element margin collapsing, style the parent element with `overflow` to `hidden` or `auto`.
-
-  - setting `overflow` property establishes a new `block formatting context`, which suppresses margin collapsing
-  - `overflow` will not cause content to be hidden or scroll bars to appear as long as the parent element doesn't have a set `height`.
-  - margin collapsing only happens within vertical-block margins and flex container's margin doesn't collapse at all.
-
-  <br>
 
 - HTML entities: reserved characters in HTML
 
@@ -134,11 +122,11 @@
   - &#==x==_entity_number_ (hex)
     <br>
 
-- MouseEvent: clientX vs pageX vs screenX vs offsetX
-  - clientX: visible area on the page
-  - pageX: entire page area, scrolling doesn't matter
-  - screenX: entire screen area
-  - offsetX: relative to the position of the padding edge of the target node
+- MouseEvent: `clientX` vs `pageX` vs `screenX` vs `offsetX`
+  - `clientX`: visible area on the page
+  - `pageX`: entire page area, scrolling doesn't matter
+  - `screenX`: entire screen area
+  - `offsetX`: relative to the position of the padding edge of the target node
     <br>
 - Difference between ==node== and ==element== in DOM
 

@@ -21,7 +21,9 @@
 - [Asynchronous Javascript](#asynchronous-js)
 - [Promise](#promise)
 - [Async/await](#async_await)
-- [Event loop and macrotask vs microtask](#eventloop)
+- [Renderer Process](#renderprocess)
+- [Event Loop](#eventloop)
+- [Microtask](#microtask)
 - [DOM Traversal](#dom)
 - [Web APIs](#webapis)
 - [Web-related terms](#webterms)
@@ -926,50 +928,56 @@ RegExp methods
 ## Generator and Iterator {#generatorsanditerators}
 
 **Generator function**:
-  - The `function*` declaration (`function` keyword followed by an asterisk `*`) defines a generator function, which returns a `Generator` object if invoked.
-  ```
-  function* generateId(id) {
-    while(id <= 7) {
-      const increment = yield id          // will stop at yield operator each time
-      if (increment !== undefined) {
-        id += increment
-      } else {
-        id += 1;
-      }
+
+- The `function*` declaration (`function` keyword followed by an asterisk `*`) defines a generator function, which returns a `Generator` object if invoked.
+
+```
+function* generateId(id) {
+  while(id <= 7) {
+    const increment = yield id          // will stop at yield operator each time
+    if (increment !== undefined) {
+      id += increment
+    } else {
+      id += 1;
     }
   }
-  ```
-  - `yield [expression]` operator: pause and resume a generator function.
-    - `expression`: the value to yield from generator function via the iterator protocal. yield `undefined` if omitted.
+}
+```
+
+- `yield [expression]` operator: pause and resume a generator function.
+  - `expression`: the value to yield from generator function via the iterator protocal. yield `undefined` if omitted.
     <br>
 
 **Generator object**:
-  - returned by a generator function 
-  ```
-  // create a Generator object
-  const generatorObj = generateId(1);
 
-  console.log(generatorObj.next());   // { value: 1, done: false }
-  console.log(generatorObj.next(4));  // { value: 5, done: false }
-  console.log(generatorObj.next());   // { value: 6, done: false }
-  console.log(generatorObj.next());   // { value: 7, done: false }
-  console.log(generatorObj.next());   // { value: undefined, done: true }
-  ```
-  - `genObj.next([nextValue])`: keep running the generator function until reaching the next yield, or reach the end of the function
-    - return `{ value: [expression], done: false }` or `{ value: undefined, done: true }`
-    - if pass in a value, this `nextValue` will be the return value of the latest `yield` operator
+- returned by a generator function
+
+```
+// create a Generator object
+const generatorObj = generateId(1);
+
+console.log(generatorObj.next());   // { value: 1, done: false }
+console.log(generatorObj.next(4));  // { value: 5, done: false }
+console.log(generatorObj.next());   // { value: 6, done: false }
+console.log(generatorObj.next());   // { value: 7, done: false }
+console.log(generatorObj.next());   // { value: undefined, done: true }
+```
+
+- `genObj.next([nextValue])`: keep running the generator function until reaching the next yield, or reach the end of the function
+  - return `{ value: [expression], done: false }` or `{ value: undefined, done: true }`
+  - if pass in a value, this `nextValue` will be the return value of the latest `yield` operator
     <br>
-  - `genObj.return(returnValue)`: as if add `return value` in the generator, finishes the generator and return the object with `returnValue` as the `value`
-    - return `{ value: returnValue, done: true }`
+- `genObj.return(returnValue)`: as if add `return value` in the generator, finishes the generator and return the object with `returnValue` as the `value`
+  - return `{ value: returnValue, done: true }`
     <br>
-  - `genObj.throw(exception)`: as if a `throw exception`; statement is inserted in the generator's body at the current suspended position, where `exception` is the exception passed to the `throw()` method.
+- `genObj.throw(exception)`: as if a `throw exception`; statement is inserted in the generator's body at the current suspended position, where `exception` is the exception passed to the `throw()` method.
   <br>
 
 **Iterator**
-  - an iterator is any object which implements the Iterator protocol by having a `next()` method that returns an object with two properties:
-    - `value`: The next value in the iteration sequence.
-    - `done`: This is `true` if the last value in the sequence has already been consumed. If `value` is present alongside `done`, it is the iterator's return value.
 
+- an iterator is any object which implements the Iterator protocol by having a `next()` method that returns an object with two properties:
+  - `value`: The next value in the iteration sequence.
+  - `done`: This is `true` if the last value in the sequence has already been consumed. If `value` is present alongside `done`, it is the iterator's return value.
 
 ##### **[Back to table](#table)**
 
@@ -980,44 +988,56 @@ RegExp methods
 The Set object lets you store ==unique== values of any type, whether primitive values or object references.
 
 - `Set`: set constructor, work with `new` to creates a new Set object.
+
   ```
   // Create a new empty Set
   const setObj = new Set()
-  
+
   // Pass an iterable object to Set, duplicated will only add once
   const arr = ['a', 'a', 'b', 'c'];
   const setObj = new Set(arr); // Set(3) {'a', 'b', 'c'}
   ```
+
   <br>
 
+- **Size**: `setObj.size`
+
+  - how many entries the Set object has
+    <br>
+
 - **Add**: `setObj.add(value1)[.add(value2)]`
+
   - return the Set object with added value
   - chainable, but can only add one element at a time
   - if pass multiple values, it will only try to add the first value
-  <br>
+    <br>
 
 - **Delete**: `setObj.delete(value)`
+
   - return `true` if value was found and removed in Set object; otherwise `false`
-  <br>
+    <br>
 
 - **Clear**: `setObj.clear()`
+
   - return `undefined`
-  <br>
+    <br>
 
 - **Check**: `setObj.has(value)`
-  - return `true` if value exists in the Set object; otherwise `false`
-  <br>
 
-- **Iterators**: 
+  - return `true` if value exists in the Set object; otherwise `false`
+    <br>
+
+- **Iterators**:
+
   - `setObj.valuse()` and `setObj.keys()` both return an iterator that contains the values for each element in Set object
   - `setObj.entries()` return an iterator that contains an array of `[value, value]` for each element in Set Object, in **insertion** order.
-  <br>
+    <br>
 
 - **forEach**: `setObj.forEach(fn)`
   - executes a provided function once for each value in the Set object, in **insertion** order.
   - `fn`:
-    - `(value[, key, set]) => { /* ... */ }` 
-    - `function(value[, key, set]) { /* ... */ }[, thisArg]` 
+    - `(value[, key, set]) => { /* ... */ }`
+    - `function(value[, key, set]) { /* ... */ }[, thisArg]`
     - `callbackFn[, thisArg]`
 
 ##### **[Back to table](#table)**
@@ -1028,6 +1048,9 @@ The Set object lets you store ==unique== values of any type, whether primitive v
 
 - The `Map` object holds key-value pairs and remembers the ==original insertion order== of the keys.
 - Any value (both **objects** and **primitive values**) may be used as either a **key** or a **value**.
+  <br>
+
+**WeakMap**
 
 <br>
 ##### **[Back to table](#table)**
@@ -1210,7 +1233,15 @@ To declare a variable within a class, it needs to be a property of the class or,
 
 **Public class fields**
 
-Public static fields
+- Public class fields: writable, enumerable, and configurable properties
+  ```
+  class ClassWithField {
+    instanceField;
+    instanceFieldWithInitializer = "instance field";
+    static staticField;
+    static staticFieldWithInitializer = "static field";
+  }
+  ```
 
 <br>
 ##### **[Back to table](#table)**
@@ -1536,14 +1567,6 @@ console.log(x) // 1
 
 Promise is an object represents the resulting value of an ==asynchronous operation==, working as a proxy for a value that was not necessarily known when the promise is created.
 
-- return: a promise object, has three states:
-  - pending: initial state, neither fulfilled nor rejected.
-  - resolved: meaning that the operation was completed successfully. (Colloquially, 'resolved' equals 'fulfilled')
-  - rejected: meaning that the operation failed.
-- executor: a function called "executor function", which takes two functions as parameters (resolveFunc, rejectFunc)
-  - executors are called synchronously, as soon as the Promise is `constructed`
-    <br>
-
 ```
 new Promise(executor) // only work with 'new' operator
 new Promise((resolveFunc, rejectFunc) => {
@@ -1554,12 +1577,20 @@ new Promise((resolveFunc, rejectFunc) => {
 })
 ```
 
+- return: a promise object, has three states:
+  - pending: initial state, neither fulfilled nor rejected.
+  - resolved: meaning that the operation was completed successfully. (Colloquially, 'resolved' equals 'fulfilled')
+  - rejected: meaning that the operation failed.
+- **executor**: a function called "executor function", which takes two functions as parameters (resolveFunc, rejectFunc)
+  - executors are called synchronously, as soon as the Promise is `constructed`
+    <br>
+
 <br>
 
-Promises are handled by [microtasks queue](#eventloop)
+Promises are handled by [microtasks queue](#microtask)
 
 - The queue is first-in-first-out(FIFO);
-- only resolved/rejected promise handlers can be enqueued, pending promises will not be enqueued until settled
+- **Only** resolved/rejected promise handlers can be enqueued, pending promises will not be enqueued until settled
 - Execution of a task is initialted only when nothing else is running (empty call stack)
   <br>
 
@@ -1698,29 +1729,153 @@ async function name (args) {
 <br>
 ##### **[Back to table](#table)**
 ---
-## Event loop and macrotask vs microtask {#eventloop}
+### Renderer process {#renderprocess}
+
+- A **process** is a program under execution
+- A **thread** is a lightweight process that can be managed by the scheduler.
+
+  - a process must have at least one thread (main thread)
+    <br>
+
+- Browser is **multi-process** **multi-thread** application, very complicated (comparable to OS)
+  - to make sure processes don't interfere with each other, each process has its own isolated memory
+  - there are mainly three processes that matters the most:
+    - **browser**: for displaying the browser app interface, also responsible for initializing and managing **subprocesses** like network service and renderer, managing and listening user interaction, etc.
+    - **network service**: handle network interaction
+    - **renderer**: one renderer process per tag (in sandbox), see below
+      <br>
+
+What is render in frontend?
+
+- In general, rendering is just to turn html strings into screen pixel
+  <br>
+- Renderer process only has **one main thread**, which is the **most busy** thread in browser,
+
+- The main thread in renderer handles HTML and CSS parsing, computing element properties, JS execution, layout, painting and compositing.
+  <br>
+
+- An [event loop](#eventloop) is created when the main thread of a renderer process is started in a web browser, and it is responsible for managing the order in which tasks are executed, including the parsing and rendering of HTML and CSS. (see below)
+  <br>
+- Main renderer thead handles HTML and CSS parsing, computing, layout, JS execution, layout, painting, asynchronous events (user event, timer events, callbackes,..) the rendering thread works as these steps:
+  <br>
+
+  1. **Parse HTML and construct the Document Object Model (DOM) tree and CSS Object Model (CSSOM) tree**:
+     <br>
+
+     1. ==Parse HTML tags and create DOM==:The main thread will parse the HTML document and construct the DOM tree concurrently.
+        <br>
+
+     1. ==Parse and apply CSS styles==: If the main thread runs into `<link>` tag while parsing html, it will pass it down to other threads (such as **network threads** then **preparser thread**) to downloads and parses any linked resources, and conflate the preparsed content in the CSSOM tree. In this way it optimizes the overall parse efficiency, and also this is why CSS parsing does not block html parsing.
+        <br>
+
+     1. ==Execute JavaScript code==: When the main thread encounters `<script></script>` tag code while parsing the HTML, it will pause HTML parsing process, and if the script needs to download (has a `src` attribute), the main thread will wait for it to finish downloading and executes the code. Because JS code execution may change the DOM tree, which is why HTML parse must pause for JS execution. The JavaScript engine processes the JavaScript code and interacts with the DOM to update the content and appearance of the web page.
+        If the script attempts to access an element that has not been created, it will typically return a null value or undefined. This can result in errors or unexpected behavior, such as elements not being properly styled or functions not executing as intended.
+        <br>
+
+     1. At the end of the step 1, it will generate both DOM tree and CSSOM tree, and all default styling, internal/external styling and inline styling will be in the CSSOM tree. These two trees represent the structure of the web page and will potentially be used later.
+        <br>
+
+  1. **Get DOM tree with Computed Styles**:
+
+     1. the main thread traverse through the DOM tree and conflate with the corresponding style on CSSOM tree and get the computed style for each node;
+     1. In this process, all the default value will change to absolute value (e.g., `red` => `rgb(255, 0, 0)`), and relative units will change to aboslute units (e.g., em => px)
+     1. At the end of step 2, generate a DOM tree with styles
+        <br>
+
+  1. **Get Layout Tree**: (displaying info)
+
+     - Content must be in inline boxes;
+     - Block box and inline box can't be adjacent, so anonymous block box or anonymous inline box will be used as wrapper
+     - Node on layout tree is not a DOM node, it is a C++ node, which can't be access by js
+       <br>
+
+     1. the main thread traverse through the DOM and calculate the ==geometry Information== of each node, generating a ==layout tree==.
+     1. most node in DOM tree is different from layout tree (e.g., `display: none`, pseudo elements (`::before, after`), anonymous boxes)
+        <br>
+
+  1. **Get Layers**:
+     1. The main thread will put the layout tree into ==layers==
+     1. Benefit is that browser can only change the layers that needs to be changed, improve efficiency
+     1. Scrollbar, `z-index`, `opacity`, `transform`, etc will have an impact on how to layer, and `will-change: transform` can largely suggest browser to get this element on a seperated layer
+        <br>
+  1. **Paint**: Generate instructions for each layer, the **last thing** the main thread needs to do
+     1. the main thread will generate ==how to paint instructions== for each layer.
+     1. the main thread will pass the instructions to **compositor thread** (still in renderer process) and be avaiable for next task
+        <br>
+  1. **Tiling**: the compositor thread get all the layer instructions, it will initialize multiply worker threads (from threads pool) to split each layer into smaller ==tiles==.
+     <br>
+  1. **Raster**:
+
+     1. After tiling, the compositor thread will pass the tiles information to GPU thread;
+     1. GPU thread will initialize multiple threads to generate a ==bitmap== for each tile in extremely high speed, and it will prioritize the tiles that are close to viewport.
+     1. After raster, GPU thread will return the bitmap infomations back to compositor thread
+        <br>
+
+  1. **Draw**:
+
+     1. After taking the bitmap info for each tile in each layer, the compositor thread will generate a ==quad== for each bitmap, indiating the position of each bitmap on screen, considering transform such as rotate and shrink
+     1. Since transform implementation happens in compositor thread, so it won't take resources from the main thread, which is why transform is more efficient
+     1. Compositor thread will pass the quad info to GPU thread, which makes system call and send it to GPU hardware, finish the final image on sreen.
+        <br>
+
+  1. ==Handle user events==: The main thread handles user events such as clicks, scrolls, and keyboard inputs. When a user event occurs, the main thread executes the JavaScript code associated with the event and updates the DOM and rendering tree accordingly.
+     <br>
+
+     <br>
+
+- Scheduling task: the main thread in render process uses **Event Loop** to manage the order of tasks, any proceess or threads can add tasks in task queue (see below), and event loop will run those tasks one after another in FIFO order
+  <br>
+- One thing worth noted is that, any changes that triggers a re-render will add the layout and paint updates needed for rendering the modified elements to the task queue.
+
+<br>
+
+##### **[Back to table](#table)**
+
+---
+
+## Task queue vs Microtask queue {#microtask}
 
 - ==Macrotask queue== (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
-  <br>
+- Nowadays as the browser gets more and more complex, browsers have more than one task queue, and their priorities are:
+
+  - **Microtask queue** -- ==highest==: handling **promises** and **mutationObserver**
+  - **Animation frame queue** -- ==high==: handling the web page repaint
+  - **Interaction queue** -- ==medium==: handling user event callbacks
+  - **Timer queue** -- ==low==: handling timer event callbacks
+  - **Network queue** -- ==lowest==: handling network request callbacks
+    <br>
+
 - Promises are handled by ==microtasks queue==
   - The queue is first-in-first-out(FIFO);
   - only resolved/rejected promise handlers can be enqueued, pending
   - Execution of a task is initialted only when nothing else is running (empty call stack)
     <br>
-- Event loop algorithm:
-
-  - JavaScript has a concurrency model based on an event loop, which is responsible for executing the code, collecting and processing events, and executing queued sub-tasks.
+- Directly put a callback in the microtask queue
+  ```
+  Promise.resolve().then(callback)
+  ```
     <br>
 
-  1. Dequeue and run the oldest task from the ==_macrotask_== queue (Attention: ==main script execution== is considered a ==_macrotask_==, so this part holds true).
-  1. Execute all ==_microtasks_==:
-     - While the microtask queue is not empty:
-       - Dequeue and run the oldest microtask.
-  1. Render changes if any.
-  1. If the macrotask queue is empty, wait till a macrotask appears.
-  1. Go to step 1.
-     <br>
+##### **[Back to table](#table)**
 
+---
+
+## Event loop {#eventloop}
+
+- JavaScript has a concurrency model based on an event loop, which is responsible for executing the code, collecting and processing events, and executing queued sub-tasks.
+  <br>
+
+1. Dequeue and run the oldest task from the **task** queues (Attention: ==main script execution== can be considered a **task**, so this part holds true).
+1. Execute all **microtasks**:
+   - While the **microtask** queue is not empty:
+     - Dequeue and run the oldest **microtask**.
+1. Render changes if any.
+1. If the **macrotask** queue is empty, event loop enters idle and wait till a **macrotask** appears.
+1. Go to step 1.
+   <br>
+
+- more macrotask (web api) or microtask (promise) from current executing task, or unexpected tasks(event listeners) are all accessible to macro/micro-task queues.
+  <br>
 - Tasks in ==_macrotask_== queue or ==_microtask_== queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.
   <br>
 - In general, after main script is finished, all ==microtasks== will be executed before any ==macrotask==.
@@ -1736,17 +1891,24 @@ async function name (args) {
 
 In DOM:
 
+- Root: `document`
 - Everything is **node**;
 - Tags are **elements**;
 - **Element** is a specical type of **node**;
+
   - ==HTMLCollection== is a live collection of **elements**, it is automatically updated when DOM changes;
   - ==NodeList== is a collection of **nodes**;
     <br>
+
+  - `Element.children`: returns a live **HTMLCollection** which contains all of the child **elements** of the element upon which it was called. (only element)
+    <br>
+
 - A ==token== is a string representing the token you want to check for the existence of in the list.
   <br>
 - ==DOMTokenList==: represent a set of space-separated tokens in a form of JS array objects with instance methods.
   e.g., `Element.classList` is a live `DOMTokenList`
   <br>
+
   - `DOMTokenList.item(index)`: return the item in the list by its index
   - `DOMTokenList.contains(token)`: return `true` / `false`
   - `DOMTokenList.supports(token)`: return `true` / `false`
@@ -1762,6 +1924,13 @@ In DOM:
     - `force`: can be `true` or `false`, force toggle() to behave as its boolean return
   - `DOMTokenList.entries()` returns an `iterator`
     <br>
+
+- CSSOM (css object model)
+  - Root: StyleSheetList: `document.styleSheets` (an **DOMTokenList** of CSSStyleSheet)
+  - A styling source is a CSSStyleSheet in the StyleSheetList, e.g.:
+    - `<style>...</style>`
+    - `<link.../>`
+    - `<div style = "color: red">...</div>`
 
 ##### **[Back to table](#table)**
 
@@ -1899,26 +2068,6 @@ In DOM:
    1. those that in some sense evaluate and therefore resolve to a value `1 + 2`
       <br>
 
-1. **Check if a Character is a Letter**
-   Compare the lowercase and uppercase variants of the character
-   `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
-   <br>
-
-1. **Capitalize a string**
-   `string.charAt(0).toUpperCase() + string.slice(1)`
-   <br>
-
-1. **DP problem common characteristics:**
-
-   - Ask for optimum value:
-     - Ask for max/min/longest etc. of something;
-     - Ask for the number of ways to do something;
-   - The future decisions depend on earlier decisions
-     - distinguish DP problem from greedy algorithm / divide and conquer problem
-   - Tips:
-     - DP[i] should have close connection to nums[i];
-       <br>
-
 1. **In `for` loop, the condition could be anything, it doesn't have to be related to `i`.**
 
    ```
@@ -1950,18 +2099,19 @@ In DOM:
    <br>
 
 1. ES6 (ECMAScript 6 or ECMAScript 2015) added features:
-  - `let` and `const`
-  - arrow function
-  - spread and rest operator `...`
-  - `for` (const key `of` obj)
-  - Map Object
-  - Set Object
-  - `Object.entries()`
-  - Classes
-  - Promise
-  - Symbol
-  - Default parameters
-  - JavaScript Modules
-  - ... 
+
+- `let` and `const`
+- arrow function
+- spread and rest operator `...`
+- `for` (const key `of` obj)
+- Map Object
+- Set Object
+- `Object.entries()`
+- Classes
+- Promise
+- Symbol
+- Default parameters
+- JavaScript Modules
+- ...
 
 ##### **[Back to table](#table)**
