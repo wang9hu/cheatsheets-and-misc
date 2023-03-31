@@ -16,6 +16,7 @@
         - name= "metadata_name" - commonly used together with `content` attribute
         - content= "metadata_content" - e.g. name= "viewpoint" content= "width=device-width"
 1. `<body>`:
+
    1. `<!-- TODO: -->`: comments in html
    1. `<main>`: main content
       - only one `<main>` in doc
@@ -44,22 +45,22 @@
    1. `<a>`: anchor element, link to another page
       - inline
       - attributes:
-        - _href_= "url"
         - _target_= "where_to_display"
-        - "url": could be the following values:
-          - a absolute URL (like `http://www.example.com`)
-          - a relative URL (like `default.html`)
-          - an element with an id within the page (like "#section2")
-          - a script
-          - other protocols
+        - _href_= "url"
+          - "url": could be the following values:
+            - a absolute URL (like `http://www.example.com`)
+            - a relative URL (like `default.html`)
+            - an element with an id within the page (like "#section2")
+            - a script
+            - other protocols
    1. `<span>`: inline container for phrasing content
       - inline
    1. `<form>`: for submitting information
       - attributes:
         - _action_= "where_to_send_data"
-        - _method_= "how to send the data": get / post
+        - _method_= "get | post | ...": how to send the data
         - _target_= "where to display the response that is received after submitting the form."
-        - _autocomplete_="whether a form should have autocomplete on or off": on / off
+        - _autocomplete_="on | off": whether a form should have autocomplete on or off
           ...
       - `<form>` elements:
         - `<input>`: interactive controls for web-based forms
@@ -71,8 +72,8 @@
             - _id_= "identification"
               - must be unique
             - _placeholder_= "hint _for_ `text`\_type_input"
-            - _required_: must fill before submitting for `text` type input
-            - _checked_: for `checkbox` type input
+            - _required_ (bool): must fill before submitting for `text` type input
+            - _checked_ (bool): for `checkbox` type input
         - `<label>`: a caption for an item
           - usually used with `<input>`
           - can be used as
@@ -103,15 +104,103 @@
       - attributes:
         - _height_= "height_of_the_line"
         - _background-color_= "color_of_the_line"
+   1. `<audio>`: embed sound content in a document, such as music or other audio streams.
 
-<br>
+      - attributes:
+
+        - _src_="audio_url"
+        - _controls_ (bool): Specifies that audio controls should be displayed
+        - _autoplay_ (bool): Specifies that the audio will start playing as soon as it is ready
+        - _loop_ (bool): Specifies that the audio will start over again, every time it is finished
+        - _muted_ (bool): Specifies that the audio output should be muted
+        - _preload_ = "auto | metadata | none" : Specifies if and how the author thinks the audio should be loaded when the page loads
+
+          <br>
 
 ---
 
 ## Miscellaneous
 
+- HTML tag bool attribute: only two values (true | false), therefore only include its attribute name without value.
+  - `<input type="checkbox" checked>` is the same as `<input type="checkbox" checked="checked">`
+    <br>
 - Element `id` and `name` must **start with letter**, can have numbers, hypens (`-`), underscores (`_`), colons (`:`) and period (`.`)
   <br>
+
+- Emmet abbreviation + enter: (use Tab to jump to next edit position)
+
+  - `!` =>
+
+    ```
+    <!DOCTYPE html>
+    <html lang="en">
+       <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+       </head>
+       <body>
+
+       </body>
+    </html>
+    ```
+
+  - `div` => `<div></div>`
+  - `div.className` => `<div class="className"></div>`
+  - `div#idName` => `<div id="idName"></div>`
+  - since `div` is the mostly used element tag, the "div" start can be omitted for `div`:
+    - `.className` => `<div class="className"></div>`
+    - `#idName` => `<div id="idName"></div>`
+    - `[style]` => `<div style=""></div>`
+      ...
+  - `p[attribute]` => `<p attribute=""></p>`
+  - `p[attribute="value"]` => `<p attribute="value"></p>`
+  - all chainable:
+    - `[style="color: blue"].class-1.class-2#id-1` =>
+      `<div style="color: blue" class="class-1 class-2" id="id-1"></div>`
+      <br>
+  - Children tags: `header>nav>ul` =>
+
+    ```
+    <header>
+       <nav>
+          <ul></ul>
+       </nav>
+    </header>
+    ```
+
+  - Multiple tags with content and number: `li*3.class-${content with number $$}` =>
+    ```
+    <li class="class-1">content with number 01</li>
+    <li class="class-2">content with number 02</li>
+    <li class="class-3">content with number 03</li>
+    ```
+  - Sibling: `header+main+footer` =>
+
+    ```
+    <header></header>
+    <main></main>
+    <footer></footer>
+    ```
+
+  - Grouping: `(header>nav)+main+footer` =>
+
+    ```
+    <header>
+       <nav></nav>
+    </header>
+    <main></main>
+    <footer></footer>
+    ```
+
+    <br>
+
+  - Tag with different categories:
+    - `form:post` => `<form action="" method="post"></form>`
+    - `input:b|btn|button` => `<input type="button" value="">`
+      <br>
+
 - For `<input type="radio">`, a **radio group** is defined by giving each of radio buttons in the group the same `name`, so that a radio group is established, selecting any radio button in that group **automatically deselects** any currently-selected radio button in the same group.
   <br>
 

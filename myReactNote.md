@@ -158,7 +158,7 @@
 
   ------------------------------------------------------------------------------------------------------------
 
-  // In parent component 
+  // In parent component
   import { useState } from 'react';
   import { SomeContext } from '[path to contextCreator file]';
   import Child from '[path to ChildComp file]';
@@ -166,7 +166,7 @@
   function ParentComp(props) {
     const [someState, setSomeState] = useState(someValue)       // where state is created, usually from other hooks
     return (
-      <SomeContext.Provider value={[someState, setSomeState]}>   // where state is provided to all child 
+      <SomeContext.Provider value={[someState, setSomeState]}>   // where state is provided to all child
         <Child>                                                  // compnents, can be any value (array, obj)
       </SomeContext.Provider value={someState}>
     )
@@ -174,12 +174,12 @@
 
   ------------------------------------------------------------------------------------------------------------
 
-  // In child component 
+  // In child component
   import { useContext } from 'react';
   import { SomeContext } from '[path to contextCreator file]';
 
   function Child(props) {
-    const [someState, setSomeState] = useContext(SomeContext);                    // where state is being used 
+    const [someState, setSomeState] = useContext(SomeContext);    // where state is being used
     return (
       <>
         {...}
@@ -187,16 +187,19 @@
     )
   }
   ```
-<br>
+
+  <br>
 
 - useReducer
 
 <br>
 
 - ==useRef==: reference a value that’s not needed for rendering.
+
   ```
   const ref = useRef(initialValue);
   ```
+
   - return: an object with a single property: `{ current: initialValue }`
   - `initialValue`: the value ref object's current property to be initialled. This value is ignored after ref initialization.
   - change ref value: `ref.current = newValue`, changing it does not trigger a re-render, so refs are not appropriate for storing information you want to display on the screen
@@ -205,7 +208,6 @@
     - Then pass your ref object as the ref attribute to the JSX of the DOM node you want to manipulate: `return <input ref={inputRef} />;`
     - After React creates the DOM node and puts it on the screen, React will set the `current` property of your ref object to that DOM node: `inputRef.current.focus();`
     - React will set the current property back to null when the node is removed from the screen.
-  
 
   <br>
 

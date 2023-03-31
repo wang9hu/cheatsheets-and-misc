@@ -1765,12 +1765,14 @@ What is render in frontend?
      1. ==Parse HTML tags and create DOM==:The main thread will parse the HTML document and construct the DOM tree concurrently.
         <br>
 
-     1. ==Parse and apply CSS styles==: If the main thread runs into `<link>` tag while parsing html, it will pass it down to other threads (such as **network threads** then **preparser thread**) to downloads and parses any linked resources, and conflate the preparsed content in the CSSOM tree. In this way it optimizes the overall parse efficiency, and also this is why CSS parsing does not block html parsing.
+     1. ==Parse and apply CSS styles==: If the main thread runs into `<link>` tag while parsing html, it will pass it down to other threads (such as **network threads** to download the file and then let **preparser thread**) to downloads and parses any linked resources, and conflate the preparsed content in the CSSOM tree. In this way it optimizes the overall parse efficiency, and also this is why CSS parsing does not block html parsing.
         <br>
 
      1. ==Execute JavaScript code==: When the main thread encounters `<script></script>` tag code while parsing the HTML, it will pause HTML parsing process, and if the script needs to download (has a `src` attribute), the main thread will wait for it to finish downloading and executes the code. Because JS code execution may change the DOM tree, which is why HTML parse must pause for JS execution. The JavaScript engine processes the JavaScript code and interacts with the DOM to update the content and appearance of the web page.
-        If the script attempts to access an element that has not been created, it will typically return a null value or undefined. This can result in errors or unexpected behavior, such as elements not being properly styled or functions not executing as intended.
-        <br>
+
+        - _If the script attempts to access an element that has not been created, it will typically return a null value or undefined. This can result in errors or unexpected behavior, such as elements not being properly styled or functions not executing as intended._
+        - [Three ways](#threeways) to make sure DOM loaded before `<script>`
+          <br>
 
      1. At the end of the step 1, it will generate both DOM tree and CSSOM tree, and all default styling, internal/external styling and inline styling will be in the CSSOM tree. These two trees represent the structure of the web page and will potentially be used later.
         <br>
@@ -1926,11 +1928,21 @@ In DOM:
     <br>
 
 - CSSOM (css object model)
+
   - Root: StyleSheetList: `document.styleSheets` (an **DOMTokenList** of CSSStyleSheet)
   - A styling source is a CSSStyleSheet in the StyleSheetList, e.g.:
     - `<style>...</style>`
     - `<link.../>`
-    - `<div style = "color: red">...</div>`
+  - Inline styling is not included in document.styleSheets, it can only be access by that its element
+
+    ```
+    // html
+    <div style="color: red" id="test">...</div>
+
+    // js
+    const myElement = document.getElementById("test");
+    const myInlineStyle = myElement.style;
+    ```
 
 ##### **[Back to table](#table)**
 
@@ -2029,26 +2041,28 @@ In DOM:
 
 1. ![Big O Cheatsheet](./Big_O_cheatsheet.png)
    <br>
-1. let js file execute after html is loaded (3 ways):
+1. Let js file execute after html is loaded:
 
-   - add `defer` to `<script>` tag:
-     - `<script defer type='text/javascript' src='feed.js'></script>`
-     - notice its difference with `async`
-       ![](./script%20async%20defer.png)
-       <br>
-   - in js file, put everything in the callback body
-     `document.addEventListener('DOMContentLoaded', (event) => {});`
-     <br>
-   - put `<script>` at the end of `<body>`
+##### Three ways {#threeways}
 
-     ```
-     <body>
-       ...
-       <script type='text/javascript' src='feed.js'></script>
-     </body>
-     ```
+- add `defer` to `<script>` tag:
+  - `<script defer type='text/javascript' src='feed.js'></script>`
+  - notice its difference with `async`
+    ![](./script%20async%20defer.png)
+    <br>
+- in js file, put everything in the callback body
+  `document.addEventListener('DOMContentLoaded', (event) => {});`
+  <br>
+- put `<script>` at the end of `<body>`
 
-     <br>
+  ```
+  <body>
+    ...
+    <script type='text/javascript' src='feed.js'></script>
+  </body>
+  ```
+
+  <br>
 
 1. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
 
