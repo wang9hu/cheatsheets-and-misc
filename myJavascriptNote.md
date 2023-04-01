@@ -432,35 +432,79 @@ undefined
 <br>
 ##### **[Back to table](#table)**
 ---
-## Regular expression {#RegExp}
+## Regular expression (RegEx) {#RegExp}
 
-- Patterns used to ==match== character combinations in strings
-- Regular expressions are also objects
-- Regular expressions are used with the RegExp methods
-- Two ways to create a `RegExp` object: a literal notation and a constructor:
-  - **literal notation** : a pattern between two slashes, followed by optional flags
-    - `let re = /ab+c/i`
-  - **constructor function**: two parameters(a string or a RegExp object as its first parameter, and a string of optional flags as its second parameter)
-    - `let re = new RegExp('ab+c', 'i')`
-
-Assertion
-
-<br>
-
-Character classes
-
-<br>
-
-Quantifiers
-
-- **x?**: 0 or 1
-- **x+**: 1 or more
-- **x\***: 0 or more
+- RegEx is used to ==match character== combinations in strings
+  <br>
+- A RegEx is also an ==object==
+  <br>
+- RegExs are used with the RegExp methods
   <br>
 
-RegExp methods
+- RegEx is ==case sensitive==, and by default it only return the ==FIRST== match
+  <br>
+- Two ways to create a `RegEx` object: a literal notation and a constructor:
+  - **literal notation** : a pattern between **two forward slashes** (`/.../`), followed by **optional flags**
+    - `let re = /ab+c/i`
+  - **constructor function**: two parameters(a string or a RegExp object as its first parameter, and a string of optional flags as its second parameter) - `let re = new RegExp('ab+c', 'i')`
+    <br>
 
-- re.test()
+##### RegEx syntax within `/.../`:
+
+- Character Classes .
+
+  - `[]`:
+    - `[abc]`: match **ONE single character** from **a set of characters**. // `a` or `b` or `c`;
+    - `[2-8]`: any single digit number from 2 to 8.// `2` or `3` or `4` or .... or `8`
+    - `[c-h]`: any single digit letter from c to h.// `c` or `d` or `e` or .... or `h`
+    - `[c-hD-Z]`: any single digit letter from c to h or from D to Z.
+      <br>
+  - `.` (wildcard character): matches ==any single character== except for line terminators (\n, \r, \u2028, \u2029)
+    <br>
+  - `[^]`(Negate symbol): `[^abc]` matches any single character that is **NOT** from these characters.
+    <br>
+  - `abc|xyz` (or): matches "abc" or "xyz"
+    - `(p|b)ear`: matches "pear" or "bear", use `()` to represent an entity.
+
+  <br>
+
+- Quantifiers:
+
+  - `x+`: matches the preceding item "x" ==1 or more== times (unlimited).
+  - `x*`: matches the preceding item "x" ==0 or more== times (unlimited).
+  - `x{n}`: matches ==EXACTLY== "n" (a positive integer) occurrences of the preceding item "x".
+    - `x{n,}`: matches ==AT LEAST== "n" (a positive integer) occurrences of the preceding item "x".
+    - `x{n,m}`: matches ==at least== "n", ==at most== "m" (n < m) occurrences of the preceding item "x".
+      <br>
+  - `x?`: matches the preceding item "x" 0 or 1 times.
+
+- Metacharacters: (metacharacters can also be used in "[]": `[abc\d]` same as `[abc0-9]`)
+
+  - `\`: escape character, any character behind it will be literal except for other metacharacters
+  - `\d`: same as `[0-9]`, match any digit number character
+  - `\w`: same as `[a-zA-Z0-9_]`, match any letter (case insensitive), number and underscores
+  - `\s`: match whitespace characters (spaces, tabs etc)
+  - `\t`: match tab character only
+    <br>
+
+- Assertions (boundaries)
+  - `^...`: matches the ==beginning== of input. (notice the difference with `[^]`)
+  - `...$`: matches the ==end== of input.
+
+##### Optional Flags:
+
+**settings** added at the **end of RegEx** that can be applied to **modify its behavior**
+
+- `g` : find all that matches, don't return after match
+- `i`: case insensitive for all letter characters
+  - `/[a-zA-Z]/` is the same as `/[a-z]/i`
+
+<br>
+
+RegExp methods
+`const reg = /[abc]/i`
+
+- `reg.test(str)`: test to see if matches: `reg.test('A') // true`
 -
 
 <br>

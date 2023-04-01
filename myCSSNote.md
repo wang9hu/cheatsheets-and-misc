@@ -93,6 +93,12 @@ For element tag
       - Inline elements: The size of inline elements is just the size of their content.
         <br>
 
+- common block box elements:
+  |`<address>`|`<article>`|`<aside>`|`<blockquote>`|`<canvas>`|`<dd>`|`<div>`|
+  |`<dl>`|`<dt>`|`<fieldset>`|`<figcaption>`|`<figure>`|`<footer>`|`<form>`|
+  |`<h1>-<h6>`|`<header>`|`<hr>`|`<li>`|`<main>`|`<nav>`|`<noscript>`|
+  |`<ol>`|`<p>`|`<pre>`|`<section>`|`<table>`|`<tfoot>`|`<ul>`|`<video>`|
+
 In general, you can set various values for the display type using the `display` property, which can have various values:
 
 - `display: flex`:
@@ -157,38 +163,59 @@ In general, you can set various values for the display type using the `display` 
    <br>
 1. To change element color in `<svg>`, add `fill = 'currentColor'` attribute in its tag and change the font color in CSS.
    <br>
-1. `transition` defines the transition between two states of an ==element==, it is a shorthand property for:
-   - `transition-property`
-   - `transition-duration`
-   - `transition-timing-function`
-   - `transition-delay`
-     <br>
+1. `transition` defines the transition between two states of an ==element==,
+   - only works for ==number value== attribute
+   - it is a shorthand property for:
+     - `transition-property`
+     - `transition-duration`
+     - `transition-timing-function`
+     - `transition-delay`
+       <br>
 1. To make the `height` of an element change with `tansition` by toggle classname, don't use `height`, use `max-height` in the transition and set a value on `max-height` to something bigger than your box will ever get.
 
-   ```
-   .item-base {
-      max-height: 0;
-      transition: all 1s ease;
-   }
+```
 
-   .item-changes {
-      max-height: 300px; /* this is way larger than it should reach */
-   }
-   ```
+.item-base {
+max-height: 0;
+transition: all 1s ease;
+}
 
-   <br>
+.item-changes {
+max-height: 300px; /_ this is way larger than it should reach _/
+}
+
+```
+
+<br>
 
 1. `display: flex`
 
    1. defaults:
+
       - `flex-direction: row`
       - `justify-content: flex-start`
       - `align-items`: stretch`
       - `flex-wrap: nowrap`
       - `flex-grow: 0`
       - `flex-shrink: 1`
-   1. `flex-basis` vs `width` / `height`: - `flex-basis` only applies to flex items, sets the initial main size of a flex item - can be specific value or percentage: `10em` / `3px` / `50%` - can be intrinsic sizing keywords: `max-content` / `min-content` / `fit-content` - `flex-basis` only works with main axis: - when `flex-direction` is `row` or `row-reverse`: `flex-basis` control `width` - when `flex-direction` is `column` or `column-reverse`: `flex-basis` control `height` - when applied, has higher priority than `width` / `height`, but not higher than `max/min-width/heigth` - `flex-basis` has no effect on absolutely-positioned flex items, of which `width` and `height` properties would be necessary - `flex` is a shorthand property for `flex-grow`, `flex-shrink` and `flex-basis`.
-      <br>
+        <br>
+
+   1. `flex-basis` vs `width` / `height`:
+
+      - `flex-basis` only applies to flex items, sets the initial main size of a flex item - can be specific value or percentage: `10em` / `3px` / `50%`
+      - can be intrinsic sizing keywords: `max-content` / `min-content` / `fit-content` - `flex-basis` only works with main axis:
+      - when `flex-direction` is `row` or `row-reverse`: `flex-basis` control `width`
+      - when `flex-direction` is `column` or `column-reverse`: `flex-basis` control `height` - when applied, has higher priority than `width` / `height`, but not higher than `max/min-width/heigth`
+      - `flex-basis` has no effect on absolutely-positioned flex items, of which `width` and `height` properties would be necessary
+      - `flex` is a shorthand property for `flex-grow`, `flex-shrink` and `flex-basis`.
+        <br>
+
+1. `text-align: center`
+
+   - inherited: true
+   - horizontal alignment of the **inline box** inside a **block box** or table-cell box
+   - this will make all the inline boxes to be centeralized in their parent block boxes
+     <br>
 
 1. Margin collapsing:
 
@@ -198,11 +225,14 @@ In general, you can set various values for the display type using the `display` 
    - Margins of **floating** and **absolutely** positioned elements never collapse.
    - Margins don't collapse in a container with display set to `flex`.
      <br>
+
    - 3 basic cases:
+
      1. Adjacent siblings
      1. No content separating parent and descendants
      1. Empty blocks
         <br>
+
    - To prevent parent-child element margin collapsing, style the parent element with `overflow` to `hidden` or `auto`.
 
    - setting `overflow` property establishes a new `block formatting context`, which suppresses margin collapsing
@@ -211,13 +241,13 @@ In general, you can set various values for the display type using the `display` 
      <br>
 
 1. ==Bootstrap==:
-   1. **Content delivery network** ( ==CDN== ) is a quick and easy way of applying css framework, like bootstrap e.g.
-      ```
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-      ```
-      - pros: simple & convenient
-      - cons: can't customize bootstrap css
-   1. another way to use bootstrap is to download bootstrap source file (sass source files) and make customized sass and compile it in sass compiler
-   1. bootstrap 5 doesn't require jquery as a dependency
-      <br>
+1. **Content delivery network** ( ==CDN== ) is a quick and easy way of applying css framework, like bootstrap e.g.
+   ```
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+   ```
+   - pros: simple & convenient
+   - cons: can't customize bootstrap css
+1. another way to use bootstrap is to download bootstrap source file (sass source files) and make customized sass and compile it in sass compiler
+1. bootstrap 5 doesn't require jquery as a dependency
+   <br>

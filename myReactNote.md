@@ -350,3 +350,91 @@ put on UI:
   - if component is connected to the store
     <br>
 - use Hooks as a more popular method instead of `mapStateToProps`
+
+## <br>
+
+---
+
+## Webpack
+
+Module/Code bundler
+
+- reason to use:
+
+  - uglifying and minifying: save resources
+  - can use Modularity, which prevents global namespace polluting, and converts to one file ( bundle.js ) when uploading
+  - can use newest tech for building: e.g., can transfer JSX to JS, Html, and CSS
+
+- Modules: ==Common JS== (CJS) vs ==ES6 modules== (ESM)
+
+  - CJS: `require` & `module.exports`
+    - Node.js modules:
+      - three types: **Modules you write**, **build-in**, **community npm**
+      - all based on `require` and `module.exports`
+  - ESM: `import` & `export`
+
+    - mostly use in frontend ( ==React== application)
+    - can `export` multiple things
+    - also has `export default`:
+
+    ```
+    // fruits.js
+    export default Apple = props => {};
+    export const Banana = props => {};
+    export const Cherry = props => {};
+
+    // fruit_stand.js
+    import fruitOne from 'fruits; // fruitOne is Apple
+    import fruitOne, * as myModule from 'fruits'; // fruitOne is still Apple, myModule is { Apple, Banana, Cherry }
+    import fruitOne, { Cherry } from 'fruits'; // Cherry is Cherry
+    ```
+
+- webpack bundling starts in the terminal and gives an entry point
+
+  - `npm run bundle`
+  - `dist/main.js`
+  - webpack loaders
+    - babel-loaders: for transpiling JS code
+    - css-loaders: for modulaized CSS
+  - webpack plugins: do things loaders cannot do
+    - minifying code: stripping whitespaces
+    - uglifying code: code download faster
+  - webpack-dev-server
+
+    - live-reloading
+    - won't create bundle.js, instead save it in memory
+    - in development, usually utilize two server:
+      - webpack-dev-server: localhost:8080
+      - express server: localhost:3000
+
+  - node react set up:
+    - commands: (could repalce `-D` for `--save-dev`)
+      ```
+      npm install react
+      npm install react-dom
+      npm install webpack --save-dev
+      npm install webpack-cli --save-dev
+      npm install webpack-dev-server --save-dev
+      npm install @babel/core --save-dev
+      npm install babel-loader --save-dev
+      npm install @babel/preset-react --save-dev
+      npm install @babel/preset-env --save-dev
+      npm install html-webpack-plugin --save-dev
+      ```
+    - script:
+      ```
+       "dependencies": {
+          "react": "^18.2.0",
+          "react-dom": "^18.2.0"
+        },
+        "devDependencies": {
+          "@babel/core": "^7.20.12",
+          "@babel/preset-env": "^7.20.2",
+          "@babel/preset-react": "^7.18.6",
+          "babel-loader": "^9.1.2",
+          "html-webpack-plugin": "^5.5.0",
+          "webpack": "^5.75.0",
+          "webpack-cli": "^5.0.1",
+          "webpack-dev-server": "^4.11.1"
+        }
+      ```

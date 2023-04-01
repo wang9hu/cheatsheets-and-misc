@@ -170,13 +170,19 @@
     </header>
     ```
 
-  - Multiple tags with content and number: `li*3.class-${content with number $$}` =>
-    ```
-    <li class="class-1">content with number 01</li>
-    <li class="class-2">content with number 02</li>
-    <li class="class-3">content with number 03</li>
-    ```
-  - Sibling: `header+main+footer` =>
+  - Multiple tags `*` with content `{}` and numbering `$`:
+    - `li*3.class-${content with number $$}` =>
+      ```
+      <li class="class-1">content with number 01</li>
+      <li class="class-2">content with number 02</li>
+      <li class="class-3">content with number 03</li>
+      ```
+      multiple `$` will pad zeron upfront
+    - `lorem`: an abbreviation for generating "Lorem Ipsum" placeholder text, no need for `{}`, default 30 words, add number of word to the end
+      - `p>lorem5` => `<p>Lorem ipsum dolor sit amet.</p>`
+      - `span*3>lorem3` => `<span>Lorem, ipsum dolor.</span><span>Quod, rem. Velit!</span><span>Esse, nam laudantium!</span>`
+        <br>
+  - Sibling `+`: `header+main+footer` =>
 
     ```
     <header></header>
@@ -184,7 +190,7 @@
     <footer></footer>
     ```
 
-  - Grouping: `(header>nav)+main+footer` =>
+  - Grouping `()`: `(header>nav)+main+footer` =>
 
     ```
     <header>
@@ -196,7 +202,7 @@
 
     <br>
 
-  - Tag with different categories:
+  - Tag with different categories `:`:
     - `form:post` => `<form action="" method="post"></form>`
     - `input:b|btn|button` => `<input type="button" value="">`
       <br>
