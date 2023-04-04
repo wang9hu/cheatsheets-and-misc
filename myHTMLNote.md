@@ -127,7 +127,7 @@
 - Element `id` and `name` must **start with letter**, can have numbers, hypens (`-`), underscores (`_`), colons (`:`) and period (`.`)
   <br>
 
-- Emmet abbreviation + enter: (use Tab to jump to next edit position)
+- ==Emmet abbreviation== + enter: (use Tab to jump to next edit position)
 
   - `!` =>
 
@@ -210,17 +210,18 @@
 - For `<input type="radio">`, a **radio group** is defined by giving each of radio buttons in the group the same `name`, so that a radio group is established, selecting any radio button in that group **automatically deselects** any currently-selected radio button in the same group.
   <br>
 
-- HTML entities: reserved characters in HTML
+- ==HTML entities==: reserved characters in HTML (use HTML reference chart)
+  a piece of text ("string") that begins with an ampersand `&` and ends with a semicolon `;`
 
-  - &_entity_name_
-  - &#_entity_number_ (decimal)
-  - &#==x==_entity_number_ (hex)
+  - `&_entity_name_;`: &amp; => `&amp;` | &num; => `&num;`
+  - `&#_entity_number_;` : &#38; => `&#38;` | &#35; => `&#35;`
+  - `&#x_entity_number_;`(hex nubmer) : &#x26; => `&#x26;` | &#x23; => `&#x23;`
     <br>
 
-- MouseEvent: `clientX` vs `pageX` vs `screenX` vs `offsetX`
+- ==MouseEvent==: `clientX` vs `pageX` vs `screenX` vs `offsetX`
   - `clientX`: visible area on the page
   - `pageX`: entire page area, scrolling doesn't matter
-  - `screenX`: entire screen area
+  - `screenX`: entire screen area (window usually not take the whole screen, e.g. browser interface)
   - `offsetX`: relative to the position of the padding edge of the target node
     <br>
 - Difference between ==node== and ==element== in DOM

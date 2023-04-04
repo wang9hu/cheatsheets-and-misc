@@ -101,42 +101,43 @@
   },[dependencies])
   ```
 
-- ==useMemo==: cache the result of a calculation between re-renders.
+- ==useMemo==: cache the **result** of a calculation between re-renders.
 
-  - first parameter is the function that calculating the value, should take no input and return a value
+  - first parameter is the function that **calculating the value**, should take **no input** and return a value
   - second parameter is the array of dependencies that triggered the useMemo
   - useMemo will return previous value if dependencies are the same for rerender
 
   ```
-  const cachedValue = React.useMemo(calculateValue, [dependicies])
-
+  // below, cachedvalue = calculateValue();
+  const cachedValue = React.useMemo(calculateValue, [dependicies]);
   ```
 
-  useMemo hook common cases:
+  **Common use cases:**
 
   1. make a slow function wrap inside useMemo so that doesn't re-compute for every re-render
   1. make sure the reference of an object or an array is exactly the same as it was in the last rendered
      <br>
 
-- ==useCallback==: cache a function definition between re-renders.
+- ==useCallback==: cache a **function** definition between re-renders.
 
-  - just like useMemo, but it return the first paramenter, which is the entire function, instead of the return value of the function, and the function could have input
+  - just like useMemo, but it return the first paramenter, which is the **entire function**, instead of the return value of the function, and the function could have input
+  - Essentailly, `useCallback(myFunction, dependencyArray)` is equivalent to `useMemo(()=>myFunction, dependencyArray)`
 
   ```
   const [number, setNumber] = useState(1);
 
-  // below will reassign to getItems function for other unrelated re-render
+  // Upon re-render, below will reassign to a new getItems function
   const getItems = () => {
     return [number, number + 1, number + 2]
   }
 
-  // below will not recreate getItems function for re-render if number doesn't change
+  // Upon re-render, below will not re-create getItems function if number doesn't change
   const getItems = React.useCallback(() => {
     return [number, number + 1, number + 2]
   }, [number])
   ```
 
-  useCallback hook common case:
+  **Common use case:**
 
   1. make sure the reference of an function is exactly the same as it was in the last rendered, such as passing function to child component
   1. for some reason creating a function is really slow for each re-render (rarely)
@@ -145,52 +146,68 @@
 - ==useContext==: lets you read and subscribe to context from your component
 
   - Context lets the parent component make some information available to **any** component in the tree below it—no matter how deep—without passing it explicitly through props.
-  - The context is created by `createContext` function (`React.createContext()`)
-    - if no defaultValue, specify `null`
-    - return a context object that doesn't hold any information, it represents which context other components read or provide.
 
-  ```
-  // In contextcreator file (could also integrated in parent component file)
-  // call createContext to create a context and export it
-  import { createContext } from 'react';
+  1. _SomeContext_ is created by `createContext` function (`React.createContext()`)
 
-  export const SomeContext = createContext(defaultValue)
+     - if no defaultValue, specify `null` as input
+     - return a context object that doesn't hold any information, it represents which context other components read or provide.
+     - This could be done in _contextcreator_ file, or integrated in highest parent component
 
-  ------------------------------------------------------------------------------------------------------------
+     ```
+     // call createContext to create a context
+     import { createContext } from 'react';
 
-  // In parent component
-  import { useState } from 'react';
-  import { SomeContext } from '[path to contextCreator file]';
-  import Child from '[path to ChildComp file]';
+     // and export it if in seperate contextcreator file
+     export const SomeContext = createContext(defaultValue)
+     ```
 
-  function ParentComp(props) {
-    const [someState, setSomeState] = useState(someValue)       // where state is created, usually from other hooks
-    return (
-      <SomeContext.Provider value={[someState, setSomeState]}>   // where state is provided to all child
-        <Child>                                                  // compnents, can be any value (array, obj)
-      </SomeContext.Provider value={someState}>
-    )
-  }
+  1. In parent component, import the created _SomeContext_ from _contextcreator_ file
 
-  ------------------------------------------------------------------------------------------------------------
+     - usually use other hooks to create some **state** for context
+     - in the return, wrap children component with `<Somecontext.provider>` tag
+     - in `<Somecontext.provider>` tag, pass the **state** as `value` attribute
+     - now all children component within have access to **state**
 
-  // In child component
-  import { useContext } from 'react';
-  import { SomeContext } from '[path to contextCreator file]';
+     ```
+     import { useState } from 'react';
+     import { SomeContext } from '[path to contextCreator file]';
+     import Child from '[path to ChildComp file]';
 
-  function Child(props) {
-    const [someState, setSomeState] = useContext(SomeContext);    // where state is being used
-    return (
-      <>
-        {...}
-      </>
-    )
-  }
-  ```
+     function ParentComp(props) {
+       const [someState, setSomeState] = useState(someValue)
+
+       return (
+         <SomeContext.Provider value={[someState, setSomeState]}>
+           <Child>
+         </SomeContext.Provider value={someState}>
+       )
+     }
+     ```
+
+  1. In child component, import `useContext` hook and _Somecontext_
+
+     - invoke `useContext` and pass _Somecontext_ as input
+     - assign the return value with variables in the same format of the **state** from `<Somecontext.provider>`
+     - _Note_: when assign the return value of `useContext()` to variables in child component, this child component will re-render whenever _SomeContext_ changes, whether or not variables are used does not matter.
+
+     ```
+     // In child component
+     import { useContext } from 'react';
+     import { SomeContext } from '[path to contextCreator file]';
+
+     function Child(props) {
+       const [someState, setSomeState] = useContext(SomeContext);
+       return (
+         <>
+           {...}
+         </>
+       )
+     }
+     ```
 
   <br>
 
-- useReducer
+- ==useReducer==
 
 <br>
 
@@ -211,15 +228,66 @@
 
   <br>
 
-  React Problem: props drilling
+- ==memo()==: `React.memo` is like `useMemeo` but for components. It lets you skip re-rendering a component when its `props` are unchanged.
+  `const MemoizedComponent = memo(SomeComponent[, arePropsEqual])`
+
+  - `SomeComponent`: The component that you want to memoize.
+  - `arePropsEqual`: (optional) A function that accepts two arguments: the component’s previous props, and its new props.
+    - return `true` if the old and new props are equal
+    - By default, React will compare each prop with `Object.is(prevProps, newProps)`.
+  - **return**: a new React component behaves the same as the component provided to `memo`
+  - _Note_: the returned new component will still re-render when state or context inside changes
+
+    ```
+    function App() {
+      const exampleData = {test: "Oui Monsieur"};
+      const memoizedData = useMemo(() => exampleData,[]);
+
+      const stringFunction = (s) => s.split("").reverse().join("");
+      const memoizedCB = useCallback(stringFunction, []);
+
+      return (
+        <div className="App">
+          <main>
+            {/* below two will re-render when App re-render*/}
+            <MemoPropsCountComponent data={exampleData} stringFunction={stringFunction} />
+            <MemoPropsCountComponent data={memoizedData} stringFunction={stringFunction} />
+            {/* below will only render once */}
+            <MemoPropsCountComponent data={memoizedData} stringFunction={memoizedCB} />
+          </main>
+        </div>
+      );
+    }
+
+    const MemoPropsCountComponent = React.memo((props) => {
+      const otherCountRef = useRef(0);
+      const testString = 'hello';
+      useEffect(() => {
+        otherCountRef.current++;
+      });
+      return (
+        <div className="counter">
+          <p>Current count: {otherCountRef.current} </p>
+          <p> Function:  {props.stringFunction(testString)} </p>
+          <p> Data: {JSON.stringify(props.data)} </p>
+        </div>
+      );
+    });
+    ```
+
+    **Common use case**:
+
+  - Use it when you do not want child component re-render when its parent is being re-rendered unless its props have changed.
+  - Combine with `useMemo`, `useCallback` in parent component to ensure on `props` not changing accidentally
+    <br>
 
 ### When does rerender trigger
 
 Initial render: when a component first appears on the screen
 
 1. The props passed in component changed
-1. Internal state change (useState)
-1. Parent component rerendered (unless React.memo() is called for a component)
+1. Internal state change (`useState`, `useContext`, `setState`...)
+1. Parent component rerendered (unless `React.memo()` is called for a component)
 
 ## Redux:
 

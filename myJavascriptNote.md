@@ -436,7 +436,7 @@ undefined
 
 - RegEx is used to ==match character== combinations in strings
   <br>
-- A RegEx is also an ==object==
+- A RegEx is an ==object==
   <br>
 - RegExs are used with the RegExp methods
   <br>
@@ -482,18 +482,21 @@ undefined
 
   - `\`: escape character, any character behind it will be literal except for other metacharacters
   - `\d`: same as `[0-9]`, match any digit number character
-  - `\w`: same as `[a-zA-Z0-9_]`, match any letter (case insensitive), number and underscores
+  - `\w`: same as `[a-zA-Z0-9_]`, match any ==letter== (case insensitive), ==number== and ==underscores==
+    - `\W`: same as `[^a-zA-Z0-9_]`, match any characters but letter (case insensitive), number and underscores
   - `\s`: match whitespace characters (spaces, tabs etc)
+    - `\S`: match any characters but whitespace characters (spaces, tabs etc)
   - `\t`: match tab character only
     <br>
 
 - Assertions (boundaries)
   - `^...`: matches the ==beginning== of input. (notice the difference with `[^]`)
   - `...$`: matches the ==end== of input.
+    - `^x{n}$`: ==EXACTLY== n (positive integer) characters
 
 ##### Optional Flags:
 
-**settings** added at the **end of RegEx** that can be applied to **modify its behavior**
+Settings added at the **end of RegEx** that can be applied to **modify its behavior**
 
 - `g` : find all that matches, don't return after match
 - `i`: case insensitive for all letter characters
@@ -501,11 +504,11 @@ undefined
 
 <br>
 
-RegExp methods
+##### RegExp methods
+
 `const reg = /[abc]/i`
 
 - `reg.test(str)`: test to see if matches: `reg.test('A') // true`
--
 
 <br>
 
@@ -793,7 +796,11 @@ RegExp methods
 
     - return: A Boolean indicating whether or not the two arguments are the same value.
     - truthy: both `undefined`/`null`/`NaN`/`true` or `false`/same strings/same reference/same number/`+0` or `-0`
-    - vs `==`:
+    - vs `==`: `Object.is()` does not coerce value types
+    - vs `===`:
+      - `-0 === 0` is true while `Object.is(-0, 0)` is false
+      - `NaN === NaN` is false while `Object.is(NaN, NaN)` is true
+        <br>
 
   - **Object.assign()**: `Object.assign(target, ...sources)`
 
@@ -1798,7 +1805,7 @@ What is render in frontend?
 - The main thread in renderer handles HTML and CSS parsing, computing element properties, JS execution, layout, painting and compositing.
   <br>
 
-- An [event loop](#eventloop) is created when the main thread of a renderer process is started in a web browser, and it is responsible for managing the order in which tasks are executed, including the parsing and rendering of HTML and CSS. (see below)
+- An [event loop](#eventloop) is created when the main thread of a renderer process is started in a web browser, and it is responsible for **managing the order** in which tasks are executed, including the parsing and rendering of HTML and CSS. (see below)
   <br>
 - Main renderer thead handles HTML and CSS parsing, computing, layout, JS execution, layout, painting, asynchronous events (user event, timer events, callbackes,..) the rendering thread works as these steps:
   <br>
@@ -1988,6 +1995,8 @@ In DOM:
     const myInlineStyle = myElement.style;
     ```
 
+    <br>
+
 ##### **[Back to table](#table)**
 
 ---
@@ -2093,6 +2102,8 @@ In DOM:
   - `<script defer type='text/javascript' src='feed.js'></script>`
   - notice its difference with `async`
     ![](./script%20async%20defer.png)
+  - usually `defer` is better than `async` cause it ensure the order of scripts and doesn't block the rendering of the page
+  - If the script is not critical to the functionality of the page and doesn't rely on the page's content, `async` can be used to improve the page's loading performance.
     <br>
 - in js file, put everything in the callback body
   `document.addEventListener('DOMContentLoaded', (event) => {});`
