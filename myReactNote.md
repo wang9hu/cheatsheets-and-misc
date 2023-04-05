@@ -89,17 +89,21 @@
   console.log(updateState); // 'Function(){}' that can be used to update that state, it accepts a new state value and enqueues a re-render of the component.
   updateState('next state'); // update the state
   ```
+  <br>
 - ==useEffect==: Equivalent of lifecycle methods
 
   - Needs to do something **after render** (initial or update).
-  - `[dependencies]`, only run if dependencies changed
-  - if `[dependencie]` omitted, only run for the initial render
+  - if no `[dependencies]`, will run after initial and each update
+  - if `[dependencies]`, only run if dependencies changed
+  - if `[]` (dependencies omitted), only run after the initial render
 
   ```
   React.useEffect(() => {
     console.log('component updated');
   },[dependencies])
   ```
+
+  <br>
 
 - ==useMemo==: cache the **result** of a calculation between re-renders.
 
@@ -120,7 +124,7 @@
 
 - ==useCallback==: cache a **function** definition between re-renders.
 
-  - just like useMemo, but it return the first paramenter, which is the **entire function**, instead of the return value of the function, and the function could have input
+  - just like `useMemo`, but it return the first paramenter, which is the **entire function**, instead of the return value of the function, and the function could have input
   - Essentailly, `useCallback(myFunction, dependencyArray)` is equivalent to `useMemo(()=>myFunction, dependencyArray)`
 
   ```

@@ -701,6 +701,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - Arrow function: `(element[, index][, array]) => {/*...*/}`
   - Callback function: `callbackFn[, thisArg]`
   - Inline callback funciton: `function(element[, index][, array]) {/*...*/} [,thisArg]`
+    <br>
 
 - ==Note==: `index` manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
   <br>
@@ -711,6 +712,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 - **.forEach(_f_)**: return `undefined`, it executes `callbackFn` once for ==each== `element`
 - **.map(_f_)**: return a new `array` with the results of `callbackFn` for ==each== `element`
+  <br>
 - **.reduce(_f_)**: return the =="accumulated"== value from running `callbackFn` over the entire array
 
   - `element` here are two arguments: `accumulator` & `currentElement`
