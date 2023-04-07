@@ -46,8 +46,11 @@
         cancel choice: track remove choice
       }
     }
+    ```
 
-    // example: Generate Parentheses
+  - Example: Generate Parentheses
+
+    ```
     var generateParenthesis = function(n) {
       if (n === 0) return [];
       const res = [];

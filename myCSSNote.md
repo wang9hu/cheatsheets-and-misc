@@ -164,6 +164,7 @@ In general, you can set various values for the display type using the `display` 
 1. To change element color in `<svg>`, add `fill = 'currentColor'` attribute in its tag and change the font color in CSS.
    <br>
 1. `transition` defines the transition between two states of an ==element==,
+
    - only works for ==number value== attribute
    - it is a shorthand property for:
      - `transition-property`
@@ -171,22 +172,28 @@ In general, you can set various values for the display type using the `display` 
      - `transition-timing-function`
      - `transition-delay`
        <br>
+
+1. animation
+
+- `requestAnimationFrame`
+  <br>
+
 1. To make the `height` of an element change with `tansition` by toggle classname, don't use `height`, use `max-height` in the transition and set a value on `max-height` to something bigger than your box will ever get.
 
-```
+   ```
 
-.item-base {
-max-height: 0;
-transition: all 1s ease;
-}
+   .item-base {
+   max-height: 0;
+   transition: all 1s ease;
+   }
 
-.item-changes {
-max-height: 300px; /_ this is way larger than it should reach _/
-}
+   .item-changes {
+   max-height: 300px; /_ this is way larger than it should reach _/
+   }
 
-```
+   ```
 
-<br>
+   <br>
 
 1. `display: flex`
 
@@ -241,13 +248,13 @@ max-height: 300px; /_ this is way larger than it should reach _/
      <br>
 
 1. ==Bootstrap==:
-1. **Content delivery network** ( ==CDN== ) is a quick and easy way of applying css framework, like bootstrap e.g.
-   ```
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-   ```
-   - pros: simple & convenient
-   - cons: can't customize bootstrap css
-1. another way to use bootstrap is to download bootstrap source file (sass source files) and make customized sass and compile it in sass compiler
-1. bootstrap 5 doesn't require jquery as a dependency
-   <br>
+   1. **Content delivery network** ( ==CDN== ) is a quick and easy way of applying css framework, like bootstrap e.g.
+      ```
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+      ```
+      - pros: simple & convenient
+      - cons: can't customize bootstrap css
+   1. another way to use bootstrap is to download bootstrap source file (sass source files) and make customized sass and compile it in sass compiler
+   1. bootstrap 5 doesn't require jquery as a dependency
+      <br>

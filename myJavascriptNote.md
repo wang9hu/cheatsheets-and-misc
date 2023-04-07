@@ -1798,7 +1798,7 @@ async function name (args) {
     - **renderer**: one renderer process per tag (in sandbox), see below
       <br>
 
-What is render in frontend?
+**What is render in frontend?**
 
 - In general, rendering is just to turn html strings into screen pixel
   <br>
@@ -1815,20 +1815,20 @@ What is render in frontend?
   1. **Parse HTML and construct the Document Object Model (DOM) tree and CSS Object Model (CSSOM) tree**:
      <br>
 
-     1. ==Parse HTML tags and create DOM==:The main thread will parse the HTML document and construct the DOM tree concurrently.
-        <br>
+     i. ==Parse HTML tags and create DOM==:The main thread will parse the HTML document and construct the DOM tree concurrently.
+     <br>
 
-     1. ==Parse and apply CSS styles==: If the main thread runs into `<link>` tag while parsing html, it will pass it down to other threads (such as **network threads** to download the file and then let **preparser thread**) to downloads and parses any linked resources, and conflate the preparsed content in the CSSOM tree. In this way it optimizes the overall parse efficiency, and also this is why CSS parsing does not block html parsing.
-        <br>
+     ii. ==Parse and apply CSS styles==: If the main thread runs into `<link>` tag while parsing html, it will pass it down to other threads (such as **network threads** to download the file and then let **preparser thread**) to downloads and parses any linked resources, and conflate the preparsed content in the CSSOM tree. In this way it optimizes the overall parse efficiency, and also this is why CSS parsing does not block html parsing.
+     <br>
 
-     1. ==Execute JavaScript code==: When the main thread encounters `<script></script>` tag code while parsing the HTML, it will pause HTML parsing process, and if the script needs to download (has a `src` attribute), the main thread will wait for it to finish downloading and executes the code. Because JS code execution may change the DOM tree, which is why HTML parse must pause for JS execution. The JavaScript engine processes the JavaScript code and interacts with the DOM to update the content and appearance of the web page.
+     iii. ==Execute JavaScript code==: When the main thread encounters `<script></script>` tag code while parsing the HTML, it will pause HTML parsing process, and if the script needs to download (has a `src` attribute), the main thread will wait for it to finish downloading and executes the code. Because JS code execution may change the DOM tree, which is why HTML parse must pause for JS execution. The JavaScript engine processes the JavaScript code and interacts with the DOM to update the content and appearance of the web page.
 
-        - _If the script attempts to access an element that has not been created, it will typically return a null value or undefined. This can result in errors or unexpected behavior, such as elements not being properly styled or functions not executing as intended._
-        - [Three ways](#threeways) to make sure DOM loaded before `<script>`
-          <br>
+     - _If the script attempts to access an element that has not been created, it will typically return a null value or undefined. This can result in errors or unexpected behavior, such as elements not being properly styled or functions not executing as intended._
+     - [Three ways](#threeways) to make sure DOM loaded before `<script>`
+       <br>
 
-     1. At the end of the step 1, it will generate both DOM tree and CSSOM tree, and all default styling, internal/external styling and inline styling will be in the CSSOM tree. These two trees represent the structure of the web page and will potentially be used later.
-        <br>
+     iv. At the end of the step 1, it will generate both DOM tree and CSSOM tree, and all default styling, internal/external styling and inline styling will be in the CSSOM tree. These two trees represent the structure of the web page and will potentially be used later.
+     <br>
 
   1. **Get DOM tree with Computed Styles**:
 
@@ -1837,11 +1837,11 @@ What is render in frontend?
      1. At the end of step 2, generate a DOM tree with styles
         <br>
 
-  1. **Get Layout Tree**: (displaying info)
+  1. **Get Layout Tree**: (precise location and dimensions of each element)
 
      - Content must be in inline boxes;
      - Block box and inline box can't be adjacent, so anonymous block box or anonymous inline box will be used as wrapper
-     - Node on layout tree is not a DOM node, it is a C++ node, which can't be access by js
+     - Node on layout tree is not a DOM node, it is a C++ node, which can't be access by JS
        <br>
 
      1. the main thread traverse through the DOM and calculate the ==geometry Information== of each node, generating a ==layout tree==.
@@ -1880,9 +1880,40 @@ What is render in frontend?
 
 - Scheduling task: the main thread in render process uses **Event Loop** to manage the order of tasks, any proceess or threads can add tasks in task queue (see below), and event loop will run those tasks one after another in FIFO order
   <br>
-- One thing worth noted is that, any changes that triggers a re-render will add the layout and paint updates needed for rendering the modified elements to the task queue.
+- One thing worth noted is that, any changes that triggers a re-render (==reflow==) will add the needed layout and paint updates for rendering the modified elements to the task queue.
 
 <br>
+
+**What is ==Reflow== in browser?**
+
+- Also known as **layout** or **re-layout**, is a process that occurs in web browsers when changes are made to the layout of a web page.
+- Reflow is a **==costly operation==** that can cause performance issues and slow down the rendering of a web page.
+- During a reflow, the browser recalculates the layout of the elements on the page, but it doesn't necessarily need to repaint all the layers.
+  <br>
+- Common reasons for reflow:
+  - Resizing the browser window
+  - Adding or removing content that causes dimension/position change
+  - Changes that cause dimensions, positions, padding/margin, font size/line height, display property, or any layout related properties to change
+  - Some animations or transitions can still cause reflows under certain circumstances
+    <br>
+
+**What is ==Repaint== in browser?**
+
+- Repaint refers to the process of updating the visual appearance of an element on a web page without changing its layout.
+  <br>
+- Repaint doesn't necessarily need to come after reflow
+- Reflow doesn't necessarily need to repaint all the layers
+  <br>
+- Common reasons for repaint:
+  - Changing the **background color**, border color, or text color of an element
+  - Changing the **visibility or opacity** of an element
+  - Animating an element using CSS **transitions or animations**
+  - **Updating the content** of an element
+    - change in its size or position: **reflow** -> **repaint**
+    - no change in its size or position: only **repaint**
+  - **Scrolling** the page
+  - Changing the position or size of an element: **reflow** -> **repaint**
+    <br>
 
 ##### **[Back to table](#table)**
 
