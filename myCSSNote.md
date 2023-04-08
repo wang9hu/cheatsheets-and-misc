@@ -175,8 +175,25 @@ In general, you can set various values for the display type using the `display` 
 
 1. animation
 
-- `requestAnimationFrame`
-  <br>
+   - `Window.requestAnimationFrame(callback)`: update the page's visual content at the next available opportunity
+
+     - `callback`: function that is added to task queue, will be invoked right before next repaint
+     - Repaint happens at a rate of 60 times (typically), and generally this doesn't cause reflow
+       <br>
+     - Animation loop:
+
+     ```
+     function animate() {
+       // Do some animation logic
+       window.requestAnimationFrame(animate);
+     }
+
+     animate();
+     ```
+
+     - One important benefit of using `window.requestAnimationFrame(`)` is that it allows the browser to optimize the animation loop to reduce battery drain and improve performance.
+     - The browser can pause the animation loop if the tab is in the background or if the computer is running on battery power, and resume it when appropriate.
+       <br>
 
 1. To make the `height` of an element change with `tansition` by toggle classname, don't use `height`, use `max-height` in the transition and set a value on `max-height` to something bigger than your box will ever get.
 

@@ -9,7 +9,7 @@
 - [Numbers](#number)
 - [String](#string)
 - [Symbol](#symbol)
-- [Operator](#operator)
+- [Operators](#operator)
 - [Regular Expression](#RegExp)
 - [Array](#array)
 - [Object](#object)
@@ -389,7 +389,7 @@ undefined
 <br>
 ##### **[Back to table](#table)**
 ---
-## Operator {#operator}
+## Operators {#operator}
 
 - Logical AND (`&&`):
 
@@ -426,8 +426,25 @@ undefined
     <br>
 
 - Nullish coalescing assignment (`??=`)
+
   - `expr1 ??= expr2`
   - equivalent to `expr1 ?? (expr1 = expr2)`, meaning if `expr1` is `null/undefined`, assign the evaluated value of `expr2` to `expr1`;
+
+- Bitwise operators:
+  - `&` (AND): `0011 & 0101 -> 0001`
+    - Set each bit to 1 if both bits are 1
+  - `|` (OR): `0001 | 0101 -> 0111`
+    - Set each bit to 1 if one of two bits is 1
+  - `^` (XOR): `0011 ^ 0101 -> 0110`
+    - Sets each bit to 1 if ==only== one of two bits is 1
+  - `~` (NOT): Inverts all the bits
+    - for integers, add a negative sign and then minus 1:` ~5 -> -6`
+  - `<<` (Zero fill left shift):
+    - Shifts left by pushing zeros in from the right and let the leftmost bits fall off
+  - `>>` (Signed right shift):
+    - Shifts right by pushing copies of the leftmost bit in from the left, and let the rightmost bits fall off
+  - `<<<` (Zero fill right shift):
+    - Shifts right by pushing zeros in from the left, and let the rightmost bits fall off
 
 <br>
 ##### **[Back to table](#table)**
@@ -782,6 +799,45 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
     <br>
 
+- **Getter**: retrieve the value of an object property, when access getter function name, return its return value.
+
+  ```
+  const person = {
+    firstName: 'John',
+    lastName: 'Doe',
+    get fullName() {
+      return `${this.firstName} ${this.lastName}`;
+    }
+  };
+
+  console.log(person.fullName); // output: "John Doe"
+  ```
+
+  <br>
+
+- **Setter**: set the value of an object property, when assign new value, pass in the new value as the input and execute the setter function
+
+  - _Note_ : Setters are not meant to be accessed directly
+
+  ```
+  const person = {
+    firstName: '',
+    lastName: '',
+    set fullName(name) {
+      const parts = name.split(' ');
+      this.firstName = parts[0];
+      this.lastName = parts[1];
+    }
+  };
+
+  person.fullName = 'John Doe';
+
+  console.log(person.firstName); // output: "John"
+  console.log(person.lastName); // output: "Doe"
+  ```
+
+  <br>
+
 #### **Methods**:
 
 - functions in objects
@@ -794,17 +850,17 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 - Static methods:
   <detail>
 
-  - **Object.is()**: `Object.is(value1, value2)`
+  - `Object.is(value1, value2)`
 
     - return: A Boolean indicating whether or not the two arguments are the same value.
-    - truthy: both `undefined`/`null`/`NaN`/`true` or `false`/same strings/same reference/same number/`+0` or `-0`
+    - truthy: both `undefined`|`null`|`NaN`|`true`/`false`|same strings|same reference|same number|`+0`/`-0`
     - vs `==`: `Object.is()` does not coerce value types
     - vs `===`:
       - `-0 === 0` is true while `Object.is(-0, 0)` is false
       - `NaN === NaN` is false while `Object.is(NaN, NaN)` is true
         <br>
 
-  - **Object.assign()**: `Object.assign(target, ...sources)`
+  - `Object.assign(target, ...sources)`
 
     - return: modified target object
     - Update target properties by properties in the sources if they have the same key
@@ -821,7 +877,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
       <br>
 
-  - **Object.create()**: `Object.create(proto[, propertiesObject])`
+  - `Object.create(proto[, propertiesObject])`
 
     - return: always return an empty object, with the specified \_\_proto\_\_ object [and properties]
     - `propertiesObject`:
@@ -834,66 +890,91 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
       }
       ```
 
+    - create an object with no prototype (_it will loose all the Object methods_)
+      ```
+      const user = Object.create(null);
+      // Add properties to the user object
+      user.name = 'John';
+      user.age = 30;
+      ```
       <br>
 
-  - **Object.defineProperty()**: `Object.defineProperty(obj, prop, descriptor)`
+  - `Object.defineProperty(obj, prop, descriptor)`
 
     - return: the object that was passed to the function
     - `prop`: the name or Symbol of the property to be defined or modified
-    - `descriptor`: objects, could be data descriptor or accessor descriptor
+    - `descriptor`: objects, could be _data descriptor_ or _accessor descriptor_
 
-      - _**data descritpor**_: a property that has a value [default]
-        - configurable [`false`]: true if this `prop` descriptor may be changed and this `prop` could be deleted from object
-        - enumerable [`false`]: true if this `prop` shows up during enumeration (e.g., `for...in` loop, `console.log()` and `Object.keys()` returns enumerable properties only)
+      - **data descritpor**: a property that has a value [default]
+        - configurable [`false`]: `true` if this `prop` descriptor may be changed and this `prop` could be deleted from object
+        - enumerable [`false`]: `true` if this `prop` shows up during enumeration (e.g., `for...in` loop, `console.log()` and `Object.keys()` returns enumerable properties only)
         - ==value== [`undefined`]: property value
-        - ==writable== [`false`]: true if value can be changed with an assignment operator
-      - _**accessor descriptor**_ : a property described by a getter-setter pair of functions
+        - ==writable== [`false`]: `true` if value can be changed with an assignment operator
+        ```
+        const object1 = {};
+        Object.defineProperty(object1, 'property1', {
+          value: 42,
+          writable: false
+        });
+        ```
+      - **accessor descriptor**: a property described by a getter-setter pair of functions
+
         - configurable [`false`]: same as in _data decsriptor_
         - enumerable [`false`]: same as in _data decsriptor_
         - ==get== [`undefined`]: a function serves as a _getter_ for the property
         - ==set== [`undefined`]: a function serves as a _setter_ for the property
 
-    ```
-    const object1 = {};
-    Object.defineProperty(object1, 'property1', {
-      value: 42,
-      writable: false
-    });
-    ```
+      ```
+      // make a read-only object property
+      const obj = {};
+      Object.defineProperty(obj, 'a', {
+        get: function() {
+          return 123;
+        },
+        set: function(val) {
+          throw new Error(`You are trying to re-assign property \'a\'  with value ${val}, however this property is read-only`)
+        }
+      });
 
-  - **Object.defineProperties()**: `Object.defineProperties(obj, props)`
+      console.log(obj.a) // output: 123
+      obj.a = 456 // output: Uncaught Error: This property cannot be reassigned
+      ```
+
+       <br>
+
+  - `Object.defineProperties(obj, props)`
 
     - return: the object that was passed to the function
     - props: `{prop1:{descriptors}, prop2:{descriptors}}`
 
       <br>
 
-  - **Object.getOwnPropertyDescriptor()**: `Object.getOwnPropertyDescriptor(obj, prop)`
+  - `Object.getOwnPropertyDescriptor(obj, prop)`
 
     - return: A property `descriptor` of the given property if it exists on the object, `undefined` otherwise.
 
-  - **Object.getOwnPropertyDescriptors()**: `Object.getOwnPropertyDescriptors(obj)`
+  - `Object.getOwnPropertyDescriptors(obj)`
 
     - return: An object containing all own property descriptors of an object. Might be an empty object, if there are no properties.
 
     <br>
 
-  - **Object.keys()**: `Object.keys(obj)`
+  - `Object.keys(obj)`
 
     - return: an array of strings representing all the ==enumerable== properties
     - **non-negative integer** keys will be stored **_in front of_** `String` keys or float or negative number keys when using `Object.keys()`
 
-  - **Object.values()**: `Object.values(obj)`
+  - `Object.values(obj)`
 
     - return: an array containing all the ==enumerable== property values
 
       <br>
 
-  - **Object.entries()**: `Object.entries(obj)`
+  - `Object.entries(obj)`
 
     - return: An array of the given object's own enumerable string-keyed property `[key, value]` pairs.
 
-  - **Object.fromEntries()**: `Object.fromEntries(iterable)`
+  - `Object.fromEntries(iterable)`
 
     - return: A new object whose properties are given by the entries of the iterable.
 
@@ -925,17 +1006,48 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
     <br>
 
-  - **Object.getPrototypeOf()**: `Object.getPrototypeOf(obj)`
+  - `Object.getPrototypeOf(obj)`
     - return: The `[[Prototype]]` of the given object, which may be `null`.
 
   <br>
 
-  - **Object.hasOwn()**: `Object.hasOwn(instance, prop)`
+  - `Object.hasOwn(instance, prop)`
 
     - return: `true` if the specified object has directly defined the specified property. Otherwise `false`
     - `Object.hasOwn()` is recommended over `Object.prototype.hasOwnProperty()` because it works for objects created using `Object.create(null)` and with objects that have overridden the inherited `hasOwnProperty()` method.
 
   <br>
+
+  - `Object.preventExtensions(obj)` vs `Object.isExtensible(obj)`
+    - return: same `obj` vs `true|false`
+    - **Can not**:
+      - add new properties
+      - re-assign its prototype
+    - **Still can**:
+      - remove existing properties
+      - change enumerability and configurability
+      - change values of existing writable properties
+      - add/remove new properties to its prototype
+        <br>
+  - `Object.seal(obj)` vs `Object.isSealed(obj)`
+
+    - return: same `obj` vs `true|false`
+    - Equals `Object.preventExtension(obj)` plus **Can not**:
+      - remove existing properties
+      - change enumerability and configurability
+    - **Still can**:
+      - change values of existing writable properties
+      - add/remove new properties to its prototype
+        <br>
+
+  - `Object.freeze(obj)` vs `Object.isFrozen(obj)`
+    - return: same `obj` vs `true|false`
+    - Equals `Object.seal(obj)` plus **Can not**:
+      - change values of existing writable properties
+    - **Still can**:
+      - add/remove new properties to its prototype
+        - To freeze its prototype: `Object.freeze(obj.prototype)`
+          <br>
 
 #### **Error Object**:
 
@@ -1124,10 +1236,6 @@ Every JS function is a `Function` object: `(function(){}).constructor === Functi
   - name: the name of the function
 
   - ==prototype==: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.
-
-  - getter:??
-
-  - setter:??
 
 #### **factory function**
 
@@ -1769,7 +1877,7 @@ async function name (args) {
 
 - The body of an `async function` can be thought of as being split by zero or more `await` expressions.
   <br>
-- ==Top-level code==, up to and including the first `await` expression (if there is one), is executed ==synchronously==.
+- ==Top-level code==, down to and including the first `await` expression (if there is one), is executed ==synchronously==.
   - an `async` function ==without== an `await expression` will run ==synchronously==.
   - when there is an `await expression` inside the function body, the `async` function will always complete ==asynchronously==.
     <br>
@@ -1880,22 +1988,36 @@ async function name (args) {
 
 - Scheduling task: the main thread in render process uses **Event Loop** to manage the order of tasks, any proceess or threads can add tasks in task queue (see below), and event loop will run those tasks one after another in FIFO order
   <br>
-- One thing worth noted is that, any changes that triggers a re-render (==reflow==) will add the needed layout and paint updates for rendering the modified elements to the task queue.
+- **==Note==**: any changes that triggers a re-render (==reflow==) will add the needed layout and paint updates for rendering the modified elements to the task queue.
 
 <br>
 
 **What is ==Reflow== in browser?**
 
 - Also known as **layout** or **re-layout**, is a process that occurs in web browsers when changes are made to the layout of a web page.
-- Reflow is a **==costly operation==** that can cause performance issues and slow down the rendering of a web page.
+  <br>
+- Reflow is a **==costly operation==** because
+  - Layout calculation involves a lot of computational work.
+  - Reflow will **==block JS execution==**
+    <br>
 - During a reflow, the browser recalculates the layout of the elements on the page, but it doesn't necessarily need to repaint all the layers.
   <br>
 - Common reasons for reflow:
-  - Resizing the browser window
+  - **Resizing** the browser window
   - Adding or removing content that causes dimension/position change
-  - Changes that cause dimensions, positions, padding/margin, font size/line height, display property, or any layout related properties to change
-  - Some animations or transitions can still cause reflows under certain circumstances
-    <br>
+  - CSS Changes that cause dimensions, positions, padding/margin, font size/line height, display property, or any layout related properties to change
+  - Some animations or transitions can also cause reflows under certain circumstances
+  - **==Accessing certain properties of an element==**
+    - Reason: because the browser needs to ensure that the current layout values are up-to-date.
+    - Non-exhaustive property list:
+      - `offsetTop/Left/Width/Height/Parent`
+      - `clientWidth/Height`
+      - `scrollTop/Left/Width/Height`
+      - `getComputedStyle()`
+      - `getBoundingClientRect()`
+      - `getClientRects()`
+        ...
+        <br>
 
 **What is ==Repaint== in browser?**
 
@@ -2125,32 +2247,34 @@ In DOM:
 
 ## Interesting concepts {#interesting}
 
-1. ![Big O Cheatsheet](./Big_O_cheatsheet.png)
+##### Three ways let JS file execute after html is loaded {#threeways}
+
+1. add `defer` to `<script>` tag:
+
+   - `<script defer type='text/javascript' src='feed.js'></script>`
+   - notice its difference with `async`
+     ![](./script%20async%20defer.png)
+   - usually `defer` is better than `async` cause it ensure the order of scripts and doesn't block the rendering of the page
+   - If the script is not critical to the functionality of the page and doesn't rely on the page's content, `async` can be used to improve the page's loading performance.
+     <br>
+
+1. in js file, put everything in the callback body
+   `document.addEventListener('DOMContentLoaded', (event) => {});`
    <br>
-1. Let js file execute after html is loaded:
+1. put `<script>` at the end of `<body>`
 
-##### Three ways {#threeways}
-
-- add `defer` to `<script>` tag:
-  - `<script defer type='text/javascript' src='feed.js'></script>`
-  - notice its difference with `async`
-    ![](./script%20async%20defer.png)
-  - usually `defer` is better than `async` cause it ensure the order of scripts and doesn't block the rendering of the page
-  - If the script is not critical to the functionality of the page and doesn't rely on the page's content, `async` can be used to improve the page's loading performance.
-    <br>
-- in js file, put everything in the callback body
-  `document.addEventListener('DOMContentLoaded', (event) => {});`
-  <br>
-- put `<script>` at the end of `<body>`
-
-  ```
-  <body>
-    ...
-    <script type='text/javascript' src='feed.js'></script>
-  </body>
-  ```
+   ```
+   <body>
+     ...
+     <script type='text/javascript' src='feed.js'></script>
+   </body>
+   ```
 
   <br>
+
+1. **Time Complexity**
+   ![Big O Cheatsheet](./Big_O_cheatsheet.png)
+   <br>
 
 1. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
 
@@ -2202,18 +2326,45 @@ In DOM:
 
 1. ES6 (ECMAScript 6 or ECMAScript 2015) added features:
 
-- `let` and `const`
-- arrow function
-- spread and rest operator `...`
-- `for` (const key `of` obj)
-- Map Object
-- Set Object
-- `Object.entries()`
-- Classes
-- Promise
-- Symbol
-- Default parameters
-- JavaScript Modules
-- ...
+   - `let` and `const`
+   - arrow function
+   - spread and rest operator `...`
+   - `for` (const key `of` obj)
+   - Map Object
+   - Set Object
+   - `Object.entries()`
+   - Classes
+   - Promise
+   - Symbol
+   - Default parameters
+   - JavaScript Modules
+   - ...
+     <br>
+
+1. `addEventListener(type, listener[, options/capture])`:
+
+   - By default, event listeners are executed in a process known as **bubbling**, where the event starts at the target element, then propagates up the DOM tree to its parent elements, executing event listeners on each element along the way, until it reaches the root element.
+     <br>
+   - `listener`: The object that receives a notification (an object that implements the Event interface) when an event of the specified type occurs.
+     - can be a callback function ro an object whose `handeEvent()` method servers as the callback function
+     - `e.preventDefault()`: if the event does not get explicitly handled, its default action should not be taken as it normally would be
+     - `e.stopPropagation()`: prevents further propagation of the current event in the capturing and bubbling phases (to parent or other element)
+       <br>
+   - `options`: An object that specifies characteristics about the event listener `{...}`
+
+     - `capture` (bool): If `true`, the event listeners are executed in the opposite order, starting at the root element and propagating down the DOM tree to the target element, before finally reaching the end of the propagation phase. Default `false`
+     - `once` (bool): If `true`, the `listener` would be automatically removed when invoked. Default `false`
+     - `passive` (bool): If `true`, `listener` will never call `preventDefault()`. Default `false`
+     - `signal`: The listener will be removed when the given `AbortSignal` object's `abort()` method is called (Same as `removeEventListener(type, listerner[, options/useCapture])`). If not specified, no `AbortSignal` is associated with the listener.
+
+       ```
+       const controller = new AbortController();
+       const signal = controller.signal;
+       document.getElementById('myButton').addEventListener('click', handleClick, { signal});
+
+       setTimeout(() => {
+         controller.abort();
+       }, 5000);
+       ```
 
 ##### **[Back to table](#table)**

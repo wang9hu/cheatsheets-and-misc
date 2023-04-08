@@ -14,6 +14,10 @@
   `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
   <br>
 
+- **Check if a variable is an integer**
+  `~~a === a`: `true` if integer, `false` other
+  <br>
+
 - **Capitalize a string**
   `string.charAt(0).toUpperCase() + string.slice(1)`
   <br>
