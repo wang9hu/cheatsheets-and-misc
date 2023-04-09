@@ -68,6 +68,7 @@
     - No need to use `this` keyword! You don't have to deal with `state` / `methods`, and your `props` are passed in as a parameter.
     - Less boilerplate. As your component is simply a function, free of the constraints of a React component class, the amount of boilerplate in creating a stateless functional component is greatly reduced. This makes it so the resulting code for you component is concise and and clear.
     - Clearly separates your concerns. This is important when you're separating your application into container and presentational components.
+    - **React Hooks**: functions that allow functional components the ability to do things that were typically only reserved for class components.
   - Cons
     - No access to component lifecycle methods (ie `ComponentDidMount`).
       <br>
@@ -75,27 +76,51 @@
 - **Higher-Order Components**
   - a higher-order component is a function that takes a component and returns a new component.
 
-**React Hooks**: functions that allow functional components the ability to do things that were typically only reserved for class components.
 <br>
 
 ### React Hooks
 
-- ==useState==: state and the function that can changed the state
-  - make sure the passed-in ==reference is different== from the original state reference
-  - use a new reference or use spread syntax
+- Two rules:
+
+  1. Only call hooks at the top level, must **NOT** be calling them within _loops_, _conditions_, and _nested functions_.
+     - Reason: to make sure hooks are called in the same order for every render. The call order is essential for Hooks to work correctly.
+  1. Only call hooks from **React functional components** or other hooks
+     <br>
+
+- **==useState==**: the most common way to manage state in React functional components
+
+  - `const [state, setState] = useState(initialState)`
+    <br>
+  - `initialState`: the value you want the state to be initially
+  - return: state and the function that can changed the state
+  - `state`:
+  - `setState`: `setState(nextState/updater)` function that updates the `state` to a different value and trigger a re-render. Will match the initialState during the first render.
+    - `nextState`: The current state
+    - `updater`:
+  - make sure the passed-in **Reference is Different** from the original state reference (_use a new reference or use spread syntax_)
+    <br>
+
   ```
   const [state, updateState] = React.useState('initial state');
   console.log(state); // 'initial state'
   console.log(updateState); // 'Function(){}' that can be used to update that state, it accepts a new state value and enqueues a re-render of the component.
   updateState('next state'); // update the state
   ```
-  <br>
-- ==useEffect==: Equivalent of lifecycle methods
 
-  - Needs to do something **after render** (initial or update).
-  - if no `[dependencies]`, will run after initial and each update
-  - if `[dependencies]`, only run if dependencies changed
-  - if `[]` (dependencies omitted), only run after the initial render
+  <br>
+
+- **==useEffect==**: Equivalent of lifecycle methods in React class components
+
+  - `useEffect(setup, dependencies?)`
+    <br>
+  - `setup`: a setup function with setup code that connects to external system
+    - `setup` return: [optional] a cleanup function with cleanup code that disconnects from external system
+  - `dependencies`:
+    - if no `[dependencies]`, will run `setup` after initial and each update
+    - if `[dependencies]`, only run `setup` if `dependencies` changed
+    - if `[]` (`dependencies` omitted), only run `setup` after the initial render
+  - return: `undefined`
+    <br>
 
   ```
   React.useEffect(() => {
@@ -103,28 +128,31 @@
   },[dependencies])
   ```
 
-  <br>
+  **Common use case**:
 
-- ==useMemo==: cache the **result** of a calculation between re-renders.
+  - `useEffect` let you “step outside” of React and synchronize your components with some **external system** like a non-React widget, network, or the browser DOM. If there is no external system involved (for example, if you want to update a component’s state when some props or state change), you shouldn’t need an Effect.
+    <br>
 
-  - first parameter is the function that **calculating the value**, should take **no input** and return a value
-  - second parameter is the array of dependencies that triggered the useMemo
+- **==useMemo==**: cache the **result** of a calculation between re-renders.
+
+  - `const cachedValue = useMemo(calculateValue, dependencies)`
+    <br>
+  - `calculateValue`: the function that **calculating the value**, should take **no input** and return a value. On the initial render, `useMemo` returns the result of calling `calculateValue` with no arguments.
+  - `dependencies`: the array of dependencies that triggered the useMemo
   - useMemo will return previous value if dependencies are the same for rerender
+    <br>
 
-  ```
-  // below, cachedvalue = calculateValue();
-  const cachedValue = React.useMemo(calculateValue, [dependicies]);
-  ```
-
-  **Common use cases:**
+    **Common use cases:**
 
   1. make a slow function wrap inside useMemo so that doesn't re-compute for every re-render
   1. make sure the reference of an object or an array is exactly the same as it was in the last rendered
      <br>
 
-- ==useCallback==: cache a **function** definition between re-renders.
+- **==useCallback==**: cache a **function** definition between re-renders.
 
-  - just like `useMemo`, but it return the first paramenter, which is the **entire function**, instead of the return value of the function, and the function could have input
+  - `const cachedFn = useCallback(fn, dependencies)`
+    <br>
+  - just like `useMemo`, but it return the first paramenter, which is the **entire function**, instead of the return value of the function, and the function could have inputs
   - Essentailly, `useCallback(myFunction, dependencyArray)` is equivalent to `useMemo(()=>myFunction, dependencyArray)`
 
   ```
@@ -141,20 +169,26 @@
   }, [number])
   ```
 
+  <br>
+
   **Common use case:**
 
   1. make sure the reference of an function is exactly the same as it was in the last rendered, such as passing function to child component
   1. for some reason creating a function is really slow for each re-render (rarely)
      <br>
 
-- ==useContext==: lets you read and subscribe to context from your component
+- **==useContext==**: lets you read and subscribe to context from your component
+
+  - `const value = useContext(SomeContext)`
+    <br>
 
   - Context lets the parent component make some information available to **any** component in the tree below it—no matter how deep—without passing it explicitly through props.
+    <br>
 
   1. _SomeContext_ is created by `createContext` function (`React.createContext()`)
 
      - if no defaultValue, specify `null` as input
-     - return a context object that doesn't hold any information, it represents which context other components read or provide.
+     - return: a context object that doesn't hold any information, it represents which context other components read or provide.
      - This could be done in _contextcreator_ file, or integrated in highest parent component
 
      ```
@@ -211,28 +245,41 @@
 
   <br>
 
-- ==useReducer==
+- **==useReducer==**
 
 <br>
 
-- ==useRef==: reference a value that’s not needed for rendering.
+- **==useRef==**: reference a value that’s not needed for rendering.
 
-  ```
-  const ref = useRef(initialValue);
-  ```
+  - `const ref = useRef(initialValue);`
+    <br>
 
   - return: an object with a single property: `{ current: initialValue }`
   - `initialValue`: the value ref object's current property to be initialled. This value is ignored after ref initialization.
   - change ref value: `ref.current = newValue`, changing it does not trigger a re-render, so refs are not appropriate for storing information you want to display on the screen
-  - It’s particularly common to use a ref to ==manipulate the DOM==. React has built-in support for this.
-    - first initial ref to null `const inputRef = useRef(null);`
-    - Then pass your ref object as the ref attribute to the JSX of the DOM node you want to manipulate: `return <input ref={inputRef} />;`
-    - After React creates the DOM node and puts it on the screen, React will set the `current` property of your ref object to that DOM node: `inputRef.current.focus();`
-    - React will set the current property back to null when the node is removed from the screen.
+    <br>
+    Common use cases:
+    - It’s particularly common to use a `ref` to ==manipulate the DOM==. React has built-in support for this:
+      1. Initial `ref` to `null`
+         ```
+         const inputRef = useRef(null);
+         ```
+      1. Then pass `ref` object as the `ref` attribute to the JSX of the DOM node you want to manipulate:
+         ```
+         return (
+          <>
+            ...
+            <input ref={inputRef} />;
+            ...
+          </>
+         )
+         ```
+      1. After React creates the DOM node and puts it on the screen, React will set the `current` property of your `ref` object to that DOM node: `inputRef.current.focus();`
+      1. React will set the current property back to `null` when the node is removed from the screen.
 
   <br>
 
-- ==memo()==: `React.memo` is like `useMemeo` but for components. It lets you skip re-rendering a component when its `props` are unchanged.
+- **==memo==**: `React.memo()` is like `useMemeo()` but for components. It lets you skip re-rendering a component when its `props` are unchanged.
   `const MemoizedComponent = memo(SomeComponent[, arePropsEqual])`
 
   - `SomeComponent`: The component that you want to memoize.

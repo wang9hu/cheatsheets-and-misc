@@ -1,29 +1,29 @@
 # Javascript notes
 
-## Table {#table}
+## Table
 
-- [Js Primitive Types](#js-primitive)
+- [Js Primitive Types](#js-primitive-types)
 - [Boolean](#boolean)
 - [Null](#null)
 - [Undefined](#undefined)
-- [Numbers](#number)
+- [Numbers](#numbers)
 - [String](#string)
 - [Symbol](#symbol)
-- [Operators](#operator)
-- [Regular Expression](#RegExp)
+- [Operators](#operators)
+- [Regular Expression](#regular-expression)
 - [Array](#array)
 - [Object](#object)
-- [Generators](#generatorsanditerators)
+- [Generator and iterator](#generator-and-iterator)
 - [Set](#set)
 - [Map](#map)
 - [Function](#function)
 - [Hoist](#hoist)
-- [Asynchronous Javascript](#asynchronous-js)
+- [Asynchronous Javascript](#asynchronous-javascript)
 - [Promise](#promise)
-- [Async/await](#async_await)
-- [Renderer Process](#renderprocess)
-- [Event Loop](#eventloop)
-- [Microtask](#microtask)
+- [Async/await](#async\/await)
+- [Renderer Process](#renderer-process)
+- [Task queue vs Microtask queue](#task-queue-vs-microtask-queue)
+- [Event Loop](#event-loop)
 - [DOM Traversal](#dom)
 - [Web APIs](#webapis)
 - [Web-related terms](#webterms)
@@ -31,7 +31,7 @@
 
 ---
 
-## Js Primitive Types {#js-primitive}
+### Js Primitive Types
 
 - Number, String, Boolean, null, undefined, BigInt, Symbol (#js primitive)
 
@@ -50,7 +50,7 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 ---
 
-### Boolean {#boolean}
+### Boolean
 
 boolean
 : `true` or `false`, no quotes, any value in JS can be used for boolean
@@ -75,27 +75,31 @@ boolean
 
 ---
 
-### Null {#null}
+### Null
 
 null
 : Intentional absence of any value, **must be assigned**
 
 <br>
+
 ##### **[Back to table](#table)**
+
 ---
 
-### Undefined {#undefined}
+### Undefined
 
 undefined
 : Variables that do not have an assigned value, from values that **hasn't been defined** or **doesn't exist**
 
 <br>
+
 ##### **[Back to table](#table)**
+
 ---
 
-### Numbers {#number}
+### Numbers
 
-- No positive/negative/integers/decimal classes, uses **double-precision 64-bit binary format IEEE 754**
+- No positive|negative|integers|decimal classes, uses **double-precision 64-bit binary format IEEE 754**
 - `NaN` is in also `number` type;
 - Two zeros: `0` & `-0`
 - Two infinities: `Infinity` & `-Infinity`
@@ -167,20 +171,20 @@ undefined
 
 ##### Instance Methods
 
-- **.toExponential()**: `123.456.toExponential() = '1.23456e+2' `: return a ==string== representing the scientific notation formatted number
+- **.toExponential()**: `123.456.toExponential() = '1.23456e+2' `: return a <mark>string</mark> representing the scientific notation formatted number
   <br>
-- **.toFixed()**: `123.456.toFixed(x) = '123.4' // x = 1 `: return a ==string== representing the fixed-point notation number, [x] = 0
+- **.toFixed()**: `123.456.toFixed(x) = '123.4' // x = 1 `: return a <mark>string</mark> representing the fixed-point notation number, [x] = 0
   <br>
-- **.toPrecision()**: `123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4` : return a ==string== representing fixed-point or exponential notation rounded to precision significant digits
+- **.toPrecision()**: `123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4` : return a <mark>string</mark> representing fixed-point or exponential notation rounded to precision significant digits
   <br>
-- **.toString()**: `123.456.toString(b) = '443.212' // b = 5` : return a ==string== representing the object in the specified radix (base), default [b] = 10
+- **.toString()**: `123.456.toString(b) = '443.212' // b = 5` : return a <mark>string</mark> representing the object in the specified radix (base), default [b] = 10
   <br>
 
 ##### **[Back to table](#table)**
 
 ---
 
-### String {#string}
+### String
 
 - quoted, single or double, consistent
 - concatenate: `"hello" + ", " + "world!"` = `"hello, world!"`
@@ -226,59 +230,62 @@ undefined
 
 - **.concat()**: `"Hello".concat(", ", "World!")`
 
-  - return: a modified ==copy== of `str` with concatenated `chars`/`substring`(`"Hello, World!`)
+  - return: a modified <mark>copy</mark> of `str` with concatenated `chars`/`substring`(`"Hello, World!`)
 
   <br>
 
-- **.endsWith()**: `str.endsWith(searchstring[, length])`
+- **.endsWith()**: `str.endsWith(searchstring, length?)`
 
   - return: `true` or `false`
-  - default `[length]`= `str.length`
+  - `length`: _optional_ default `str.length`
   - `"markdown file".endsWith('down', 8) // true`
 
-- **.startsWith()**: `str.startsWith(searchstring[, position])`
+- **.startsWith()**: `str.startsWith(searchstring, position?)`
 
   - return: `true` or `false`
-  - default starting `[position]` = `0` (included)
+  - `position`: _optional_ starting position (included), default`0`
     <br>
 
-- **.includes()**: `str.includes(searchstring[, position])`
+- **.includes()**: `str.includes(searchstring, position?)`
 
   - return: `true` or `false`
-  - default starting [position] = `0` (included)
+  - `position`: _optional_ starting position (included), default`0`
   - `"This is a markdown file".includes('This', 1) // false`
 
     <br>
 
-- **.indexOf()**: `str.indexOf(searchstring[, position])`
+- **.indexOf()**: `str.indexOf(searchstring, position?)`
 
   - return: first index of the first occurrence or -1 (not found)
-  - default starting `[position]` = `0` (included)
+  - `position`: _optional_ starting position (included), default`0`
 
   <br>
 
-- **.lastIndexOf()**: `str.lastIndexOf(searchsting[, position])`
+- **.lastIndexOf()**: `str.lastIndexOf(searchstring, position?)`
 
   - return: first index of the last occurrence or -1 (not found)
-  - default ending [position] = `str.length - 1` (included)
+  - `position`: _optional_ ending position (included), default`0`
 
   <br>
 
-- **.padEnd()**: `str.padEnd(targetlength[, padstring])`
+- **.padEnd()**: `str.padEnd(targetlength, padstring?)`
 
-  - return: a modified ==copy== of `str` with `targetlength` and `padstring`
+  - return: a modified <mark>copy</mark> of `str` with `targetlength` and `padstring`
   - `targetlength`: length of the return `str`
+  - `padstring`: _optional_ default <code>"&UnderBracket;"</code>(space)
   - `"hello".padEnd(3) // "hello"` : `targetlength` < `str.length`
-  - <code>"hello".padEnd(10) // "hello&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;" </code> : default `[padstring]`=<code>"&UnderBracket;"</code>(space)
+  - <code>"hello".padEnd(10) // "hello&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;" </code> :
   - `"hello".padEnd(10, '123') // "hello12312"` : `padstring.length` < `targetlength` - `str.length`
   - `"hello".padEnd(10, '12345678') // "hello12345"` : `padstring.length` > `targetlength` - `str.length`
+  <br>
 
-- **.padStart()**: `str.padStart(targetlength[, padstring])`
+- **.padStart()**: `str.padStart(targetlength, padstring?)`
 
-  - return: a modified ==copy== of `str` with `targetlength` and `padstring`
+  - return: a modified <mark>copy</mark> of `str` with `targetlength` and `padstring`
   - `targetlength`: length of the return `str`
+  - `padstring`: _optional_ default <code>"&UnderBracket;"</code>(space)
   - `"hello".padStart(3) // "hello"` : `targetlength` < `str.length`
-  - <code>"hello".padStart(10) // "&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;hello" </code> : default `[padstring]` = <code>"&UnderBracket;"</code>(space)
+  - <code>"hello".padStart(10) // "&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;hello" </code>
   - `"hello".padStart(10, '123') // "12312hello"` : `padstring.length` < `targetlength` - `str.length`
   - `"hello".padStart(10, '12345678') // "12345hello"` : `padstring.length` > `targetlength` - `str.length`
 
@@ -286,31 +293,31 @@ undefined
 
 - **.trim()**: `str.trim()`
 
-  - return: a modified ==copy== of `str` with whitespaces at beginning and end are removed
+  - return: a modified <mark>copy</mark> of `str` with whitespaces at beginning and end are removed
 
 - **.trimStart()**: `str.trimStart()`
 
-  - return: a modified ==copy== of `str` with whitespaces from beginning are removed
+  - return: a modified <mark>copy</mark> of `str` with whitespaces from beginning are removed
 
 - **.trimEnd()**:`str.trimEnd()`
 
-  - return: a modified ==copy== of `str` with whitespaces from end are removed
+  - return: a modified <mark>copy</mark> of `str` with whitespaces from end are removed
 
   <br>
 
 - **.repeat()**: `"Aaa".repeat(3)`
 
-  - return: a modified ==copy== of `str` with repeating (`"AaaAaaAaa"`)
+  - return: a modified <mark>copy</mark> of `str` with repeating (`"AaaAaaAaa"`)
 
   <br>
 
 - **.replace()**: `"Aaa".replace('a', '-') // "A-a"`
 
-  - return: a modified ==copy== of `str` with ==first== occurance replaced
+  - return: a modified <mark>copy</mark> of `str` with <mark>first</mark> occurance replaced
 
 - **.replaceAll()**: `"Aaa".replaceAll('a', '-') // "A--"`
 
-  - return: a modified ==copy== of `str` with ==all== occurance replaced
+  - return: a modified <mark>copy</mark> of `str` with <mark>all</mark> occurance replaced
 
   <br>
 
@@ -320,28 +327,30 @@ undefined
 
   <br>
 
-- **.slice()**: `str.slice(start[, end])`
+- **.slice()**: `str.slice(start, end?)`
 
-  - return: a modified ==copy== of `str[start]` (included) to `str[end]` (excluded)
+  - return: a modified <mark>copy</mark> of `str[start]` (included) to `str[end]` (excluded)
+  - `start`: starting index (included)
+  - `end`: _optional_ ending index (excluded), default `str.length`
   - `start` and `[end]` could be negative integer
   - `"hello".slice(1) // "ello", remove first char`
   - `"hello".slice(-1,1) // ""` : `start` > `end`
 
-- **.substring()**: `str.substring(start[, end])`
+- **.substring()**: `str.substring(start, end?)`
 
-  - return: a ==copy== from `str[start]` (included) to `str[end]` (excluded)
+  - return: a <mark>copy</mark> from `str[start]` (included) to `str[end]` (excluded)
   - almost identical to `str.slice()`, but there are two differences:
 
-    - `"hello".substring(-1,6) // "hello", same as "hello".substring(0,5)` : negative and larger than `str.length` indexes are treated as 0 and `str.length`, repectively
-    - `"hello".substring(4,1) // "ell", same as "hello".substring(1,4)` : ==swap== `start` and `end` when `start` > `end`
+    - Negative and larger than `str.length` indexes are treated as 0 and `str.length`, repectively: `"hello".substring(-1,6) // "hello", same as "hello".substring(0,5)`
+    - <mark>Swap</mark> `start` and `end` when `start` > `end`: `"hello".substring(4,1) // "ell", same as "hello".substring(1,4)`
 
     <br>
 
-- **.split()**: `str.split([seperator][,limit])`
+- **.split()**: `str.split(seperator?,limit?)`
 
-  - return: an `array` whose elements are substrings of `str` seperated by `[seperator]`, and `array.length` <= `[limit]`
-  - `[seperator]`: if leave blank, will put entire string as only element in an array, `'abc'.split(); // ['abc']`
-  - `[limit]`: Maximum number of elements in the returned subarray. If `limit` is `0`, `[]` is returned
+  - return: an `array` whose elements are substrings of `str` seperated by `seperator`, and `array.length` <= `limit`
+  - `seperator`: _optional_ if leave blank, will put entire string as only element in an array, `'abc'.split(); // ['abc']`
+  - `limit`: _optional_ Maximum number of elements in the returned subarray. If `limit` is `0`, `[]` is returned
   - `"a b c d e f".split(' ',4) // ['a','b','c','d']` : 4 elements
   - `"a b c d e f".split(',') // ['a b c d e f']` : 1 element cause `['a b c d e f']` has no `','`
     <br>
@@ -365,10 +374,10 @@ undefined
 
 ---
 
-### Symbol {#symbol}
+### Symbol
 
-- can only be created with `Symbol([lable])`
-  - `label` is optional, only a note for this symbol
+- can only be created with `Symbol(lable?)`
+  - `label`: _optional_ a note for this symbol
 - each symbol is unique
 - a symbol value is only used as an identifier for object propeties
 - when add a symbol as a property, there are two ways
@@ -387,9 +396,12 @@ undefined
 - Symbols can be accessed by `Object.getOwnPropertySymbols()`
 
 <br>
+
 ##### **[Back to table](#table)**
+
 ---
-## Operators {#operator}
+
+## Operators
 
 - Logical AND (`&&`):
 
@@ -436,7 +448,7 @@ undefined
   - `|` (OR): `0001 | 0101 -> 0111`
     - Set each bit to 1 if one of two bits is 1
   - `^` (XOR): `0011 ^ 0101 -> 0110`
-    - Sets each bit to 1 if ==only== one of two bits is 1
+    - Sets each bit to 1 if <mark>only</mark> one of two bits is 1
   - `~` (NOT): Inverts all the bits
     - for integers, add a negative sign and then minus 1:` ~5 -> -6`
   - `<<` (Zero fill left shift):
@@ -447,26 +459,30 @@ undefined
     - Shifts right by pushing zeros in from the left, and let the rightmost bits fall off
 
 <br>
+
 ##### **[Back to table](#table)**
+
 ---
-## Regular expression (RegEx) {#RegExp}
+
+## Regular expression
 
 - RegEx is used to ==match character== combinations in strings
   <br>
-- A RegEx is an ==object==
+- A RegEx is an <mark>object</mark>
   <br>
 - RegExs are used with the RegExp methods
   <br>
 
-- RegEx is ==case sensitive==, and by default it only return the ==FIRST== match
+- RegEx is ==case sensitive==, and by default it only return the <mark>FIRST</mark> match
   <br>
+
 - Two ways to create a `RegEx` object: a literal notation and a constructor:
   - **literal notation** : a pattern between **two forward slashes** (`/.../`), followed by **optional flags**
     - `let re = /ab+c/i`
   - **constructor function**: two parameters(a string or a RegExp object as its first parameter, and a string of optional flags as its second parameter) - `let re = new RegExp('ab+c', 'i')`
     <br>
 
-##### RegEx syntax within `/.../`:
+#### RegEx syntax within `/.../`:
 
 - Character Classes .
 
@@ -478,9 +494,9 @@ undefined
       <br>
   - `.` (wildcard character): matches ==any single character== except for line terminators (\n, \r, \u2028, \u2029)
     <br>
-  - `[^]`(Negate symbol): `[^abc]` matches any single character that is **NOT** from these characters.
+  - `[^...]`(Negate symbol): `[^abc]` matches any single character that is **NOT** from these characters.
     <br>
-  - `abc|xyz` (or): matches "abc" or "xyz"
+  - `|` (or): `abc|xyz` matches "abc" or "xyz"
     - `(p|b)ear`: matches "pear" or "bear", use `()` to represent an entity.
 
   <br>
@@ -489,7 +505,7 @@ undefined
 
   - `x+`: matches the preceding item "x" ==1 or more== times (unlimited).
   - `x*`: matches the preceding item "x" ==0 or more== times (unlimited).
-  - `x{n}`: matches ==EXACTLY== "n" (a positive integer) occurrences of the preceding item "x".
+  - `x{n}`: matches <mark>EXACTLY</mark> "n" (a positive integer) occurrences of the preceding item "x".
     - `x{n,}`: matches ==AT LEAST== "n" (a positive integer) occurrences of the preceding item "x".
     - `x{n,m}`: matches ==at least== "n", ==at most== "m" (n < m) occurrences of the preceding item "x".
       <br>
@@ -499,7 +515,7 @@ undefined
 
   - `\`: escape character, any character behind it will be literal except for other metacharacters
   - `\d`: same as `[0-9]`, match any digit number character
-  - `\w`: same as `[a-zA-Z0-9_]`, match any ==letter== (case insensitive), ==number== and ==underscores==
+  - `\w`: same as `[a-zA-Z0-9_]`, match any <mark>letter</mark> (case insensitive), <mark>number</mark> and <mark>underscores</mark>
     - `\W`: same as `[^a-zA-Z0-9_]`, match any characters but letter (case insensitive), number and underscores
   - `\s`: match whitespace characters (spaces, tabs etc)
     - `\S`: match any characters but whitespace characters (spaces, tabs etc)
@@ -507,9 +523,9 @@ undefined
     <br>
 
 - Assertions (boundaries)
-  - `^...`: matches the ==beginning== of input. (notice the difference with `[^]`)
-  - `...$`: matches the ==end== of input.
-    - `^x{n}$`: ==EXACTLY== n (positive integer) characters
+  - `^...`: matches the <mark>beginning</mark> of input. (notice the difference with `[^]`)
+  - `...$`: matches the <mark>end</mark> of input.
+    - `^x{n}$`: <mark>EXACTLY</mark> n (positive integer) characters
 
 ##### Optional Flags:
 
@@ -533,7 +549,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 ---
 
-## Array {#array}
+## Array
 
 - resizable
 - integers as indexes
@@ -569,19 +585,24 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
     <br>
 
-- **Array.of()**: creates a new Array instance from a variable number of arguments, regardless of number or type of the arguments.
+- **Array.of()**: `Array.of(element0, element1?, /* … ,*/?, elementN?)` creates a new Array instance from a variable number of arguments, regardless of number or type of the arguments.
 
   - return a new `Array` instance.
-  - arguments are the elements, regardless of data type, different from `Array()`
+  - `elementN`: Elements used to create the array.
+  - `Array.of()` vs `Array()`
     ```
-    Array.of(7) // [7]
-    Array(7) // An array of 7 empty slots
+    Array.of(3) // [3]
+    Array(3) // [empty * 3] An array of 7 empty slots
     ```
     <br>
 
-- **Array.from()**: `Array.from(arrayLike[, callbackFn(element[, index]) { /*...*/ } [, thisArg]])`
+- **Array.from()**: `Array.from(arrayLike, callbackFn(element, index?) { /*...*/ }?, thisArg?)`
 
-  - return a new `Array` instance
+  - return: a new `Array` instance
+  - `callbackFn`: _optional_ A function to call on every element of the array
+    - `element`: the current element being processed in the array.
+    - `index`: _optional_ the index of the current element being processed in the array.
+  - `thisArg`: _optional_ Value to use as `this` when executing `callbackFn`.
   - for array-like object specifically.
 
     - object with a `length` property
@@ -601,7 +622,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 #### **Array instance methods**
 
-`const arr = [1,2,3,'a','b','c']`
+`const arr = [1, 2, 3, 'a', 'b', 'c']`
 <br>
 
 - **.at()**: `arr.at(-1) // 'c'`
@@ -610,70 +631,73 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - negative number count back from last item.
     <br>
 
-- **.indexOf()**: `arr.indexOf(searchElement[, start])`
+- **.indexOf()**: `arr.indexOf(searchElement, start?)`
 
-  - return: the ==index== of the first element in the array or -1 (not found)
+  - return: the <mark>index</mark> of the first element in the array or -1 (not found)
+  - `start`: _optional_ starting index (included)
 
-- **.lastIndexOf()**: `arr.lastIndexOf(searchElement[, start])`
+- **.lastIndexOf()**: `arr.lastIndexOf(searchElement, start?)`
 
-  - return: the ==index== of the last element in the array or -1 (not found)
+  - return: the <mark>index</mark> of the last element in the array or -1 (not found)
+  - `start`: _optional_ starting index (included)
     <br>
 
-- **.includes()**: `arr.includes(searchElement[, start])`(case-sensitive)
+- **.includes()**: `arr.includes(searchElement, start?)`(case-sensitive)
 
   - return: `true` or `false`
-  - default `[start]` = `0`
+  - `start`: _optional_ starting index (included), default `0`
   - `arr.includes('a', 4) // false`
 
   <br>
 
-- **.join()**: `arr.join([seperator])`
+- **.join()**: `arr.join(seperator?)`
 
-  - return: a ==string== with all array elements joined.
-  - default `[seperator]` = `","`
+  - return: a <mark>string</mark> with all array elements joined.
+  - `seperator`: _optional_ default `","`
 
 - **.toString()**: `arr.toString()`
 
-  - return: a ==string== representing the elements of the array.
+  - return: a <mark>string</mark> representing the elements of the array.
   - is the same as `arr.join()`
     <br>
 
-- **.concat()**: `arr.concat(arr[, value1, ... , valueN])`
+- **.concat()**: `arr.concat(arr, value1?, /*...*/?, valueN?])`
 
-  - return: a modified ==copy== of `arr` with concatenated elements
+  - return: a modified <mark>copy</mark> of `arr` with concatenated elements
+  - `valueN`: _optional_ Arrays and/or values to concatenate into a new array
   - `arr.concat([4,5,6],'d','e','f') // [1,2,3,'a','b','c',4,5,6,'d','e','f']`
     <br>
 
-- **.slice()**: `arr.slice([start][, end])`
+- **.slice()**: `arr.slice(start?, end?)`
 
-  - return: a modified ==copy== of `arr` with array elements from `arr[start]` (included) to `arr[end]` (excluded)
-  - default `[start]` = `0`, could be negative integer
-  - default `[end]` = `arr.length`, could be negative integer
+  - return: a modified <mark>copy</mark> of `arr` with array elements from `arr[start]` (included) to `arr[end]` (excluded)
+  - `start`: _optional_ default `0`, could be negative integer
+  - `end`: _optional_ default `arr.length`, could be negative integer
     <br>
 
-- **.flat()**: `arr.flat([depth])`
+- **.flat()**: `arr.flat(depth?)`
 
-  - return: a modified ==copy== of `arr` with sub-array elements concatenated into it
-  - default [depth] = `1` (from outside to inside)
+  - return: a modified <mark>copy</mark> of `arr` with sub-array elements concatenated into it
+  - `depth`: _optional_ default `1` (from outside to inside)
   - `[1,[2,[3,4]]].flat() // [1,2,[3,4]]`
     <br>
 
-- **.copyWithin()**: `arr.copyWithin(targetIndex[, start][, end])`(==mutator method==)
+- **.copyWithin()**: `arr.copyWithin(targetIndex, start?, end?)`(==mutator method==)
 
-  - return: the modified array whose elements are replaced starting from `targetIndex` with elements from `[start]`(included) to `[end]` (excluded), no change to `arr.length`
-  - default `[start]` = `0`
-  - default `[end]`=`arr.length`
-  - `targetIndex`, `[start]`, `[end]` could be negative integer
-  - no change when `[start]` >= `[end]`
+  - return: the modified array whose elements are replaced starting from `targetIndex` with elements from `start`(included) to `end` (excluded), no change to `arr.length`
+  - `start`: _optional_ starting index (included), default `0`
+  - `end`: _optional_ ending index (excluded), default `arr.length`
+  - `targetIndex`, `start`, `end` could be negative integer
+  - no change when `start` >= `end`
   - no change when `targetIndex` > `arr.length`
   - `arr.copyWithin(1,3,5) // [1,'a','b','a','b','c']`: start from `arr[1]`,replace `arr[1]`, `arr[2]` with `arr[3]`, `arr[4]`, the rest remain the same
     <br>
 
-- **.fill()**: `arr.fill(value[, start][, end])`(==mutator method==)
+- **.fill()**: `arr.fill(value, start?, end?)`(==mutator method==)
 
-  - return: the modified array whose elements are replaced with `value` from `[start]`(included) to `[end]` (excluded), no change to `arr.length`
-  - default `[start]` = `0`, could be negative integer
-  - default `[end]`=`arr.length`, could be negative integer
+  - return: the modified array whose elements are replaced with `value` from `start`(included) to `end` (excluded), no change to `arr.length`
+  - `start`: _optional_ starting index (included), default `0`
+  - `end`: _optional_ ending index (excluded), default `arr.length`
     <br>
 
 - **.reverse()**: `arr.reverse()` (==mutator method==)
@@ -699,47 +723,50 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
   <br>
 
-- **.splice()**: `arr.splice(start[, deletecount][,additem(s)])` (==mutator method==)
+- **.splice()**: `arr.splice(start, deletecount?, additem(s)?)` (==mutator method==)
 
   - return: an array containing the deleted elements
-  - default `[deletcount]` = `array.length` - `start` (number of elements in array), if omitted, will delete all elements in array and return them in an array.
-    > let arr = [1,2,3]
-    > let removed = arr.splice(0)
-    >
-    > // arr is []
-    > // removed is [1,2,3]
+  - `start`: starting index (included)
+  - `deletcount`: _optional_ default `array.length - start` (number of elements in array), if omitted, will delete all elements in array and return them in an array.
 
-<br>
+  ```
+  let arr = [1,2,3]
+  let removed = arr.splice(0)
+  // arr is []
+  // removed is [1,2,3]
+  ```
+
+  <br>
 
 #### **Array callback methods**
 
-- `CallbackFn` types (_f_): (`thisArg` is used as `this` when executing `callbackFn`)
+- `CallbackFn` types (_fn_): (`thisArg` is used as `this` when executing `callbackFn`)
 
-  - Arrow function: `(element[, index][, array]) => {/*...*/}`
-  - Callback function: `callbackFn[, thisArg]`
-  - Inline callback funciton: `function(element[, index][, array]) {/*...*/} [,thisArg]`
+  - Arrow function: `(element, index?, array?) => {/*...*/}`
+  - Callback function: `callbackFn, thisArg?`
+  - Inline callback funciton: `function(element, index?, array?) {/*...*/}, thisArg?`
     <br>
 
-- ==Note==: `index` manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
+- **<mark>Note</mark>**: index manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
   <br>
 
-- **.every(_f_)**: return `true` if `callbackFn` returns a truthy value for ==every== `element`
+- **.every(_f_)**: return `true` if `callbackFn` returns a truthy value for <mark>every</mark> `element`
   **.some(_f_)**: return `true` if `callbackFn` returns a truthy value for ==at least one== `element`
   <br>
 
-- **.forEach(_f_)**: return `undefined`, it executes `callbackFn` once for ==each== `element`
-- **.map(_f_)**: return a new `array` with the results of `callbackFn` for ==each== `element`
+- **.forEach(_f_)**: return `undefined`, it executes `callbackFn` once for <mark>each</mark> `element`
+- **.map(_f_)**: return a new `array` with the results of `callbackFn` for <mark>each</mark> `element`
   <br>
-- **.reduce(_f_)**: return the =="accumulated"== value from running `callbackFn` over the entire array
+- **.reduce(_f_)**: return the **<mark>accumulated</mark>** value from running `callbackFn` over the entire array
 
   - `element` here are two arguments: `accumulator` & `currentElement`
-  - `[index]` here is `[currentElementIndex]`
-  - no `thisArg`, instead there is a `[initialValue]`, it could be any value
-  - if `[initialValue]`:
-    - `accumulator` = `[initialValue]`
+  - `index` here is `currentElementIndex`
+  - no `thisArg`, instead there is a `initialValue`, it could be any value
+  - if `initialValue`:
+    - `accumulator` = `initialValue`
     - `currentElement` = `array[0]`
     - start from first element `array[0]`
-  - if no `[initialValue]`:
+  - if no `initialValue`:
     - `accumulator` = `array[0]`
     - `currentElement` = `array[1]`
     - start from second element `array[1]`
@@ -760,10 +787,12 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - if omit `compareFn`, a & b are converted to strings, then sorted according to each `char` Unicode value
 
 <br>
+
 ##### **[Back to table](#table)**
+
 ---
 
-## Object {#object}
+## Object
 
 - { key : value } pair
   - key: string (identifier), anything other than string will be forced to string type
@@ -877,10 +906,10 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
       <br>
 
-  - `Object.create(proto[, propertiesObject])`
+  - `Object.create(protoObj, propertiesObject?)`
 
-    - return: always return an empty object, with the specified \_\_proto\_\_ object [and properties]
-    - `propertiesObject`:
+    - return: always return an empty object, with the specified `__proto__` object and properties if `propertiesObject` is passed in
+    - `propertiesObject`: _optional_ an object whose enumerable own properties specify property descriptors to be added to the newly-created object, with the corresponding property names.
 
       ```
       {
@@ -908,8 +937,8 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
       - **data descritpor**: a property that has a value [default]
         - configurable [`false`]: `true` if this `prop` descriptor may be changed and this `prop` could be deleted from object
         - enumerable [`false`]: `true` if this `prop` shows up during enumeration (e.g., `for...in` loop, `console.log()` and `Object.keys()` returns enumerable properties only)
-        - ==value== [`undefined`]: property value
-        - ==writable== [`false`]: `true` if value can be changed with an assignment operator
+        - <mark>value</mark> [`undefined`]: property value
+        - <mark>writable</mark> [`false`]: `true` if value can be changed with an assignment operator
         ```
         const object1 = {};
         Object.defineProperty(object1, 'property1', {
@@ -921,8 +950,8 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
         - configurable [`false`]: same as in _data decsriptor_
         - enumerable [`false`]: same as in _data decsriptor_
-        - ==get== [`undefined`]: a function serves as a _getter_ for the property
-        - ==set== [`undefined`]: a function serves as a _setter_ for the property
+        - <mark>get</mark> [`undefined`]: a function serves as a _getter_ for the property
+        - <mark>set</mark> [`undefined`]: a function serves as a _setter_ for the property
 
       ```
       // make a read-only object property
@@ -961,12 +990,12 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
   - `Object.keys(obj)`
 
-    - return: an array of strings representing all the ==enumerable== properties
+    - return: an array of strings representing all the <mark>enumerable</mark> properties
     - **non-negative integer** keys will be stored **_in front of_** `String` keys or float or negative number keys when using `Object.keys()`
 
   - `Object.values(obj)`
 
-    - return: an array containing all the ==enumerable== property values
+    - return: an array containing all the <mark>enumerable</mark> property values
 
       <br>
 
@@ -1090,7 +1119,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 ---
 
-## Generator and Iterator {#generatorsanditerators}
+## Generator and Iterator
 
 **Generator function**:
 
@@ -1128,9 +1157,9 @@ console.log(generatorObj.next());   // { value: 7, done: false }
 console.log(generatorObj.next());   // { value: undefined, done: true }
 ```
 
-- `genObj.next([nextValue])`: keep running the generator function until reaching the next yield, or reach the end of the function
+- `genObj.next(nextValue?)`: keep running the generator function until reaching the next yield, or reach the end of the function
   - return `{ value: [expression], done: false }` or `{ value: undefined, done: true }`
-  - if pass in a value, this `nextValue` will be the return value of the latest `yield` operator
+  - `nextvalue`: _optional_ if pass in, will be the return value of the latest `yield` operator
     <br>
 - `genObj.return(returnValue)`: as if add `return value` in the generator, finishes the generator and return the object with `returnValue` as the `value`
   - return `{ value: returnValue, done: true }`
@@ -1148,9 +1177,9 @@ console.log(generatorObj.next());   // { value: undefined, done: true }
 
 ---
 
-## Set {#set}
+## Set
 
-The Set object lets you store ==unique== values of any type, whether primitive values or object references.
+The Set object lets you store <mark>unique</mark> values of any type, whether primitive values or object references.
 
 - `Set`: set constructor, work with `new` to creates a new Set object.
 
@@ -1201,15 +1230,15 @@ The Set object lets you store ==unique== values of any type, whether primitive v
 - **forEach**: `setObj.forEach(fn)`
   - executes a provided function once for each value in the Set object, in **insertion** order.
   - `fn`:
-    - `(value[, key, set]) => { /* ... */ }`
-    - `function(value[, key, set]) { /* ... */ }[, thisArg]`
-    - `callbackFn[, thisArg]`
+    - `(value, key?, set?) => { /* ... */ }`
+    - `function(value, key?, set?) { /* ... */ }, thisArg?`
+    - `callbackFn, thisArg?`
 
 ##### **[Back to table](#table)**
 
 ---
 
-## Map {#map}
+## Map
 
 - The `Map` object holds key-value pairs and remembers the ==original insertion order== of the keys.
 - Any value (both **objects** and **primitive values**) may be used as either a **key** or a **value**.
@@ -1218,13 +1247,17 @@ The Set object lets you store ==unique== values of any type, whether primitive v
 **WeakMap**
 
 <br>
+
 ##### **[Back to table](#table)**
 
 ---
 
-## Function {#function}
+## Function
 
-Every JS function is a `Function` object: `(function(){}).constructor === Function //true`
+Every JS function is a `Function` object: 
+  ```
+  (function(){}).constructor === Function //true
+  ```
 
 - **argument**: value passed to function during function invocation
 - **parameter**: placeholder in function definition
@@ -1235,7 +1268,7 @@ Every JS function is a `Function` object: `(function(){}).constructor === Functi
 
   - name: the name of the function
 
-  - ==prototype==: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.
+  - <mark>prototype</mark>: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.
 
 #### **factory function**
 
@@ -1286,7 +1319,7 @@ function ConstructorName(prop) {
 }
 ```
 
-**Note**: methods created in constructor definition is ==duplicated== in every instance
+**Note**: methods created in constructor definition is <mark>duplicated</mark> in every instance
 <br>
 
 - **Add shared methods**:
@@ -1295,7 +1328,7 @@ function ConstructorName(prop) {
 ConstructorName.prototype.method2 = function () {};
 ```
 
-methods created inside of constructor prototype is ==shared== with all instances.
+methods created inside of constructor prototype is <mark>shared</mark> with all instances.
 
 <br>
 
@@ -1359,7 +1392,7 @@ To declare a variable within a class, it needs to be a property of the class or,
 |  &#8970; writable  |              true              |                         false                         |
 | &#8970; enumerable |              true              |                         false                         |
 
-**==Note==**: **non-writable** (`writable: false`) means it cannot be assigned to something else, but it still **can be changed** by adding or deleting properties from inside
+**<mark>Note</mark>**: **non-writable** (`writable: false`) means it cannot be assigned to something else, but it still **can be changed** by adding or deleting properties from inside
 
 - **instanceof**: `object instancof constructor/class`
 
@@ -1405,10 +1438,12 @@ To declare a variable within a class, it needs to be a property of the class or,
   ```
 
 <br>
+
 ##### **[Back to table](#table)**
+
 ---
 
-## Hoist {#hoist}
+## Hoist
 
 Take part of the code and move it to the top of the file
 
@@ -1432,10 +1467,12 @@ console.log(x) // 1
 ```
 
 <br>
+
 ##### **[Back to table](#table)**
+
 ---
 
-## Asynchronous Javascript {#asynchronous-js}
+## Asynchronous Javascript
 
 - AJAX is **asynchronous javascript and XML**, it is a combination of:
   - A browser built-in `XMLHttpRequest` object (to request data from a web server)
@@ -1474,7 +1511,7 @@ console.log(x) // 1
     }
     ```
 
-    - `JSON.stringify(value[, replacer][, space])`
+    - `JSON.stringify(value, replacer?, space?)`
 
       - `Boolean`, `Number`, `String` and `BigInt` are converted to the corresponding primitive values during stringification
       - `Object` (including `Array`) is recursively stringified
@@ -1539,7 +1576,7 @@ console.log(x) // 1
 
       <br>
 
-    - `xhr.onreadystatechange` is an event handler, it defines a function that **will be called** ==whenever== `readyState` changes
+    - `xhr.onreadystatechange` is an event handler, it defines a function that **will be called** <mark>whenever</mark> `readyState` changes
 
       - check when if the request is done:
         ```
@@ -1564,7 +1601,7 @@ console.log(x) // 1
 
     - `xhr.open()`: initializes a newly-created request, or re-initializes an existing one.
       <br>
-    - `xhr.send([data])`: sends the request to the server.
+    - `xhr.send(data?)`: sends the request to the server.
       <br>
     - `xhr.status` returns the numerical HTTP status code of the `XMLHttpRequest`'s response
 
@@ -1613,10 +1650,10 @@ console.log(x) // 1
     ```
 
     - Fetch Intefaces
-      - `fetch(resource[, options])`: method used to fetch a resource.
+      - `fetch(resource, options?)`: method used to fetch a resource.
         - return: a `Promise` that resolves to a `Response` object
-        - options: an object, can include {parameters / value} pairs
-        - ==only reject== when a network error is encountered (does not reject on HTTP errores)
+        - `options`: _optional_ an object, can include { parameter: value } pairs
+        - ==Only reject== when a network error is encountered (does not reject on HTTP errores)
       - `Headers`: Represents response/request headers, allowing you to query them and take different actions depending on the results.
       - `Request`: Represents a resource request.
       - `Response`: Represents the response to a request.
@@ -1635,23 +1672,23 @@ console.log(x) // 1
       - jQuery AJAX could respond to HTTP error
       - jQuery AJAX could receive cookies from server
         <br>
-    - The 'base' jQuery AJAX Method: `$.ajax([url][, settings])`
+    - The 'base' jQuery AJAX Method: `$.ajax(url?, settings?)`
 
       - `$.ajax()` is the same as `jQuery.ajax()`
-      - settings`{ ... }`: A set of key/value pairs that configure the Ajax request
-        - common settings:
-          - method: HTTP method to use for the request (default: `GET`)
-          - url: the URL to which the request is sent (default: `The current page`)
-          - data: data to be sent to the server
-          - datatype: type of data expected from the server (default: `Intelligent Guess (xml, json, script, or html)`)
-          - cache: If set to `false`, it will force requested pages not to be cached by the browser. (default: `true, false for dataType 'script' and 'jsonp'`)
-          - `success`: A ==function== to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
+      - `settings`: _optional_ A set of key/value pairs that configure the Ajax request
+        - common setting keys:
+          - `method`: HTTP method to use for the request (default: `GET`)
+          - `url`: the URL to which the request is sent (default: `The current page`)
+          - `data`: data to be sent to the server
+          - `datatype`: type of data expected from the server (default: `Intelligent Guess (xml, json, script, or html)`)
+          - `cache`: If set to `false`, it will force requested pages not to be cached by the browser. (default: `true, false for dataType 'script' and 'jsonp'`)
+          - `success`: A <mark>function</mark> to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
             ...
             <br>
 
     - 3 Shorthand methods that are commonly used:
 
-      - `$.get(url[, data][, success][, dataType])` same as below:
+      - `$.get(url, data?, success?, dataType?)` same as below:
         - `success`: cb, Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.
 
       ```
@@ -1665,7 +1702,7 @@ console.log(x) // 1
 
       <br>
 
-      - `$.post(url[, data][, success][, dataType])` same as below:
+      - `$.post(url, data?, success?, dataType?)` same as below:
         - `success`: cb, Required if dataType is provided, but you can use null
 
       ```
@@ -1680,7 +1717,7 @@ console.log(x) // 1
 
       <br>
 
-      - `$.getJSON(url[, data][, success])` same as below:
+      - `$.getJSON(url, data?, success?)` same as below:
 
       ```
       $.ajax({
@@ -1724,7 +1761,7 @@ console.log(x) // 1
 
 ---
 
-## Promise {#promise}
+## Promise
 
 Promise is an object represents the resulting value of an ==asynchronous operation==, working as a proxy for a value that was not necessarily known when the promise is created.
 
@@ -1757,19 +1794,19 @@ Promises are handled by [microtasks queue](#microtask)
 
 ==Chained Promises==: `Promise.prototype.then/catch/finally`<br>
 
-- `then(onFulfilled[, onRejected])`: Returns a new `Promise` immediately. This new promise is always `pending` when returned, regardless of the current promise's status.
+- `then(onFulfilled, onRejected?)`: Returns a new `Promise` immediately. This new promise is always `pending` when returned, regardless of the current promise's status.
 
   ```
-  promise.then(onFulfilled[, onRejected])
+  promise.then(onFulfilled, onRejected?)
 
   promise.then(
     (value) => { /* fulfillment handler */},
-    [(reason) => { /* rejection handler */}]
+    (reason) => { /* rejection handler */}?
   )
   ```
 
-  - When `onFulfilled` is not a function: internally replaced with an **_identity_** function `(x) => x`, which ==passes== the `fulfillmentValue`
-  - When `onRejected` is not a function: internally replaced with an **_thrower_** function `(x) => throw x`, which ==throws== the `receivedRejectionReason`
+  - When `onFulfilled` is not a function: internally replaced with an **_identity_** function `(x) => x`, which <mark>passes</mark> the `fulfillmentValue`
+  - When `onRejected` is not a function: internally replaced with an **_thrower_** function `(x) => throw x`, which <mark>throws</mark> the `receivedRejectionReason`
     <br>
   - Assuming `x` is the return of `onFulfilled` / `onRejected`, and `p` is the return promise of `then()`:
     - `x` is a value ==> `p` is resolved with value `x`
@@ -1789,7 +1826,7 @@ Promises are handled by [microtasks queue](#microtask)
   ```
 
   - equals to `Promise.prototype.then(undefined, onRejected)`
-  - The `Promise` returned by `catch()` will be ==fulfilled (resovled)== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already ==rejected== `Promise`.
+  - The `Promise` returned by `catch()` will be ==fulfilled (resovled)== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already <mark>rejected</mark> `Promise`.
 
   - Example with comments
 
@@ -1823,7 +1860,7 @@ Promises are handled by [microtasks queue](#microtask)
 
   <br>
 
-- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already ==rejected== `Promise`.
+- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already <mark>rejected</mark> `Promise`.
 
   - `onFinally` callback does not receive any argument.
     `promise.finally(() => { // Code that will run after promise is settled (fulfilled or rejected) })`
@@ -1846,9 +1883,9 @@ Promises are handled by [microtasks queue](#microtask)
 
   <br>
 
-- `Promise.all([an array of promises])`: only ==resolve== when ==all== promises inside is ==resolved==, and it will resolve to an array of resolved values. It rejects when any of the input's promises rejects, with this first rejection reason.
-- `Promise.any([an array of promises])`: will ==resolve== when ==any== promise inside is ==resolved==, and it will resolve to that resolved values. If all promises are rejected, it will reject with `AggregateError`, which is an object containing an array of rejection reasons.
-- `Promise.race([an array of promises])`: will ==settle== when ==any== promise inside is ==settled==, and it will settles with the eventual state of the first promise that settles (resolved or rejected).
+- `Promise.all([an array of promises])`: only <mark>resolve</mark> when <mark>all</mark> promises inside is <mark>resolved</mark>, and it will resolve to an array of resolved values. It rejects when any of the input's promises rejects, with this first rejection reason.
+- `Promise.any([an array of promises])`: will <mark>resolve</mark> when <mark>any</mark> promise inside is <mark>resolved</mark>, and it will resolve to that resolved values. If all promises are rejected, it will reject with `AggregateError`, which is an object containing an array of rejection reasons.
+- `Promise.race([an array of promises])`: will <mark>settle</mark> when <mark>any</mark> promise inside is <mark>settled</mark>, and it will settles with the eventual state of the first promise that settles (resolved or rejected).
 
   <br>
 
@@ -1856,11 +1893,11 @@ Promises are handled by [microtasks queue](#microtask)
 
 ---
 
-## Async / await {#async_await}
+## Async/Await
 
 - `async` functions always return a `promise`. If the return value of an `async` function is not explicitly a `promise`, it will be implicitly wrapped in a `promise`.
   <br>
-- `await` is an ==operator==, its operand is a promise, a thenable object, or any value to wait for.
+- `await` is an <mark>operator</mark>, its operand is a promise, a thenable object, or any value to wait for.
   - **return**: the ==fulfillment value== of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved, the await expression throws the rejected value.
   - It can only be used inside an async function or a JavaScript module.
     <br>
@@ -1877,9 +1914,9 @@ async function name (args) {
 
 - The body of an `async function` can be thought of as being split by zero or more `await` expressions.
   <br>
-- ==Top-level code==, down to and including the first `await` expression (if there is one), is executed ==synchronously==.
-  - an `async` function ==without== an `await expression` will run ==synchronously==.
-  - when there is an `await expression` inside the function body, the `async` function will always complete ==asynchronously==.
+- ==Top-level code==, down to and including the first `await` expression (if there is one), is executed <mark>synchronously</mark>.
+  - an `async` function <mark>without</mark> an `await expression` will run <mark>synchronously</mark>.
+  - when there is an `await expression` inside the function body, the `async` function will always complete <mark>asynchronously</mark>.
     <br>
 - An `await` splits execution flow, allowing the caller of the `async` function to resume execution.
   - **Important**: only when `expression` is resolved, the function can resume
@@ -1888,9 +1925,12 @@ async function name (args) {
 - After the `await` defers the continuation of the `async` function, execution of following statements resumes.
 
 <br>
+
 ##### **[Back to table](#table)**
+
 ---
-### Renderer process {#renderprocess}
+
+### Renderer process
 
 - A **process** is a program under execution
 - A **thread** is a lightweight process that can be managed by the scheduler.
@@ -1957,7 +1997,7 @@ async function name (args) {
         <br>
 
   1. **Get Layers**:
-     1. The main thread will put the layout tree into ==layers==
+     1. The main thread will put the layout tree into <mark>layers</mark>
      1. Benefit is that browser can only change the layers that needs to be changed, improve efficiency
      1. Scrollbar, `z-index`, `opacity`, `transform`, etc will have an impact on how to layer, and `will-change: transform` can largely suggest browser to get this element on a seperated layer
         <br>
@@ -1965,18 +2005,18 @@ async function name (args) {
      1. the main thread will generate ==how to paint instructions== for each layer.
      1. the main thread will pass the instructions to **compositor thread** (still in renderer process) and be avaiable for next task
         <br>
-  1. **Tiling**: the compositor thread get all the layer instructions, it will initialize multiply worker threads (from threads pool) to split each layer into smaller ==tiles==.
+  1. **Tiling**: the compositor thread get all the layer instructions, it will initialize multiply worker threads (from threads pool) to split each layer into smaller <mark>tiles</mark>.
      <br>
   1. **Raster**:
 
      1. After tiling, the compositor thread will pass the tiles information to GPU thread;
-     1. GPU thread will initialize multiple threads to generate a ==bitmap== for each tile in extremely high speed, and it will prioritize the tiles that are close to viewport.
+     1. GPU thread will initialize multiple threads to generate a <mark>bitmap</mark> for each tile in extremely high speed, and it will prioritize the tiles that are close to viewport.
      1. After raster, GPU thread will return the bitmap infomations back to compositor thread
         <br>
 
   1. **Draw**:
 
-     1. After taking the bitmap info for each tile in each layer, the compositor thread will generate a ==quad== for each bitmap, indiating the position of each bitmap on screen, considering transform such as rotate and shrink
+     1. After taking the bitmap info for each tile in each layer, the compositor thread will generate a <mark>quad</mark> for each bitmap, indiating the position of each bitmap on screen, considering transform such as rotate and shrink
      1. Since transform implementation happens in compositor thread, so it won't take resources from the main thread, which is why transform is more efficient
      1. Compositor thread will pass the quad info to GPU thread, which makes system call and send it to GPU hardware, finish the final image on sreen.
         <br>
@@ -1988,11 +2028,11 @@ async function name (args) {
 
 - Scheduling task: the main thread in render process uses **Event Loop** to manage the order of tasks, any proceess or threads can add tasks in task queue (see below), and event loop will run those tasks one after another in FIFO order
   <br>
-- **==Note==**: any changes that triggers a re-render (==reflow==) will add the needed layout and paint updates for rendering the modified elements to the task queue.
+- **<mark>Note</mark>**: any changes that triggers a re-render (<mark>reflow</mark>) will add the needed layout and paint updates for rendering the modified elements to the task queue.
 
 <br>
 
-**What is ==Reflow== in browser?**
+**What is <mark>Reflow</mark> in browser?**
 
 - Also known as **layout** or **re-layout**, is a process that occurs in web browsers when changes are made to the layout of a web page.
   <br>
@@ -2019,7 +2059,7 @@ async function name (args) {
         ...
         <br>
 
-**What is ==Repaint== in browser?**
+**What is <mark>Repaint</mark> in browser?**
 
 - Repaint refers to the process of updating the visual appearance of an element on a web page without changing its layout.
   <br>
@@ -2041,16 +2081,16 @@ async function name (args) {
 
 ---
 
-## Task queue vs Microtask queue {#microtask}
+## Task queue vs Microtask queue
 
 - ==Macrotask queue== (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
 - Nowadays as the browser gets more and more complex, browsers have more than one task queue, and their priorities are:
 
-  - **Microtask queue** -- ==highest==: handling **promises** and **mutationObserver**
-  - **Animation frame queue** -- ==high==: handling the web page repaint
-  - **Interaction queue** -- ==medium==: handling user event callbacks
-  - **Timer queue** -- ==low==: handling timer event callbacks
-  - **Network queue** -- ==lowest==: handling network request callbacks
+  - **Microtask queue** -- <mark>highest</mark>: handling **promises** and **mutationObserver**
+  - **Animation frame queue** -- <mark>high</mark>: handling the web page repaint
+  - **Interaction queue** -- <mark>medium</mark>: handling user event callbacks
+  - **Timer queue** -- <mark>low</mark>: handling timer event callbacks
+  - **Network queue** -- <mark>lowest</mark>: handling network request callbacks
     <br>
 
 - Promises are handled by ==microtasks queue==
@@ -2068,7 +2108,7 @@ async function name (args) {
 
 ---
 
-## Event loop {#eventloop}
+## Event loop
 
 - JavaScript has a concurrency model based on an event loop, which is responsible for executing the code, collecting and processing events, and executing queued sub-tasks.
   <br>
@@ -2084,16 +2124,16 @@ async function name (args) {
 
 - more macrotask (web api) or microtask (promise) from current executing task, or unexpected tasks(event listeners) are all accessible to macro/micro-task queues.
   <br>
-- Tasks in ==_macrotask_== queue or ==_microtask_== queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.
+- Tasks in <mark>_macrotask_</mark> queue or <mark>_microtask_</mark> queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.
   <br>
-- In general, after main script is finished, all ==microtasks== will be executed before any ==macrotask==.
+- In general, after main script is finished, all <mark>microtasks</mark> will be executed before any <mark>macrotask</mark>.
   <br>
 
 ##### **[Back to table](#table)**
 
 ---
 
-## DOM Traversal {#dom}
+## DOM Traversal
 
 [JS DOM Traversal Cheat Sheet](./JS%20DOM%20Traversal%20Cheat%20Sheet%20-%20Dark.pdf)
 
@@ -2104,16 +2144,16 @@ In DOM:
 - Tags are **elements**;
 - **Element** is a specical type of **node**;
 
-  - ==HTMLCollection== is a live collection of **elements**, it is automatically updated when DOM changes;
-  - ==NodeList== is a collection of **nodes**;
+  - <mark>HTMLCollection</mark> is a live collection of **elements**, it is automatically updated when DOM changes;
+  - <mark>NodeList</mark> is a collection of **nodes**;
     <br>
 
   - `Element.children`: returns a live **HTMLCollection** which contains all of the child **elements** of the element upon which it was called. (only element)
     <br>
 
-- A ==token== is a string representing the token you want to check for the existence of in the list.
+- A <mark>token</mark> is a string representing the token you want to check for the existence of in the list.
   <br>
-- ==DOMTokenList==: represent a set of space-separated tokens in a form of JS array objects with instance methods.
+- <mark>DOMTokenList</mark>: represent a set of space-separated tokens in a form of JS array objects with instance methods.
   e.g., `Element.classList` is a live `DOMTokenList`
   <br>
 
@@ -2125,11 +2165,11 @@ In DOM:
   - `DOMTokenList.values()`: returns an `iterator`
   - `DOMTokenList.add(token0, token1, /* … ,*/ tokenN)`: add specificed token(s)
   - `DOMTokenList.remove(token1, token2, /* … ,*/ tokenN)`: remove specificed token(s)
-  - `DOMTokenList.replace(oldToken, newToken)`: replaces an existing token, or return `false` if oldToken doesn't exist.
-  - `DOMTokenList.toggle(token[, force])`: removes or adds token, return `true` or `false` indicating whether `token` is in the list or not after the call.
-    - if token existed already, removes it and return `false`;
-    - if token doesn't existed, adds it and return `true`;
-    - `force`: can be `true` or `false`, force toggle() to behave as its boolean return
+  - `DOMTokenList.replace(oldToken, newToken)`: replaces an existing `token`, or return `false` if `oldToken` doesn't exist.
+  - `DOMTokenList.toggle(token, force?)`: removes or adds token, return `true` or `false` indicating whether `token` is in the list or not after the call.
+    - if `token` existed already, removes it and return `false`;
+    - if `token` doesn't existed, adds it and return `true`;
+    - `force`: _optional_ can be `true` or `false`, force toggle() to behave as its boolean return
   - `DOMTokenList.entries()` returns an `iterator`
     <br>
 
@@ -2156,7 +2196,7 @@ In DOM:
 
 ---
 
-## Web APIs {#webapis}
+## Web APIs
 
 - **API**: application programming interface
   <br>
@@ -2215,8 +2255,8 @@ In DOM:
 
 - **querySelector**:
 
-  - `Element.querySelector()`: returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
-    - Selectors:
+  - `Element.querySelector(selector(s))`: returns the first Element within the document that matches the specified CSS `selector`, or group of `selectors`. If no matches are found, null is returned.
+    - `selector(s)`:
       - Universal selector: `*`
       - Type selector: `tagname`
       - Class selector: `.classname`
@@ -2245,7 +2285,7 @@ In DOM:
 
 ---
 
-## Interesting concepts {#interesting}
+## Interesting concepts
 
 ##### Three ways let JS file execute after html is loaded {#threeways}
 
@@ -2288,7 +2328,7 @@ In DOM:
 
    <br>
 
-1. There are two types of ==expressions==
+1. There are two types of <mark>expressions</mark>
 
    1. those that assign value to a variable with side effects: `x = 1`
    1. those that in some sense evaluate and therefore resolve to a value `1 + 2`
@@ -2341,7 +2381,7 @@ In DOM:
    - ...
      <br>
 
-1. `addEventListener(type, listener[, options/capture])`:
+1. `addEventListener(type, listener, options/capture?)`:
 
    - By default, event listeners are executed in a process known as **bubbling**, where the event starts at the target element, then propagates up the DOM tree to its parent elements, executing event listeners on each element along the way, until it reaches the root element.
      <br>
@@ -2350,12 +2390,12 @@ In DOM:
      - `e.preventDefault()`: if the event does not get explicitly handled, its default action should not be taken as it normally would be
      - `e.stopPropagation()`: prevents further propagation of the current event in the capturing and bubbling phases (to parent or other element)
        <br>
-   - `options`: An object that specifies characteristics about the event listener `{...}`
+   - `options`: _optional_ An object that specifies characteristics about the event listener `{...}`
 
-     - `capture` (bool): If `true`, the event listeners are executed in the opposite order, starting at the root element and propagating down the DOM tree to the target element, before finally reaching the end of the propagation phase. Default `false`
+     - `capture` (bool): _optional_ If `true`, the event listeners are executed in the opposite order, starting at the root element and propagating down the DOM tree to the target element, before finally reaching the end of the propagation phase. Default `false`
      - `once` (bool): If `true`, the `listener` would be automatically removed when invoked. Default `false`
      - `passive` (bool): If `true`, `listener` will never call `preventDefault()`. Default `false`
-     - `signal`: The listener will be removed when the given `AbortSignal` object's `abort()` method is called (Same as `removeEventListener(type, listerner[, options/useCapture])`). If not specified, no `AbortSignal` is associated with the listener.
+     - `signal`: The listener will be removed when the given `AbortSignal` object's `abort()` method is called (Same as `removeEventListener(type, listerner, options/useCapture?)`). If not specified, no `AbortSignal` is associated with the listener.
 
        ```
        const controller = new AbortController();

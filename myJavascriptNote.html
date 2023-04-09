@@ -1,0 +1,3230 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Javascript notes</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: Roboto Mono;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        <style>
+
+h1, h2, h3, h4, h5 {
+  display: block;
+  padding-top: 2rem;
+}
+h1, h2 {
+  font-size: 1.8rem;
+  padding-top: 1rem;
+  font-weight: 800;
+}
+h3 {
+  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 5rem;
+}
+h4 {
+  font-size: 1.2rem;
+}
+h5 {
+  font-size: 1rem;
+}
+</style>
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="javascript-notes">Javascript notes</h1>
+<h2 id="table">Table</h2>
+<ul>
+<li><a href="#js-primitive-types">Js Primitive Types</a></li>
+<li><a href="#boolean">Boolean</a></li>
+<li><a href="#null">Null</a></li>
+<li><a href="#undefined">Undefined</a></li>
+<li><a href="#numbers">Numbers</a></li>
+<li><a href="#string">String</a></li>
+<li><a href="#symbol">Symbol</a></li>
+<li><a href="#operators">Operators</a></li>
+<li><a href="#regular-expression">Regular Expression</a></li>
+<li><a href="#array">Array</a></li>
+<li><a href="#object">Object</a></li>
+<li><a href="#generator-and-iterator">Generator and iterator</a></li>
+<li><a href="#set">Set</a></li>
+<li><a href="#map">Map</a></li>
+<li><a href="#function">Function</a></li>
+<li><a href="#hoist">Hoist</a></li>
+<li><a href="#asynchronous-javascript">Asynchronous Javascript</a></li>
+<li><a href="#promise">Promise</a></li>
+<li><a href="#async/await">Async/await</a></li>
+<li><a href="#renderer-process">Renderer Process</a></li>
+<li><a href="#task-queue-vs-microtask-queue">Task queue vs Microtask queue</a></li>
+<li><a href="#event-loop">Event Loop</a></li>
+<li><a href="#dom">DOM Traversal</a></li>
+<li><a href="#webapis">Web APIs</a></li>
+<li><a href="#webterms">Web-related terms</a></li>
+<li><a href="#interesting">Interesting topics</a></li>
+</ul>
+<hr>
+<h3 id="js-primitive-types">Js Primitive Types</h3>
+<ul>
+<li>
+<p>Number, String, Boolean, null, undefined, BigInt, Symbol (#js primitive)</p>
+</li>
+<li>
+<p><code>var.valueOf()</code>: return the primitive value</p>
+</li>
+<li>
+<p><code>typeof var</code>: return the variable type in <code>string</code> format</p>
+</li>
+</ul>
+<p>Primitives are immutable, can be <strong>replaced</strong> but <strong>not directly altered</strong>, e.g.,:</p>
+<pre><code>var str = &quot;cool&quot;;
+str[2] = &quot;l&quot;; /*This doesn't work*/
+</code></pre>
+<ul>
+<li>Another data type is <strong>composite</strong> (reference) type: constructed using primitive data types<br>
+and other composite types.</li>
+</ul>
+<h5 id="back-to-table"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h3 id="boolean">Boolean</h3>
+<p>boolean<br>
+: <code>true</code> or <code>false</code>, no quotes, any value in JS can be used for boolean</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Falsy</th>
+<th style="text-align:center">Truthy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0, -0, null, NaN, undefined, &quot;&quot;(empty string)</td>
+<td style="text-align:center">anything else (like empty object, empty array)</td>
+</tr>
+</tbody>
+</table>
+<br>
+<ul>
+<li>
+<p>Operators that return Boolean results:</p>
+<ul>
+<li>
+<p><strong>Equality, Inequality</strong> &amp; <strong>Strict equality, strict inequality</strong>:<code>==</code> <code>!=</code> &amp; <code>===</code> <code>!==</code></p>
+</li>
+<li>
+<p><strong>Greater, greater or equal than</strong> &amp; <strong>less, less or equal than</strong>: <code>&gt;</code> <code>&gt;=</code> &amp; <code>&lt;</code> <code>&lt;=</code></p>
+</li>
+<li>
+<p><strong>in</strong> operator: <code>prop in object</code></p>
+<ul>
+<li>check if <code>object</code> (or its prototype chain) contains the property with specified name <code>prop</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br>
+<h5 id="back-to-table-1"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h3 id="null">Null</h3>
+<p>null<br>
+: Intentional absence of any value, <strong>must be assigned</strong></p>
+<br>
+<h5 id="back-to-table-2"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h3 id="undefined">Undefined</h3>
+<p>undefined<br>
+: Variables that do not have an assigned value, from values that <strong>hasn't been defined</strong> or <strong>doesn't exist</strong></p>
+<br>
+<h5 id="back-to-table-3"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h3 id="numbers">Numbers</h3>
+<ul>
+<li>No positive|negative|integers|decimal classes, uses <strong>double-precision 64-bit binary format IEEE 754</strong></li>
+<li><code>NaN</code> is in also <code>number</code> type;</li>
+<li>Two zeros: <code>0</code> &amp; <code>-0</code></li>
+<li>Two infinities: <code>Infinity</code> &amp; <code>-Infinity</code></li>
+</ul>
+<h4 id="math-object-commomly-used">Math Object (commomly used)</h4>
+<h5 id="properties">Properties:</h5>
+<ul>
+<li><code>Math.PI</code> : PI</li>
+<li><code>Math.E</code> : Euler's number (e)<br>
+<br></li>
+</ul>
+<h5 id="static-methods">Static Methods</h5>
+<ul>
+<li><code>Math.floor(3.65) // 3</code> : nearest smaller integer</li>
+<li><code>Math.ceil(-3.65) // -3 </code> : neareast larger integer;</li>
+<li><code>Math.round(3.65) // 4</code> : nearest integer (eg., +/-0.5 =&gt; 1/0);</li>
+<li><code>Math.trunc(3.65) // 3</code> : integer part of given number;</li>
+<li><code>Math.exp(2)</code> : e^2^</li>
+<li><code>Math.log(2)</code> : ln2</li>
+<li><code>Math.log10(2)</code> : log~10~2</li>
+<li><code>Math.log2(3)</code> : log~2~3</li>
+<li><code>Math.pow(3,7)</code> : 3^7^</li>
+<li><code>(Math.ln(y)/Math.ln(x))</code> : log~x~y</li>
+<li><code>Math.abs(-3) // 3</code> : |-3|</li>
+<li><code>Math.sqrt(x)</code> : <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mi>x</mi></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.2397em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8003em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord mathnormal">x</span></span></span><span style="top:-2.7603em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2397em;"><span></span></span></span></span></span></span></span></span> (x&gt;=0)</li>
+<li><code>Math.sin/cos/tan/asin/acos/atan(x)</code>: trigonometric (x in radius)</li>
+<li><code>Math.random()</code> : random number bewteen [0,1),
+<ul>
+<li>random number among [ 1, N ]: <code>Math.floor(Math.random()*N+1)</code></li>
+</ul>
+</li>
+<li><code>Math.max/min(1,2,3) // 3, 1</code> : max/min value of inputs<br>
+<br></li>
+</ul>
+<h4 id="number-methods-commomly-used">Number methods (commomly used)</h4>
+<h5 id="static-methods-1">Static Methods</h5>
+<ul>
+<li>
+<p><strong>Number()</strong>: <code>Number(value) // converts value to number type</code><br>
+<br></p>
+</li>
+<li>
+<p><strong>Number.isInteger()</strong>: test if value is integer</p>
+<ol>
+<li>if not <code>number</code> type, return <code>false</code></li>
+<li>if <code>number</code> type =&gt; test for <code>integer</code><br>
+<br></li>
+</ol>
+</li>
+<li>
+<p><strong>Number.isFinite() / Number.isNaN() vs isFinite() / isNaN()</strong>:</p>
+</li>
+<li>
+<p><code>Number.isFinite() / Number.isNaN()</code>:</p>
+<ol>
+<li>if not <code>number</code> type, return <code>false</code></li>
+<li>if <code>number</code> type =&gt; test for <code>finite</code>/<code>NaN</code></li>
+</ol>
+<ul>
+<li><code>Number.isNaN('3') // false</code></li>
+<li><code>Number.isNaN('a') // false</code></li>
+</ul>
+</li>
+<li>
+<p><code>isFinite() / isNaN()</code> : coerced to <code>number</code> type, then test for <code>finite</code>/<code>NaN</code></p>
+<ul>
+<li><code>isNaN()</code> will only give <code>false</code> when the input is <code>number</code> or number in string type.</li>
+<li><code>isNaN('3') // false</code></li>
+<li><code>isNAN('a') // true</code>;<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>Number.parseInt() / parseInt()</strong>: From left to right, return starting integer part</p>
+<ul>
+<li><code>Number.parseInt() === parseInt() // true</code></li>
+<li><code>parseInt('123a456.7') // 123</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>Number.parseFloat() / parseFloat()</strong>: From left to right, return starting float part</p>
+<ul>
+<li><code>Number.parseFloat() === parseFloat() // true</code></li>
+<li><code>parseFloat('1.23a45') // 1.23</code><br>
+<br></li>
+</ul>
+</li>
+</ul>
+<h5 id="instance-methods">Instance Methods</h5>
+<ul>
+<li><strong>.toExponential()</strong>: <code>123.456.toExponential() = '1.23456e+2' </code>: return a <mark>string</mark> representing the scientific notation formatted number<br>
+<br></li>
+<li><strong>.toFixed()</strong>: <code>123.456.toFixed(x) = '123.4' // x = 1 </code>: return a <mark>string</mark> representing the fixed-point notation number, [x] = 0<br>
+<br></li>
+<li><strong>.toPrecision()</strong>: <code>123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4</code> : return a <mark>string</mark> representing fixed-point or exponential notation rounded to precision significant digits<br>
+<br></li>
+<li><strong>.toString()</strong>: <code>123.456.toString(b) = '443.212' // b = 5</code> : return a <mark>string</mark> representing the object in the specified radix (base), default [b] = 10<br>
+<br></li>
+</ul>
+<h5 id="back-to-table-4"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h3 id="string">String</h3>
+<ul>
+<li>
+<p>quoted, single or double, consistent</p>
+</li>
+<li>
+<p>concatenate: <code>&quot;hello&quot; + &quot;, &quot; + &quot;world!&quot;</code> = <code>&quot;hello, world!&quot;</code></p>
+</li>
+<li>
+<p>indexed: <code>var str = &quot;hello&quot;;</code> <code>str[0]</code> is <code>&quot;h&quot;</code>, <code>str[1]</code> is <code>&quot;e&quot;</code></p>
+</li>
+<li>
+<p>has <strong>built-in iterator</strong> which can be used to iterate over the string</p>
+</li>
+<li>
+<p>unchangeable (immutable), but reassignable;</p>
+</li>
+<li>
+<p>quotes in strings: <code>'He said &quot;Hello!&quot;'</code> or <code>&quot;She says 'Goodbye'&quot;</code></p>
+</li>
+<li>
+<p>String template literals: <code> `${expression}` </code></p>
+</li>
+<li>
+<p>Backslash (<code>\</code>) turns special characters (such as quote <code>'</code> or double quote <code>&quot;</code>) into string characters. Use <code>\</code> to escape <code>'</code>, <code>&quot;</code> and <code>\</code> in string (the escape backslash will only exist in the string value, it is not a string character and it can not be printed out by console.log):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Code</th>
+<th style="text-align:center">Result</th>
+<th style="text-align:center">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>\\</code></td>
+<td style="text-align:center"><code>\</code></td>
+<td style="text-align:center">Backslash</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\'</code></td>
+<td style="text-align:center"><code>'</code></td>
+<td style="text-align:center">Single quote</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\&quot;</code></td>
+<td style="text-align:center"><code>&quot;</code></td>
+<td style="text-align:center">Double quote</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\t</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">Tab</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>\n</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">Newline</td>
+</tr>
+<tr>
+<td style="text-align:center">...</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">and more</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>'\'</code> can not be printed out, because it escapes the closing single quote (<code>'</code>), which turns into a string character not a funcitonal character</li>
+</ul>
+<br>
+</li>
+</ul>
+<h4 id="static-methods-2"><strong>Static methods</strong></h4>
+<ul>
+<li><strong>String.fromCharCode(num1, [num2, ..., numN])</strong>: returns a string created from the specified sequence of UTF-16 code units.
+<ul>
+<li><code>num1, ..., numN</code>: A sequence of numbers that are UTF-16 code units. The range is between 0 and 65535<br>
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="instance-methods-1"><strong>Instance methods</strong></h4>
+<ul>
+<li>
+<p><strong>.length</strong> : return the length of string</p>
+<br>
+</li>
+<li>
+<p><strong>.charAt()</strong>: <code>'hello'.charAt(1) = &quot;e&quot;;</code> :</p>
+<br>
+</li>
+<li>
+<p><strong>.charCodeAt()</strong>: return UTF-16 code of the first letter <code>'hello'.charCodeAt(1) = &quot;101&quot;;</code></p>
+<br>
+</li>
+<li>
+<p><strong>.concat()</strong>: <code>&quot;Hello&quot;.concat(&quot;, &quot;, &quot;World!&quot;)</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with concatenated <code>chars</code>/<code>substring</code>(<code>&quot;Hello, World!</code>)</li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.endsWith()</strong>: <code>str.endsWith(searchstring, length?)</code></p>
+<ul>
+<li>return: <code>true</code> or <code>false</code></li>
+<li><code>length</code>: <em>optional</em> default <code>str.length</code></li>
+<li><code>&quot;markdown file&quot;.endsWith('down', 8) // true</code></li>
+</ul>
+</li>
+<li>
+<p><strong>.startsWith()</strong>: <code>str.startsWith(searchstring, position?)</code></p>
+<ul>
+<li>return: <code>true</code> or <code>false</code></li>
+<li><code>position</code>: <em>optional</em> starting position (included), default<code>0</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.includes()</strong>: <code>str.includes(searchstring, position?)</code></p>
+<ul>
+<li>
+<p>return: <code>true</code> or <code>false</code></p>
+</li>
+<li>
+<p><code>position</code>: <em>optional</em> starting position (included), default<code>0</code></p>
+</li>
+<li>
+<p><code>&quot;This is a markdown file&quot;.includes('This', 1) // false</code></p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>.indexOf()</strong>: <code>str.indexOf(searchstring, position?)</code></p>
+<ul>
+<li>return: first index of the first occurrence or -1 (not found)</li>
+<li><code>position</code>: <em>optional</em> starting position (included), default<code>0</code></li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.lastIndexOf()</strong>: <code>str.lastIndexOf(searchstring, position?)</code></p>
+<ul>
+<li>return: first index of the last occurrence or -1 (not found)</li>
+<li><code>position</code>: <em>optional</em> ending position (included), default<code>0</code></li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.padEnd()</strong>: <code>str.padEnd(targetlength, padstring?)</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with <code>targetlength</code> and <code>padstring</code></li>
+<li><code>targetlength</code>: length of the return <code>str</code></li>
+<li><code>padstring</code>: <em>optional</em> default <code>&quot;⎵&quot;</code>(space)</li>
+<li><code>&quot;hello&quot;.padEnd(3) // &quot;hello&quot;</code> : <code>targetlength</code> &lt; <code>str.length</code></li>
+<li><code>&quot;hello&quot;.padEnd(10) // &quot;hello⎵⎵⎵⎵⎵&quot; </code> :</li>
+<li><code>&quot;hello&quot;.padEnd(10, '123') // &quot;hello12312&quot;</code> : <code>padstring.length</code> &lt; <code>targetlength</code> - <code>str.length</code></li>
+<li><code>&quot;hello&quot;.padEnd(10, '12345678') // &quot;hello12345&quot;</code> : <code>padstring.length</code> &gt; <code>targetlength</code> - <code>str.length</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.padStart()</strong>: <code>str.padStart(targetlength, padstring?)</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with <code>targetlength</code> and <code>padstring</code></li>
+<li><code>targetlength</code>: length of the return <code>str</code></li>
+<li><code>padstring</code>: <em>optional</em> default <code>&quot;⎵&quot;</code>(space)</li>
+<li><code>&quot;hello&quot;.padStart(3) // &quot;hello&quot;</code> : <code>targetlength</code> &lt; <code>str.length</code></li>
+<li><code>&quot;hello&quot;.padStart(10) // &quot;⎵⎵⎵⎵⎵hello&quot; </code></li>
+<li><code>&quot;hello&quot;.padStart(10, '123') // &quot;12312hello&quot;</code> : <code>padstring.length</code> &lt; <code>targetlength</code> - <code>str.length</code></li>
+<li><code>&quot;hello&quot;.padStart(10, '12345678') // &quot;12345hello&quot;</code> : <code>padstring.length</code> &gt; <code>targetlength</code> - <code>str.length</code></li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.trim()</strong>: <code>str.trim()</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with whitespaces at beginning and end are removed</li>
+</ul>
+</li>
+<li>
+<p><strong>.trimStart()</strong>: <code>str.trimStart()</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with whitespaces from beginning are removed</li>
+</ul>
+</li>
+<li>
+<p><strong>.trimEnd()</strong>:<code>str.trimEnd()</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with whitespaces from end are removed</li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.repeat()</strong>: <code>&quot;Aaa&quot;.repeat(3)</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with repeating (<code>&quot;AaaAaaAaa&quot;</code>)</li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.replace()</strong>: <code>&quot;Aaa&quot;.replace('a', '-') // &quot;A-a&quot;</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with <mark>first</mark> occurance replaced</li>
+</ul>
+</li>
+<li>
+<p><strong>.replaceAll()</strong>: <code>&quot;Aaa&quot;.replaceAll('a', '-') // &quot;A--&quot;</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str</code> with <mark>all</mark> occurance replaced</li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.search()</strong>: <code>&quot;hello&quot;.search('e') // 1</code></p>
+<ul>
+<li>return: index of first occurence or -1 (not found)</li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.slice()</strong>: <code>str.slice(start, end?)</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>str[start]</code> (included) to <code>str[end]</code> (excluded)</li>
+<li><code>start</code>: starting index (included)</li>
+<li><code>end</code>: <em>optional</em> ending index (excluded), default <code>str.length</code></li>
+<li><code>start</code> and <code>[end]</code> could be negative integer</li>
+<li><code>&quot;hello&quot;.slice(1) // &quot;ello&quot;, remove first char</code></li>
+<li><code>&quot;hello&quot;.slice(-1,1) // &quot;&quot;</code> : <code>start</code> &gt; <code>end</code></li>
+</ul>
+</li>
+<li>
+<p><strong>.substring()</strong>: <code>str.substring(start, end?)</code></p>
+<ul>
+<li>
+<p>return: a <mark>copy</mark> from <code>str[start]</code> (included) to <code>str[end]</code> (excluded)</p>
+</li>
+<li>
+<p>almost identical to <code>str.slice()</code>, but there are two differences:</p>
+<ul>
+<li>Negative and larger than <code>str.length</code> indexes are treated as 0 and <code>str.length</code>, repectively: <code>&quot;hello&quot;.substring(-1,6) // &quot;hello&quot;, same as &quot;hello&quot;.substring(0,5)</code></li>
+<li><mark>Swap</mark> <code>start</code> and <code>end</code> when <code>start</code> &gt; <code>end</code>: <code>&quot;hello&quot;.substring(4,1) // &quot;ell&quot;, same as &quot;hello&quot;.substring(1,4)</code></li>
+</ul>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>.split()</strong>: <code>str.split(seperator?,limit?)</code></p>
+<ul>
+<li>return: an <code>array</code> whose elements are substrings of <code>str</code> seperated by <code>seperator</code>, and <code>array.length</code> &lt;= <code>limit</code></li>
+<li><code>seperator</code>: <em>optional</em> if leave blank, will put entire string as only element in an array, <code>'abc'.split(); // ['abc']</code></li>
+<li><code>limit</code>: <em>optional</em> Maximum number of elements in the returned subarray. If <code>limit</code> is <code>0</code>, <code>[]</code> is returned</li>
+<li><code>&quot;a b c d e f&quot;.split(' ',4) // ['a','b','c','d']</code> : 4 elements</li>
+<li><code>&quot;a b c d e f&quot;.split(',') // ['a b c d e f']</code> : 1 element cause <code>['a b c d e f']</code> has no <code>','</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.toLowerCase()</strong>: <code>&quot;Hello&quot;.toLowerCase() // &quot;hello&quot;</code></p>
+</li>
+<li>
+<p><strong>.toUpperCase()</strong>: <code>&quot;Hello&quot;.toUpperCase() // &quot;HELLO&quot;</code></p>
+<br>
+</li>
+<li>
+<p><strong>.toString()</strong>: <code>str.toString() // works on String Object, same as str.valueOf()</code><br>
+<br></p>
+</li>
+<li>
+<p><strong>.match()</strong>: <code>str.match(regex) // retrieves the result of matching a string against a regular expression.</code></p>
+<ul>
+<li>return: An Array whose contents depend on the presence or absence of the global (<code>g</code>) flag, or <code>null</code> if no matches are found.
+<ul>
+<li>with <code>g</code> : all matches</li>
+<li>without <code>g</code>: the first match</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br>
+<h5 id="back-to-table-5"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h3 id="symbol">Symbol</h3>
+<ul>
+<li>can only be created with <code>Symbol(lable?)</code>
+<ul>
+<li><code>label</code>: <em>optional</em> a note for this symbol</li>
+</ul>
+</li>
+<li>each symbol is unique</li>
+<li>a symbol value is only used as an identifier for object propeties</li>
+<li>when add a symbol as a property, there are two ways
+<ul>
+<li>
+<pre><code>  const propSym = Symbol('prop')
+  obj[propSym] = propValue
+</code></pre>
+or</li>
+<li>
+<pre><code>const propSym = Symbol('prop')
+obj = {
+  [propSym] : propValue
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>Symbols are not enumerable, so it will not show up in <code>for...in</code> loop or <code>Object.getOwnPropertyNames()</code></li>
+<li>Symbols can be accessed by <code>Object.getOwnPropertySymbols()</code></li>
+</ul>
+<br>
+<h5 id="back-to-table-6"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="operators">Operators</h2>
+<ul>
+<li>
+<p>Logical AND (<code>&amp;&amp;</code>):</p>
+<ul>
+<li><code>expr1 &amp;&amp; expr2 &amp;&amp; expr3 &amp;&amp; ....</code></li>
+<li>from left to right, return immediately with the value of the first falsy operand (<code>false</code>, <code>null</code>, <code>NaN</code>, <code>0</code>, emtpy string, <code>undefined</code>)</li>
+<li>if all values are truthy, the value of the last operand is returned.<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Logical OR (<code>||</code>)</p>
+<ul>
+<li><code>expr1 || expr2 || expr3 || ....</code></li>
+<li>from left to right, return immediately with the value of the first truthy operand (anything that is not falsy)</li>
+<li>if all values are falsy, the value of the last operand is returned.<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Nullish coalescing operator (<code>??</code>)</p>
+<ul>
+<li><code>leftExpr ?? rightExpr</code></li>
+<li>from left to right, return immediately with the value of the first operand that is <strong>not</strong> <code>null</code> or <code>undefined</code></li>
+<li>if all values are <code>null/undefined</code>, the value of the last operand is returned.</li>
+<li>cannot directly be used with <code>&amp;&amp;</code> or <code>||</code>, must use parenthesis to explicityly indicate precedence.<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Logical AND assignment (<code>&amp;&amp;=</code>)</p>
+<ul>
+<li><code>expr1 &amp;&amp;= expr2</code></li>
+<li>equivalent to <code>expr1 &amp;&amp; (expr1 = expr2)</code>, meaning if <code>expr1</code> is truthy, assign the evaluated value of <code>expr2</code> to <code>expr1</code>;<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Logical OR assignment (<code>||=</code>)</p>
+<ul>
+<li><code>expr1 ||= expr2</code></li>
+<li>equivalent to <code>expr1 || (expr1 = expr2)</code>, meaning if <code>expr1</code> is falsy, assign the evaluated value of <code>expr2</code> to <code>expr1</code>;<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Nullish coalescing assignment (<code>??=</code>)</p>
+<ul>
+<li><code>expr1 ??= expr2</code></li>
+<li>equivalent to <code>expr1 ?? (expr1 = expr2)</code>, meaning if <code>expr1</code> is <code>null/undefined</code>, assign the evaluated value of <code>expr2</code> to <code>expr1</code>;</li>
+</ul>
+</li>
+<li>
+<p>Bitwise operators:</p>
+<ul>
+<li><code>&amp;</code> (AND): <code>0011 &amp; 0101 -&gt; 0001</code>
+<ul>
+<li>Set each bit to 1 if both bits are 1</li>
+</ul>
+</li>
+<li><code>|</code> (OR): <code>0001 | 0101 -&gt; 0111</code>
+<ul>
+<li>Set each bit to 1 if one of two bits is 1</li>
+</ul>
+</li>
+<li><code>^</code> (XOR): <code>0011 ^ 0101 -&gt; 0110</code>
+<ul>
+<li>Sets each bit to 1 if <mark>only</mark> one of two bits is 1</li>
+</ul>
+</li>
+<li><code>~</code> (NOT): Inverts all the bits
+<ul>
+<li>for integers, add a negative sign and then minus 1:<code> ~5 -&gt; -6</code></li>
+</ul>
+</li>
+<li><code>&lt;&lt;</code> (Zero fill left shift):
+<ul>
+<li>Shifts left by pushing zeros in from the right and let the leftmost bits fall off</li>
+</ul>
+</li>
+<li><code>&gt;&gt;</code> (Signed right shift):
+<ul>
+<li>Shifts right by pushing copies of the leftmost bit in from the left, and let the rightmost bits fall off</li>
+</ul>
+</li>
+<li><code>&lt;&lt;&lt;</code> (Zero fill right shift):
+<ul>
+<li>Shifts right by pushing zeros in from the left, and let the rightmost bits fall off</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<br>
+<h5 id="back-to-table-7"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="regular-expression">Regular expression</h2>
+<ul>
+<li>
+<p>RegEx is used to ==match character== combinations in strings<br>
+<br></p>
+</li>
+<li>
+<p>A RegEx is an <mark>object</mark><br>
+<br></p>
+</li>
+<li>
+<p>RegExs are used with the RegExp methods<br>
+<br></p>
+</li>
+<li>
+<p>RegEx is ==case sensitive==, and by default it only return the <mark>FIRST</mark> match<br>
+<br></p>
+</li>
+<li>
+<p>Two ways to create a <code>RegEx</code> object: a literal notation and a constructor:</p>
+<ul>
+<li><strong>literal notation</strong> : a pattern between <strong>two forward slashes</strong> (<code>/.../</code>), followed by <strong>optional flags</strong>
+<ul>
+<li><code>let re = /ab+c/i</code></li>
+</ul>
+</li>
+<li><strong>constructor function</strong>: two parameters(a string or a RegExp object as its first parameter, and a string of optional flags as its second parameter) - <code>let re = new RegExp('ab+c', 'i')</code><br>
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="regex-syntax-within-">RegEx syntax within <code>/.../</code>:</h4>
+<ul>
+<li>
+<p>Character Classes .</p>
+<ul>
+<li><code>[]</code>:
+<ul>
+<li><code>[abc]</code>: match <strong>ONE single character</strong> from <strong>a set of characters</strong>. // <code>a</code> or <code>b</code> or <code>c</code>;</li>
+<li><code>[2-8]</code>: any single digit number from 2 to 8.// <code>2</code> or <code>3</code> or <code>4</code> or .... or <code>8</code></li>
+<li><code>[c-h]</code>: any single digit letter from c to h.// <code>c</code> or <code>d</code> or <code>e</code> or .... or <code>h</code></li>
+<li><code>[c-hD-Z]</code>: any single digit letter from c to h or from D to Z.<br>
+<br></li>
+</ul>
+</li>
+<li><code>.</code> (wildcard character): matches ==any single character== except for line terminators (\n, \r, \u2028, \u2029)<br>
+<br></li>
+<li><code>[^...]</code>(Negate symbol): <code>[^abc]</code> matches any single character that is <strong>NOT</strong> from these characters.<br>
+<br></li>
+<li><code>|</code> (or): <code>abc|xyz</code> matches &quot;abc&quot; or &quot;xyz&quot;
+<ul>
+<li><code>(p|b)ear</code>: matches &quot;pear&quot; or &quot;bear&quot;, use <code>()</code> to represent an entity.</li>
+</ul>
+</li>
+</ul>
+<br>
+</li>
+<li>
+<p>Quantifiers:</p>
+<ul>
+<li><code>x+</code>: matches the preceding item &quot;x&quot; ==1 or more== times (unlimited).</li>
+<li><code>x*</code>: matches the preceding item &quot;x&quot; ==0 or more== times (unlimited).</li>
+<li><code>x{n}</code>: matches <mark>EXACTLY</mark> &quot;n&quot; (a positive integer) occurrences of the preceding item &quot;x&quot;.
+<ul>
+<li><code>x{n,}</code>: matches ==AT LEAST== &quot;n&quot; (a positive integer) occurrences of the preceding item &quot;x&quot;.</li>
+<li><code>x{n,m}</code>: matches ==at least== &quot;n&quot;, ==at most== &quot;m&quot; (n &lt; m) occurrences of the preceding item &quot;x&quot;.<br>
+<br></li>
+</ul>
+</li>
+<li><code>x?</code>: matches the preceding item &quot;x&quot; 0 or 1 times.</li>
+</ul>
+</li>
+<li>
+<p>Metacharacters: (metacharacters can also be used in &quot;[]&quot;: <code>[abc\d]</code> same as <code>[abc0-9]</code>)</p>
+<ul>
+<li><code>\</code>: escape character, any character behind it will be literal except for other metacharacters</li>
+<li><code>\d</code>: same as <code>[0-9]</code>, match any digit number character</li>
+<li><code>\w</code>: same as <code>[a-zA-Z0-9_]</code>, match any <mark>letter</mark> (case insensitive), <mark>number</mark> and <mark>underscores</mark>
+<ul>
+<li><code>\W</code>: same as <code>[^a-zA-Z0-9_]</code>, match any characters but letter (case insensitive), number and underscores</li>
+</ul>
+</li>
+<li><code>\s</code>: match whitespace characters (spaces, tabs etc)
+<ul>
+<li><code>\S</code>: match any characters but whitespace characters (spaces, tabs etc)</li>
+</ul>
+</li>
+<li><code>\t</code>: match tab character only<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Assertions (boundaries)</p>
+<ul>
+<li><code>^...</code>: matches the <mark>beginning</mark> of input. (notice the difference with <code>[^]</code>)</li>
+<li><code>...$</code>: matches the <mark>end</mark> of input.
+<ul>
+<li><code>^x{n}$</code>: <mark>EXACTLY</mark> n (positive integer) characters</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="optional-flags">Optional Flags:</h5>
+<p>Settings added at the <strong>end of RegEx</strong> that can be applied to <strong>modify its behavior</strong></p>
+<ul>
+<li><code>g</code> : find all that matches, don't return after match</li>
+<li><code>i</code>: case insensitive for all letter characters
+<ul>
+<li><code>/[a-zA-Z]/</code> is the same as <code>/[a-z]/i</code></li>
+</ul>
+</li>
+</ul>
+<br>
+<h5 id="regexp-methods">RegExp methods</h5>
+<p><code>const reg = /[abc]/i</code></p>
+<ul>
+<li><code>reg.test(str)</code>: test to see if matches: <code>reg.test('A') // true</code></li>
+</ul>
+<br>
+<h5 id="back-to-table-8"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="array">Array</h2>
+<ul>
+<li>resizable</li>
+<li>integers as indexes</li>
+<li>has <strong>built-in iterator</strong> which can be used to iterate over the array</li>
+<li>pass as reference<br>
+<br></li>
+</ul>
+<h4 id="array-static-methods"><strong>Array static methods</strong></h4>
+<ul>
+<li>
+<p>array-like objects:</p>
+<ul>
+<li>objects with a length property and indexed elements</li>
+<li>iterable objects (like <code>Map</code> and <code>Set</code>)<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>Array()</strong>:</p>
+<ul>
+<li>
+<p>return: a new <code>Array</code> instance</p>
+</li>
+<li>
+<p>can work as a constructor or a function</p>
+<ol>
+<li>constructor: work with <code>new</code> operator</li>
+<li>function: creates and initialises a new <code>Array</code> object, same as <code>new Array()</code></li>
+</ol>
+<pre><code>// From elements
+new Array(element0, element1, ... , elementN)
+Array(element0, element1, ... , elementN)
+
+// From array length (interger argument), empty array with a length
+new Array(arrayLength)
+Array(arrayLength)
+</code></pre>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Array.of()</strong>: <code>Array.of(element0, element1?, /* … ,*/?, elementN?)</code> creates a new Array instance from a variable number of arguments, regardless of number or type of the arguments.</p>
+<ul>
+<li>return a new <code>Array</code> instance.</li>
+<li><code>elementN</code>: Elements used to create the array.</li>
+<li><code>Array.of()</code> vs <code>Array()</code><pre><code>Array.of(3) // [3]
+Array(3) // [empty * 3] An array of 7 empty slots
+</code></pre>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Array.from()</strong>: <code>Array.from(arrayLike, callbackFn(element, index?) { /*...*/ }?, thisArg?)</code></p>
+<ul>
+<li>
+<p>return: a new <code>Array</code> instance</p>
+</li>
+<li>
+<p><code>callbackFn</code>: <em>optional</em> A function to call on every element of the array</p>
+<ul>
+<li><code>element</code>: the current element being processed in the array.</li>
+<li><code>index</code>: <em>optional</em> the index of the current element being processed in the array.</li>
+</ul>
+</li>
+<li>
+<p><code>thisArg</code>: <em>optional</em> Value to use as <code>this</code> when executing <code>callbackFn</code>.</p>
+</li>
+<li>
+<p>for array-like object specifically.</p>
+<ul>
+<li>object with a <code>length</code> property</li>
+<li>indexed elements</li>
+</ul>
+<pre><code>Array.from({length: 3}) // [undefined, undefined, undefined]
+Array.from({length: 3}, (v,i) =&gt; i) // [0, 1, 2]
+
+Array.from('hello') // ['h', 'e', 'l', 'l', 'o']
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Array.isArray()</strong>: determine whether the passed value is an <code>Array</code></p>
+<ul>
+<li>return: true if the value is an Array; otherwise, false.<br>
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="array-instance-methods"><strong>Array instance methods</strong></h4>
+<p><code>const arr = [1, 2, 3, 'a', 'b', 'c']</code><br>
+<br></p>
+<ul>
+<li>
+<p><strong>.at()</strong>: <code>arr.at(-1) // 'c'</code></p>
+<ul>
+<li>return: item at the index</li>
+<li>negative number count back from last item.<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.indexOf()</strong>: <code>arr.indexOf(searchElement, start?)</code></p>
+<ul>
+<li>return: the <mark>index</mark> of the first element in the array or -1 (not found)</li>
+<li><code>start</code>: <em>optional</em> starting index (included)</li>
+</ul>
+</li>
+<li>
+<p><strong>.lastIndexOf()</strong>: <code>arr.lastIndexOf(searchElement, start?)</code></p>
+<ul>
+<li>return: the <mark>index</mark> of the last element in the array or -1 (not found)</li>
+<li><code>start</code>: <em>optional</em> starting index (included)<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.includes()</strong>: <code>arr.includes(searchElement, start?)</code>(case-sensitive)</p>
+<ul>
+<li>return: <code>true</code> or <code>false</code></li>
+<li><code>start</code>: <em>optional</em> starting index (included), default <code>0</code></li>
+<li><code>arr.includes('a', 4) // false</code></li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.join()</strong>: <code>arr.join(seperator?)</code></p>
+<ul>
+<li>return: a <mark>string</mark> with all array elements joined.</li>
+<li><code>seperator</code>: <em>optional</em> default <code>&quot;,&quot;</code></li>
+</ul>
+</li>
+<li>
+<p><strong>.toString()</strong>: <code>arr.toString()</code></p>
+<ul>
+<li>return: a <mark>string</mark> representing the elements of the array.</li>
+<li>is the same as <code>arr.join()</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.concat()</strong>: <code>arr.concat(arr, value1?, /*...*/?, valueN?])</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>arr</code> with concatenated elements</li>
+<li><code>valueN</code>: <em>optional</em> Arrays and/or values to concatenate into a new array</li>
+<li><code>arr.concat([4,5,6],'d','e','f') // [1,2,3,'a','b','c',4,5,6,'d','e','f']</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.slice()</strong>: <code>arr.slice(start?, end?)</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>arr</code> with array elements from <code>arr[start]</code> (included) to <code>arr[end]</code> (excluded)</li>
+<li><code>start</code>: <em>optional</em> default <code>0</code>, could be negative integer</li>
+<li><code>end</code>: <em>optional</em> default <code>arr.length</code>, could be negative integer<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.flat()</strong>: <code>arr.flat(depth?)</code></p>
+<ul>
+<li>return: a modified <mark>copy</mark> of <code>arr</code> with sub-array elements concatenated into it</li>
+<li><code>depth</code>: <em>optional</em> default <code>1</code> (from outside to inside)</li>
+<li><code>[1,[2,[3,4]]].flat() // [1,2,[3,4]]</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.copyWithin()</strong>: <code>arr.copyWithin(targetIndex, start?, end?)</code>(==mutator method==)</p>
+<ul>
+<li>return: the modified array whose elements are replaced starting from <code>targetIndex</code> with elements from <code>start</code>(included) to <code>end</code> (excluded), no change to <code>arr.length</code></li>
+<li><code>start</code>: <em>optional</em> starting index (included), default <code>0</code></li>
+<li><code>end</code>: <em>optional</em> ending index (excluded), default <code>arr.length</code></li>
+<li><code>targetIndex</code>, <code>start</code>, <code>end</code> could be negative integer</li>
+<li>no change when <code>start</code> &gt;= <code>end</code></li>
+<li>no change when <code>targetIndex</code> &gt; <code>arr.length</code></li>
+<li><code>arr.copyWithin(1,3,5) // [1,'a','b','a','b','c']</code>: start from <code>arr[1]</code>,replace <code>arr[1]</code>, <code>arr[2]</code> with <code>arr[3]</code>, <code>arr[4]</code>, the rest remain the same<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.fill()</strong>: <code>arr.fill(value, start?, end?)</code>(==mutator method==)</p>
+<ul>
+<li>return: the modified array whose elements are replaced with <code>value</code> from <code>start</code>(included) to <code>end</code> (excluded), no change to <code>arr.length</code></li>
+<li><code>start</code>: <em>optional</em> starting index (included), default <code>0</code></li>
+<li><code>end</code>: <em>optional</em> ending index (excluded), default <code>arr.length</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.reverse()</strong>: <code>arr.reverse()</code> (==mutator method==)</p>
+<ul>
+<li>return: the modified array whose elements order are reversed<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>.pop()</strong>: <code>arr.pop()</code> (==mutator method==)</p>
+<ul>
+<li>return: the removed element (last) from the array; undefined if the array is empty.</li>
+</ul>
+</li>
+<li>
+<p><strong>.push()</strong>: <code>arr.push(element(s))</code> (==mutator method==)</p>
+<ul>
+<li>return: the new <code>length</code> property</li>
+</ul>
+</li>
+<li>
+<p><strong>.shift()</strong>: <code>arr.shift()</code> (==mutator method==)</p>
+<ul>
+<li>return: the removed element (first) from the array; undefined if the array is empty.</li>
+</ul>
+</li>
+<li>
+<p><strong>.unshift()</strong>: <code>arr.unshift(element(s))</code> (==mutator method==)</p>
+<ul>
+<li>return: the new <code>length</code> property</li>
+</ul>
+<br>
+</li>
+<li>
+<p><strong>.splice()</strong>: <code>arr.splice(start, deletecount?, additem(s)?)</code> (==mutator method==)</p>
+<ul>
+<li>return: an array containing the deleted elements</li>
+<li><code>start</code>: starting index (included)</li>
+<li><code>deletcount</code>: <em>optional</em> default <code>array.length - start</code> (number of elements in array), if omitted, will delete all elements in array and return them in an array.</li>
+</ul>
+<pre><code>let arr = [1,2,3]
+let removed = arr.splice(0)
+// arr is []
+// removed is [1,2,3]
+</code></pre>
+<br>
+</li>
+</ul>
+<h4 id="array-callback-methods"><strong>Array callback methods</strong></h4>
+<ul>
+<li>
+<p><code>CallbackFn</code> types (<em>fn</em>): (<code>thisArg</code> is used as <code>this</code> when executing <code>callbackFn</code>)</p>
+<ul>
+<li>Arrow function: <code>(element, index?, array?) =&gt; {/*...*/}</code></li>
+<li>Callback function: <code>callbackFn, thisArg?</code></li>
+<li>Inline callback funciton: <code>function(element, index?, array?) {/*...*/}, thisArg?</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong><mark>Note</mark></strong>: index manipulation during iteration doesn't affect next iteration, this is different from <code>for (let i = 0; i &lt; array.length; i++)</code>iteration<br>
+<br></p>
+</li>
+<li>
+<p><strong>.every(<em>f</em>)</strong>: return <code>true</code> if <code>callbackFn</code> returns a truthy value for <mark>every</mark> <code>element</code><br>
+<strong>.some(<em>f</em>)</strong>: return <code>true</code> if <code>callbackFn</code> returns a truthy value for ==at least one== <code>element</code><br>
+<br></p>
+</li>
+<li>
+<p><strong>.forEach(<em>f</em>)</strong>: return <code>undefined</code>, it executes <code>callbackFn</code> once for <mark>each</mark> <code>element</code></p>
+</li>
+<li>
+<p><strong>.map(<em>f</em>)</strong>: return a new <code>array</code> with the results of <code>callbackFn</code> for <mark>each</mark> <code>element</code><br>
+<br></p>
+</li>
+<li>
+<p><strong>.reduce(<em>f</em>)</strong>: return the <strong><mark>accumulated</mark></strong> value from running <code>callbackFn</code> over the entire array</p>
+<ul>
+<li><code>element</code> here are two arguments: <code>accumulator</code> &amp; <code>currentElement</code></li>
+<li><code>index</code> here is <code>currentElementIndex</code></li>
+<li>no <code>thisArg</code>, instead there is a <code>initialValue</code>, it could be any value</li>
+<li>if <code>initialValue</code>:
+<ul>
+<li><code>accumulator</code> = <code>initialValue</code></li>
+<li><code>currentElement</code> = <code>array[0]</code></li>
+<li>start from first element <code>array[0]</code></li>
+</ul>
+</li>
+<li>if no <code>initialValue</code>:
+<ul>
+<li><code>accumulator</code> = <code>array[0]</code></li>
+<li><code>currentElement</code> = <code>array[1]</code></li>
+<li>start from second element <code>array[1]</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>.reduceRight(<em>f</em>)</strong>: same as <code>.reduce()</code>, but the order is right-to-left<br>
+<br></p>
+</li>
+<li>
+<p><strong>.find(<em>f</em>)</strong>: return the <strong>first</strong> <code>element</code> in array which makes <code>callbackFn</code> return <code>true</code>, or <code>undefined</code> if not found</p>
+</li>
+<li>
+<p><strong>.findIndex(<em>f</em>)</strong>: return <strong>index</strong> of the first <code>element</code> in the array which makes <code>callbackFn</code> return <code>true</code>, or <code>-1</code> if not found</p>
+</li>
+<li>
+<p><strong>.filter(<em>f</em>)</strong>: return a <strong>new array</strong> with all the <code>elements</code> which makes <code>callbackFn</code> return <code>true</code>, or <code>[]</code> if no <code>element</code> is found<br>
+<br></p>
+</li>
+<li>
+<p><strong>.sort(<em>f</em>)</strong>: return the sorted array (==mutator method==)</p>
+<ul>
+<li><code>arr.sort([compareFn(a,b)])</code></li>
+<li><code>compareFn</code> return negative: a placed before b</li>
+<li><code>compareFn</code> return positive: b placed before a</li>
+<li><code>compareFn</code> return <code>0</code>: a, b order unchange</li>
+<li>if omit <code>compareFn</code>, a &amp; b are converted to strings, then sorted according to each <code>char</code> Unicode value</li>
+</ul>
+</li>
+</ul>
+<br>
+<h5 id="back-to-table-9"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="object">Object</h2>
+<ul>
+<li>
+<p>{ key : value } pair</p>
+<ul>
+<li>key: string (identifier), anything other than string will be forced to string type</li>
+<li>value: anything (primitive data, array, function, other objects)<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>property accessors: dot(<code>.</code>) &amp; bracket notation(<code>[]</code>)</p>
+<ul>
+<li><code>const obj = {'name' : 'Xiao', '2' : 2}</code></li>
+<li><code>obj.name = 'Xiao'</code>
+<ul>
+<li><s><code>obj.2</code></s></li>
+</ul>
+</li>
+<li><code>obj['name'] = 'Xiao'</code></li>
+<li><code>obj[2] = 2</code></li>
+<li><code>obj['2'] = 2</code>
+<ul>
+<li><s><code>obj[name]</code></s></li>
+</ul>
+</li>
+<li>when working with variables: <code>let key = 'name'</code>
+<ul>
+<li><code>obj[key] = 'Xiao'</code></li>
+<li><s><code>obj.key</code></s><br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Properties can be enumerated (for...in loop) if they are enumerable<br>
+<br></p>
+</li>
+<li>
+<p><strong>Optional chaining (?.)</strong>: If the object accessed or function called using this operator is <code>undefined</code> or <code>null</code>, the expression short circuits and evaluates to undefined instead of throwing an error.</p>
+<ul>
+<li><code>obj.val?.prop</code>:</li>
+<li><code>obj.val?.[expr]</code>:</li>
+<li><code>obj.func?.(args)</code>:</li>
+</ul>
+<br>
+</li>
+<li>
+<p>Object manipulation</p>
+<ul>
+<li>
+<p>add: <code>obj[newKey] = newValue</code></p>
+</li>
+<li>
+<p>update: <code>obj[key] = newValue</code></p>
+</li>
+<li>
+<p>delete: <code>delete obj[key]</code> or <code>delete obj.keyValue</code></p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Getter</strong>: retrieve the value of an object property, when access getter function name, return its return value.</p>
+<pre><code>const person = {
+  firstName: 'John',
+  lastName: 'Doe',
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+};
+
+console.log(person.fullName); // output: &quot;John Doe&quot;
+</code></pre>
+<br>
+</li>
+<li>
+<p><strong>Setter</strong>: set the value of an object property, when assign new value, pass in the new value as the input and execute the setter function</p>
+<ul>
+<li><em>Note</em> : Setters are not meant to be accessed directly</li>
+</ul>
+<pre><code>const person = {
+  firstName: '',
+  lastName: '',
+  set fullName(name) {
+    const parts = name.split(' ');
+    this.firstName = parts[0];
+    this.lastName = parts[1];
+  }
+};
+
+person.fullName = 'John Doe';
+
+console.log(person.firstName); // output: &quot;John&quot;
+console.log(person.lastName); // output: &quot;Doe&quot;
+</code></pre>
+<br>
+</li>
+</ul>
+<h4 id="methods"><strong>Methods</strong>:</h4>
+<ul>
+<li>
+<p>functions in objects</p>
+</li>
+<li>
+<p><code>obj[methodName] = function () {/*...*/}</code></p>
+</li>
+<li>
+<p>shorthand: <code>const obj = { methodName(){/*...*/} }</code></p>
+</li>
+<li>
+<p>method invoke: <code>obj.methodName()</code></p>
+<br>
+</li>
+<li>
+<p>Static methods:<br>
+<detail></p>
+<ul>
+<li>
+<p><code>Object.is(value1, value2)</code></p>
+<ul>
+<li>return: A Boolean indicating whether or not the two arguments are the same value.</li>
+<li>truthy: both <code>undefined</code>|<code>null</code>|<code>NaN</code>|<code>true</code>/<code>false</code>|same strings|same reference|same number|<code>+0</code>/<code>-0</code></li>
+<li>vs <code>==</code>: <code>Object.is()</code> does not coerce value types</li>
+<li>vs <code>===</code>:
+<ul>
+<li><code>-0 === 0</code> is true while <code>Object.is(-0, 0)</code> is false</li>
+<li><code>NaN === NaN</code> is false while <code>Object.is(NaN, NaN)</code> is true<br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Object.assign(target, ...sources)</code></p>
+<ul>
+<li>return: modified target object</li>
+<li>Update target properties by properties in the sources if they have the same key</li>
+<li>Define new properties to target if not exist</li>
+</ul>
+<pre><code>const target = { a: 1, b: 2 };
+const source = { b: 4, c: 5 };
+const returntarget = Object.assign(target, source);
+
+console.log(target);   // expected output: Object { a: 1, b: 4, c: 5 }
+console.log(returntarget);   // expected output: Object { a: 1, b: 4, c: 5 }
+</code></pre>
+  <br>
+</li>
+<li>
+<p><code>Object.create(protoObj, propertiesObject?)</code></p>
+<ul>
+<li>
+<p>return: always return an empty object, with the specified <code>__proto__</code> object and properties if <code>propertiesObject</code> is passed in</p>
+</li>
+<li>
+<p><code>propertiesObject</code>: <em>optional</em> an object whose enumerable own properties specify property descriptors to be added to the newly-created object, with the corresponding property names.</p>
+<pre><code>{
+  propName:{
+    /* Data descriptors or accessor descriptors */
+  }
+}
+</code></pre>
+</li>
+<li>
+<p>create an object with no prototype (<em>it will loose all the Object methods</em>)</p>
+<pre><code>const user = Object.create(null);
+// Add properties to the user object
+user.name = 'John';
+user.age = 30;
+</code></pre>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Object.defineProperty(obj, prop, descriptor)</code></p>
+<ul>
+<li>
+<p>return: the object that was passed to the function</p>
+</li>
+<li>
+<p><code>prop</code>: the name or Symbol of the property to be defined or modified</p>
+</li>
+<li>
+<p><code>descriptor</code>: objects, could be <em>data descriptor</em> or <em>accessor descriptor</em></p>
+<ul>
+<li>
+<p><strong>data descritpor</strong>: a property that has a value [default]</p>
+<ul>
+<li>configurable [<code>false</code>]: <code>true</code> if this <code>prop</code> descriptor may be changed and this <code>prop</code> could be deleted from object</li>
+<li>enumerable [<code>false</code>]: <code>true</code> if this <code>prop</code> shows up during enumeration (e.g., <code>for...in</code> loop, <code>console.log()</code> and <code>Object.keys()</code> returns enumerable properties only)</li>
+<li><mark>value</mark> [<code>undefined</code>]: property value</li>
+<li><mark>writable</mark> [<code>false</code>]: <code>true</code> if value can be changed with an assignment operator</li>
+</ul>
+<pre><code>const object1 = {};
+Object.defineProperty(object1, 'property1', {
+  value: 42,
+  writable: false
+});
+</code></pre>
+</li>
+<li>
+<p><strong>accessor descriptor</strong>: a property described by a getter-setter pair of functions</p>
+<ul>
+<li>configurable [<code>false</code>]: same as in <em>data decsriptor</em></li>
+<li>enumerable [<code>false</code>]: same as in <em>data decsriptor</em></li>
+<li><mark>get</mark> [<code>undefined</code>]: a function serves as a <em>getter</em> for the property</li>
+<li><mark>set</mark> [<code>undefined</code>]: a function serves as a <em>setter</em> for the property</li>
+</ul>
+</li>
+</ul>
+<pre><code>// make a read-only object property
+const obj = {};
+Object.defineProperty(obj, 'a', {
+  get: function() {
+    return 123;
+  },
+  set: function(val) {
+    throw new Error(`You are trying to re-assign property \'a\'  with value ${val}, however this property is read-only`)
+  }
+});
+
+console.log(obj.a) // output: 123
+obj.a = 456 // output: Uncaught Error: This property cannot be reassigned
+</code></pre>
+ <br>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Object.defineProperties(obj, props)</code></p>
+<ul>
+<li>
+<p>return: the object that was passed to the function</p>
+</li>
+<li>
+<p>props: <code>{prop1:{descriptors}, prop2:{descriptors}}</code></p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Object.getOwnPropertyDescriptor(obj, prop)</code></p>
+<ul>
+<li>return: A property <code>descriptor</code> of the given property if it exists on the object, <code>undefined</code> otherwise.</li>
+</ul>
+</li>
+<li>
+<p><code>Object.getOwnPropertyDescriptors(obj)</code></p>
+<ul>
+<li>return: An object containing all own property descriptors of an object. Might be an empty object, if there are no properties.</li>
+</ul>
+<br>
+</li>
+<li>
+<p><code>Object.keys(obj)</code></p>
+<ul>
+<li>return: an array of strings representing all the <mark>enumerable</mark> properties</li>
+<li><strong>non-negative integer</strong> keys will be stored <strong><em>in front of</em></strong> <code>String</code> keys or float or negative number keys when using <code>Object.keys()</code></li>
+</ul>
+</li>
+<li>
+<p><code>Object.values(obj)</code></p>
+<ul>
+<li>
+<p>return: an array containing all the <mark>enumerable</mark> property values</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Object.entries(obj)</code></p>
+<ul>
+<li>return: An array of the given object's own enumerable string-keyed property <code>[key, value]</code> pairs.</li>
+</ul>
+</li>
+<li>
+<p><code>Object.fromEntries(iterable)</code></p>
+<ul>
+<li>
+<p>return: A new object whose properties are given by the entries of the iterable.</p>
+</li>
+<li>
+<p><code>Object.fromEntries()</code> performs the reverse of <code>Object.entries()</code>:</p>
+</li>
+</ul>
+<pre><code>const entries = [
+  ['foo', 'bar'],
+  ['baz', 42]
+];
+
+const obj = {
+  foo: 'bar',
+  baz: 42
+};
+
+const entriesReturn = Object.entries(obj);
+// entriesReturn = [
+//   ['foo', 'bar'],
+//   ['baz', 42]
+// ];
+
+const fromEntriesReturn = Object.fromEntries(entries);
+// fromEntriesReturn = {
+//   foo: 'bar',
+//   baz: 42
+// };
+</code></pre>
+<br>
+</li>
+<li>
+<p><code>Object.getPrototypeOf(obj)</code></p>
+<ul>
+<li>return: The <code>[[Prototype]]</code> of the given object, which may be <code>null</code>.</li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
+<li>
+<p><code>Object.hasOwn(instance, prop)</code></p>
+<ul>
+<li>return: <code>true</code> if the specified object has directly defined the specified property. Otherwise <code>false</code></li>
+<li><code>Object.hasOwn()</code> is recommended over <code>Object.prototype.hasOwnProperty()</code> because it works for objects created using <code>Object.create(null)</code> and with objects that have overridden the inherited <code>hasOwnProperty()</code> method.</li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
+<li>
+<p><code>Object.preventExtensions(obj)</code> vs <code>Object.isExtensible(obj)</code></p>
+<ul>
+<li>return: same <code>obj</code> vs <code>true|false</code></li>
+<li><strong>Can not</strong>:
+<ul>
+<li>add new properties</li>
+<li>re-assign its prototype</li>
+</ul>
+</li>
+<li><strong>Still can</strong>:
+<ul>
+<li>remove existing properties</li>
+<li>change enumerability and configurability</li>
+<li>change values of existing writable properties</li>
+<li>add/remove new properties to its prototype<br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Object.seal(obj)</code> vs <code>Object.isSealed(obj)</code></p>
+<ul>
+<li>return: same <code>obj</code> vs <code>true|false</code></li>
+<li>Equals <code>Object.preventExtension(obj)</code> plus <strong>Can not</strong>:
+<ul>
+<li>remove existing properties</li>
+<li>change enumerability and configurability</li>
+</ul>
+</li>
+<li><strong>Still can</strong>:
+<ul>
+<li>change values of existing writable properties</li>
+<li>add/remove new properties to its prototype<br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Object.freeze(obj)</code> vs <code>Object.isFrozen(obj)</code></p>
+<ul>
+<li>return: same <code>obj</code> vs <code>true|false</code></li>
+<li>Equals <code>Object.seal(obj)</code> plus <strong>Can not</strong>:
+<ul>
+<li>change values of existing writable properties</li>
+</ul>
+</li>
+<li><strong>Still can</strong>:
+<ul>
+<li>add/remove new properties to its prototype
+<ul>
+<li>To freeze its prototype: <code>Object.freeze(obj.prototype)</code><br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="error-object"><strong>Error Object</strong>:</h4>
+<p><code>Error</code> objects are thrown when runtime errors occur. The <code>Error</code> object can also be used as a base object for user-defined exceptions.</p>
+<ul>
+<li><strong>Constructor</strong>: <code>Error([message, options])</code>
+<ul>
+<li><code>Error()</code> can be called with or without <code>new</code>. Both create a new <code>Error</code> instance.<br>
+<br></li>
+</ul>
+</li>
+<li><strong>Instance properties</strong>:
+<ul>
+<li><code>err.message</code>: string, for user-created Error objects, this is the string provided as the constructor's first argument.<pre><code>const e = new Error(&quot;Could not parse input&quot;); // e.message is 'Could not parse input'
+throw e; // get error: 'Uncaught Error: Could not parse input'
+</code></pre>
+</li>
+<li><code>err.name</code>: string, the initial value is <code>'Error'</code>, can be redefined<pre><code>const e = Error()
+console.log(e.name) // 'Error'
+e.name = 'ParseError';
+console.log(e.name) // 'ParseError'
+</code></pre>
+</li>
+<li><code>err.casue</code>: The value of cause can be of any type. The value that was passed to the <code>Error()</code> constructor in the <code>options.cause</code> argument. It may not be present. If presents, it indicates the specific original cause of the error.<pre><code>try {
+  connectToDatabase();
+} catch (err) {
+  throw new Error('Connecting to database failed.', { cause: err });
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li><strong>Instance methods</strong>:
+<ul>
+<li><code>err.toString()</code>: return a string representing the specified <code>Error</code> object.<pre><code>const e = new Error(&quot;Could not parse input&quot;);
+e.name = 'ParseError';
+e.toString(); // 'ParseError: Could not parse input'
+</code></pre>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="back-to-table-10"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="generator-and-iterator">Generator and Iterator</h2>
+<p><strong>Generator function</strong>:</p>
+<ul>
+<li>The <code>function*</code> declaration (<code>function</code> keyword followed by an asterisk <code>*</code>) defines a generator function, which returns a <code>Generator</code> object if invoked.</li>
+</ul>
+<pre><code>function* generateId(id) {
+  while(id &lt;= 7) {
+    const increment = yield id          // will stop at yield operator each time
+    if (increment !== undefined) {
+      id += increment
+    } else {
+      id += 1;
+    }
+  }
+}
+</code></pre>
+<ul>
+<li><code>yield [expression]</code> operator: pause and resume a generator function.
+<ul>
+<li><code>expression</code>: the value to yield from generator function via the iterator protocal. yield <code>undefined</code> if omitted.<br>
+<br></li>
+</ul>
+</li>
+</ul>
+<p><strong>Generator object</strong>:</p>
+<ul>
+<li>returned by a generator function</li>
+</ul>
+<pre><code>// create a Generator object
+const generatorObj = generateId(1);
+
+console.log(generatorObj.next());   // { value: 1, done: false }
+console.log(generatorObj.next(4));  // { value: 5, done: false }
+console.log(generatorObj.next());   // { value: 6, done: false }
+console.log(generatorObj.next());   // { value: 7, done: false }
+console.log(generatorObj.next());   // { value: undefined, done: true }
+</code></pre>
+<ul>
+<li><code>genObj.next(nextValue?)</code>: keep running the generator function until reaching the next yield, or reach the end of the function
+<ul>
+<li>return <code>{ value: [expression], done: false }</code> or <code>{ value: undefined, done: true }</code></li>
+<li><code>nextvalue</code>: <em>optional</em> if pass in, will be the return value of the latest <code>yield</code> operator<br>
+<br></li>
+</ul>
+</li>
+<li><code>genObj.return(returnValue)</code>: as if add <code>return value</code> in the generator, finishes the generator and return the object with <code>returnValue</code> as the <code>value</code>
+<ul>
+<li>return <code>{ value: returnValue, done: true }</code><br>
+<br></li>
+</ul>
+</li>
+<li><code>genObj.throw(exception)</code>: as if a <code>throw exception</code>; statement is inserted in the generator's body at the current suspended position, where <code>exception</code> is the exception passed to the <code>throw()</code> method.<br>
+<br></li>
+</ul>
+<p><strong>Iterator</strong></p>
+<ul>
+<li>an iterator is any object which implements the Iterator protocol by having a <code>next()</code> method that returns an object with two properties:
+<ul>
+<li><code>value</code>: The next value in the iteration sequence.</li>
+<li><code>done</code>: This is <code>true</code> if the last value in the sequence has already been consumed. If <code>value</code> is present alongside <code>done</code>, it is the iterator's return value.</li>
+</ul>
+</li>
+</ul>
+<h5 id="back-to-table-11"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="set">Set</h2>
+<p>The Set object lets you store <mark>unique</mark> values of any type, whether primitive values or object references.</p>
+<ul>
+<li>
+<p><code>Set</code>: set constructor, work with <code>new</code> to creates a new Set object.</p>
+<pre><code>// Create a new empty Set
+const setObj = new Set()
+
+// Pass an iterable object to Set, duplicated will only add once
+const arr = ['a', 'a', 'b', 'c'];
+const setObj = new Set(arr); // Set(3) {'a', 'b', 'c'}
+</code></pre>
+<br>
+</li>
+<li>
+<p><strong>Size</strong>: <code>setObj.size</code></p>
+<ul>
+<li>how many entries the Set object has<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>Add</strong>: <code>setObj.add(value1)[.add(value2)]</code></p>
+<ul>
+<li>return the Set object with added value</li>
+<li>chainable, but can only add one element at a time</li>
+<li>if pass multiple values, it will only try to add the first value<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>Delete</strong>: <code>setObj.delete(value)</code></p>
+<ul>
+<li>return <code>true</code> if value was found and removed in Set object; otherwise <code>false</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>Clear</strong>: <code>setObj.clear()</code></p>
+<ul>
+<li>return <code>undefined</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>Check</strong>: <code>setObj.has(value)</code></p>
+<ul>
+<li>return <code>true</code> if value exists in the Set object; otherwise <code>false</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>Iterators</strong>:</p>
+<ul>
+<li><code>setObj.valuse()</code> and <code>setObj.keys()</code> both return an iterator that contains the values for each element in Set object</li>
+<li><code>setObj.entries()</code> return an iterator that contains an array of <code>[value, value]</code> for each element in Set Object, in <strong>insertion</strong> order.<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>forEach</strong>: <code>setObj.forEach(fn)</code></p>
+<ul>
+<li>executes a provided function once for each value in the Set object, in <strong>insertion</strong> order.</li>
+<li><code>fn</code>:
+<ul>
+<li><code>(value, key?, set?) =&gt; { /* ... */ }</code></li>
+<li><code>function(value, key?, set?) { /* ... */ }, thisArg?</code></li>
+<li><code>callbackFn, thisArg?</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="back-to-table-12"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="map">Map</h2>
+<ul>
+<li>The <code>Map</code> object holds key-value pairs and remembers the ==original insertion order== of the keys.</li>
+<li>Any value (both <strong>objects</strong> and <strong>primitive values</strong>) may be used as either a <strong>key</strong> or a <strong>value</strong>.<br>
+<br></li>
+</ul>
+<p><strong>WeakMap</strong></p>
+<br>
+<h5 id="back-to-table-13"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="function">Function</h2>
+<p>Every JS function is a <code>Function</code> object:</p>
+<pre><code>(function(){}).constructor === Function //true
+</code></pre>
+<ul>
+<li>
+<p><strong>argument</strong>: value passed to function during function invocation</p>
+</li>
+<li>
+<p><strong>parameter</strong>: placeholder in function definition</p>
+</li>
+<li>
+<p>function default properties:</p>
+<ul>
+<li>
+<p>length: the number of parameters expected by the function</p>
+</li>
+<li>
+<p>name: the name of the function</p>
+</li>
+<li>
+<p><mark>prototype</mark>: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="factory-function"><strong>factory function</strong></h4>
+<p>(==not recommanded==): a function creates and returns a new object</p>
+<pre><code>
+function createPerson(name, age) {
+  return {
+    Name: name,
+    Age: age,
+    getPersonInfo() {
+      return name + ',' + age
+    },
+  }
+}
+</code></pre>
+<ul>
+<li>Methods are duplicated in objects created by factory function, <code>Object.create()</code> could be used in facotry function using an existing object as the prototype of the new object</li>
+</ul>
+<pre><code>const personAction = {
+  getAge() {
+    return this.Age
+  },
+};
+
+function createPerson(name, age) {
+  let person = Object.create(personActions);
+  person.Name = name;
+  person.Age = age;
+  return person;
+}
+</code></pre>
+<br>
+<h4 id="constructor"><strong>Constructor</strong></h4>
+<p>A special function that can only be called with <code>new</code> operator, capitcalized first letter</p>
+<ul>
+<li><strong>Create constructor</strong>:</li>
+</ul>
+<pre><code>function ConstructorName(prop) {
+  this.prop = prop;
+  this.method1 = function () {}
+}
+</code></pre>
+<p><strong>Note</strong>: methods created in constructor definition is <mark>duplicated</mark> in every instance<br>
+<br></p>
+<ul>
+<li><strong>Add shared methods</strong>:</li>
+</ul>
+<pre><code>ConstructorName.prototype.method2 = function () {};
+</code></pre>
+<p>methods created inside of constructor prototype is <mark>shared</mark> with all instances.</p>
+<br>
+<ul>
+<li><strong>Create object instance</strong>:</li>
+</ul>
+<pre><code>const instance = new ConstructorName(prop)
+</code></pre>
+<p><code>new</code> operator would do the following:</p>
+<ol>
+<li>Create a empty object (e.g., <code>newInstance</code>)</li>
+<li>Points the <code>[[Prototype]]</code> of <code>newInstance</code> to the constructor function's <code>prototype</code> property</li>
+<li>Executes the constructor function with the given arguments, binding <code>newInstance</code> as the <code>this</code> context</li>
+<li>If the constructor function returns a non-primitive, this return value becomes the result of the whole <code>new</code> expression. Otherwise, if the constructor function doesn't return anything or returns a primitive, <code>newInstance</code> is returned instead.</li>
+</ol>
+<p>without <code>new</code> operator, <code>this</code> refers to global object.</p>
+<p>(In constructor definition, use <code>try ... catch</code> with <code>new.target</code> to detect whether a function or constructor was called using <code>new</code> operator)</p>
+<br>
+<h4 id="class"><strong>Class</strong></h4>
+<p>(==introduced after ES6==) Declared with keyword <code>class</code>, encapsulates <code>constructor</code> (reserved key word, can only have one) and shared methods</p>
+<pre><code>// class declaration
+class Person {
+  constructor(name) {
+    this.name = name;
+    ObjectLiteralMethod: function(){};
+  }
+  classPrototypeProperty() {
+    return this.name;
+  }
+}
+
+// class expression
+const Person = class [className] {
+  constructor(name) {
+    this.name = name;
+    ObjectLiteralMethod: function(){};
+  }
+  classPrototypeProperty() {
+    return this.name;
+  }
+}
+</code></pre>
+<p>To declare a variable within a class, it needs to be a property of the class or, scoped within a method in the class. It's all about scoping and <strong>variables are not supported in the scope definition of a class</strong><br>
+<br></p>
+<ul>
+<li>Main differences with constructor function:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">Constructor</th>
+<th style="text-align:center">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Declaration</td>
+<td style="text-align:center">can be hoisted</td>
+<td style="text-align:center">not hoisted</td>
+</tr>
+<tr>
+<td style="text-align:center">Execution</td>
+<td style="text-align:center">non-strict mode</td>
+<td style="text-align:center">strict mode</td>
+</tr>
+<tr>
+<td style="text-align:center">Shared properties</td>
+<td style="text-align:center">added to constructor prototype</td>
+<td style="text-align:center">created in Class declaration (outside of constructor)</td>
+</tr>
+<tr>
+<td style="text-align:center">⌊ writable</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">⌊ enumerable</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><strong><mark>Note</mark></strong>: <strong>non-writable</strong> (<code>writable: false</code>) means it cannot be assigned to something else, but it still <strong>can be changed</strong> by adding or deleting properties from inside</p>
+<ul>
+<li>
+<p><strong>instanceof</strong>: <code>object instancof constructor/class</code></p>
+<ul>
+<li>check if <code>constructor/class.prototype</code> (not [[Prototype]]) in object's <code>[[Prototype]]</code> chain.</li>
+</ul>
+</li>
+<li>
+<p><strong>extends &amp; super</strong>:</p>
+<ul>
+<li><strong>extends</strong>: chain the <code>prototype</code> of ParentClass to be the <code>[[Prototype]]</code> in the <code>prototype</code> of ChildClass, so that childInstance will have access to the ParentClass methods from the <code>[[Prototype]]</code> chain</li>
+</ul>
+<pre><code>class ChildClass extends ParentClass { /* ... */ }
+const parentInstance = new ParentClass()
+const childInstance = new ChildClass()
+
+// use of __proto__ is not recommended, below is just for clarification
+
+ChildClass.prototype.__proto__ === ParentClass.prototype // true
+childInstance.__proto__.__proto__ === parentInstance.__proto__  // true
+</code></pre>
+<ul>
+<li>
+<p><strong>super</strong>: used in the constructor body of a derived class (with extends), or as a &quot;property lookup&quot; (<code>super.prop</code> and <code>super[expr]</code>)</p>
+<ul>
+<li>when used as a &quot;function call&quot;:
+<ul>
+<li>calls the parent class's constructor</li>
+<li>binds the parent class's public fields</li>
+<li>then the derived class's constructor can further access and modify <code>this</code></li>
+<li>must be called before the <code>this</code> keyword is used, and before the constructor returns.</li>
+</ul>
+</li>
+<li>when used in &quot;property lookup&quot; form
+<ul>
+<li>access methods and properties of an object literal's or class's <code>[[Prototype]]</code></li>
+</ul>
+</li>
+</ul>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Public class fields</strong></p>
+<ul>
+<li>Public class fields: writable, enumerable, and configurable properties<pre><code>class ClassWithField {
+  instanceField;
+  instanceFieldWithInitializer = &quot;instance field&quot;;
+  static staticField;
+  static staticFieldWithInitializer = &quot;static field&quot;;
+}
+</code></pre>
+</li>
+</ul>
+<br>
+<h5 id="back-to-table-14"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="hoist">Hoist</h2>
+<p>Take part of the code and move it to the top of the file</p>
+<ul>
+<li><strong>Hoisting function</strong>: only work with normal <code>function</code> declaration</li>
+</ul>
+<pre><code>
+funcName() // This works
+...
+function funcName(){}
+
+</code></pre>
+<ul>
+<li><strong>Hoisting variable</strong>: only variable declared with <code>var</code> can be hoisted, but its value would be undefined before initialization. (<code>var</code> is less used than <code>let</code> and <code>const</code>)</li>
+</ul>
+<pre><code>
+console.log(x) // undefined
+var x = 1
+console.log(x) // 1
+</code></pre>
+<br>
+<h5 id="back-to-table-15"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="asynchronous-javascript">Asynchronous Javascript</h2>
+<ul>
+<li>
+<p>AJAX is <strong>asynchronous javascript and XML</strong>, it is a combination of:</p>
+<ul>
+<li>A browser built-in <code>XMLHttpRequest</code> object (to request data from a web server)</li>
+<li>JavaScript and HTML DOM (to display or use the data without the necessity to reloading the page).<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><em><strong>Asynchronous</strong></em> means something happens in the future, not right now.</p>
+</li>
+<li>
+<p>Javascript is just a programming language that is implemented in browsers.</p>
+</li>
+<li>
+<p>Browsers are usually written by C++, which can do things that JS is bad at, hence ==Web APIs== in general.<br>
+<br></p>
+</li>
+<li>
+<p>XML vs JSON</p>
+<ul>
+<li>
+<p>XML (eXtensible Markup Language) is a data format, similar to HTML, but it does not describe presentation like HTML.</p>
+<ul>
+<li>The name of the tag is to represent data meaning, it is meaningless to the browser</li>
+</ul>
+<pre><code>&lt;pin&gt;
+  &lt;title&gt;This is a title&lt;/title&gt;
+  &lt;author&gt;This is the author&lt;/author&gt;
+  &lt;year&gt;This is when it is wrote&lt;/year&gt;
+&lt;/pin&gt;
+</code></pre>
+</li>
+<li>
+<p>JSON (Javascript Object Notation) is a more commonly used data format, much easier for API's to parse, so AJAX(XML) is basically AJAJ(JSON) nowadays.</p>
+<ul>
+<li>JSON doesn't support comments, all the strings must be <strong>double quoted</strong>.</li>
+<li>Data is in name / value pairs, separated by commas.</li>
+<li>Values must be string, number, object, array, boolean or null.</li>
+<li>No function, date or undefined.</li>
+<li>pros:
+<ul>
+<li>lightweight (small file size) and easy to read/write</li>
+<li>integrates easily with most languages</li>
+</ul>
+</li>
+</ul>
+<pre><code>&quot;book&quot;: {
+  &quot;title&quot;: &quot;Three body problem&quot;,
+  &quot;author&quot;: &quot;Cixin Liu&quot;,
+  &quot;year&quot;: 2008
+}
+</code></pre>
+<ul>
+<li>
+<p><code>JSON.stringify(value, replacer?, space?)</code></p>
+<ul>
+<li>
+<p><code>Boolean</code>, <code>Number</code>, <code>String</code> and <code>BigInt</code> are converted to the corresponding primitive values during stringification</p>
+</li>
+<li>
+<p><code>Object</code> (including <code>Array</code>) is recursively stringified</p>
+</li>
+<li>
+<p><code>undefiend</code>, <code>Function</code> and <code>Symbol</code> value will be omitted (in object) or changed to <code>null</code> (in array) or return <code>undefined</code> (directly passed in)</p>
+</li>
+<li>
+<p><code>Infinity</code>, <code>NaN</code> and <code>null</code> are all considered <code>null</code> and will not be omitted.</p>
+</li>
+<li>
+<p>My understanding: Since strings in JSON data are all double quoted, to make valid json string and to avoid the conflict of meanings, <code>JSON.stringify()</code> works as:</p>
+<ol>
+<li>turn all string syntax (<code>'</code>, <code>`</code>) into double quotes (<code>&quot;</code>)</li>
+<li>For all string character double quotes<code>&quot;</code>, preattach a backslash (<code>\</code>) to make it non-syntax character.</li>
+<li>stringify everyting, use a second <code>\</code> to escape any <code>\</code>, <code>&quot;</code>, and the second <code>\</code> will not be printed out by console.log, cause they are escape character.</li>
+</ol>
+</li>
+</ul>
+<pre><code>const str_error = &quot;&quot;&quot;;  // SyntaxError
+
+const str1 = '&quot;';
+const jsonStr1 = JSON.stringify(str1);   // jsonStr1 = '&quot;\\&quot;&quot;'
+console.log(jsonStr1);    // output: &quot;\&quot;&quot; , only one backslash when printing
+
+jsonStr1 === JSON.stringify(&quot;\&quot;&quot;);  // true
+</code></pre>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>
+<p>In early days, asynchronous APIs used event handler (AJAX).</p>
+<ul>
+<li>Browser APIs — constructs built into the browser that sits on top of the JavaScript language and allows you to implement functionality more easily.<br>
+<br></li>
+<li>APIs don't respond with HTML. APIs respond with <strong>pure data</strong> (XML and JSON), not structure.<br>
+<br></li>
+</ul>
+<pre><code>var xhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function() {
+  if (xhr.readyState === 4 &amp;&amp; xhr.status === 200) {
+    console.log(xhr.responseText);
+  }
+}
+
+xhr.open(method, url); // methods: &quot;GET&quot;, &quot;POST&quot;, &quot;HEAD&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;, etc.
+xhr.send([data]); //
+</code></pre>
+  <br>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/XMLHttpRequest">XMLHttpRequest docs</a><br>
+<br></li>
+<li><strong>Event handler</strong>: the function that will be called when the event happens.<br>
+<br></li>
+<li><code>XMLHttpRequest</code> is a constructor, <code>new</code> operator required:
+<ul>
+<li><code>const xhr = new XMLHttpRequest()</code> : returns a <code>XMLHttpRequest</code> object, which is not a promise<br>
+<br></li>
+</ul>
+</li>
+<li><code>xhr.readyState</code>: returns the state an XHR client is in.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Value</th>
+<th>State</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td>UNSENT</td>
+<td>Client has been created, <code>open()</code> not called yet</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td>OPENED</td>
+<td><code>open()</code> has been called</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>HEADERS_RECEIVED</td>
+<td><code>send()</code> has been called, and headers and status are available</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>LOADING</td>
+<td>Downloading; <code>responseText</code> holds partial data</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>DONE</td>
+<td>The operation is complete</td>
+</tr>
+</tbody>
+</table>
+  <br>
+<ul>
+<li>
+<p><code>xhr.onreadystatechange</code> is an event handler, it defines a function that <strong>will be called</strong> <mark>whenever</mark> <code>readyState</code> changes</p>
+<ul>
+<li>check when if the request is done:<pre><code>xhr.onreadystatechange = function () {
+  if (xhr.readyState === 4) {
+    // do something when XMLHttpRequest is done
+  }
+}
+</code></pre>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><code>xhr.addEventListener('event', (e) =&gt; {})</code> other XHR 'events' (or just use event handler):</p>
+<ul>
+<li><code>'loadstart'</code>, <code>xhr.onloadstart = (e) =&gt; {}</code> : fired when a request has started to load data</li>
+<li><code>'load'</code>, <code>xhr.onload = (e) =&gt; {}</code> : fired when a request transaction completes successfully</li>
+<li><code>'loadend'</code>, <code>xhr.onloadend = (e) =&gt; {}</code> : fired when a request has completed (<code>load</code>/<code>abort</code>/<code>error</code>)</li>
+<li><code>'progress'</code>, <code>xhr.onprogress = (e) =&gt; {}</code> : fired periodically when a request receives more data.</li>
+<li><code>'error'</code>, <code>xhr.onerror = (e) =&gt; {}</code> : fired when the request encountered an error</li>
+<li><code>'abort'</code>, <code>xhr.onabort = (e) =&gt; {}</code> : fired when a request has been aborted</li>
+<li><code>'timeout'</code>, <code>xhr.ontimeout = (e) =&gt; {}</code> : fired when progression is terminated due to preset time expiring<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><code>xhr.open()</code>: initializes a newly-created request, or re-initializes an existing one.<br>
+<br></p>
+</li>
+<li>
+<p><code>xhr.send(data?)</code>: sends the request to the server.<br>
+<br></p>
+</li>
+<li>
+<p><code>xhr.status</code> returns the numerical HTTP status code of the <code>XMLHttpRequest</code>'s response</p>
+<ul>
+<li><a href="https://www.restapitutorial.com/httpstatuscodes.html">HTTP Status Codes Cheat Sheet</a>
+<ul>
+<li>successful responses: 200-299</li>
+<li>Redirection message: 300-399</li>
+<li>Client error responses: 400-499</li>
+<li>Server error responses: 500-599</li>
+<li><a href="https://httpstatusdogs.com/">Cut puppy reference</a></li>
+</ul>
+</li>
+<li>check if xhr is succeeded: <code>if (xhr.status === 200) { ... }</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><code>xhr.responseText</code> returns the text received from a server following a request being sent.</p>
+<ul>
+<li>the return is string, and it needs to be parsed before getting access to the actual data</li>
+<li>JSON parser: <code>const data = JSON.parse(xhr.responseText)</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><code>method</code>: request type, these are equivalent to the <strong>CRUD</strong> operations (create, read, update, and delete).</p>
+<ul>
+<li><code>GET</code>: retrieve some data</li>
+<li><code>POST</code>: give data to the server</li>
+<li><code>PUT</code>: update entire entry</li>
+<li><code>PATCH</code>: update a piece of an entry</li>
+<li><code>DELETE</code>: delete an entry<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Problems with XHR:</p>
+<ul>
+<li>bulky syntax</li>
+<li>old</li>
+<li>no streaming<br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Fetch API</strong> (an update to XHR) is provided by browsers (webapi) based on <a href="#promise">chained promise</a></p>
+<ul>
+<li>nice and clean</li>
+<li>more powerful functionalites</li>
+</ul>
+<pre><code>fetch(url)                    // That's it, no XMLHttpRequest() constructor, no open(), no send()
+.then(function(res) {         // fetch will return a promise, whose resolved value is a 'response' object,
+  return res.json();
+}).then(function(data) {
+  console.log(data);
+}).catch(function(e) {
+  console.log('problem!')
+});
+</code></pre>
+<ul>
+<li>Fetch Intefaces
+<ul>
+<li><code>fetch(resource, options?)</code>: method used to fetch a resource.
+<ul>
+<li>return: a <code>Promise</code> that resolves to a <code>Response</code> object</li>
+<li><code>options</code>: <em>optional</em> an object, can include { parameter: value } pairs</li>
+<li>==Only reject== when a network error is encountered (does not reject on HTTP errores)</li>
+</ul>
+</li>
+<li><code>Headers</code>: Represents response/request headers, allowing you to query them and take different actions depending on the results.</li>
+<li><code>Request</code>: Represents a resource request.</li>
+<li><code>Response</code>: Represents the response to a request.
+<ul>
+<li><code>Res.json()</code>: Returns a <code>Promise</code> that resolves with the result of parsing the response body text as JSON.</li>
+</ul>
+</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">more details</a><br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>jQuery AJAX</strong>: jQuery is 'The Write Less, Do More JavaScript <strong>Library</strong>' (based on JS)</p>
+<ul>
+<li>
+<p><a href="https://api.jquery.com/">Docs</a></p>
+</li>
+<li>
+<p>tons of functionality, not just AJAX</p>
+</li>
+<li>
+<p>heavy library</p>
+</li>
+<li>
+<p>Install: npm or CDN (content delivery network) or many other ways<br>
+<br></p>
+</li>
+<li>
+<p><strong>jQuery AJAX</strong> is another way of sending http request (evetually based on <code>XHR</code>), mainly differs from <strong>fetch</strong>:</p>
+<ul>
+<li>jQuery AJAX could respond to HTTP error</li>
+<li>jQuery AJAX could receive cookies from server<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>The 'base' jQuery AJAX Method: <code>$.ajax(url?, settings?)</code></p>
+<ul>
+<li><code>$.ajax()</code> is the same as <code>jQuery.ajax()</code></li>
+<li><code>settings</code>: <em>optional</em> A set of key/value pairs that configure the Ajax request
+<ul>
+<li>common setting keys:
+<ul>
+<li><code>method</code>: HTTP method to use for the request (default: <code>GET</code>)</li>
+<li><code>url</code>: the URL to which the request is sent (default: <code>The current page</code>)</li>
+<li><code>data</code>: data to be sent to the server</li>
+<li><code>datatype</code>: type of data expected from the server (default: <code>Intelligent Guess (xml, json, script, or html)</code>)</li>
+<li><code>cache</code>: If set to <code>false</code>, it will force requested pages not to be cached by the browser. (default: <code>true, false for dataType 'script' and 'jsonp'</code>)</li>
+<li><code>success</code>: A <mark>function</mark> to be called if the request succeeds. Arguments: <strong>the data returned from the server</strong> (formatted according to the dataType parameter or the dataFilter callback function, if specified), <strong>a string describing the status</strong>, and <strong>the <code>jqXHR</code> object</strong>.<br>
+...<br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>3 Shorthand methods that are commonly used:</p>
+<ul>
+<li><code>$.get(url, data?, success?, dataType?)</code> same as below:
+<ul>
+<li><code>success</code>: cb, Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.</li>
+</ul>
+</li>
+</ul>
+<pre><code>$.ajax({
+  url: url,
+  data: data,
+  success: success,
+  dataType: dataType
+});
+</code></pre>
+<br>
+<ul>
+<li><code>$.post(url, data?, success?, dataType?)</code> same as below:
+<ul>
+<li><code>success</code>: cb, Required if dataType is provided, but you can use null</li>
+</ul>
+</li>
+</ul>
+<pre><code>$.ajax({
+  type: &quot;POST&quot;,
+  url: url,
+  data: data,
+  success: success,
+  dataType: dataType
+});
+</code></pre>
+<br>
+<ul>
+<li><code>$.getJSON(url, data?, success?)</code> same as below:</li>
+</ul>
+<pre><code>$.ajax({
+  dataType: &quot;json&quot;,
+  url: url,
+  data: data,
+  success: success
+});
+</code></pre>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Axios</strong>: a lightweight HTTP request <strong>library</strong> (HTTP request only)</p>
+<ul>
+<li><a href="https://axios-http.com/docs/intro">Docs</a></li>
+<li>Install: npm or CDN</li>
+<li>get request:<pre><code>axios.get(url)
+.then(function(res){ ... })
+.catch(function(err){ ... })
+</code></pre>
+<ul>
+<li>have nice error handlers: <code>error.request</code> / <code>error.response</code></li>
+<li>Axios vs Fetch
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Axios</th>
+<th style="text-align:left">Fetch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Axios has <code>url</code> in request object.</td>
+<td style="text-align:left">Fetch has no <code>url</code> in request object.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios is a <strong>stand-alone third party package</strong> that can be easily installed.</td>
+<td style="text-align:left">Fetch is built into most modern browsers; <strong>no installation</strong> is required as such.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios enjoys built-in XSRF protection.</td>
+<td style="text-align:left">Fetch does not.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios uses the <code>data</code> property.</td>
+<td style="text-align:left">Fetch uses the <code>body</code> property.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios’ data contains the <code>Object</code>.</td>
+<td style="text-align:left">Fetch’s body has to be <strong>stringified</strong>.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios request is ok when <code>status</code> is <code>200</code> and <code>statusText</code> is <code>OK</code>.</td>
+<td style="text-align:left">Fetch request is <code>ok</code> when <strong>response object contains</strong> the <code>ok</code> property.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios performs <strong>automatic transforms of JSON data</strong>.</td>
+<td style="text-align:left">Fetch is a <strong>two-step process</strong> when handling JSON data- first, to make the actual request; second, to call the .json() method on the response.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios allows <strong>cancelling request and request timeout</strong>.</td>
+<td style="text-align:left">Fetch does not.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios has the ability to <strong>intercept HTTP requests</strong>.</td>
+<td style="text-align:left">Fetch, by default, doesn’t provide a way to intercept requests.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios has <strong>built-in support for download progress</strong>.</td>
+<td style="text-align:left">Fetch does not support upload progress.</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios has <strong>wide browser support</strong>.</td>
+<td style="text-align:left">Fetch only supports Chrome 42+, Firefox 39+, Edge 14+, and Safari 10.1+ (This is known as Backward Compatibility).</td>
+</tr>
+<tr>
+<td style="text-align:left">Axios <code>GET</code> call can have body Content</td>
+<td style="text-align:left">Fetch <code>GET</code> call cannot have body Content</td>
+</tr>
+<tr>
+<td style="text-align:left"><br></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h5 id="back-to-table-16"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="promise">Promise</h2>
+<p>Promise is an object represents the resulting value of an ==asynchronous operation==, working as a proxy for a value that was not necessarily known when the promise is created.</p>
+<pre><code>new Promise(executor) // only work with 'new' operator
+new Promise((resolveFunc, rejectFunc) =&gt; {
+  // do something asynchronous which eventually calls either:
+  // resolveFunc(someValue) -- fulfilled
+  // or
+  // rejectFunc(reason) -- rejected
+})
+</code></pre>
+<ul>
+<li>return: a promise object, has three states:
+<ul>
+<li>pending: initial state, neither fulfilled nor rejected.</li>
+<li>resolved: meaning that the operation was completed successfully. (Colloquially, 'resolved' equals 'fulfilled')</li>
+<li>rejected: meaning that the operation failed.</li>
+</ul>
+</li>
+<li><strong>executor</strong>: a function called &quot;executor function&quot;, which takes two functions as parameters (resolveFunc, rejectFunc)
+<ul>
+<li>executors are called synchronously, as soon as the Promise is <code>constructed</code><br>
+<br></li>
+</ul>
+</li>
+</ul>
+<br>
+<p>Promises are handled by <a href="#microtask">microtasks queue</a></p>
+<ul>
+<li>The queue is first-in-first-out(FIFO);</li>
+<li><strong>Only</strong> resolved/rejected promise handlers can be enqueued, pending promises will not be enqueued until settled</li>
+<li>Execution of a task is initialted only when nothing else is running (empty call stack)<br>
+<br></li>
+</ul>
+<p>==Chained Promises==: <code>Promise.prototype.then/catch/finally</code><br></p>
+<ul>
+<li>
+<p><code>then(onFulfilled, onRejected?)</code>: Returns a new <code>Promise</code> immediately. This new promise is always <code>pending</code> when returned, regardless of the current promise's status.</p>
+<pre><code>promise.then(onFulfilled, onRejected?)
+
+promise.then(
+  (value) =&gt; { /* fulfillment handler */},
+  (reason) =&gt; { /* rejection handler */}?
+)
+</code></pre>
+<ul>
+<li>When <code>onFulfilled</code> is not a function: internally replaced with an <strong><em>identity</em></strong> function <code>(x) =&gt; x</code>, which <mark>passes</mark> the <code>fulfillmentValue</code></li>
+<li>When <code>onRejected</code> is not a function: internally replaced with an <strong><em>thrower</em></strong> function <code>(x) =&gt; throw x</code>, which <mark>throws</mark> the <code>receivedRejectionReason</code><br>
+<br></li>
+<li>Assuming <code>x</code> is the return of <code>onFulfilled</code> / <code>onRejected</code>, and <code>p</code> is the return promise of <code>then()</code>:
+<ul>
+<li><code>x</code> is a value ==&gt; <code>p</code> is resolved with value <code>x</code></li>
+<li><code>x</code> is <code>undefined</code> ==&gt; <code>p</code> is resolved with <code>undefined</code></li>
+<li><code>x</code> is an error throwed by handler ==&gt; <code>p</code> is rejected with value <code>x</code></li>
+<li><code>x</code> is a resolevd promise ==&gt; <code>p</code> is resovled with <code>x</code>'s value</li>
+<li><code>x</code> is a rejected promise ==&gt; <code>p</code> is rejected with <code>x</code>'s value</li>
+<li><code>x</code> is pending promise ==&gt; <code>p</code> is pending until <code>x</code> is settled, then apply rules above<br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>catch(onRejected)</code>: Internally calls <code>Promise.prototype.then</code> on the object upon which it was called, passing the parameters <code>undefined</code> and the received <code>onRejected</code> handler. Returns the value of that call, which is a <code>Promise</code>.</p>
+<pre><code>promise.catch(function(reason) {
+  // rejection
+})
+</code></pre>
+<ul>
+<li>
+<p>equals to <code>Promise.prototype.then(undefined, onRejected)</code></p>
+</li>
+<li>
+<p>The <code>Promise</code> returned by <code>catch()</code> will be ==fulfilled (resovled)== with the handler function <code>onRejected</code>'s return value unless <code>onRejected</code> ==throws an error== or returns an already <mark>rejected</mark> <code>Promise</code>.</p>
+</li>
+<li>
+<p>Example with comments</p>
+</li>
+</ul>
+<pre><code>const promise = new Promise((resolve, reject) =&gt; {
+  reject('wrong');
+});
+
+promise.then(1, 2)
+  .catch((e) =&gt; {
+    console.log(e);
+    return 'right';
+  })
+  .then((n) =&gt; {
+    console.log(n);
+  });
+
+// Here 'promise' is a rejected promise with rejected reason of 'wrong'
+// Since first 'then' has no onRejected handler,
+    // number '2' is internally replaced with a thrower function ((x) =&gt; { throw x; }),
+    // so the first 'then' returns a rejected promise with reason 'wrong'.
+// The following 'catch' has a onRejected handler,
+    // but it doesn't throw an error or return a rejected promise,
+    // instead it returns a string 'right'
+    // therefore 'catch' returns a resolved promise with result value 'right'
+// The second 'then' following the resolved 'catch' promise, has a onFullfilled handler,
+    // it receives the resolved value of 'right' and loggs it out,
+    // but because it doesn't return anything,
+    // the second 'then' will return a resolved promise with value of undefined
+</code></pre>
+<br>
+</li>
+<li>
+<p><code>finally(onFinally)</code>: Returns an <strong>equivalent</strong> <code>Promise</code> with its finally handler set to the specified function. - <strong>Equivalent</strong> means the returned <code>Promise</code> is the same as the original promise (the same <code>fulfilledValue</code> / <code>error</code>), unless the handler function <code>onFinally</code> ==throws an error== or returns an already <mark>rejected</mark> <code>Promise</code>.</p>
+<ul>
+<li>
+<p><code>onFinally</code> callback does not receive any argument.<br>
+<code>promise.finally(() =&gt; { // Code that will run after promise is settled (fulfilled or rejected) })</code><br>
+<br></p>
+</li>
+<li>
+<p><code>then</code> vs <code>reject</code> vs <code>finally</code>:</p>
+<pre><code>Promise.resolve(2).then(() =&gt; 77, () =&gt; 88) // resolved with result 77
+Promise.resolve(2).finally(() =&gt; 77) // resolved with result 2
+
+Promise.reject(3).then(() =&gt; 77, () =&gt; 88) // resolved with result 88
+Promise.reject(3).finally(() =&gt; 88) // rejected with reason 3
+
+// Both return a rejected promise with reason 99
+Promise.reject(3).finally(() =&gt; {throw 99})
+Promise.reject(3).finally(() =&gt; Promise.reject(99))
+
+</code></pre>
+</li>
+</ul>
+<br>
+</li>
+<li>
+<p><code>Promise.all([an array of promises])</code>: only <mark>resolve</mark> when <mark>all</mark> promises inside is <mark>resolved</mark>, and it will resolve to an array of resolved values. It rejects when any of the input's promises rejects, with this first rejection reason.</p>
+</li>
+<li>
+<p><code>Promise.any([an array of promises])</code>: will <mark>resolve</mark> when <mark>any</mark> promise inside is <mark>resolved</mark>, and it will resolve to that resolved values. If all promises are rejected, it will reject with <code>AggregateError</code>, which is an object containing an array of rejection reasons.</p>
+</li>
+<li>
+<p><code>Promise.race([an array of promises])</code>: will <mark>settle</mark> when <mark>any</mark> promise inside is <mark>settled</mark>, and it will settles with the eventual state of the first promise that settles (resolved or rejected).</p>
+<br>
+</li>
+</ul>
+<h5 id="back-to-table-17"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="asyncawait">Async/Await</h2>
+<ul>
+<li><code>async</code> functions always return a <code>promise</code>. If the return value of an <code>async</code> function is not explicitly a <code>promise</code>, it will be implicitly wrapped in a <code>promise</code>.<br>
+<br></li>
+<li><code>await</code> is an <mark>operator</mark>, its operand is a promise, a thenable object, or any value to wait for.
+<ul>
+<li><strong>return</strong>: the ==fulfillment value== of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved, the await expression throws the rejected value.</li>
+<li>It can only be used inside an async function or a JavaScript module.<br>
+<br></li>
+</ul>
+</li>
+</ul>
+<pre><code>async function name (args) {
+  // ...statement...
+  // [...await... ] // execute synchronously
+  // [...statement...] // continue only when first await finished
+  // [...await...]
+  // ...
+}
+</code></pre>
+<ul>
+<li>The body of an <code>async function</code> can be thought of as being split by zero or more <code>await</code> expressions.<br>
+<br></li>
+<li>==Top-level code==, down to and including the first <code>await</code> expression (if there is one), is executed <mark>synchronously</mark>.
+<ul>
+<li>an <code>async</code> function <mark>without</mark> an <code>await expression</code> will run <mark>synchronously</mark>.</li>
+<li>when there is an <code>await expression</code> inside the function body, the <code>async</code> function will always complete <mark>asynchronously</mark>.<br>
+<br></li>
+</ul>
+</li>
+<li>An <code>await</code> splits execution flow, allowing the caller of the <code>async</code> function to resume execution.
+<ul>
+<li><strong>Important</strong>: only when <code>expression</code> is resolved, the function can resume</li>
+<li><strong>Imagine</strong>: <code>await expression</code> wraps the rest of codes in current function as a promise handler callback, and only when <code>await expression</code> resolve/reject, this handler callback is pushed in the ==microtask queue==<br>
+<br></li>
+</ul>
+</li>
+<li>After the <code>await</code> defers the continuation of the <code>async</code> function, execution of following statements resumes.</li>
+</ul>
+<br>
+<h5 id="back-to-table-18"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h3 id="renderer-process">Renderer process</h3>
+<ul>
+<li>
+<p>A <strong>process</strong> is a program under execution</p>
+</li>
+<li>
+<p>A <strong>thread</strong> is a lightweight process that can be managed by the scheduler.</p>
+<ul>
+<li>a process must have at least one thread (main thread)<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Browser is <strong>multi-process</strong> <strong>multi-thread</strong> application, very complicated (comparable to OS)</p>
+<ul>
+<li>to make sure processes don't interfere with each other, each process has its own isolated memory</li>
+<li>there are mainly three processes that matters the most:
+<ul>
+<li><strong>browser</strong>: for displaying the browser app interface, also responsible for initializing and managing <strong>subprocesses</strong> like network service and renderer, managing and listening user interaction, etc.</li>
+<li><strong>network service</strong>: handle network interaction</li>
+<li><strong>renderer</strong>: one renderer process per tag (in sandbox), see below<br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>What is render in frontend?</strong></p>
+<ul>
+<li>
+<p>In general, rendering is just to turn html strings into screen pixel<br>
+<br></p>
+</li>
+<li>
+<p>Renderer process only has <strong>one main thread</strong>, which is the <strong>most busy</strong> thread in browser,</p>
+</li>
+<li>
+<p>The main thread in renderer handles HTML and CSS parsing, computing element properties, JS execution, layout, painting and compositing.<br>
+<br></p>
+</li>
+<li>
+<p>An <a href="#eventloop">event loop</a> is created when the main thread of a renderer process is started in a web browser, and it is responsible for <strong>managing the order</strong> in which tasks are executed, including the parsing and rendering of HTML and CSS. (see below)<br>
+<br></p>
+</li>
+<li>
+<p>Main renderer thead handles HTML and CSS parsing, computing, layout, JS execution, layout, painting, asynchronous events (user event, timer events, callbackes,..) the rendering thread works as these steps:<br>
+<br></p>
+<ol>
+<li>
+<p><strong>Parse HTML and construct the Document Object Model (DOM) tree and CSS Object Model (CSSOM) tree</strong>:<br>
+<br></p>
+<p>i. ==Parse HTML tags and create DOM==:The main thread will parse the HTML document and construct the DOM tree concurrently.<br>
+<br></p>
+<p>ii. ==Parse and apply CSS styles==: If the main thread runs into <code>&lt;link&gt;</code> tag while parsing html, it will pass it down to other threads (such as <strong>network threads</strong> to download the file and then let <strong>preparser thread</strong>) to downloads and parses any linked resources, and conflate the preparsed content in the CSSOM tree. In this way it optimizes the overall parse efficiency, and also this is why CSS parsing does not block html parsing.<br>
+<br></p>
+<p>iii. ==Execute JavaScript code==: When the main thread encounters <code>&lt;script&gt;&lt;/script&gt;</code> tag code while parsing the HTML, it will pause HTML parsing process, and if the script needs to download (has a <code>src</code> attribute), the main thread will wait for it to finish downloading and executes the code. Because JS code execution may change the DOM tree, which is why HTML parse must pause for JS execution. The JavaScript engine processes the JavaScript code and interacts with the DOM to update the content and appearance of the web page.</p>
+<ul>
+<li><em>If the script attempts to access an element that has not been created, it will typically return a null value or undefined. This can result in errors or unexpected behavior, such as elements not being properly styled or functions not executing as intended.</em></li>
+<li><a href="#threeways">Three ways</a> to make sure DOM loaded before <code>&lt;script&gt;</code><br>
+<br></li>
+</ul>
+<p>iv. At the end of the step 1, it will generate both DOM tree and CSSOM tree, and all default styling, internal/external styling and inline styling will be in the CSSOM tree. These two trees represent the structure of the web page and will potentially be used later.<br>
+<br></p>
+</li>
+<li>
+<p><strong>Get DOM tree with Computed Styles</strong>:</p>
+<ol>
+<li>the main thread traverse through the DOM tree and conflate with the corresponding style on CSSOM tree and get the computed style for each node;</li>
+<li>In this process, all the default value will change to absolute value (e.g., <code>red</code> =&gt; <code>rgb(255, 0, 0)</code>), and relative units will change to aboslute units (e.g., em =&gt; px)</li>
+<li>At the end of step 2, generate a DOM tree with styles<br>
+<br></li>
+</ol>
+</li>
+<li>
+<p><strong>Get Layout Tree</strong>: (precise location and dimensions of each element)</p>
+<ul>
+<li>Content must be in inline boxes;</li>
+<li>Block box and inline box can't be adjacent, so anonymous block box or anonymous inline box will be used as wrapper</li>
+<li>Node on layout tree is not a DOM node, it is a C++ node, which can't be access by JS<br>
+<br></li>
+</ul>
+<ol>
+<li>the main thread traverse through the DOM and calculate the ==geometry Information== of each node, generating a ==layout tree==.</li>
+<li>most node in DOM tree is different from layout tree (e.g., <code>display: none</code>, pseudo elements (<code>::before, after</code>), anonymous boxes)<br>
+<br></li>
+</ol>
+</li>
+<li>
+<p><strong>Get Layers</strong>:</p>
+<ol>
+<li>The main thread will put the layout tree into <mark>layers</mark></li>
+<li>Benefit is that browser can only change the layers that needs to be changed, improve efficiency</li>
+<li>Scrollbar, <code>z-index</code>, <code>opacity</code>, <code>transform</code>, etc will have an impact on how to layer, and <code>will-change: transform</code> can largely suggest browser to get this element on a seperated layer<br>
+<br></li>
+</ol>
+</li>
+<li>
+<p><strong>Paint</strong>: Generate instructions for each layer, the <strong>last thing</strong> the main thread needs to do</p>
+<ol>
+<li>the main thread will generate ==how to paint instructions== for each layer.</li>
+<li>the main thread will pass the instructions to <strong>compositor thread</strong> (still in renderer process) and be avaiable for next task<br>
+<br></li>
+</ol>
+</li>
+<li>
+<p><strong>Tiling</strong>: the compositor thread get all the layer instructions, it will initialize multiply worker threads (from threads pool) to split each layer into smaller <mark>tiles</mark>.<br>
+<br></p>
+</li>
+<li>
+<p><strong>Raster</strong>:</p>
+<ol>
+<li>After tiling, the compositor thread will pass the tiles information to GPU thread;</li>
+<li>GPU thread will initialize multiple threads to generate a <mark>bitmap</mark> for each tile in extremely high speed, and it will prioritize the tiles that are close to viewport.</li>
+<li>After raster, GPU thread will return the bitmap infomations back to compositor thread<br>
+<br></li>
+</ol>
+</li>
+<li>
+<p><strong>Draw</strong>:</p>
+<ol>
+<li>After taking the bitmap info for each tile in each layer, the compositor thread will generate a <mark>quad</mark> for each bitmap, indiating the position of each bitmap on screen, considering transform such as rotate and shrink</li>
+<li>Since transform implementation happens in compositor thread, so it won't take resources from the main thread, which is why transform is more efficient</li>
+<li>Compositor thread will pass the quad info to GPU thread, which makes system call and send it to GPU hardware, finish the final image on sreen.<br>
+<br></li>
+</ol>
+</li>
+<li>
+<p>==Handle user events==: The main thread handles user events such as clicks, scrolls, and keyboard inputs. When a user event occurs, the main thread executes the JavaScript code associated with the event and updates the DOM and rendering tree accordingly.<br>
+<br></p>
+<br>
+</li>
+</ol>
+</li>
+<li>
+<p>Scheduling task: the main thread in render process uses <strong>Event Loop</strong> to manage the order of tasks, any proceess or threads can add tasks in task queue (see below), and event loop will run those tasks one after another in FIFO order<br>
+<br></p>
+</li>
+<li>
+<p><strong><mark>Note</mark></strong>: any changes that triggers a re-render (<mark>reflow</mark>) will add the needed layout and paint updates for rendering the modified elements to the task queue.</p>
+</li>
+</ul>
+<br>
+<p><strong>What is <mark>Reflow</mark> in browser?</strong></p>
+<ul>
+<li>Also known as <strong>layout</strong> or <strong>re-layout</strong>, is a process that occurs in web browsers when changes are made to the layout of a web page.<br>
+<br></li>
+<li>Reflow is a <strong>==costly operation==</strong> because
+<ul>
+<li>Layout calculation involves a lot of computational work.</li>
+<li>Reflow will <strong>==block JS execution==</strong><br>
+<br></li>
+</ul>
+</li>
+<li>During a reflow, the browser recalculates the layout of the elements on the page, but it doesn't necessarily need to repaint all the layers.<br>
+<br></li>
+<li>Common reasons for reflow:
+<ul>
+<li><strong>Resizing</strong> the browser window</li>
+<li>Adding or removing content that causes dimension/position change</li>
+<li>CSS Changes that cause dimensions, positions, padding/margin, font size/line height, display property, or any layout related properties to change</li>
+<li>Some animations or transitions can also cause reflows under certain circumstances</li>
+<li><strong>==Accessing certain properties of an element==</strong>
+<ul>
+<li>Reason: because the browser needs to ensure that the current layout values are up-to-date.</li>
+<li>Non-exhaustive property list:
+<ul>
+<li><code>offsetTop/Left/Width/Height/Parent</code></li>
+<li><code>clientWidth/Height</code></li>
+<li><code>scrollTop/Left/Width/Height</code></li>
+<li><code>getComputedStyle()</code></li>
+<li><code>getBoundingClientRect()</code></li>
+<li><code>getClientRects()</code><br>
+...<br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>What is <mark>Repaint</mark> in browser?</strong></p>
+<ul>
+<li>Repaint refers to the process of updating the visual appearance of an element on a web page without changing its layout.<br>
+<br></li>
+<li>Repaint doesn't necessarily need to come after reflow</li>
+<li>Reflow doesn't necessarily need to repaint all the layers<br>
+<br></li>
+<li>Common reasons for repaint:
+<ul>
+<li>Changing the <strong>background color</strong>, border color, or text color of an element</li>
+<li>Changing the <strong>visibility or opacity</strong> of an element</li>
+<li>Animating an element using CSS <strong>transitions or animations</strong></li>
+<li><strong>Updating the content</strong> of an element
+<ul>
+<li>change in its size or position: <strong>reflow</strong> -&gt; <strong>repaint</strong></li>
+<li>no change in its size or position: only <strong>repaint</strong></li>
+</ul>
+</li>
+<li><strong>Scrolling</strong> the page</li>
+<li>Changing the position or size of an element: <strong>reflow</strong> -&gt; <strong>repaint</strong><br>
+<br></li>
+</ul>
+</li>
+</ul>
+<h5 id="back-to-table-19"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="task-queue-vs-microtask-queue">Task queue vs Microtask queue</h2>
+<ul>
+<li>
+<p>==Macrotask queue== (or just <strong>task queue</strong> or <strong>callback queue</strong>): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).</p>
+</li>
+<li>
+<p>Nowadays as the browser gets more and more complex, browsers have more than one task queue, and their priorities are:</p>
+<ul>
+<li><strong>Microtask queue</strong> -- <mark>highest</mark>: handling <strong>promises</strong> and <strong>mutationObserver</strong></li>
+<li><strong>Animation frame queue</strong> -- <mark>high</mark>: handling the web page repaint</li>
+<li><strong>Interaction queue</strong> -- <mark>medium</mark>: handling user event callbacks</li>
+<li><strong>Timer queue</strong> -- <mark>low</mark>: handling timer event callbacks</li>
+<li><strong>Network queue</strong> -- <mark>lowest</mark>: handling network request callbacks<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Promises are handled by ==microtasks queue==</p>
+<ul>
+<li>The queue is first-in-first-out(FIFO);</li>
+<li>only resolved/rejected promise handlers can be enqueued, pending</li>
+<li>Execution of a task is initialted only when nothing else is running (empty call stack)<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>Directly put a callback in the microtask queue</p>
+<pre><code>Promise.resolve().then(callback)
+</code></pre>
+  <br>
+</li>
+</ul>
+<h5 id="back-to-table-20"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="event-loop">Event loop</h2>
+<ul>
+<li>JavaScript has a concurrency model based on an event loop, which is responsible for executing the code, collecting and processing events, and executing queued sub-tasks.<br>
+<br></li>
+</ul>
+<ol>
+<li>Dequeue and run the oldest task from the <strong>task</strong> queues (Attention: ==main script execution== can be considered a <strong>task</strong>, so this part holds true).</li>
+<li>Execute all <strong>microtasks</strong>:
+<ul>
+<li>While the <strong>microtask</strong> queue is not empty:
+<ul>
+<li>Dequeue and run the oldest <strong>microtask</strong>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Render changes if any.</li>
+<li>If the <strong>macrotask</strong> queue is empty, event loop enters idle and wait till a <strong>macrotask</strong> appears.</li>
+<li>Go to step 1.<br>
+<br></li>
+</ol>
+<ul>
+<li>more macrotask (web api) or microtask (promise) from current executing task, or unexpected tasks(event listeners) are all accessible to macro/micro-task queues.<br>
+<br></li>
+<li>Tasks in <mark><em>macrotask</em></mark> queue or <mark><em>microtask</em></mark> queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.<br>
+<br></li>
+<li>In general, after main script is finished, all <mark>microtasks</mark> will be executed before any <mark>macrotask</mark>.<br>
+<br></li>
+</ul>
+<h5 id="back-to-table-21"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="dom-traversal">DOM Traversal</h2>
+<p><a href="./JS%20DOM%20Traversal%20Cheat%20Sheet%20-%20Dark.pdf">JS DOM Traversal Cheat Sheet</a></p>
+<p>In DOM:</p>
+<ul>
+<li>
+<p>Root: <code>document</code></p>
+</li>
+<li>
+<p>Everything is <strong>node</strong>;</p>
+</li>
+<li>
+<p>Tags are <strong>elements</strong>;</p>
+</li>
+<li>
+<p><strong>Element</strong> is a specical type of <strong>node</strong>;</p>
+<ul>
+<li>
+<p><mark>HTMLCollection</mark> is a live collection of <strong>elements</strong>, it is automatically updated when DOM changes;</p>
+</li>
+<li>
+<p><mark>NodeList</mark> is a collection of <strong>nodes</strong>;<br>
+<br></p>
+</li>
+<li>
+<p><code>Element.children</code>: returns a live <strong>HTMLCollection</strong> which contains all of the child <strong>elements</strong> of the element upon which it was called. (only element)<br>
+<br></p>
+</li>
+</ul>
+</li>
+<li>
+<p>A <mark>token</mark> is a string representing the token you want to check for the existence of in the list.<br>
+<br></p>
+</li>
+<li>
+<p><mark>DOMTokenList</mark>: represent a set of space-separated tokens in a form of JS array objects with instance methods.<br>
+e.g., <code>Element.classList</code> is a live <code>DOMTokenList</code><br>
+<br></p>
+<ul>
+<li><code>DOMTokenList.item(index)</code>: return the item in the list by its index</li>
+<li><code>DOMTokenList.contains(token)</code>: return <code>true</code> / <code>false</code></li>
+<li><code>DOMTokenList.supports(token)</code>: return <code>true</code> / <code>false</code></li>
+<li><code>DOMTokenList.forEach()</code>: callback function just like <code>array.forEach()</code></li>
+<li><code>DOMTokenList.keys()</code>: returns an <code>iterator</code></li>
+<li><code>DOMTokenList.values()</code>: returns an <code>iterator</code></li>
+<li><code>DOMTokenList.add(token0, token1, /* … ,*/ tokenN)</code>: add specificed token(s)</li>
+<li><code>DOMTokenList.remove(token1, token2, /* … ,*/ tokenN)</code>: remove specificed token(s)</li>
+<li><code>DOMTokenList.replace(oldToken, newToken)</code>: replaces an existing <code>token</code>, or return <code>false</code> if <code>oldToken</code> doesn't exist.</li>
+<li><code>DOMTokenList.toggle(token, force?)</code>: removes or adds token, return <code>true</code> or <code>false</code> indicating whether <code>token</code> is in the list or not after the call.
+<ul>
+<li>if <code>token</code> existed already, removes it and return <code>false</code>;</li>
+<li>if <code>token</code> doesn't existed, adds it and return <code>true</code>;</li>
+<li><code>force</code>: <em>optional</em> can be <code>true</code> or <code>false</code>, force toggle() to behave as its boolean return</li>
+</ul>
+</li>
+<li><code>DOMTokenList.entries()</code> returns an <code>iterator</code><br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>CSSOM (css object model)</p>
+<ul>
+<li>
+<p>Root: StyleSheetList: <code>document.styleSheets</code> (an <strong>DOMTokenList</strong> of CSSStyleSheet)</p>
+</li>
+<li>
+<p>A styling source is a CSSStyleSheet in the StyleSheetList, e.g.:</p>
+<ul>
+<li><code>&lt;style&gt;...&lt;/style&gt;</code></li>
+<li><code>&lt;link.../&gt;</code></li>
+</ul>
+</li>
+<li>
+<p>Inline styling is not included in document.styleSheets, it can only be access by that its element</p>
+<pre><code>// html
+&lt;div style=&quot;color: red&quot; id=&quot;test&quot;&gt;...&lt;/div&gt;
+
+// js
+const myElement = document.getElementById(&quot;test&quot;);
+const myInlineStyle = myElement.style;
+</code></pre>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="back-to-table-22"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="web-apis">Web APIs</h2>
+<ul>
+<li>
+<p><strong>API</strong>: application programming interface<br>
+<br></p>
+</li>
+<li>
+<p><strong>className vs classList</strong>:</p>
+<ul>
+<li><code>Element.className</code>: a string representing the class(s) of the element, seperated by space.</li>
+<li><code>Element.classList</code>: (read-only) returns a live <code>DOMTokenList</code> collection of the class attribute of the element.<pre><code>const div = document.createElement('div');
+div.className = 'col border text-center'; // A string.
+div.classList = ['col', 'border', 'text-center'] // A DOMTokenList, not an array
+</code></pre>
+<ul>
+<li>To turn <code>DOMTokenList</code> into an <code>array</code>, use <code>const elementArray = Array.from(DOMTokenList)</code><br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>srollHeight vs clientHeight vs offsetHeight</strong>:</p>
+<ul>
+<li><code>Element.scrollHeight</code>: (read-only) returns the minimum height the element would require in order to fit all the content in the viewport without using a vertical scrollbar, including content not visible on the screen due to overflow.</li>
+<li><code>Element.clientHeigth</code>: (read-only) returns the height of an element's content.
+<ul>
+<li>both including padding but excludes borders, margins, and horizontal scrollbars.</li>
+<li><code>scrollHeight</code> doesn't care about the text content if <code>Element</code> is a <code>textarea</code>, if no content inside <code>textarea</code>, it will just show the rendered <code>height</code>.</li>
+<li>If the element's content can fit without a need for a vertical scrollbar, its <code>scrollHeight</code> equal to its <code>clientHeight</code></li>
+</ul>
+</li>
+<li><code>Element.offsetHeight</code>: (read-only) returns the viewable height of an element (in pixels), including padding, border and scrollbar, but not the margin.<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>innerHTML vs innerText vs textContent</strong>:</p>
+<ul>
+<li><code>Element.innerHTML</code>: The text content of the element, including all spacing and inner HTML tags.</li>
+<li><code>Element.innerText</code>: Just the text content of the element and all its children, without CSS hidden text spacing and tags, except <code>&lt;script&gt;</code> and <code>&lt;style&gt;</code> elements.</li>
+<li><code>Element.textContent</code>: The text content of the element and all descendaces, with spacing and CSS hidden text, but without tags.</li>
+</ul>
+<pre><code>// HTML
+&lt;div id=&quot;mylinks&quot;&gt;
+  This is my &lt;b&gt;link collection&lt;/b&gt;:
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;www.borland.com&quot;&gt;Bye bye &lt;b&gt;Borland&lt;/b&gt; &lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;www.microfocus.com&quot;&gt;Welcome to &lt;b&gt;Micro Focus&lt;/b&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+<pre><code>// JS
+const div = document.getElementById('mylinks');
+
+console.log(div.textContent) // This is my link collection:
+
+console.log(div.innerText) // This is my link collection:Bye bye Borland Welcome to Micro Focus
+
+console.log(div.innerHTML)
+// This is my &lt;b&gt;link collection&lt;/b&gt;:
+// &lt;ul&gt;
+//   &lt;li&gt;&lt;a href=&quot;www.borland.com&quot;&gt;Bye bye &lt;b&gt;Borland&lt;/b&gt;&lt;/a&gt;&lt;/li&gt;
+//   &lt;li&gt;&lt;a href=&quot;www.microfocus.com&quot;&gt;Welcome to &lt;b&gt;Micro Focus&lt;/b&gt;&lt;/a&gt;&lt;/li&gt;
+// &lt;/ul&gt;
+</code></pre>
+  <br>
+</li>
+<li>
+<p><strong>querySelector</strong>:</p>
+<ul>
+<li><code>Element.querySelector(selector(s))</code>: returns the first Element within the document that matches the specified CSS <code>selector</code>, or group of <code>selectors</code>. If no matches are found, null is returned.
+<ul>
+<li><code>selector(s)</code>:
+<ul>
+<li>Universal selector: <code>*</code></li>
+<li>Type selector: <code>tagname</code></li>
+<li>Class selector: <code>.classname</code></li>
+<li>ID seletor: <code>#id</code></li>
+<li>Attribute selector:
+<ul>
+<li><code>[attr]</code>: has attribute</li>
+<li><code>[attr=value]</code>: equal to value</li>
+<li><code>[attr~=value]</code>: contain and space-separated</li>
+<li><code>[attr|=value]</code>: contain and as a whole or be followed by <code>-</code></li>
+<li><code>[attr^=value]</code>: contain and starts with value, not necessarily have to be a whole word</li>
+<li><code>[attr$=value]</code>: contain and ends with value, not necessarily have to be a whole word</li>
+<li><code>[attr*=value]</code>: contain, no other limits.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Grouping selectors:
+<ul>
+<li>Selector list: <code>,</code></li>
+</ul>
+</li>
+<li>Combinators:
+<ul>
+<li>Descendant combinator: space '<code> </code>'</li>
+<li>Child combinator: <code>&gt;</code></li>
+<li>General sibling combinator: <code>~</code></li>
+<li>Adjacent sibling combinator: <code>+</code></li>
+<li>Column combinator: <code>||</code></li>
+</ul>
+</li>
+<li>Pseudo-classes and pseudo-elements: <code>:</code> / <code>::</code></li>
+</ul>
+</li>
+</ul>
+<br>
+</li>
+</ul>
+<h5 id="back-to-table-23"><strong><a href="#table">Back to table</a></strong></h5>
+<hr>
+<h2 id="interesting-concepts">Interesting concepts</h2>
+<h5 id="three-ways-let-js-file-execute-after-html-is-loaded-threeways">Three ways let JS file execute after html is loaded {#threeways}</h5>
+<ol>
+<li>
+<p>add <code>defer</code> to <code>&lt;script&gt;</code> tag:</p>
+<ul>
+<li><code>&lt;script defer type='text/javascript' src='feed.js'&gt;&lt;/script&gt;</code></li>
+<li>notice its difference with <code>async</code><br>
+<img src="file:///c:\Users\Xiao Wang\Coding\cheatsheets-and-misc\script%20async%20defer.png" alt=""></li>
+<li>usually <code>defer</code> is better than <code>async</code> cause it ensure the order of scripts and doesn't block the rendering of the page</li>
+<li>If the script is not critical to the functionality of the page and doesn't rely on the page's content, <code>async</code> can be used to improve the page's loading performance.<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p>in js file, put everything in the callback body<br>
+<code>document.addEventListener('DOMContentLoaded', (event) =&gt; {});</code><br>
+<br></p>
+</li>
+<li>
+<p>put <code>&lt;script&gt;</code> at the end of <code>&lt;body&gt;</code></p>
+<pre><code>&lt;body&gt;
+  ...
+  &lt;script type='text/javascript' src='feed.js'&gt;&lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+</li>
+</ol>
+  <br>
+<ol>
+<li>
+<p><strong>Time Complexity</strong><br>
+<img src="file:///c:\Users\Xiao Wang\Coding\cheatsheets-and-misc\Big_O_cheatsheet.png" alt="Big O Cheatsheet"><br>
+<br></p>
+</li>
+<li>
+<p>A function to return one of two functions based on their execution results, which can only be decided during function invocation.</p>
+<pre><code>function eitherCallback(callback1, callback2) {
+  return (x)=&gt;{
+    return callback1(x) || callback2(x)
+  }
+}
+</code></pre>
+<br>
+</li>
+<li>
+<p>There are two types of <mark>expressions</mark></p>
+<ol>
+<li>those that assign value to a variable with side effects: <code>x = 1</code></li>
+<li>those that in some sense evaluate and therefore resolve to a value <code>1 + 2</code><br>
+<br></li>
+</ol>
+</li>
+<li>
+<p><strong>In <code>for</code> loop, the condition could be anything, it doesn't have to be related to <code>i</code>.</strong></p>
+<pre><code>let y = 3;
+for (let i = 0; y &lt; 5; i++) {
+    y += i;
+    console.log(y);
+}
+
+// 3
+// 4
+// 6
+</code></pre>
+<br>
+</li>
+<li>
+<p>Find the checked radio <code>input</code> element: <code>document.querySelector('input:checked')</code><br>
+<br></p>
+</li>
+<li>
+<p>for any array, you can use index at any position to set a value at that index</p>
+<pre><code>const arr = [];
+arr[3] = 4;
+console.log(arr) // [empty * 3, 4]
+console.log(arr.length) // 4
+</code></pre>
+<br>
+</li>
+<li>
+<p>ES6 (ECMAScript 6 or ECMAScript 2015) added features:</p>
+<ul>
+<li><code>let</code> and <code>const</code></li>
+<li>arrow function</li>
+<li>spread and rest operator <code>...</code></li>
+<li><code>for</code> (const key <code>of</code> obj)</li>
+<li>Map Object</li>
+<li>Set Object</li>
+<li><code>Object.entries()</code></li>
+<li>Classes</li>
+<li>Promise</li>
+<li>Symbol</li>
+<li>Default parameters</li>
+<li>JavaScript Modules</li>
+<li>...<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><code>addEventListener(type, listener, options/capture?)</code>:</p>
+<ul>
+<li>
+<p>By default, event listeners are executed in a process known as <strong>bubbling</strong>, where the event starts at the target element, then propagates up the DOM tree to its parent elements, executing event listeners on each element along the way, until it reaches the root element.<br>
+<br></p>
+</li>
+<li>
+<p><code>listener</code>: The object that receives a notification (an object that implements the Event interface) when an event of the specified type occurs.</p>
+<ul>
+<li>can be a callback function ro an object whose <code>handeEvent()</code> method servers as the callback function</li>
+<li><code>e.preventDefault()</code>: if the event does not get explicitly handled, its default action should not be taken as it normally would be</li>
+<li><code>e.stopPropagation()</code>: prevents further propagation of the current event in the capturing and bubbling phases (to parent or other element)<br>
+<br></li>
+</ul>
+</li>
+<li>
+<p><code>options</code>: <em>optional</em> An object that specifies characteristics about the event listener <code>{...}</code></p>
+<ul>
+<li>
+<p><code>capture</code> (bool): <em>optional</em> If <code>true</code>, the event listeners are executed in the opposite order, starting at the root element and propagating down the DOM tree to the target element, before finally reaching the end of the propagation phase. Default <code>false</code></p>
+</li>
+<li>
+<p><code>once</code> (bool): If <code>true</code>, the <code>listener</code> would be automatically removed when invoked. Default <code>false</code></p>
+</li>
+<li>
+<p><code>passive</code> (bool): If <code>true</code>, <code>listener</code> will never call <code>preventDefault()</code>. Default <code>false</code></p>
+</li>
+<li>
+<p><code>signal</code>: The listener will be removed when the given <code>AbortSignal</code> object's <code>abort()</code> method is called (Same as <code>removeEventListener(type, listerner, options/useCapture?)</code>). If not specified, no <code>AbortSignal</code> is associated with the listener.</p>
+<pre><code>const controller = new AbortController();
+const signal = controller.signal;
+document.getElementById('myButton').addEventListener('click', handleClick, { signal});
+
+setTimeout(() =&gt; {
+  controller.abort();
+}, 5000);
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h5 id="back-to-table-24"><strong><a href="#table">Back to table</a></strong></h5>
+
+        <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+        
+    </body>
+    </html>

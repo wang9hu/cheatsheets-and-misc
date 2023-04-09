@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>CSS selectors&colon;</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: Roboto Mono;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        <style>
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.8rem;
+  padding-top: 1rem;
+  font-weight: 800;
+}
+h3 {
+  font-weight: 800;
+  font-size: 1.5rem;
+  
+}
+h4 {
+  font-size: 1.2rem;
+}
+h5 {
+  font-size: 1rem;
+}
+</style>
+    </head>
+    <body class="vscode-body vscode-light">
+        <p>For element tag</p>
+<pre><code>&lt;div&gt;
+    &lt;a class='className' id='idName' href='url' &gt;Click me&lt;/a&gt;
+    &lt;p&gt;Text 1&lt;/p&gt;
+    &lt;section&gt;
+        &lt;p&gt;Text 2&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Text 3&lt;/p&gt;
+
+&lt;code&gt;Some code&lt;/code&gt;
+
+&lt;p&gt;Text 4&lt;/p&gt;
+
+&lt;form&gt;
+    &lt;input type='text' name='firstname'&gt;&lt;br&gt;
+&lt;/form&gt;
+</code></pre>
+<h3 id="css-selectors">CSS selectors:</h3>
+<ol>
+<li>
+<p>Simple:</p>
+<ul>
+<li>
+<p>by tag name: <code>a { color: red }</code></p>
+</li>
+<li>
+<p>by class name: <code>.className { color: red }</code></p>
+</li>
+<li>
+<p>by id: <code>#idName { color: red }</code></p>
+</li>
+<li>
+<p>universal: <code>* { color: red }</code></p>
+</li>
+<li>
+<p>grouping: <code>a, p { color: red }</code></p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p>Combinators:</p>
+<ul>
+<li>
+<p>descendant (space): <code>div p { color: red }</code> <strong>Text 1</strong> and <strong>Text 2</strong> will change</p>
+</li>
+<li>
+<p>child (&gt;): <code>div &gt; p { color: red }</code> only <strong>Text 1</strong> will change</p>
+</li>
+<li>
+<p>adjacent sibling (+): <code>div + p { color: red }</code> only <strong>Text 3</strong> will change</p>
+</li>
+<li>
+<p>general sibling (~): <code>div ~ p { color: red }</code> <strong>Text 3</strong> and <strong>Text 4</strong> will change</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p>Pseudo-classes selector (<strong>:</strong>) style an element when it is (commonly used):</p>
+<ul>
+<li>
+<p>mouse hovered: <code>div:hover { background-color: green }</code></p>
+</li>
+<li>
+<p>being clicked: <code>a:active { background-color: green }</code></p>
+</li>
+<li>
+<p>focused: <code> input:focus { background-color: green }</code></p>
+</li>
+<li>
+<p>first-child of another element: <code>p:first-child { color: red }</code></p>
+</li>
+<li>
+<p>last-child of another element: <code>p:last-child { color: red }</code>
+...</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p>Pseudo-elements selector (<strong>::</strong>) style specified parts of an element:</p>
+<ul>
+<li>
+<p>first letter: <code>p::first-letter { color: #ff0000 }</code></p>
+</li>
+<li>
+<p>first line: <code>p::first-line { color: #ff0000 }</code></p>
+</li>
+<li>
+<p>insert before: <code>p::before { content: url }</code></p>
+</li>
+<li>
+<p>inser after: <code>p::after { content: url }</code></p>
+</li>
+<li>
+<p>highlighted parts: <code>p::selection { color: red }</code></p>
+</li>
+<li>
+<p>marker of list items: <code>::marker { color: red }</code></p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p>Attribute selector style elements with specific attributes or attribute values:</p>
+<ul>
+<li>
+<p>attribute: <code>a[id] { background-color: yellow }</code></p>
+</li>
+<li>
+<p>attribute value: <code>a[id='idName'] { background-color: yellow }</code>
+... atrribute value variants</p>
+<br>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="the-css-box-model">The CSS Box Model</h3>
+<ul>
+<li>
+<p>Everything in CSS has a box around it, there are mainly two types of boxes: <mark>Block</mark> vs <mark>Inline</mark>, and boxes have an <strong>outer display type</strong> and <strong>inner display type</strong>:</p>
+<ul>
+<li>
+<p><mark>Outer display type</mark>: how is the <strong>contents</strong> of the element are displayed</p>
+<ul>
+<li>
+<p>Block box:</p>
+<ul>
+<li>
+<p>The box will <strong>break onto a new line</strong>.</p>
+</li>
+<li>
+<p>The width and height properties are <strong>respected</strong>.</p>
+</li>
+<li>
+<p><strong>Padding, margin and border</strong> will cause other elements to be <strong>pushed away</strong> from the box.</p>
+</li>
+<li>
+<p>If <strong>not specified</strong>, the box width will extend in the inline direction to <strong>fill</strong> the space available in its container. In most cases, the box will become as wide as its container, filling up 100% of the space available.</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><mark>Inline box</mark>:</p>
+<ul>
+<li>The box will <strong>not break</strong> onto a new line.</li>
+<li>The width and height properties will <strong>not apply</strong> (except for image).</li>
+<li><strong>Vertical padding, margins, and borders</strong> will <strong>apply but will not cause other inline boxes to move away</strong> from the box.</li>
+<li><strong>Horizontal padding, margins, and borders</strong> will <strong>apply and will cause other inline boxes to move away</strong> from the box.</li>
+</ul>
+ <br>
+</li>
+</ul>
+</li>
+<li>
+<p>==Inner display type==: how does the element display <strong>within its parent container</strong>.</p>
+<ul>
+<li>By default and without any other instruction, the elements inside a box are also laid out in normal flow and behave as block or inline boxes.
+<ul>
+<li>
+<p>Block elements: content within fills the available inline space of the element, and the element grows along the block dimension to accommodate its content.</p>
+</li>
+<li>
+<p>Inline elements: The size of inline elements is just the size of their content.</p>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>common block box elements:</p>
+<p>|<code>&lt;address&gt;</code>|<code>&lt;article&gt;</code>|<code>&lt;aside&gt;</code>|<code>&lt;blockquote&gt;</code>|<code>&lt;canvas&gt;</code>|<code>&lt;dd&gt;</code>|<code>&lt;div&gt;</code>|
+|<code>&lt;dl&gt;</code>|<code>&lt;dt&gt;</code>|<code>&lt;fieldset&gt;</code>|<code>&lt;figcaption&gt;</code>|<code>&lt;figure&gt;</code>|<code>&lt;footer&gt;</code>|<code>&lt;form&gt;</code>|
+|<code>&lt;h1&gt;-&lt;h6&gt;</code>|<code>&lt;header&gt;</code>|<code>&lt;hr&gt;</code>|<code>&lt;li&gt;</code>|<code>&lt;main&gt;</code>|<code>&lt;nav&gt;</code>|<code>&lt;noscript&gt;</code>|
+|<code>&lt;ol&gt;</code>|<code>&lt;p&gt;</code>|<code>&lt;pre&gt;</code>|<code>&lt;section&gt;</code>|<code>&lt;table&gt;</code>|<code>&lt;tfoot&gt;</code>|<code>&lt;ul&gt;</code>|<code>&lt;video&gt;</code>|</p>
+</li>
+</ul>
+<p>In general, you can set various values for the display type using the <code>display</code> property, which can have various values:</p>
+<ul>
+<li><code>display: flex</code>:</li>
+</ul>
+<br>
+<hr>
+<h3 id="things-that-are-good-to-know">Things that are Good to Know</h3>
+<ol>
+<li>
+<p>Precedence of style:</p>
+<ol>
+<li>
+<p>Inline style (in HTML style attribute)</p>
+</li>
+<li>
+<p>ID selector</p>
+</li>
+<li>
+<p>Class selector</p>
+</li>
+<li>
+<p>Element selector</p>
+<br>
+</li>
+</ol>
+</li>
+<li>
+<p>Block-element-modifier ( <mark>BEM</mark> ) class naming rule:</p>
+<ul>
+<li>
+<p>Names are written in <strong>lowercase</strong> Latin letters.</p>
+</li>
+<li>
+<p>Words are separated by a hyphen (-).</p>
+</li>
+<li>
+<p>The <strong>block name</strong> defines the namespace for its elements and modifiers.</p>
+</li>
+<li>
+<p>The <strong>element name</strong> is separated from the block name by a double underscore (__)</p>
+<ul>
+<li><code>block-name__elem-name</code></li>
+<li>==Elements don't have hierarchy, parent and child html tags should be on the same level when naming class==</li>
+</ul>
+</li>
+<li>
+<p>The <strong>modifier name</strong> is separated from the block or element name by a single underscore (_).</p>
+<ul>
+<li><code>block-name__elem-name_elem-mod-name</code></li>
+<li><code>block-name_block-mod-name__elem-name</code></li>
+<li>==Modifier should never be used alone, only add modifiers with the original class==</li>
+</ul>
+</li>
+<li>
+<p>The <strong>modifier value</strong> is separated from the modifier name by a single underscore (_).</p>
+<ul>
+<li><code>block-name__elem-name_mod-name_mod-val</code></li>
+</ul>
+</li>
+<li>
+<p>For boolean modifiers, the value is not included in the name.</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p>==At-rules== (@idnetifier (RULE)): instruct CSS how to behave.</p>
+<ul>
+<li>
+<p>Regular: <code>@charset</code>, <code>@import</code>, <code>@namespace</code></p>
+</li>
+<li>
+<p>Nested: A subset of nested statements, which can be used as a statement of a style sheet as well as inside of conditional group rules: <code>@media</code>, <code>@keyframe</code>, <code>@supports</code>, <code>@document</code>, <code>@page</code>, <code>@font-face</code>, <code>@viewport</code>, <code>@counter-style</code>, <code>@font-feature-values</code>, <code>@layer</code></p>
+</li>
+<li>
+<p>Conditional group rules: statements that share a common syntax and each can include nested statements, conveying a common semantic meaning which evaluates to either true or false, and the statements will apply under true condition: <code>@media</code>, <code>@supports</code>, <code>@document</code>.</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p>Use ==Media Queries== when</p>
+<ul>
+<li>
+<p>conditionally apply styles with CSS <code>@media</code> and <code>@import</code> at-rules</p>
+</li>
+<li>
+<p>target specific media for the <code>&lt;style&gt;</code>, <code>&lt;link&gt;</code>, <code>&lt;source&gt;</code>, and other HTML element with the <code>meida=</code> attribute</p>
+</li>
+<li>
+<p>test and monitor media states using the <code>Window.matchMedia()</code> and <code>MediaQueryList.addListener()</code> JavaScript methods</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p>Some attributes can be <mark>inherited</mark> from parent element. See <code>inherited: Yes/no</code>
+in MDN</p>
+<br>
+</li>
+<li>
+<p><code>&lt;script&gt;</code> should be put right before the end tag of <code>&lt;body&gt;</code>, which is <code>&lt;/body&gt;</code>, so that DOM could be ready when executing script.</p>
+<br>
+</li>
+<li>
+<p><code>position: absolute</code> is positioned relative to its closest positioned ancestor (whose <code>position</code> value is not <code>static</code>)</p>
+<br>
+</li>
+<li>
+<p><code>box-sizing</code>: sets how the total width and height of an element is calculated</p>
+<ul>
+<li>
+<p><code>content-box</code>: (default) content width/height is fixed as element's <code>width</code>/<code>height</code>, border width and paddings are added upon content width/height</p>
+</li>
+<li>
+<p><code>border-box</code>: element's <code>width</code>/<code>height</code> includes border width and padding, content width will adapt accordingly.</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p><code>white-space</code> attribute controls if text could be wrapped.</p>
+<br>
+</li>
+<li>
+<p><code>auto</code> is not a valid value for <code>padding</code> attribute;</p>
+<br>
+</li>
+<li>
+<p>To change element color in <code>&lt;svg&gt;</code>, add <code>fill = 'currentColor'</code> attribute in its tag and change the font color in CSS.</p>
+<br>
+</li>
+<li>
+<p><code>transition</code> defines the transition between two states of an <mark>element</mark>,</p>
+<ul>
+<li>only works for ==number value== attribute</li>
+<li>it is a shorthand property for:
+<ul>
+<li>
+<p><code>transition-property</code></p>
+</li>
+<li>
+<p><code>transition-duration</code></p>
+</li>
+<li>
+<p><code>transition-timing-function</code></p>
+</li>
+<li>
+<p><code>transition-delay</code></p>
+<br>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>animation</p>
+<ul>
+<li>
+<p><code>Window.requestAnimationFrame(callback)</code>: update the page's visual content at the next available opportunity</p>
+<ul>
+<li><code>callback</code>: function that is added to task queue, will be invoked right before next repaint</li>
+<li>Repaint happens at a rate of 60 times (typically), and generally this doesn't cause reflow
+<br></li>
+<li>Animation loop:</li>
+</ul>
+<pre><code>function animate() {
+  // Do some animation logic
+  window.requestAnimationFrame(animate);
+}
+
+animate();
+</code></pre>
+<ul>
+<li>One important benefit of using <code>window.requestAnimationFrame(</code>)` is that it allows the browser to optimize the animation loop to reduce battery drain and improve performance.</li>
+<li>The browser can pause the animation loop if the tab is in the background or if the computer is running on battery power, and resume it when appropriate.
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>To make the <code>height</code> of an element change with <code>tansition</code> by toggle classname, don't use <code>height</code>, use <code>max-height</code> in the transition and set a value on <code>max-height</code> to something bigger than your box will ever get.</p>
+<pre><code>
+.item-base {
+  max-height: 0;
+  transition: all 1s ease;
+}
+
+.item-changes {
+  max-height: 300px; /_ this is way larger than it should reach _/
+}
+
+</code></pre>
+<br>
+</li>
+<li>
+<p><code>display: flex</code></p>
+<ol>
+<li>
+<p>defaults:</p>
+<ul>
+<li><code>flex-direction: row</code></li>
+<li><code>justify-content: flex-start</code></li>
+<li><code>align-items</code>: stretch`</li>
+<li><code>flex-wrap: nowrap</code></li>
+<li><code>flex-grow: 0</code></li>
+<li><code>flex-shrink: 1</code>
+<br></li>
+</ul>
+</li>
+<li>
+<p><code>flex-basis</code> vs <code>width</code> / <code>height</code>:</p>
+<ul>
+<li>
+<p><code>flex-basis</code> only applies to flex items, sets the initial main size of a flex item - can be specific value or percentage: <code>10em</code> / <code>3px</code> / <code>50%</code></p>
+</li>
+<li>
+<p>can be intrinsic sizing keywords: <code>max-content</code> / <code>min-content</code> / <code>fit-content</code> - <code>flex-basis</code> only works with main axis:</p>
+</li>
+<li>
+<p>when <code>flex-direction</code> is <code>row</code> or <code>row-reverse</code>: <code>flex-basis</code> control <code>width</code></p>
+</li>
+<li>
+<p>when <code>flex-direction</code> is <code>column</code> or <code>column-reverse</code>: <code>flex-basis</code> control <code>height</code> - when applied, has higher priority than <code>width</code> / <code>height</code>, but not higher than <code>max/min-width/heigth</code></p>
+</li>
+<li>
+<p><code>flex-basis</code> has no effect on absolutely-positioned flex items, of which <code>width</code> and <code>height</code> properties would be necessary</p>
+</li>
+<li>
+<p><code>flex</code> is a shorthand property for <code>flex-grow</code>, <code>flex-shrink</code> and <code>flex-basis</code>.</p>
+<br>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p><code>text-align: center</code></p>
+<ul>
+<li>
+<p>inherited: true</p>
+</li>
+<li>
+<p>horizontal alignment of the <strong>inline box</strong> inside a <strong>block box</strong> or table-cell box</p>
+</li>
+<li>
+<p>this will make all the inline boxes to be centeralized in their parent block boxes</p>
+<br>
+</li>
+</ul>
+</li>
+<li>
+<p>Margin collapsing:</p>
+<ul>
+<li>
+<p>If two ==vertically adjacent== elements both have a margin set on them and their margins touch, the larger of the two margins remains and the smaller one disappears.
+<br></p>
+</li>
+<li>
+<p>Margins of <strong>floating</strong> and <strong>absolutely</strong> positioned elements never collapse.</p>
+</li>
+<li>
+<p>Margins don't collapse in a container with display set to <code>flex</code>.
+<br></p>
+</li>
+<li>
+<p>3 basic cases:</p>
+<ol>
+<li>Adjacent siblings</li>
+<li>No content separating parent and descendants</li>
+<li>Empty blocks
+<br></li>
+</ol>
+</li>
+<li>
+<p>To prevent parent-child element margin collapsing, style the parent element with <code>overflow</code> to <code>hidden</code> or <code>auto</code>.</p>
+</li>
+<li>
+<p>setting <code>overflow</code> property establishes a new <code>block formatting context</code>, which suppresses margin collapsing</p>
+</li>
+<li>
+<p><code>overflow</code> will not cause content to be hidden or scroll bars to appear as long as the parent element doesn't have a set <code>height</code>.</p>
+</li>
+<li>
+<p>margin collapsing only happens within vertical-block margins and flex container's margin doesn't collapse at all.
+<br></p>
+</li>
+</ul>
+</li>
+<li>
+<p><mark>Bootstrap</mark>:</p>
+<ol>
+<li><strong>Content delivery network</strong> ( <mark>CDN</mark> ) is a quick and easy way of applying css framework, like bootstrap e.g.<pre><code>&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT&quot; crossorigin=&quot;anonymous&quot;&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+</code></pre>
+<ul>
+<li>pros: simple &amp; convenient</li>
+<li>cons: can't customize bootstrap css</li>
+</ul>
+</li>
+<li>another way to use bootstrap is to download bootstrap source file (sass source files) and make customized sass and compile it in sass compiler</li>
+<li>bootstrap 5 doesn't require jquery as a dependency
+<br></li>
+</ol>
+</li>
+</ol>
+
+        
+        
+    </body>
+    </html>
