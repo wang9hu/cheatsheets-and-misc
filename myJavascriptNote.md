@@ -12,10 +12,10 @@
 - [Operators](#operators)
 - [Regular Expression](#regular-expression)
 - [Array](#array)
-- [Object](#object)
-- [Generator and iterator](#generator-and-iterator)
 - [Set](#set)
 - [Map](#map)
+- [Object](#object)
+- [Generator and iterator](#generator-and-iterator)
 - [Function](#function)
 - [Hoist](#hoist)
 - [Asynchronous Javascript](#asynchronous-javascript)
@@ -24,10 +24,9 @@
 - [Renderer Process](#renderer-process)
 - [Task queue vs Microtask queue](#task-queue-vs-microtask-queue)
 - [Event Loop](#event-loop)
-- [DOM Traversal](#dom)
-- [Web APIs](#webapis)
-- [Web-related terms](#webterms)
-- [Interesting topics](#interesting)
+- [DOM Traversal](#dom-traversal)
+- [Web APIs](#web-apis)
+- [Interesting concepts](#interesting-concepts)
 
 ---
 
@@ -52,8 +51,7 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 ### Boolean
 
-boolean
-: `true` or `false`, no quotes, any value in JS can be used for boolean
+`true` or `false`, no quotes, any value in JS can be used for boolean
 
 |                     Falsy                     |                     Truthy                     |
 | :-------------------------------------------: | :--------------------------------------------: |
@@ -63,8 +61,10 @@ boolean
 
 - Operators that return Boolean results:
 
-  - **Equality, Inequality** & **Strict equality, strict inequality**:`==` `!=` & `===` `!==`
-  - **Greater, greater or equal than** & **less, less or equal than**: `>` `>=` & `<` `<=`
+  - **Equality**, **Inequality** & **Strict equality**, **strict inequality**:
+    - `==` `!=` & `===` `!==`
+  - **Greater**, **greater or equal than** & **less**, **less or equal than**:
+    - `>` `>=` & `<` `<=`
   - **in** operator: `prop in object`
 
     - check if `object` (or its prototype chain) contains the property with specified name `prop`.
@@ -77,8 +77,7 @@ boolean
 
 ### Null
 
-null
-: Intentional absence of any value, **must be assigned**
+ Intentional absence of any value, **must be assigned**
 
 <br>
 
@@ -88,8 +87,7 @@ null
 
 ### Undefined
 
-undefined
-: Variables that do not have an assigned value, from values that **hasn't been defined** or **doesn't exist**
+ Variables that do not have an assigned value, from values that **hasn't been defined** or **doesn't exist**
 
 <br>
 
@@ -106,13 +104,13 @@ undefined
 
 #### Math Object (commomly used)
 
-##### Properties:
+#### Properties:
 
 - `Math.PI` : PI
 - `Math.E` : Euler's number (e)
   <br>
 
-##### Static Methods
+#### Static Methods
 
 - `Math.floor(3.65) // 3` : nearest smaller integer
 - `Math.ceil(-3.65) // -3 ` : neareast larger integer;
@@ -134,7 +132,7 @@ undefined
 
 #### Number methods (commomly used)
 
-##### Static Methods
+#### Static Methods
 
 - **Number()**: `Number(value) // converts value to number type`
   <br>
@@ -144,19 +142,19 @@ undefined
      <br>
 - **Number.isFinite() / Number.isNaN() vs isFinite() / isNaN()**:
 
-- `Number.isFinite() / Number.isNaN()`:
+  - `Number.isFinite() / Number.isNaN()`:
 
-  1. if not `number` type, return `false`
-  2. if `number` type => test for `finite`/`NaN`
+    1. if not `number` type, return `false`
+    2. if `number` type => test for `finite`/`NaN`
 
-  - `Number.isNaN('3') // false`
-  - `Number.isNaN('a') // false`
+    - `Number.isNaN('3') // false`
+    - `Number.isNaN('a') // false`
 
-- `isFinite() / isNaN()` : coerced to `number` type, then test for `finite`/`NaN`
+  - `isFinite() / isNaN()` : coerced to `number` type, then test for `finite`/`NaN`
 
-  - `isNaN()` will only give `false` when the input is `number` or number in string type.
-  - `isNaN('3') // false`
-  - `isNAN('a') // true`;
+    - `isNaN()` will only give `false` when the input is `number` or number in string type.
+    - `isNaN('3') // false`
+    - `isNAN('a') // true`;
     <br>
 
 - **Number.parseInt() / parseInt()**: From left to right, return starting integer part
@@ -169,15 +167,15 @@ undefined
   - `parseFloat('1.23a45') // 1.23`
     <br>
 
-##### Instance Methods
+#### Instance Methods
 
-- **.toExponential()**: `123.456.toExponential() = '1.23456e+2' `: return a <mark>string</mark> representing the scientific notation formatted number
+- **.toExponential()**: `123.456.toExponential() = '1.23456e+2' `: return a <span>string</span> representing the scientific notation formatted number
   <br>
-- **.toFixed()**: `123.456.toFixed(x) = '123.4' // x = 1 `: return a <mark>string</mark> representing the fixed-point notation number, [x] = 0
+- **.toFixed()**: `123.456.toFixed(x) = '123.4' // x = 1 `: return a <span>string</span> representing the fixed-point notation number, [x] = 0
   <br>
-- **.toPrecision()**: `123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4` : return a <mark>string</mark> representing fixed-point or exponential notation rounded to precision significant digits
+- **.toPrecision()**: `123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4` : return a <span>string</span> representing fixed-point or exponential notation rounded to precision significant digits
   <br>
-- **.toString()**: `123.456.toString(b) = '443.212' // b = 5` : return a <mark>string</mark> representing the object in the specified radix (base), default [b] = 10
+- **.toString()**: `123.456.toString(b) = '443.212' // b = 5` : return a <span>string</span> representing the object in the specified radix (base), default [b] = 10
   <br>
 
 ##### **[Back to table](#table)**
@@ -208,17 +206,17 @@ undefined
 
   <br>
 
-#### **Static methods**
+#### Static methods
 
 - **String.fromCharCode(num1, [num2, ..., numN])**: returns a string created from the specified sequence of UTF-16 code units.
   - `num1, ..., numN`: A sequence of numbers that are UTF-16 code units. The range is between 0 and 65535
     <br>
 
-#### **Instance methods**
+#### Instance methods
 
 - **.length** : return the length of string
 
-  <br>
+  <br><br>
 
 - **.charAt()**: `'hello'.charAt(1) = "e";` :
 
@@ -226,25 +224,27 @@ undefined
 
 - **.charCodeAt()**: return UTF-16 code of the first letter `'hello'.charCodeAt(1) = "101";`
 
-  <br>
+  <br><br>
 
 - **.concat()**: `"Hello".concat(", ", "World!")`
 
-  - return: a modified <mark>copy</mark> of `str` with concatenated `chars`/`substring`(`"Hello, World!`)
+  - return: a modified <span>copy</span> of `str` with concatenated `chars`/`substring`(`"Hello, World!`)
 
-  <br>
+  <br><br>
 
 - **.endsWith()**: `str.endsWith(searchstring, length?)`
 
   - return: `true` or `false`
   - `length`: _optional_ default `str.length`
   - `"markdown file".endsWith('down', 8) // true`
+  <br>
 
 - **.startsWith()**: `str.startsWith(searchstring, position?)`
 
   - return: `true` or `false`
   - `position`: _optional_ starting position (included), default`0`
-    <br>
+  
+  <br><br>
 
 - **.includes()**: `str.includes(searchstring, position?)`
 
@@ -266,11 +266,11 @@ undefined
   - return: first index of the last occurrence or -1 (not found)
   - `position`: _optional_ ending position (included), default`0`
 
-  <br>
+  <br><br>
 
 - **.padEnd()**: `str.padEnd(targetlength, padstring?)`
 
-  - return: a modified <mark>copy</mark> of `str` with `targetlength` and `padstring`
+  - return: a modified <span>copy</span> of `str` with `targetlength` and `padstring`
   - `targetlength`: length of the return `str`
   - `padstring`: _optional_ default <code>"&UnderBracket;"</code>(space)
   - `"hello".padEnd(3) // "hello"` : `targetlength` < `str.length`
@@ -281,7 +281,7 @@ undefined
 
 - **.padStart()**: `str.padStart(targetlength, padstring?)`
 
-  - return: a modified <mark>copy</mark> of `str` with `targetlength` and `padstring`
+  - return: a modified <span>copy</span> of `str` with `targetlength` and `padstring`
   - `targetlength`: length of the return `str`
   - `padstring`: _optional_ default <code>"&UnderBracket;"</code>(space)
   - `"hello".padStart(3) // "hello"` : `targetlength` < `str.length`
@@ -289,62 +289,70 @@ undefined
   - `"hello".padStart(10, '123') // "12312hello"` : `padstring.length` < `targetlength` - `str.length`
   - `"hello".padStart(10, '12345678') // "12345hello"` : `padstring.length` > `targetlength` - `str.length`
 
-  <br>
+  <br><br>
 
 - **.trim()**: `str.trim()`
-
-  - return: a modified <mark>copy</mark> of `str` with whitespaces at beginning and end are removed
-
+  - return: a modified <span>copy</span> of `str` with whitespaces at beginning and end are removed
+<br>
 - **.trimStart()**: `str.trimStart()`
-
-  - return: a modified <mark>copy</mark> of `str` with whitespaces from beginning are removed
-
+  - return: a modified <span>copy</span> of `str` with whitespaces from beginning are removed
+<br>
 - **.trimEnd()**:`str.trimEnd()`
 
-  - return: a modified <mark>copy</mark> of `str` with whitespaces from end are removed
+  - return: a modified <span>copy</span> of `str` with whitespaces from end are removed
 
-  <br>
+  <br><br>
 
 - **.repeat()**: `"Aaa".repeat(3)`
 
-  - return: a modified <mark>copy</mark> of `str` with repeating (`"AaaAaaAaa"`)
+  - return: a modified <span>copy</span> of `str` with repeating (`"AaaAaaAaa"`)
 
-  <br>
+  <br><br>
 
 - **.replace()**: `"Aaa".replace('a', '-') // "A-a"`
 
-  - return: a modified <mark>copy</mark> of `str` with <mark>first</mark> occurance replaced
+  - return: a modified <span>copy</span> of `str` with <span>first</span> occurance replaced
 
 - **.replaceAll()**: `"Aaa".replaceAll('a', '-') // "A--"`
 
-  - return: a modified <mark>copy</mark> of `str` with <mark>all</mark> occurance replaced
+  - return: a modified <span>copy</span> of `str` with <span>all</span> occurance replaced
 
-  <br>
+  <br><br>
 
 - **.search()**: `"hello".search('e') // 1`
 
   - return: index of first occurence or -1 (not found)
+  - vs `.indexOf()`: 
+    - `.search()` can take Regex while `.indexOf` cannot
+    - `.search()` cannot take second argument as start position
 
-  <br>
+  <br><br>
 
 - **.slice()**: `str.slice(start, end?)`
 
-  - return: a modified <mark>copy</mark> of `str[start]` (included) to `str[end]` (excluded)
+  - return: a modified <span>copy</span> of `str[start]` (included) to `str[end]` (excluded)
   - `start`: starting index (included)
   - `end`: _optional_ ending index (excluded), default `str.length`
   - `start` and `[end]` could be negative integer
   - `"hello".slice(1) // "ello", remove first char`
   - `"hello".slice(-1,1) // ""` : `start` > `end`
-
+<br>
 - **.substring()**: `str.substring(start, end?)`
 
-  - return: a <mark>copy</mark> from `str[start]` (included) to `str[end]` (excluded)
-  - almost identical to `str.slice()`, but there are two differences:
+  - return: a <span>copy</span> from `str[start]` (included) to `str[end]` (excluded)
+  - vs `str.slice()`:
 
-    - Negative and larger than `str.length` indexes are treated as 0 and `str.length`, repectively: `"hello".substring(-1,6) // "hello", same as "hello".substring(0,5)`
-    - <mark>Swap</mark> `start` and `end` when `start` > `end`: `"hello".substring(4,1) // "ell", same as "hello".substring(1,4)`
+    - Negative and larger than `str.length` indexes are treated as 0 and `str.length` in `.substring`, repectively:
+      ```
+      "hello".substring(-1,6) // same as "hello".substring(0,5), 'hello'
+      ```
 
-    <br>
+    - <span>Swap</span> `start` and `end` when `start` > `end` for `.substring()`:
+      ```
+      "hello".substring(4,1) // same as "hello".substring(1,4), "ell"
+      ```
+
+    <br><br>
 
 - **.split()**: `str.split(seperator?,limit?)`
 
@@ -381,17 +389,17 @@ undefined
 - each symbol is unique
 - a symbol value is only used as an identifier for object propeties
 - when add a symbol as a property, there are two ways
-  - ```
-      const propSym = Symbol('prop')
-      obj[propSym] = propValue
-    ```
-    or
-  - ```
-    const propSym = Symbol('prop')
-    obj = {
-      [propSym] : propValue
-    }
-    ```
+  ```
+  const propSym = Symbol('prop')
+  obj[propSym] = propValue
+  ```
+  or
+  ```
+  const propSym = Symbol('prop')
+  obj = {
+    [propSym] : propValue
+  }
+  ```
 - Symbols are not enumerable, so it will not show up in `for...in` loop or `Object.getOwnPropertyNames()`
 - Symbols can be accessed by `Object.getOwnPropertySymbols()`
 
@@ -448,7 +456,7 @@ undefined
   - `|` (OR): `0001 | 0101 -> 0111`
     - Set each bit to 1 if one of two bits is 1
   - `^` (XOR): `0011 ^ 0101 -> 0110`
-    - Sets each bit to 1 if <mark>only</mark> one of two bits is 1
+    - Sets each bit to 1 if <span>only</span> one of two bits is 1
   - `~` (NOT): Inverts all the bits
     - for integers, add a negative sign and then minus 1:` ~5 -> -6`
   - `<<` (Zero fill left shift):
@@ -468,12 +476,12 @@ undefined
 
 - RegEx is used to ==match character== combinations in strings
   <br>
-- A RegEx is an <mark>object</mark>
+- A RegEx is an <span>object</span>
   <br>
 - RegExs are used with the RegExp methods
   <br>
 
-- RegEx is ==case sensitive==, and by default it only return the <mark>FIRST</mark> match
+- RegEx is ==case sensitive==, and by default it only return the <span>FIRST</span> match
   <br>
 
 - Two ways to create a `RegEx` object: a literal notation and a constructor:
@@ -505,7 +513,7 @@ undefined
 
   - `x+`: matches the preceding item "x" ==1 or more== times (unlimited).
   - `x*`: matches the preceding item "x" ==0 or more== times (unlimited).
-  - `x{n}`: matches <mark>EXACTLY</mark> "n" (a positive integer) occurrences of the preceding item "x".
+  - `x{n}`: matches <span>EXACTLY</span> "n" (a positive integer) occurrences of the preceding item "x".
     - `x{n,}`: matches ==AT LEAST== "n" (a positive integer) occurrences of the preceding item "x".
     - `x{n,m}`: matches ==at least== "n", ==at most== "m" (n < m) occurrences of the preceding item "x".
       <br>
@@ -515,7 +523,7 @@ undefined
 
   - `\`: escape character, any character behind it will be literal except for other metacharacters
   - `\d`: same as `[0-9]`, match any digit number character
-  - `\w`: same as `[a-zA-Z0-9_]`, match any <mark>letter</mark> (case insensitive), <mark>number</mark> and <mark>underscores</mark>
+  - `\w`: same as `[a-zA-Z0-9_]`, match any <span>letter</span> (case insensitive), <span>number</span> and <span>underscores</span>
     - `\W`: same as `[^a-zA-Z0-9_]`, match any characters but letter (case insensitive), number and underscores
   - `\s`: match whitespace characters (spaces, tabs etc)
     - `\S`: match any characters but whitespace characters (spaces, tabs etc)
@@ -523,11 +531,11 @@ undefined
     <br>
 
 - Assertions (boundaries)
-  - `^...`: matches the <mark>beginning</mark> of input. (notice the difference with `[^]`)
-  - `...$`: matches the <mark>end</mark> of input.
-    - `^x{n}$`: <mark>EXACTLY</mark> n (positive integer) characters
+  - `^...`: matches the <span>beginning</span> of input. (notice the difference with `[^]`)
+  - `...$`: matches the <span>end</span> of input.
+    - `^x{n}$`: <span>EXACTLY</span> n (positive integer) characters
 
-##### Optional Flags:
+#### Optional Flags at the end:
 
 Settings added at the **end of RegEx** that can be applied to **modify its behavior**
 
@@ -537,7 +545,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 <br>
 
-##### RegExp methods
+#### RegExp methods
 
 `const reg = /[abc]/i`
 
@@ -557,7 +565,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 - pass as reference
   <br>
 
-#### **Array static methods**
+#### Array static methods
 
 - array-like objects:
 
@@ -620,7 +628,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - return: true if the value is an Array; otherwise, false.
     <br>
 
-#### **Array instance methods**
+#### Array instance methods
 
 `const arr = [1, 2, 3, 'a', 'b', 'c']`
 <br>
@@ -633,12 +641,12 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 - **.indexOf()**: `arr.indexOf(searchElement, start?)`
 
-  - return: the <mark>index</mark> of the first element in the array or -1 (not found)
+  - return: the <span>index</span> of the first element in the array or -1 (not found)
   - `start`: _optional_ starting index (included)
 
 - **.lastIndexOf()**: `arr.lastIndexOf(searchElement, start?)`
 
-  - return: the <mark>index</mark> of the last element in the array or -1 (not found)
+  - return: the <span>index</span> of the last element in the array or -1 (not found)
   - `start`: _optional_ starting index (included)
     <br>
 
@@ -652,37 +660,37 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 - **.join()**: `arr.join(seperator?)`
 
-  - return: a <mark>string</mark> with all array elements joined.
+  - return: a <span>string</span> with all array elements joined.
   - `seperator`: _optional_ default `","`
 
 - **.toString()**: `arr.toString()`
 
-  - return: a <mark>string</mark> representing the elements of the array.
+  - return: a <span>string</span> representing the elements of the array.
   - is the same as `arr.join()`
     <br>
 
 - **.concat()**: `arr.concat(arr, value1?, /*...*/?, valueN?])`
 
-  - return: a modified <mark>copy</mark> of `arr` with concatenated elements
+  - return: a modified <span>copy</span> of `arr` with concatenated elements
   - `valueN`: _optional_ Arrays and/or values to concatenate into a new array
   - `arr.concat([4,5,6],'d','e','f') // [1,2,3,'a','b','c',4,5,6,'d','e','f']`
     <br>
 
 - **.slice()**: `arr.slice(start?, end?)`
 
-  - return: a modified <mark>copy</mark> of `arr` with array elements from `arr[start]` (included) to `arr[end]` (excluded)
+  - return: a modified <span>copy</span> of `arr` with array elements from `arr[start]` (included) to `arr[end]` (excluded)
   - `start`: _optional_ default `0`, could be negative integer
   - `end`: _optional_ default `arr.length`, could be negative integer
     <br>
 
 - **.flat()**: `arr.flat(depth?)`
 
-  - return: a modified <mark>copy</mark> of `arr` with sub-array elements concatenated into it
+  - return: a modified <span>copy</span> of `arr` with sub-array elements concatenated into it
   - `depth`: _optional_ default `1` (from outside to inside)
   - `[1,[2,[3,4]]].flat() // [1,2,[3,4]]`
     <br>
 
-- **.copyWithin()**: `arr.copyWithin(targetIndex, start?, end?)`(==mutator method==)
+- **.copyWithin()**: `arr.copyWithin(targetIndex, start?, end?)`(<span>mutator method</span>)
 
   - return: the modified array whose elements are replaced starting from `targetIndex` with elements from `start`(included) to `end` (excluded), no change to `arr.length`
   - `start`: _optional_ starting index (included), default `0`
@@ -693,37 +701,37 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - `arr.copyWithin(1,3,5) // [1,'a','b','a','b','c']`: start from `arr[1]`,replace `arr[1]`, `arr[2]` with `arr[3]`, `arr[4]`, the rest remain the same
     <br>
 
-- **.fill()**: `arr.fill(value, start?, end?)`(==mutator method==)
+- **.fill()**: `arr.fill(value, start?, end?)`(<span>mutator method</span>)
 
   - return: the modified array whose elements are replaced with `value` from `start`(included) to `end` (excluded), no change to `arr.length`
   - `start`: _optional_ starting index (included), default `0`
   - `end`: _optional_ ending index (excluded), default `arr.length`
     <br>
 
-- **.reverse()**: `arr.reverse()` (==mutator method==)
+- **.reverse()**: `arr.reverse()` (<span>mutator method</span>)
 
   - return: the modified array whose elements order are reversed
     <br>
 
-- **.pop()**: `arr.pop()` (==mutator method==)
+- **.pop()**: `arr.pop()` (<span>mutator method</span>)
 
   - return: the removed element (last) from the array; undefined if the array is empty.
 
-- **.push()**: `arr.push(element(s))` (==mutator method==)
+- **.push()**: `arr.push(element(s))` (<span>mutator method</span>)
 
   - return: the new `length` property
 
-- **.shift()**: `arr.shift()` (==mutator method==)
+- **.shift()**: `arr.shift()` (<span>mutator method</span>)
 
   - return: the removed element (first) from the array; undefined if the array is empty.
 
-- **.unshift()**: `arr.unshift(element(s))` (==mutator method==)
+- **.unshift()**: `arr.unshift(element(s))` (<span>mutator method</span>)
 
   - return: the new `length` property
 
   <br>
 
-- **.splice()**: `arr.splice(start, deletecount?, additem(s)?)` (==mutator method==)
+- **.splice()**: `arr.splice(start, deletecount?, additem(s)?)` (<span>mutator method</span>)
 
   - return: an array containing the deleted elements
   - `start`: starting index (included)
@@ -738,7 +746,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
   <br>
 
-#### **Array callback methods**
+#### Array callback methods
 
 - `CallbackFn` types (_fn_): (`thisArg` is used as `this` when executing `callbackFn`)
 
@@ -747,17 +755,17 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - Inline callback funciton: `function(element, index?, array?) {/*...*/}, thisArg?`
     <br>
 
-- **<mark>Note</mark>**: index manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
+- **<span>Note</span>**: index manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
   <br>
 
-- **.every(_f_)**: return `true` if `callbackFn` returns a truthy value for <mark>every</mark> `element`
+- **.every(_f_)**: return `true` if `callbackFn` returns a truthy value for <span>every</span> `element`
   **.some(_f_)**: return `true` if `callbackFn` returns a truthy value for ==at least one== `element`
   <br>
 
-- **.forEach(_f_)**: return `undefined`, it executes `callbackFn` once for <mark>each</mark> `element`
-- **.map(_f_)**: return a new `array` with the results of `callbackFn` for <mark>each</mark> `element`
+- **.forEach(_f_)**: return `undefined`, it executes `callbackFn` once for <span>each</span> `element`
+- **.map(_f_)**: return a new `array` with the results of `callbackFn` for <span>each</span> `element`
   <br>
-- **.reduce(_f_)**: return the **<mark>accumulated</mark>** value from running `callbackFn` over the entire array
+- **.reduce(_f_)**: return the **<span>accumulated</span>** value from running `callbackFn` over the entire array
 
   - `element` here are two arguments: `accumulator` & `currentElement`
   - `index` here is `currentElementIndex`
@@ -778,13 +786,88 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 - **.findIndex(_f_)**: return **index** of the first `element` in the array which makes `callbackFn` return `true`, or `-1` if not found
 - **.filter(_f_)**: return a **new array** with all the `elements` which makes `callbackFn` return `true`, or `[]` if no `element` is found
   <br>
-- **.sort(_f_)**: return the sorted array (==mutator method==)
+- **.sort(_f_)**: return the sorted array (<span>mutator method</span>)
 
   - `arr.sort([compareFn(a,b)])`
   - `compareFn` return negative: a placed before b
   - `compareFn` return positive: b placed before a
   - `compareFn` return `0`: a, b order unchange
   - if omit `compareFn`, a & b are converted to strings, then sorted according to each `char` Unicode value
+
+<br>
+
+##### **[Back to table](#table)**
+
+---
+
+## Set
+
+The Set object lets you store <span>unique</span> values of any type, whether primitive values or object references.
+
+- `Set`: set constructor, work with `new` to creates a new Set object.
+
+  ```
+  // Create a new empty Set
+  const setObj = new Set()
+
+  // Pass an iterable object to Set, duplicated will only add once
+  const arr = ['a', 'a', 'b', 'c'];
+  const setObj = new Set(arr); // Set(3) {'a', 'b', 'c'}
+  ```
+
+  <br>
+
+- **Size**: `setObj.size`
+
+  - how many entries the Set object has
+    <br>
+
+- **Add**: `setObj.add(value1)[.add(value2)]`
+
+  - return the Set object with added value
+  - chainable, but can only add one element at a time
+  - if pass multiple values, it will only try to add the first value
+    <br>
+
+- **Delete**: `setObj.delete(value)`
+
+  - return `true` if value was found and removed in Set object; otherwise `false`
+    <br>
+
+- **Clear**: `setObj.clear()`
+
+  - return `undefined`
+    <br>
+
+- **Check**: `setObj.has(value)`
+
+  - return `true` if value exists in the Set object; otherwise `false`
+    <br>
+
+- **Iterators**:
+
+  - `setObj.valuse()` and `setObj.keys()` both return an iterator that contains the values for each element in Set object
+  - `setObj.entries()` return an iterator that contains an array of `[value, value]` for each element in Set Object, in **insertion** order.
+    <br>
+
+- **forEach**: `setObj.forEach(fn)`
+  - executes a provided function once for each value in the Set object, in **insertion** order.
+  - `fn`:
+    - `(value, key?, set?) => { /* ... */ }`
+    - `function(value, key?, set?) { /* ... */ }, thisArg?`
+    - `callbackFn, thisArg?`
+
+##### **[Back to table](#table)**
+
+---
+
+## Map
+
+- The `Map` object holds key-value pairs and remembers the ==original insertion order== of the keys.
+- Any value (both **objects** and **primitive values**) may be used as either a **key** or a **value**.
+  <br>
+
+### WeakMap
 
 <br>
 
@@ -828,7 +911,10 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
     <br>
 
-- **Getter**: retrieve the value of an object property, when access getter function name, return its return value.
+- **Getter**: `get propertyName(){}` / `get [expression](){}`
+  Retrieve the value of an object property, when access getter function name, return its return value. 
+    - `[expression]`: for a computed property name to bind to the given function
+    <br>
 
   ```
   const person = {
@@ -844,9 +930,12 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
   <br>
 
-- **Setter**: set the value of an object property, when assign new value, pass in the new value as the input and execute the setter function
-
-  - _Note_ : Setters are not meant to be accessed directly
+- **Setter**: `set propertyName(val){}` / `set [expression](val){}`
+  Set the value of an object property, when assign new value, pass in the new value as the input and execute the setter function
+    - `val`: the value attempted to be assigned to `propertyName`
+    - `[expression]`: for a computed property name to bind to the given function
+    - _Note_ : Setters are not meant to be accessed directly, any attempts to access it will result in `undefined`.
+    <br>
 
   ```
   const person = {
@@ -863,11 +952,12 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
   console.log(person.firstName); // output: "John"
   console.log(person.lastName); // output: "Doe"
+  console.log(person.fullName); // output: undefined
   ```
 
   <br>
 
-#### **Methods**:
+#### Methods:
 
 - functions in objects
 - `obj[methodName] = function () {/*...*/}`
@@ -877,7 +967,6 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   <br>
 
 - Static methods:
-  <detail>
 
   - `Object.is(value1, value2)`
 
@@ -908,7 +997,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
   - `Object.create(protoObj, propertiesObject?)`
 
-    - return: always return an empty object, with the specified `__proto__` object and properties if `propertiesObject` is passed in
+    - return: always return an <span>empty object</span>, with the specified `__proto__` object and properties if `propertiesObject` is passed in
     - `propertiesObject`: _optional_ an object whose enumerable own properties specify property descriptors to be added to the newly-created object, with the corresponding property names.
 
       ```
@@ -934,11 +1023,27 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     - `prop`: the name or Symbol of the property to be defined or modified
     - `descriptor`: objects, could be _data descriptor_ or _accessor descriptor_
 
+      ```
+      // make a read-only object property
+      const obj = {};
+      Object.defineProperty(obj, 'a', {
+        get: function() {
+          return 123;
+        },
+        set: function(val) {
+          throw new Error(`You are trying to re-assign property 'a' with value ${val}, however this property is read-only`)
+        }
+      });
+
+      console.log(obj.a) // output: 123
+      obj.a = 456 // output: Uncaught Error: This property cannot be reassigned
+      ```
+
       - **data descritpor**: a property that has a value [default]
         - configurable [`false`]: `true` if this `prop` descriptor may be changed and this `prop` could be deleted from object
         - enumerable [`false`]: `true` if this `prop` shows up during enumeration (e.g., `for...in` loop, `console.log()` and `Object.keys()` returns enumerable properties only)
-        - <mark>value</mark> [`undefined`]: property value
-        - <mark>writable</mark> [`false`]: `true` if value can be changed with an assignment operator
+        - <span>value</span> [`undefined`]: property value
+        - <span>writable</span> [`false`]: `true` if value can be changed with an assignment operator
         ```
         const object1 = {};
         Object.defineProperty(object1, 'property1', {
@@ -950,24 +1055,8 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
         - configurable [`false`]: same as in _data decsriptor_
         - enumerable [`false`]: same as in _data decsriptor_
-        - <mark>get</mark> [`undefined`]: a function serves as a _getter_ for the property
-        - <mark>set</mark> [`undefined`]: a function serves as a _setter_ for the property
-
-      ```
-      // make a read-only object property
-      const obj = {};
-      Object.defineProperty(obj, 'a', {
-        get: function() {
-          return 123;
-        },
-        set: function(val) {
-          throw new Error(`You are trying to re-assign property \'a\'  with value ${val}, however this property is read-only`)
-        }
-      });
-
-      console.log(obj.a) // output: 123
-      obj.a = 456 // output: Uncaught Error: This property cannot be reassigned
-      ```
+        - <span>get</span> [`undefined`]: a function serves as a _getter_ for the property
+        - <span>set</span> [`undefined`]: a function serves as a _setter_ for the property
 
        <br>
 
@@ -990,12 +1079,12 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
   - `Object.keys(obj)`
 
-    - return: an array of strings representing all the <mark>enumerable</mark> properties
+    - return: an array of strings representing all the <span>enumerable</span> properties
     - **non-negative integer** keys will be stored **_in front of_** `String` keys or float or negative number keys when using `Object.keys()`
 
   - `Object.values(obj)`
 
-    - return: an array containing all the <mark>enumerable</mark> property values
+    - return: an array containing all the <span>enumerable</span> property values
 
       <br>
 
@@ -1078,7 +1167,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
         - To freeze its prototype: `Object.freeze(obj.prototype)`
           <br>
 
-#### **Error Object**:
+#### Error Object:
 
 `Error` objects are thrown when runtime errors occur. The `Error` object can also be used as a base object for user-defined exceptions.
 
@@ -1125,18 +1214,19 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 - The `function*` declaration (`function` keyword followed by an asterisk `*`) defines a generator function, which returns a `Generator` object if invoked.
 
-```
-function* generateId(id) {
-  while(id <= 7) {
-    const increment = yield id          // will stop at yield operator each time
-    if (increment !== undefined) {
-      id += increment
-    } else {
-      id += 1;
+  ```
+  function* generateId(id) {
+    while(id <= 7) {
+      const increment = yield id          // will stop at yield operator each time
+      if (increment !== undefined) {
+        id += increment
+      } else {
+        id += 1;
+      }
     }
   }
-}
-```
+  ```
+  <br>
 
 - `yield [expression]` operator: pause and resume a generator function.
   - `expression`: the value to yield from generator function via the iterator protocal. yield `undefined` if omitted.
@@ -1146,16 +1236,16 @@ function* generateId(id) {
 
 - returned by a generator function
 
-```
-// create a Generator object
-const generatorObj = generateId(1);
+  ```
+  // create a Generator object
+  const generatorObj = generateId(1);
 
-console.log(generatorObj.next());   // { value: 1, done: false }
-console.log(generatorObj.next(4));  // { value: 5, done: false }
-console.log(generatorObj.next());   // { value: 6, done: false }
-console.log(generatorObj.next());   // { value: 7, done: false }
-console.log(generatorObj.next());   // { value: undefined, done: true }
-```
+  console.log(generatorObj.next());   // { value: 1, done: false }
+  console.log(generatorObj.next(4));  // { value: 5, done: false }
+  console.log(generatorObj.next());   // { value: 6, done: false }
+  console.log(generatorObj.next());   // { value: 7, done: false }
+  console.log(generatorObj.next());   // { value: undefined, done: true }
+  ```
 
 - `genObj.next(nextValue?)`: keep running the generator function until reaching the next yield, or reach the end of the function
   - return `{ value: [expression], done: false }` or `{ value: undefined, done: true }`
@@ -1177,86 +1267,17 @@ console.log(generatorObj.next());   // { value: undefined, done: true }
 
 ---
 
-## Set
-
-The Set object lets you store <mark>unique</mark> values of any type, whether primitive values or object references.
-
-- `Set`: set constructor, work with `new` to creates a new Set object.
-
-  ```
-  // Create a new empty Set
-  const setObj = new Set()
-
-  // Pass an iterable object to Set, duplicated will only add once
-  const arr = ['a', 'a', 'b', 'c'];
-  const setObj = new Set(arr); // Set(3) {'a', 'b', 'c'}
-  ```
-
-  <br>
-
-- **Size**: `setObj.size`
-
-  - how many entries the Set object has
-    <br>
-
-- **Add**: `setObj.add(value1)[.add(value2)]`
-
-  - return the Set object with added value
-  - chainable, but can only add one element at a time
-  - if pass multiple values, it will only try to add the first value
-    <br>
-
-- **Delete**: `setObj.delete(value)`
-
-  - return `true` if value was found and removed in Set object; otherwise `false`
-    <br>
-
-- **Clear**: `setObj.clear()`
-
-  - return `undefined`
-    <br>
-
-- **Check**: `setObj.has(value)`
-
-  - return `true` if value exists in the Set object; otherwise `false`
-    <br>
-
-- **Iterators**:
-
-  - `setObj.valuse()` and `setObj.keys()` both return an iterator that contains the values for each element in Set object
-  - `setObj.entries()` return an iterator that contains an array of `[value, value]` for each element in Set Object, in **insertion** order.
-    <br>
-
-- **forEach**: `setObj.forEach(fn)`
-  - executes a provided function once for each value in the Set object, in **insertion** order.
-  - `fn`:
-    - `(value, key?, set?) => { /* ... */ }`
-    - `function(value, key?, set?) { /* ... */ }, thisArg?`
-    - `callbackFn, thisArg?`
-
-##### **[Back to table](#table)**
-
----
-
-## Map
-
-- The `Map` object holds key-value pairs and remembers the ==original insertion order== of the keys.
-- Any value (both **objects** and **primitive values**) may be used as either a **key** or a **value**.
-  <br>
-
-**WeakMap**
-
-<br>
-
-##### **[Back to table](#table)**
-
----
-
 ## Function
 
 Every JS function is a `Function` object: 
   ```
-  (function(){}).constructor === Function //true
+  function fn(){/*...*/}
+
+  fn.constructor === Function // true
+  // the constuctor above is from fn's [[Protoype]] chain, not prototype property
+
+  fn.constructor === fn.prototype.constructor // false
+  fn.prototype.constructor === fn // true
   ```
 
 - **argument**: value passed to function during function invocation
@@ -1264,18 +1285,22 @@ Every JS function is a `Function` object:
 
 - function default properties:
 
-  - length: the number of parameters expected by the function
+  - `length`: the number of parameters expected by the function
 
-  - name: the name of the function
+  - `name`: the name of the function
 
-  - <mark>prototype</mark>: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.
+  - **prototype**: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.
+    - **constructor**: function constructor will always point at function itself: `fn.prototype.constructor === fn // true`
+    <br>
+    - **[[Prototype]]**: `prototype` is a property, so its `[[Prototype]]` will always be `Object` object's `prototype`:`fn.prototype.__proto__ === Object.prototype // true`
+    <br>
+  - **[[Prototype]]**: function's `[[Prototype]]` is usually `Function` object's `prototype`: `fn.__proto__ === Function.prototype // true`
 
-#### **factory function**
+### Factory function
 
-(==not recommanded==): a function creates and returns a new object
+**Not Recommanded**: a function creates and returns a new object
 
 ```
-
 function createPerson(name, age) {
   return {
     Name: name,
@@ -1287,156 +1312,242 @@ function createPerson(name, age) {
 }
 ```
 
-- Methods are duplicated in objects created by factory function, `Object.create()` could be used in facotry function using an existing object as the prototype of the new object
+- Methods are duplicated in objects created by factory function, `Object.create()` could be used in facotry function using an existing object as the `[[Prototype]]` of the new object
 
-```
-const personAction = {
-  getAge() {
-    return this.Age
-  },
-};
+  ```
+  const personAction = {
+    getAge() {
+      return this.Age
+    },
+  };
 
-function createPerson(name, age) {
-  let person = Object.create(personActions);
-  person.Name = name;
-  person.Age = age;
-  return person;
-}
-```
+  function createPerson(name, age) {
+    let person = Object.create(personActions);
+    person.Name = name;
+    person.Age = age;
+    return person;
+  }
+  ```
 
 <br>
 
-#### **Constructor**
+### Constructor
 
 A special function that can only be called with `new` operator, capitcalized first letter
 
 - **Create constructor**:
 
-```
-function ConstructorName(prop) {
-  this.prop = prop;
-  this.method1 = function () {}
-}
-```
+  ```
+  function ConstructorName(prop) {
+    this.prop = prop;
+    this.method1 = function () {}
+  }
+  ```
 
-**Note**: methods created in constructor definition is <mark>duplicated</mark> in every instance
+  **Note**: methods created in constructor definition is <span>duplicated</span> in every instance
 <br>
 
-- **Add shared methods**:
+- **Add shared methods/props to prototype property**:
 
-```
-ConstructorName.prototype.method2 = function () {};
-```
+  ```
+  ConstructorName.prototype.method2 = function () {};
+  ```
 
-methods created inside of constructor prototype is <mark>shared</mark> with all instances.
+  methods created inside of constructor prototype is <span>shared</span> with all instances.
 
 <br>
 
 - **Create object instance**:
 
-```
-const instance = new ConstructorName(prop)
-```
+  ```
+  const instance = new ConstructorName(prop)
+  ```
 
-`new` operator would do the following:
+  When use `new` operator on a constructor, it would do the following:
 
-1. Create a empty object (e.g., `newInstance`)
-2. Points the `[[Prototype]]` of `newInstance` to the constructor function's `prototype` property
-3. Executes the constructor function with the given arguments, binding `newInstance` as the `this` context
-4. If the constructor function returns a non-primitive, this return value becomes the result of the whole `new` expression. Otherwise, if the constructor function doesn't return anything or returns a primitive, `newInstance` is returned instead.
+  1. Create a empty object (e.g., `newInstance`)
+  2. Points the `[[Prototype]]` of `newInstance` to the constructor function's `prototype` property
+  3. Executes the constructor function with the given arguments, binding `newInstance` as the `this` context
+  4. If the constructor function returns a non-primitive, this return value becomes the result of the whole `new` expression. Otherwise, if the constructor function doesn't return anything or returns a primitive, `newInstance` is returned instead.
+  <br>
 
-without `new` operator, `this` refers to global object.
+  without `new` operator, `this` refers to global object.
 
-(In constructor definition, use `try ... catch` with `new.target` to detect whether a function or constructor was called using `new` operator)
+  (In constructor definition, use `try ... catch` with `new.target` to detect whether a function or constructor was called using `new` operator)
 
-<br>
+  <br>
 
-#### **Class**
+- constructor function vs class:
 
-(==introduced after ES6==) Declared with keyword `class`, encapsulates `constructor` (reserved key word, can only have one) and shared methods
+  |                    |          Constructor           |                         Class                         |
+  | :----------------: | :----------------------------: | :---------------------------------------------------: |
+  |    Declaration     |         can be hoisted         |                      not hoisted                      |
+  |     Execution      |        non-strict mode         |                      strict mode                      |
+  | Shared properties  | added to constructor prototype | created in Class declaration (outside of constructor) |
+  |  &#8970; writable  |              true              |                         false                         |
+  | &#8970; enumerable |              true              |                         false                         |
+
+  **<span>Note</span>**: **non-writable** (`writable: false`) means it cannot be re-assigned to something else, but it still **can be changed** by adding or deleting properties from inside
+  <br>
+
+### Class
+
+(**introduced in ES6**) Declared with keyword `class`, encapsulates `constructor` (reserved key word, can only have one) and shared methods
 
 ```
 // class declaration
-class Person {
-  constructor(name) {
-    this.name = name;
-    ObjectLiteralMethod: function(){};
+class ClassName {
+  // Field declarations 
+  publicInstanceField;   // initialize to undefined
+  publicInstanceFieldWithInitializer = "public instance field";
+  #privateInstanceField;  // initialize to undefined
+  #privateInstanceFieldWithInitializer = "private instance field";
+
+  // constructor in class is for object initialization only (no methods inside)
+  constructor(x, y, a, b) {
+    this.publicInstanceField = x;
+    // instance properties created inside the constructor
+    this.publicInstanceCreatedByConstructor = y;
+    this.#privateInstanceField = a;
   }
-  classPrototypeProperty() {
-    return this.name;
-  }
+
+  static publicStaticField; // initilaze to undefined
+  static publicStaticFieldWithInitializer = "public static field" ;
+  static #privateStaticField; // initilaze to undefined
+  static #privateStaticFieldWithInitializer = "private static field";
+
+  publicInstanceMethod() {/*...*/}
+  #privateInstanceMethod() {/*...*/}
+
+  static publicStaticMethod() {/*...*/}
+  static #privateStaticMethod() {/*...*/}
+
+  get publicInstanceGetter() {/*...*/}
+  get #privateInstanceGetter() {/*...*/}
+
+  set publicInstanceSetter(val) {/*...*/}
+  set #privateInstanceSetter(val) {/*...*/}
+
+  static get publicStaticGetter() {/*...*/}
+  static get #privateStaticGetter() {/*...*/}
+
+  static set publicStaticSetter(val) {/*...*/}
+  static set #privateStaticSetter(val) {/*...*/}
 }
 
 // class expression
-const Person = class [className] {
-  constructor(name) {
-    this.name = name;
-    ObjectLiteralMethod: function(){};
-  }
-  classPrototypeProperty() {
-    return this.name;
-  }
-}
+const ClassName = class ClassName?{/*...*/}
+
+// class instance
+const classInstanc = new ClassName(args);
 ```
 
-To declare a variable within a class, it needs to be a property of the class or, scoped within a method in the class. It's all about scoping and **variables are not supported in the scope definition of a class**
 <br>
 
-- Main differences with constructor function:
+- <span>NOTE</span>:
 
-|                    |          Constructor           |                         Class                         |
-| :----------------: | :----------------------------: | :---------------------------------------------------: |
-|    Declaration     |         can be hoisted         |                      not hoisted                      |
-|     Execution      |        non-strict mode         |                      strict mode                      |
-| Shared properties  | added to constructor prototype | created in Class declaration (outside of constructor) |
-|  &#8970; writable  |              true              |                         false                         |
-| &#8970; enumerable |              true              |                         false                         |
+   - **public instance field** can be omitted in Field declaration, but not recommanded.
+   - **private instance field** <span>must be declared</span> before initialized.
+   - for **instanceFields**, `this` refers to the **instance** object created with class
+   - for **staticFields**, `this` refers to the **class** object and it has nothing to do with instances.
+   - **instance methods** are saved in class's `prototype` property, and will be linked to instance's `[[Prototype]]`
+   - chrome dev tool has a privileged access to private fields called "brand checks"
+   <br>
 
-**<mark>Note</mark>**: **non-writable** (`writable: false`) means it cannot be assigned to something else, but it still **can be changed** by adding or deleting properties from inside
+- Using `new` operator on a class goes through the following steps:
 
-- **instanceof**: `object instancof constructor/class`
+  1. (If it's a derived class) The `constructor` body before the `super()` call is evaluated. This part should not access `this` because it's not yet initialized.
+  2. (If it's a derived class) The `super()` call is evaluated, which initializes the parent class through the same process.
+  3. The current class's <span>fields</span> are initialized.
+  4. The `constructor` body after the `super()` call (or the entire body, if it's a base class) is evaluated.
+  <br>
 
-  - check if `constructor/class.prototype` (not [\[Prototype]]) in object's `[[Prototype]]` chain.
+- **instanceof**: `classInstance instancof constructor/class`
+
+  - check if `constructor/class.prototype` (not `[[Prototype]]`) in object instance's `[[Prototype]]` chain.
+  <br>
 
 - **extends & super**:
 
-  - **extends**: chain the `prototype` of ParentClass to be the `[[Prototype]]` in the `prototype` of ChildClass, so that childInstance will have access to the ParentClass methods from the `[[Prototype]]` chain
+  - **extends**: make these two chains
+    - `ParentClass.prototype` === `ChildClass.prototype.constructor.[[Prototype]]`
+      - ChildClass can access all instance methods of ParentClass
+    - `ParentClass` === `ChildClass.[[Prototype]]`
+      - ChildClass can access all static methods of ParentClass
+    ```
+    class ChildClass extends ParentClass { /* ... */ }
+    const parentInstance = new ParentClass()
+    const childInstance = new ChildClass()
 
-  ```
-  class ChildClass extends ParentClass { /* ... */ }
-  const parentInstance = new ParentClass()
-  const childInstance = new ChildClass()
+    // use of __proto__ is not recommended, below is just for clarification
 
-  // use of __proto__ is not recommended, below is just for clarification
-
-  ChildClass.prototype.__proto__ === ParentClass.prototype // true
-  childInstance.__proto__.__proto__ === parentInstance.__proto__  // true
-  ```
+    ChildClass.prototype.__proto__ === ParentClass.prototype // true
+    childInstance.__proto__.__proto__ === parentInstance.__proto__  // true
+    ```
 
   - **super**: used in the constructor body of a derived class (with extends), or as a "property lookup" (`super.prop` and `super[expr]`)
 
-    - when used as a "function call":
+    - when used as a "function call" in child class constructor:
       - calls the parent class's constructor
       - binds the parent class's public fields
-      - then the derived class's constructor can further access and modify `this`
+      - the child class's constructor can further access and modify `this`
       - must be called before the `this` keyword is used, and before the constructor returns.
     - when used in "property lookup" form
-      - access methods and properties of an object literal's or class's `[[Prototype]]`
+      - referring to an object literal's or class's `[[Prototype]]` to access its methods and properties 
 
     <br>
+A class element can be characterized by three aspects:
 
+  - Kind: Getter, setter, method, or field
+  - Location: Static or instance
+  - Visibility: Public or private
+  <br>
+  
 **Public class fields**
 
 - Public class fields: writable, enumerable, and configurable properties
-  ```
-  class ClassWithField {
-    instanceField;
-    instanceFieldWithInitializer = "instance field";
-    static staticField;
-    static staticFieldWithInitializer = "static field";
-  }
-  ```
+ 
+- Public instance fields/methods:
+  - exist on every created instance, usually evaluate to the same value for each instance, unless the same expression can have different evaluated value
+  - essentially, declare an instanceField `property = value` before constructor works the same as using `this.property = value` in constructor
+  - public methods are in the `prototype` property of class, which will be linked to the `[[Prototype]]` of any instance created by this class
+  <br>
 
+- Public static fields/methods:
+  - declared using the `static` keyword
+  - exist <span>only</span> on class, does not exist in class `prototype` 
+  - can be accessed via prototype chain by subclasses (since `extends` will link ParentClass to subclass's `[[Prototype]]`)
+  - in subclass, use `super` to refer the parent class
+  <br>
+
+**Private class fields** (may not be fully supported by all browsers)
+
+- Created by using a hash `#` prefix, all private identifiers declared within a class must be unique. 
+- Private properties are <span>not part of the prototypical</span> inheritance model since they can only be accessed within the current class's body and aren't inherited by subclasses.
+- Private instance field/methods:
+  - <span>binding with instance</span>, but can't be accessible directly outside of the class (*but can still be accessed by some public class method that have access to it*) 
+  - if declared before **constructor**, it is accessible <span>inside</span> the class declaration; if declared in **constructor**, it is accessible within **constructor** function.
+  - can't be refered in constructor if not declared before
+  - can't be accessible from subClass neither
+  - declared private property can't be deleted in constructor
+  <br>
+
+- Private static field/methods:
+  - only accessible on the class itself or on the `this` context of static methods, but not on the `this` context of instance methods.
+  - always access static private fields through the <span>class name</span>, not through `this`, so inheritance doesn't break the method.
+    ```
+    class BaseClassWithPrivateStaticField {
+      static #PRIVATE_STATIC_FIELD;
+
+      static basePublicStaticMethod() {
+        return this.#PRIVATE_STATIC_FIELD;
+      }
+    }
+
+    class SubClass extends BaseClassWithPrivateStaticField {}
+
+    SubClass.basePublicStaticMethod(); // TypeError: Cannot read private member #PRIVATE_STATIC_FIELD from an object whose class did not declare it
+    ```
 <br>
 
 ##### **[Back to table](#table)**
@@ -1576,7 +1687,7 @@ console.log(x) // 1
 
       <br>
 
-    - `xhr.onreadystatechange` is an event handler, it defines a function that **will be called** <mark>whenever</mark> `readyState` changes
+    - `xhr.onreadystatechange` is an event handler, it defines a function that **will be called** <span>whenever</span> `readyState` changes
 
       - check when if the request is done:
         ```
@@ -1682,7 +1793,7 @@ console.log(x) // 1
           - `data`: data to be sent to the server
           - `datatype`: type of data expected from the server (default: `Intelligent Guess (xml, json, script, or html)`)
           - `cache`: If set to `false`, it will force requested pages not to be cached by the browser. (default: `true, false for dataType 'script' and 'jsonp'`)
-          - `success`: A <mark>function</mark> to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
+          - `success`: A <span>function</span> to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
             ...
             <br>
 
@@ -1805,8 +1916,8 @@ Promises are handled by [microtasks queue](#microtask)
   )
   ```
 
-  - When `onFulfilled` is not a function: internally replaced with an **_identity_** function `(x) => x`, which <mark>passes</mark> the `fulfillmentValue`
-  - When `onRejected` is not a function: internally replaced with an **_thrower_** function `(x) => throw x`, which <mark>throws</mark> the `receivedRejectionReason`
+  - When `onFulfilled` is not a function: internally replaced with an **_identity_** function `(x) => x`, which <span>passes</span> the `fulfillmentValue`
+  - When `onRejected` is not a function: internally replaced with an **_thrower_** function `(x) => throw x`, which <span>throws</span> the `receivedRejectionReason`
     <br>
   - Assuming `x` is the return of `onFulfilled` / `onRejected`, and `p` is the return promise of `then()`:
     - `x` is a value ==> `p` is resolved with value `x`
@@ -1826,7 +1937,7 @@ Promises are handled by [microtasks queue](#microtask)
   ```
 
   - equals to `Promise.prototype.then(undefined, onRejected)`
-  - The `Promise` returned by `catch()` will be ==fulfilled (resovled)== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already <mark>rejected</mark> `Promise`.
+  - The `Promise` returned by `catch()` will be ==fulfilled (resovled)== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already <span>rejected</span> `Promise`.
 
   - Example with comments
 
@@ -1860,7 +1971,7 @@ Promises are handled by [microtasks queue](#microtask)
 
   <br>
 
-- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already <mark>rejected</mark> `Promise`.
+- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already <span>rejected</span> `Promise`.
 
   - `onFinally` callback does not receive any argument.
     `promise.finally(() => { // Code that will run after promise is settled (fulfilled or rejected) })`
@@ -1868,24 +1979,23 @@ Promises are handled by [microtasks queue](#microtask)
 
   - `then` vs `reject` vs `finally`:
 
-    ```
-    Promise.resolve(2).then(() => 77, () => 88) // resolved with result 77
-    Promise.resolve(2).finally(() => 77) // resolved with result 2
+  ```
+  Promise.resolve(2).then(() => 77, () => 88) // resolved with result 77
+  Promise.resolve(2).finally(() => 77) // resolved with result 2
 
-    Promise.reject(3).then(() => 77, () => 88) // resolved with result 88
-    Promise.reject(3).finally(() => 88) // rejected with reason 3
+  Promise.reject(3).then(() => 77, () => 88) // resolved with result 88
+  Promise.reject(3).finally(() => 88) // rejected with reason 3
 
-    // Both return a rejected promise with reason 99
-    Promise.reject(3).finally(() => {throw 99})
-    Promise.reject(3).finally(() => Promise.reject(99))
-
-    ```
+  // Both return a rejected promise with reason 99
+  Promise.reject(3).finally(() => {throw 99})
+  Promise.reject(3).finally(() => Promise.reject(99))
+  ```
 
   <br>
 
-- `Promise.all([an array of promises])`: only <mark>resolve</mark> when <mark>all</mark> promises inside is <mark>resolved</mark>, and it will resolve to an array of resolved values. It rejects when any of the input's promises rejects, with this first rejection reason.
-- `Promise.any([an array of promises])`: will <mark>resolve</mark> when <mark>any</mark> promise inside is <mark>resolved</mark>, and it will resolve to that resolved values. If all promises are rejected, it will reject with `AggregateError`, which is an object containing an array of rejection reasons.
-- `Promise.race([an array of promises])`: will <mark>settle</mark> when <mark>any</mark> promise inside is <mark>settled</mark>, and it will settles with the eventual state of the first promise that settles (resolved or rejected).
+- `Promise.all([an array of promises])`: only <span>resolve</span> when <span>all</span> promises inside is <span>resolved</span>, and it will resolve to an array of resolved values. It rejects when any of the input's promises rejects, with this first rejection reason.
+- `Promise.any([an array of promises])`: will <span>resolve</span> when <span>any</span> promise inside is <span>resolved</span>, and it will resolve to that resolved values. If all promises are rejected, it will reject with `AggregateError`, which is an object containing an array of rejection reasons.
+- `Promise.race([an array of promises])`: will <span>settle</span> when <span>any</span> promise inside is <span>settled</span>, and it will settles with the eventual state of the first promise that settles (resolved or rejected).
 
   <br>
 
@@ -1897,7 +2007,7 @@ Promises are handled by [microtasks queue](#microtask)
 
 - `async` functions always return a `promise`. If the return value of an `async` function is not explicitly a `promise`, it will be implicitly wrapped in a `promise`.
   <br>
-- `await` is an <mark>operator</mark>, its operand is a promise, a thenable object, or any value to wait for.
+- `await` is an <span>operator</span>, its operand is a promise, a thenable object, or any value to wait for.
   - **return**: the ==fulfillment value== of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved, the await expression throws the rejected value.
   - It can only be used inside an async function or a JavaScript module.
     <br>
@@ -1914,9 +2024,9 @@ async function name (args) {
 
 - The body of an `async function` can be thought of as being split by zero or more `await` expressions.
   <br>
-- ==Top-level code==, down to and including the first `await` expression (if there is one), is executed <mark>synchronously</mark>.
-  - an `async` function <mark>without</mark> an `await expression` will run <mark>synchronously</mark>.
-  - when there is an `await expression` inside the function body, the `async` function will always complete <mark>asynchronously</mark>.
+- ==Top-level code==, down to and including the first `await` expression (if there is one), is executed <span>synchronously</span>.
+  - an `async` function <span>without</span> an `await expression` will run <span>synchronously</span>.
+  - when there is an `await expression` inside the function body, the `async` function will always complete <span>asynchronously</span>.
     <br>
 - An `await` splits execution flow, allowing the caller of the `async` function to resume execution.
   - **Important**: only when `expression` is resolved, the function can resume
@@ -1946,7 +2056,7 @@ async function name (args) {
     - **renderer**: one renderer process per tag (in sandbox), see below
       <br>
 
-**What is render in frontend?**
+#### What is render in frontend?
 
 - In general, rendering is just to turn html strings into screen pixel
   <br>
@@ -1960,85 +2070,85 @@ async function name (args) {
 - Main renderer thead handles HTML and CSS parsing, computing, layout, JS execution, layout, painting, asynchronous events (user event, timer events, callbackes,..) the rendering thread works as these steps:
   <br>
 
-  1. **Parse HTML and construct the Document Object Model (DOM) tree and CSS Object Model (CSSOM) tree**:
+  1. **Parse HTML and construct the Document Object Model (DOM) tree and CSS Object Model (CSSOM) tree**: <span>Parse HTML => DOM + CSSOM </span>
      <br>
 
-     i. ==Parse HTML tags and create DOM==:The main thread will parse the HTML document and construct the DOM tree concurrently.
+     i. **Parse HTML tags and create DOM**:The main thread will parse the HTML document and construct the DOM tree concurrently.
      <br>
 
-     ii. ==Parse and apply CSS styles==: If the main thread runs into `<link>` tag while parsing html, it will pass it down to other threads (such as **network threads** to download the file and then let **preparser thread**) to downloads and parses any linked resources, and conflate the preparsed content in the CSSOM tree. In this way it optimizes the overall parse efficiency, and also this is why CSS parsing does not block html parsing.
+     ii. **Parse and apply CSS styles**: If the main thread runs into `<link>` tag while parsing html, it will pass it down to other threads (such as **network threads** to download the file and then let **preparser thread**) to downloads and parses any linked resources, and conflate the preparsed content in the CSSOM tree. In this way it optimizes the overall parse efficiency, and also this is why CSS parsing does not block html parsing.
      <br>
 
-     iii. ==Execute JavaScript code==: When the main thread encounters `<script></script>` tag code while parsing the HTML, it will pause HTML parsing process, and if the script needs to download (has a `src` attribute), the main thread will wait for it to finish downloading and executes the code. Because JS code execution may change the DOM tree, which is why HTML parse must pause for JS execution. The JavaScript engine processes the JavaScript code and interacts with the DOM to update the content and appearance of the web page.
+     iii. **Execute JavaScript code**: When the main thread encounters `<script></script>` tag code while parsing the HTML, it will pause HTML parsing process, and if the script needs to download (has a `src` attribute), the main thread will wait for it to finish downloading and executes the code. Because JS code execution may change the DOM tree, which is why HTML parse must pause for JS execution. The JavaScript engine processes the JavaScript code and interacts with the DOM to update the content and appearance of the web page.
 
      - _If the script attempts to access an element that has not been created, it will typically return a null value or undefined. This can result in errors or unexpected behavior, such as elements not being properly styled or functions not executing as intended._
-     - [Three ways](#threeways) to make sure DOM loaded before `<script>`
+     - [Three ways](#three-ways) to make sure DOM loaded before `<script>`
        <br>
 
      iv. At the end of the step 1, it will generate both DOM tree and CSSOM tree, and all default styling, internal/external styling and inline styling will be in the CSSOM tree. These two trees represent the structure of the web page and will potentially be used later.
      <br>
 
-  1. **Get DOM tree with Computed Styles**:
+  2. **Get DOM tree with Computed Styles**: <span>DOM + CSSOM => Styled DOM </span>
 
      1. the main thread traverse through the DOM tree and conflate with the corresponding style on CSSOM tree and get the computed style for each node;
-     1. In this process, all the default value will change to absolute value (e.g., `red` => `rgb(255, 0, 0)`), and relative units will change to aboslute units (e.g., em => px)
-     1. At the end of step 2, generate a DOM tree with styles
+     2. In this process, all the default value will change to absolute value (e.g., `red` => `rgb(255, 0, 0)`), and relative units will change to aboslute units (e.g., em => px)
+     3. At the end of step 2, generate a DOM tree with styles
         <br>
 
-  1. **Get Layout Tree**: (precise location and dimensions of each element)
+  3. **Get Layout Tree**: <span>Styled DOM => Layout tree </span>
 
      - Content must be in inline boxes;
      - Block box and inline box can't be adjacent, so anonymous block box or anonymous inline box will be used as wrapper
      - Node on layout tree is not a DOM node, it is a C++ node, which can't be access by JS
        <br>
 
-     1. the main thread traverse through the DOM and calculate the ==geometry Information== of each node, generating a ==layout tree==.
-     1. most node in DOM tree is different from layout tree (e.g., `display: none`, pseudo elements (`::before, after`), anonymous boxes)
+     1. the main thread traverse through the DOM and calculate the **geometry Information** of each node, generating a **layout tree**.
+     2. most node in DOM tree is different from layout tree (e.g., `display: none`, pseudo elements (`::before, after`), anonymous boxes)
         <br>
 
-  1. **Get Layers**:
-     1. The main thread will put the layout tree into <mark>layers</mark>
-     1. Benefit is that browser can only change the layers that needs to be changed, improve efficiency
-     1. Scrollbar, `z-index`, `opacity`, `transform`, etc will have an impact on how to layer, and `will-change: transform` can largely suggest browser to get this element on a seperated layer
+  4. **Get Layers**: <span>Layout tree => Layers</span>
+     1. The main thread will put the layout tree into **layers**
+     2. Benefit is that browser can only change the layers that needs to be changed, improve efficiency
+     3. Scrollbar, `z-index`, `opacity`, `transform`, etc will have an impact on how to layer, and `will-change: transform` can largely suggest browser to get this element on a seperated layer
         <br>
-  1. **Paint**: Generate instructions for each layer, the **last thing** the main thread needs to do
-     1. the main thread will generate ==how to paint instructions== for each layer.
-     1. the main thread will pass the instructions to **compositor thread** (still in renderer process) and be avaiable for next task
+  5. **Paint**: Generate instructions for each layer, the **last thing** the main thread needs to do: <span>Layers => Drawing info</span>
+     1. the main thread will generate **how to paint instructions** for each layer.
+     2. the main thread will pass the **instructions** to **compositor thread** (one renderer process subthread) and be avaiable for next task
         <br>
-  1. **Tiling**: the compositor thread get all the layer instructions, it will initialize multiply worker threads (from threads pool) to split each layer into smaller <mark>tiles</mark>.
+  6. **Tiling**: the compositor thread get all the layer instructions, it will initialize multiple worker threads (from threads pool) to split each layer into smaller **tiles**. <span> Drawing info => Tiles </span>
      <br>
-  1. **Raster**:
+  7. **Raster**: <span> Tiles => Bitmap (by GPU) </span>
 
      1. After tiling, the compositor thread will pass the tiles information to GPU thread;
-     1. GPU thread will initialize multiple threads to generate a <mark>bitmap</mark> for each tile in extremely high speed, and it will prioritize the tiles that are close to viewport.
-     1. After raster, GPU thread will return the bitmap infomations back to compositor thread
+     2. GPU thread will initialize multiple threads to generate a **bitmap** for each tile in extremely high speed, and it will prioritize the tiles that are close to viewport.
+     3. After raster, GPU thread will return the bitmap infomations back to compositor thread
         <br>
 
-  1. **Draw**:
+  8. **Draw**: <span> Bitmap => quad (by compositor) => Screen (by GPU) </span>
 
-     1. After taking the bitmap info for each tile in each layer, the compositor thread will generate a <mark>quad</mark> for each bitmap, indiating the position of each bitmap on screen, considering transform such as rotate and shrink
-     1. Since transform implementation happens in compositor thread, so it won't take resources from the main thread, which is why transform is more efficient
-     1. Compositor thread will pass the quad info to GPU thread, which makes system call and send it to GPU hardware, finish the final image on sreen.
+     1. After taking the bitmap info for each tile in each layer, the compositor thread will generate a **quad** for each bitmap, indiating the position of each bitmap on screen, considering transform such as rotate and shrink
+     2. Since **transform** implementation happens in compositor thread, so it won't take resources from the main thread, which is why transform is more efficient
+     3. Compositor thread will pass the quad info to GPU thread, which makes system call and send it to GPU hardware, finish the final image on sreen.
         <br>
 
-  1. ==Handle user events==: The main thread handles user events such as clicks, scrolls, and keyboard inputs. When a user event occurs, the main thread executes the JavaScript code associated with the event and updates the DOM and rendering tree accordingly.
+  9.  **Handle user events**: The main thread handles user events such as clicks, scrolls, and keyboard inputs. When a user event occurs, the main thread executes the JavaScript code associated with the event and updates the DOM and rendering tree accordingly.
      <br>
 
      <br>
 
 - Scheduling task: the main thread in render process uses **Event Loop** to manage the order of tasks, any proceess or threads can add tasks in task queue (see below), and event loop will run those tasks one after another in FIFO order
   <br>
-- **<mark>Note</mark>**: any changes that triggers a re-render (<mark>reflow</mark>) will add the needed layout and paint updates for rendering the modified elements to the task queue.
+- **<span>Note</span>**: any changes that triggers a re-render (<span>reflow</span>) will add the needed layout and paint updates for rendering the modified elements to the task queue.
 
 <br>
 
-**What is <mark>Reflow</mark> in browser?**
+#### What is <span>Reflow</span> in browser?
 
 - Also known as **layout** or **re-layout**, is a process that occurs in web browsers when changes are made to the layout of a web page.
   <br>
-- Reflow is a **==costly operation==** because
+- Reflow is a <span>costly operation</span> because
   - Layout calculation involves a lot of computational work.
-  - Reflow will **==block JS execution==**
+  - Reflow will <span>block JS execution</span>
     <br>
 - During a reflow, the browser recalculates the layout of the elements on the page, but it doesn't necessarily need to repaint all the layers.
   <br>
@@ -2047,7 +2157,7 @@ async function name (args) {
   - Adding or removing content that causes dimension/position change
   - CSS Changes that cause dimensions, positions, padding/margin, font size/line height, display property, or any layout related properties to change
   - Some animations or transitions can also cause reflows under certain circumstances
-  - **==Accessing certain properties of an element==**
+  - **Accessing certain properties of an element**
     - Reason: because the browser needs to ensure that the current layout values are up-to-date.
     - Non-exhaustive property list:
       - `offsetTop/Left/Width/Height/Parent`
@@ -2059,7 +2169,7 @@ async function name (args) {
         ...
         <br>
 
-**What is <mark>Repaint</mark> in browser?**
+#### What is <span>Repaint</span> in browser?
 
 - Repaint refers to the process of updating the visual appearance of an element on a web page without changing its layout.
   <br>
@@ -2086,11 +2196,11 @@ async function name (args) {
 - ==Macrotask queue== (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
 - Nowadays as the browser gets more and more complex, browsers have more than one task queue, and their priorities are:
 
-  - **Microtask queue** -- <mark>highest</mark>: handling **promises** and **mutationObserver**
-  - **Animation frame queue** -- <mark>high</mark>: handling the web page repaint
-  - **Interaction queue** -- <mark>medium</mark>: handling user event callbacks
-  - **Timer queue** -- <mark>low</mark>: handling timer event callbacks
-  - **Network queue** -- <mark>lowest</mark>: handling network request callbacks
+  - **Microtask queue** -- <span>highest</span>: handling **promises** and **mutationObserver**
+  - **Animation frame queue** -- <span>high</span>: handling the web page repaint
+  - **Interaction queue** -- <span>medium</span>: handling user event callbacks
+  - **Timer queue** -- <span>low</span>: handling timer event callbacks
+  - **Network queue** -- <span>lowest</span>: handling network request callbacks
     <br>
 
 - Promises are handled by ==microtasks queue==
@@ -2124,9 +2234,9 @@ async function name (args) {
 
 - more macrotask (web api) or microtask (promise) from current executing task, or unexpected tasks(event listeners) are all accessible to macro/micro-task queues.
   <br>
-- Tasks in <mark>_macrotask_</mark> queue or <mark>_microtask_</mark> queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.
+- Tasks in <span>_macrotask_</span> queue or <span>_microtask_</span> queue means the preparing work for the tasks is finished (e.g., promise resolved/rejected, settimeout countdown finished, etc.), so that the tasks can be executed directly.
   <br>
-- In general, after main script is finished, all <mark>microtasks</mark> will be executed before any <mark>macrotask</mark>.
+- In general, after main script is finished, all <span>microtasks</span> will be executed before any <span>macrotask</span>.
   <br>
 
 ##### **[Back to table](#table)**
@@ -2144,16 +2254,16 @@ In DOM:
 - Tags are **elements**;
 - **Element** is a specical type of **node**;
 
-  - <mark>HTMLCollection</mark> is a live collection of **elements**, it is automatically updated when DOM changes;
-  - <mark>NodeList</mark> is a collection of **nodes**;
+  - <span>HTMLCollection</span> is a live collection of **elements**, it is automatically updated when DOM changes;
+  - <span>NodeList</span> is a collection of **nodes**;
     <br>
 
   - `Element.children`: returns a live **HTMLCollection** which contains all of the child **elements** of the element upon which it was called. (only element)
     <br>
 
-- A <mark>token</mark> is a string representing the token you want to check for the existence of in the list.
+- A <span>token</span> is a string representing the token you want to check for the existence of in the list.
   <br>
-- <mark>DOMTokenList</mark>: represent a set of space-separated tokens in a form of JS array objects with instance methods.
+- <span>DOMTokenList</span>: represent a set of space-separated tokens in a form of JS array objects with instance methods.
   e.g., `Element.classList` is a live `DOMTokenList`
   <br>
 
@@ -2287,7 +2397,8 @@ In DOM:
 
 ## Interesting concepts
 
-##### Three ways let JS file execute after html is loaded {#threeways}
+let JS file execute after html is loaded 
+  ##### Three ways 
 
 1. add `defer` to `<script>` tag:
 
@@ -2298,10 +2409,10 @@ In DOM:
    - If the script is not critical to the functionality of the page and doesn't rely on the page's content, `async` can be used to improve the page's loading performance.
      <br>
 
-1. in js file, put everything in the callback body
+2. in js file, put everything in the callback body
    `document.addEventListener('DOMContentLoaded', (event) => {});`
    <br>
-1. put `<script>` at the end of `<body>`
+3. put `<script>` at the end of `<body>`
 
    ```
    <body>
@@ -2328,7 +2439,7 @@ In DOM:
 
    <br>
 
-1. There are two types of <mark>expressions</mark>
+1. There are two types of <span>expressions</span>
 
    1. those that assign value to a variable with side effects: `x = 1`
    1. those that in some sense evaluate and therefore resolve to a value `1 + 2`

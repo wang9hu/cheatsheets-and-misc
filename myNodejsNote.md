@@ -1,7 +1,36 @@
 # Node related notes
 
-- npm initialize: `npm init -y`
+- `npm init -y`
+  - npm initialize, create a package.json file
   - `-y`: use default
+  <br>
+
+- `npm i -g package-name`
+  - `i` is short for `install`
+  - `-g` is short for `--global`
+  - install a packge globally
+  <br>
+
+- `npm i package-name --save`
+  - install the package as a development dependency
+  - `--save` means the package is saved in `package.json`, which is already the default setting of `npm i package-name`
+  - `--save-prod`: means this saves the package in `dependencies`, this is the default
+  - `--save-dev`: means this saves the package in `devDependencies`
+  - `--save-optional`: means this saves the package in `optionalDependencies`
+  <br>
+
+- `npm ls package-name?`
+  - `ls` is short for `list`
+  - outputs installed packages and their dependencies of the current project as a tree-structure to the stdout
+  - if no `package-name`, output all the dependencies
+  - `-g`: only display the globally installed packages/dependencies
+  - `--prod` or `--dev`: only dependency for `dependencies` or `devDependencies`
+  - `--json`: format the packages in the JSON format
+  <br>
+
+- `npm test`, `npm start`, `npm restart`, and `npm stop` are all aliases for `npm run xxx`, other `scripts` defined will need to use `npm run xxx` syntax
+<br>
+
 - Execute files in the same directory in node: read contents in filename, and execute them
 
   - _(cli)_ `$ node filename`
@@ -65,6 +94,10 @@
   - use other verison: `nvm use [version]`
   - all versiona available: `nvm ls`
     <br>
+- Node Package eXecute: `npx`
+  - execute javascript packages directly without installing.
+  <br>
+
 - err handle first callbacks
 - post data: stream
 - commnad line: set variables in command

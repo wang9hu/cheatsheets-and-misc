@@ -13,15 +13,38 @@
   - class need to `extends React.Component`
     <br>
 
+### Create-React-App 
+  a packge created by facebook
+
+  - `npx create-react-app my-app-name`: create react project barebones with all the necessary files to run a SPA
+  - `react`: the engine that runs how does the app get built
+  - `react-dom`: directed towards web related application
+    - `react-native`: for mobile application
+  - `react-scripts`: 
+
+#### In index.js
+  ```
+  ReactDOM.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementByID('root')
+  )
+  ```
+  - React.StrictMode: remove deprecated things
+
 ### Component Class:
 
 - in class, `render() {}` is a special method and it will show whatever is being returned on the DOM
   <br>
+
 - child component can set parameters on `{this.props}` object in the return DOM element statement, e.g., `return <h1>Hello, {this.props.childComponentlaber}</h1>;`
 - parent component can use `<childComponent childComponentlaber = data />` to assign data value to the parameter in the parent component
   <br>
+
 - Class component with constructor and `this.state` could use `{this.state.propertyName}` to access data in its own state
   <br>
+
 - Methods can be defined inside of
 - may need other library (npm & import)
   <br>
@@ -38,6 +61,7 @@
     - in parent component, use `childVariable = {js exoression}`
   - JSX can interpret an array of JSX statements and take each individule out e.g., `{boxes}`
     <br>
+
 - **State**: top down, uni-directional data flow, used to pass data
   - accessible and easily maintained
   - **State** maintained in top level components (as an obj called `State`) and passed down (through `props`) to child component
@@ -48,28 +72,41 @@
   - `setState()` will only update what is passed in, the rest stay the same
   - Any changes to the state will trigger an update, or "re-render", of components that depends on it.
     <br>
+
 - virtual DOM: representing DOM elements purely in a lightweight JS form.
   - use **React-DOM** library,
   - achieve fast render time
   - React processes changes very quickly, only rendering to the real DOM when and where needed.
 
-### ReactComponent: Class vs Function Declaration vs ES6 Function Expression
+### React Component
 
-- **Class**:
+#### Class:
   - **Life cycle component**: if the function definition is given in the component class
     - `componentDidMount(){ /.../ }`: this will run the **first time** component is rendered on the DOM
     - `componentDidUpdate(){ /.../ }`: this will run **after updating** is complete, but not for the initial rendering
     - `componentWillUnmount( /.../ )`: this will run **before the removal** of rendered Box from DOM
   - **Can have state**
+    ```
+    class Car extends React.Component {
+      constructor() {
+        super();
+        this.state = {color: "red"};
+      }
+      render() {
+        return <h2>I am a Car!</h2>;
+      }
+    }
+    ```
     <br>
-- **Stateless Functional Component**
+
+#### Stateless Functional Component
 
   - Pros:
     - No need to use `this` keyword! You don't have to deal with `state` / `methods`, and your `props` are passed in as a parameter.
     - Less boilerplate. As your component is simply a function, free of the constraints of a React component class, the amount of boilerplate in creating a stateless functional component is greatly reduced. This makes it so the resulting code for you component is concise and and clear.
     - Clearly separates your concerns. This is important when you're separating your application into container and presentational components.
     - **React Hooks**: functions that allow functional components the ability to do things that were typically only reserved for class components.
-  - Cons
+  - Cons:
     - No access to component lifecycle methods (ie `ComponentDidMount`).
       <br>
 
@@ -87,32 +124,38 @@
   1. Only call hooks from **React functional components** or other hooks
      <br>
 
-- **==useState==**: the most common way to manage state in React functional components
+- **<span>useState</span>**: the most common way to manage state in React functional components
 
   - `const [state, setState] = useState(initialState)`
     <br>
+
   - `initialState`: the value you want the state to be initially
   - return: state and the function that can changed the state
-  - `state`:
-  - `setState`: `setState(nextState/updater)` function that updates the `state` to a different value and trigger a re-render. Will match the initialState during the first render.
-    - `nextState`: The current state
-    - `updater`:
+    <br>
+  
+  - `state`: The current state.
+  - `setState`: `setState(nextState/updater)` set function that updates the `state` to a different value and trigger a re-render. Will match the `initialState` during the first render.
+    - `nextState`: The value that you want the state to be, if it is the <span>same reference</span> from state, React will <span>skip re-rendering</span>.
+    - `updater`: a pure function that take the current state as its only argument, and return the next state.
   - make sure the passed-in **Reference is Different** from the original state reference (_use a new reference or use spread syntax_)
     <br>
 
   ```
   const [state, updateState] = React.useState('initial state');
+
   console.log(state); // 'initial state'
   console.log(updateState); // 'Function(){}' that can be used to update that state, it accepts a new state value and enqueues a re-render of the component.
+
   updateState('next state'); // update the state
   ```
 
   <br>
 
-- **==useEffect==**: Equivalent of lifecycle methods in React class components
+- **<span>useEffect</span>**: Equivalent of lifecycle methods in React class components
 
   - `useEffect(setup, dependencies?)`
     <br>
+
   - `setup`: a setup function with setup code that connects to external system
     - `setup` return: [optional] a cleanup function with cleanup code that disconnects from external system
   - `dependencies`:
@@ -133,10 +176,11 @@
   - `useEffect` let you “step outside” of React and synchronize your components with some **external system** like a non-React widget, network, or the browser DOM. If there is no external system involved (for example, if you want to update a component’s state when some props or state change), you shouldn’t need an Effect.
     <br>
 
-- **==useMemo==**: cache the **result** of a calculation between re-renders.
+- **<span>useMemo</span>**: cache the **result** of a calculation between re-renders.
 
   - `const cachedValue = useMemo(calculateValue, dependencies)`
     <br>
+
   - `calculateValue`: the function that **calculating the value**, should take **no input** and return a value. On the initial render, `useMemo` returns the result of calling `calculateValue` with no arguments.
   - `dependencies`: the array of dependencies that triggered the useMemo
   - useMemo will return previous value if dependencies are the same for rerender
@@ -145,10 +189,10 @@
     **Common use cases:**
 
   1. make a slow function wrap inside useMemo so that doesn't re-compute for every re-render
-  1. make sure the reference of an object or an array is exactly the same as it was in the last rendered
+  2. make sure the reference of an object or an array is exactly the same as it was in the last rendered
      <br>
 
-- **==useCallback==**: cache a **function** definition between re-renders.
+- **<span>useCallback</span>**: cache a **function** definition between re-renders.
 
   - `const cachedFn = useCallback(fn, dependencies)`
     <br>
@@ -168,7 +212,6 @@
     return [number, number + 1, number + 2]
   }, [number])
   ```
-
   <br>
 
   **Common use case:**
@@ -177,7 +220,7 @@
   1. for some reason creating a function is really slow for each re-render (rarely)
      <br>
 
-- **==useContext==**: lets you read and subscribe to context from your component
+- **<span>useContext</span>**: lets you read and subscribe to context from your component
 
   - `const value = useContext(SomeContext)`
     <br>
@@ -245,11 +288,11 @@
 
   <br>
 
-- **==useReducer==**
+- **<span>useReducer</span>**
 
 <br>
 
-- **==useRef==**: reference a value that’s not needed for rendering.
+- **<span>useRef</span>**: reference a value that’s not needed for rendering.
 
   - `const ref = useRef(initialValue);`
     <br>
@@ -258,8 +301,9 @@
   - `initialValue`: the value ref object's current property to be initialled. This value is ignored after ref initialization.
   - change ref value: `ref.current = newValue`, changing it does not trigger a re-render, so refs are not appropriate for storing information you want to display on the screen
     <br>
-    Common use cases:
-    - It’s particularly common to use a `ref` to ==manipulate the DOM==. React has built-in support for this:
+
+  **Common use cases**:
+    - It’s particularly common to use a `ref` to <span>manipulate the DOM</span>. React has built-in support for this:
       1. Initial `ref` to `null`
          ```
          const inputRef = useRef(null);
@@ -279,7 +323,7 @@
 
   <br>
 
-- **==memo==**: `React.memo()` is like `useMemeo()` but for components. It lets you skip re-rendering a component when its `props` are unchanged.
+- **<span>memo</span>**: `React.memo()` is like `useMemeo()` but for components. It lets you skip re-rendering a component when its `props` are unchanged.
   `const MemoizedComponent = memo(SomeComponent[, arePropsEqual])`
 
   - `SomeComponent`: The component that you want to memoize.
@@ -326,7 +370,7 @@
     });
     ```
 
-    **Common use case**:
+  **Common use case**:
 
   - Use it when you do not want child component re-render when its parent is being re-rendered unless its props have changed.
   - Combine with `useMemo`, `useCallback` in parent component to ensure on `props` not changing accidentally
@@ -344,9 +388,10 @@ Initial render: when a component first appears on the screen
 
 - having a store to save data for the component tree, and inject data to where it is needed, solve prop drilling problem
 - redux is an **opinionated** (specific syntax role, boilerplate, setup) state management library
-- based on **Flux** architechture: emphasize on ==unidirectional== data flow
+- based on **Flux** architechture: emphasize on <span>unidirectional</span> data flow
 - **Won't use it if not need it**
   <br>
+
   pros:
 
 - 'simplified' access to state across complex app
@@ -354,7 +399,8 @@ Initial render: when a component first appears on the screen
 - simplified testing
 - a single source of truth (Redux Store)
   <br>
-  vocabulary in redux:
+
+  Terms in redux:
 
   - **Action Creator**: function (create action)
   - **Action**: object {type(reserved key):....[, payload(**not** reserved key): ....]}
@@ -372,17 +418,15 @@ Initial render: when a component first appears on the screen
 - observer pattern: the subject(an object), mainetains a list of dependents that have subscribed to notifications of any updates(observers / listener), notifies them when stae changes. Primarily in **event-driven** applications. (both React and Redux are based on Flux arch)
   <br>
 
-  <br>
-
   - `dispatch` : a function, passed in mapDispatchToProps as input parameter and accept action
 
-  ```
-  const mapDispatchToProps = dispatch => ({
-    addMarket: (location) => dispatch(actions.addMarketActionCreator(location)),
-    addCard : (id) => dispatch(actions.addCardActionCreator(id)),
-    deleteCard : (id) => dispatch(actions.deleteCardActionCreator(id)),
-  });
-  ```
+    ```
+    const mapDispatchToProps = dispatch => ({
+      addMarket: (location) => dispatch(actions.addMarketActionCreator(location)),
+      addCard : (id) => dispatch(actions.addCardActionCreator(id)),
+      deleteCard : (id) => dispatch(actions.deleteCardActionCreator(id)),
+    });
+    ```
 
     <br>
 
@@ -465,9 +509,11 @@ put on UI:
 
 - use render(components, HTMLelement) (from react-dom)
   <br>
+
 - presentational component vs container component
   - if component is connected to the store
     <br>
+    
 - use Hooks as a more popular method instead of `mapStateToProps`
 
 ## <br>
@@ -484,7 +530,7 @@ Module/Code bundler
   - can use Modularity, which prevents global namespace polluting, and converts to one file ( bundle.js ) when uploading
   - can use newest tech for building: e.g., can transfer JSX to JS, Html, and CSS
 
-- Modules: ==Common JS== (CJS) vs ==ES6 modules== (ESM)
+- Modules: <span>Common JS (CJS) vs ES6 modules (ESM)</span>
 
   - CJS: `require` & `module.exports`
     - Node.js modules:
@@ -492,7 +538,7 @@ Module/Code bundler
       - all based on `require` and `module.exports`
   - ESM: `import` & `export`
 
-    - mostly use in frontend ( ==React== application)
+    - mostly use in frontend ( <span>React</span> application)
     - can `export` multiple things
     - also has `export default`:
 

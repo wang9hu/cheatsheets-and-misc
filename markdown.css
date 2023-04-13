@@ -1,10 +1,16 @@
 
+body {
+  background-color: #262335;
+  color: beige;
+}
 h1, h2, h3, h4, h5 {
   display: block;
   padding-top: 2rem;
+  color: #51f505;
+  font-weight: 600;
 }
 h1, h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   padding-top: 1rem;
   font-weight: 800;
 }
@@ -18,4 +24,29 @@ h4 {
 }
 h5 {
   font-size: 1rem;
+}
+strong {
+  color: rgb(205, 50, 50);
+}
+span {
+  color: yellow;
+  font-size: 1.2rem;
+}
+code {
+  background-color: #3a3550;
+  font-weight: 400;
+  line-height: 1.2em;
+  color: #6be0f0 !important;
+  display: inline-block;
+  padding: 1px 4px;
+}
+pre {
+  padding: 4px 2px !important;
+  background-color: #3a3550 !important;
+}
+pre code {
+  line-height: 1.6em;
+}
+a {
+  color: darkorange;
 }

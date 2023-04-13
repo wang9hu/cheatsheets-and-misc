@@ -74,11 +74,11 @@ For element tag
 
 ### The CSS Box Model
 
-- Everything in CSS has a box around it, there are mainly two types of boxes: <mark>Block</mark> vs <mark>Inline</mark>, and boxes have an **outer display type** and **inner display type**:
+- Everything in CSS has a box around it, there are mainly two types of boxes: <span>Block</span> vs <span>Inline</span>, and boxes have an **outer display type** and **inner display type**:
 
-  - <mark>Outer display type</mark>: how is the **contents** of the element are displayed
+  - <span>Outer display type</span>: how is the **contents** of the element are displayed
 
-    - Block box:
+    - Block box
       - The box will **break onto a new line**.
       - The width and height properties are **respected**.
       - **Padding, margin and border** will cause other elements to be **pushed away** from the box.
@@ -86,15 +86,15 @@ For element tag
         
         <br>
 
-    - <mark>Inline box</mark>:
+    - Inline box:
       - The box will **not break** onto a new line.
       - The width and height properties will **not apply** (except for image).
-      - **Vertical padding, margins, and borders** will **apply but will not cause other inline boxes to move away** from the box.
-      - **Horizontal padding, margins, and borders** will **apply and will cause other inline boxes to move away** from the box.
+      - **Vertical padding**, **margins**, and **borders** will <span>apply</span> but will <span>not cause</span> other inline boxes to move away from the box.
+      - **Horizontal padding**, **margins**, and **borders** will <span>apply</span> and will <span>cause</span> other inline boxes to move away from the box.
        
        <br>
 
-  - ==Inner display type==: how does the element display **within its parent container**.
+  - <span>Inner display type</span>: how does the element display **within its parent container**.
 
     - By default and without any other instruction, the elements inside a box are also laid out in normal flow and behave as block or inline boxes.
       - Block elements: content within fills the available inline space of the element, and the element grows along the block dimension to accommodate its content.
@@ -127,38 +127,38 @@ In general, you can set various values for the display type using the `display` 
       
       <br>
 
-1. Block-element-modifier ( <mark>BEM</mark> ) class naming rule:
+1. Block-element-modifier ( <span>BEM</span> ) class naming rule:
    - Names are written in **lowercase** Latin letters.
    - Words are separated by a hyphen (-).
    - The **block name** defines the namespace for its elements and modifiers.
    - The **element name** is separated from the block name by a double underscore (\_\_)
      - `block-name__elem-name`
-     - ==Elements don't have hierarchy, parent and child html tags should be on the same level when naming class==
+     - Elements don't have hierarchy, parent and child html tags should be on the same level when naming class
    - The **modifier name** is separated from the block or element name by a single underscore (\_).
      - `block-name__elem-name_elem-mod-name`
      - `block-name_block-mod-name__elem-name`
-     - ==Modifier should never be used alone, only add modifiers with the original class==
+     - Modifier should never be used alone, only add modifiers with the original class
    - The **modifier value** is separated from the modifier name by a single underscore (\_).
      - `block-name__elem-name_mod-name_mod-val`
    - For boolean modifiers, the value is not included in the name.
      
      <br>
 
-1. ==At-rules== (@idnetifier (RULE)): instruct CSS how to behave.
+1. <span>At-rules</span> (@idnetifier (RULE)): instruct CSS how to behave.
    - Regular: `@charset`, `@import`, `@namespace`
    - Nested: A subset of nested statements, which can be used as a statement of a style sheet as well as inside of conditional group rules: `@media`, `@keyframe`, `@supports`, `@document`, `@page`, `@font-face`, `@viewport`, `@counter-style`, `@font-feature-values`, `@layer`
    - Conditional group rules: statements that share a common syntax and each can include nested statements, conveying a common semantic meaning which evaluates to either true or false, and the statements will apply under true condition: `@media`, `@supports`, `@document`.
      
      <br>
 
-1. Use ==Media Queries== when
+1. Use <span>Media Queries</span> when
    - conditionally apply styles with CSS `@media` and `@import` at-rules
    - target specific media for the `<style>`, `<link>`, `<source>`, and other HTML element with the `meida=` attribute
    - test and monitor media states using the `Window.matchMedia()` and `MediaQueryList.addListener()` JavaScript methods
      
      <br>
 
-1. Some attributes can be <mark>inherited</mark> from parent element. See `inherited: Yes/no`
+1. Some attributes can be <span>inherited</span> from parent element. See `inherited: Yes/no`
    in MDN
    
    <br>
@@ -190,9 +190,9 @@ In general, you can set various values for the display type using the `display` 
    
    <br>
 
-1. `transition` defines the transition between two states of an <mark>element</mark>,
+1. `transition` defines the transition between two states of an <span>element</span>,
 
-   - only works for ==number value== attribute
+   - only works for <span>number value</span> attribute
    - it is a shorthand property for:
      - `transition-property`
      - `transition-duration`
@@ -273,7 +273,7 @@ In general, you can set various values for the display type using the `display` 
 
 3. Margin collapsing:
 
-   - If two ==vertically adjacent== elements both have a margin set on them and their margins touch, the larger of the two margins remains and the smaller one disappears.
+   - If two <span>vertically adjacent</span> elements both have a margin set on them and their margins touch, the larger of the two margins remains and the smaller one disappears.
      <br>
 
    - Margins of **floating** and **absolutely** positioned elements never collapse.
@@ -294,8 +294,8 @@ In general, you can set various values for the display type using the `display` 
    - margin collapsing only happens within vertical-block margins and flex container's margin doesn't collapse at all.
      <br>
 
-4. <mark>Bootstrap</mark>:
-   1. **Content delivery network** ( <mark>CDN</mark> ) is a quick and easy way of applying css framework, like bootstrap e.g.
+4. Bootstrap:
+   1. **Content delivery network** ( <span>CDN</span> ) is a quick and easy way of applying css framework, like bootstrap e.g.
       ```
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>

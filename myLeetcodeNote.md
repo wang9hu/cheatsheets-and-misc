@@ -1,4 +1,4 @@
-- **DP problem common characteristics:**
+- <span>DP problem common characteristics:</span>
 
   - Ask for optimum value:
     - Ask for max/min/longest etc. of something;
@@ -9,25 +9,33 @@
     - DP[i] should have close connection to nums[i];
       <br>
 
-- **Check if a Character is a Letter**
+- <span>Check if a Character is a Letter</span>
   Compare the lowercase and uppercase variants of the character
   `char.toLowerCase() !== char.toUpperCase() // true if char is not a letter`
   <br>
 
-- **Check if a variable is an integer**
+- <span>Check if a variable is an integer</span>
   `~~a === a`: `true` if integer, `false` other
   <br>
 
-- **Capitalize a string**
+- <span>Capitalize a string</span>
   `string.charAt(0).toUpperCase() + string.slice(1)`
   <br>
 
-- **2 sum, 3 sum questions**
+- <span>Get the middle index</span>
+  - use: 
+  `const mid = Math.floor(left + (right - left) / 2)` 
+  instead of 
+  `const mid = Math.floor((left + right) / 2)`
+  to prevent number overflow
+  <br>
+
+- <span>2 sum, 3 sum questions</span>
   - unique nums: hash
   - duplicates: sort + two pointers (start, end)
   - unsortable: use hashset, for inner loop, set `nums[j]: i` pair and check for complement value (will be slower than sorted method);
     <br>
-- **Backtrack recursive**
+- <span>Backtrack recursive</span>
 
   - ==Permutation==, similar to DFS (_depth first search_), traverse through all possible outcome
   - its time complexity will always be
