@@ -130,7 +130,7 @@
     <br>
 
   - `initialState`: the value you want the state to be initially
-  - return: state and the function that can changed the state
+  - **return**: state and the function that can changed the state
     <br>
   
   - `state`: The current state.
@@ -162,7 +162,7 @@
     - if no `[dependencies]`, will run `setup` after initial and each update
     - if `[dependencies]`, only run `setup` if `dependencies` changed
     - if `[]` (`dependencies` omitted), only run `setup` after the initial render
-  - return: `undefined`
+  - **return**: `undefined`
     <br>
 
   ```
@@ -178,12 +178,13 @@
 
 - **<span>useMemo</span>**: cache the **result** of a calculation between re-renders.
 
-  - `const cachedValue = useMemo(calculateValue, dependencies)`
+  - `const cachedValue = useMemo(calculateValueFn, dependencies)`
     <br>
 
-  - `calculateValue`: the function that **calculating the value**, should take **no input** and return a value. On the initial render, `useMemo` returns the result of calling `calculateValue` with no arguments.
+  - `calculateValueFn`: the function that **calculating the value**, should take **no input** and return a value.
   - `dependencies`: the array of dependencies that triggered the useMemo
-  - useMemo will return previous value if dependencies are the same for rerender
+  - **return**: the calculated value and cache it in `cachedValue`. Will return previous `cachedValue` if `dependencies` are the same for rerender
+  -  On the initial render, `useMemo` returns the result of calling `calculateValueFn` with no arguments.
     <br>
 
     **Common use cases:**
@@ -196,9 +197,9 @@
 
   - `const cachedFn = useCallback(fn, dependencies)`
     <br>
-  - just like `useMemo`, but it return the first paramenter, which is the **entire function**, instead of the return value of the function, and the function could have inputs
-  - Essentailly, `useCallback(myFunction, dependencyArray)` is equivalent to `useMemo(()=>myFunction, dependencyArray)`
-
+  - just like `useMemo`, but it return the first paramenter, which is the **entire function**, instead of returning the calculated value of the function, and the function could have inputs
+  - `useCallback(myFunction, dependencies)` = `useMemo(()=>myFunction, dependencies)`
+  <br>
   ```
   const [number, setNumber] = useState(1);
 
@@ -217,22 +218,15 @@
   **Common use case:**
 
   1. make sure the reference of an function is exactly the same as it was in the last rendered, such as passing function to child component
-  1. for some reason creating a function is really slow for each re-render (rarely)
+  2. for some reason creating a function is really slow for each re-render (rarely)
      <br>
 
 - **<span>useContext</span>**: lets you read and subscribe to context from your component
 
-  - `const value = useContext(SomeContext)`
+  - Context lets the **parent component** make some information available to **any child components** in the tree below it (no matter how deep) without passing it explicitly through props.
     <br>
 
-  - Context lets the parent component make some information available to **any** component in the tree below it—no matter how deep—without passing it explicitly through props.
-    <br>
-
-  1. _SomeContext_ is created by `createContext` function (`React.createContext()`)
-
-     - if no defaultValue, specify `null` as input
-     - return: a context object that doesn't hold any information, it represents which context other components read or provide.
-     - This could be done in _contextcreator_ file, or integrated in highest parent component
+  1. **SomeContext** is created by `React.createContext` function
 
      ```
      // call createContext to create a context
@@ -241,12 +235,17 @@
      // and export it if in seperate contextcreator file
      export const SomeContext = createContext(defaultValue)
      ```
+     - if no defaultValue, specify `null` as input
+     - **return**: a context object that doesn't hold any information, it represents which context other components read or provide.
+     - This could be done in _contextcreator_ file, or integrated in highest parent component
+     <br>
 
-  1. In parent component, import the created _SomeContext_ from _contextcreator_ file
+
+  2. In parent component, import the created **SomeContext** from _contextcreator_ file
 
      - usually use other hooks to create some **state** for context
-     - in the return, wrap children component with `<Somecontext.provider>` tag
-     - in `<Somecontext.provider>` tag, pass the **state** as `value` attribute
+     - in the component return, wrap children component with `<Somecontext.provider>` tag
+     - inside `<Somecontext.provider>`, pass the **state** as `value` attribute
      - now all children component within have access to **state**
 
      ```
@@ -264,12 +263,13 @@
        )
      }
      ```
+     <br>
 
-  1. In child component, import `useContext` hook and _Somecontext_
+  3. In child component, import `useContext` hook and **Somecontext**
 
-     - invoke `useContext` and pass _Somecontext_ as input
+     - invoke `useContext` and pass **Somecontext** as input
      - assign the return value with variables in the same format of the **state** from `<Somecontext.provider>`
-     - _Note_: when assign the return value of `useContext()` to variables in child component, this child component will re-render whenever _SomeContext_ changes, whether or not variables are used does not matter.
+     - _Note_: when assign the return value of `useContext()` to variables in child component, this child component will re-render whenever **SomeContext** changes, whether or not variables are used does not matter.
 
      ```
      // In child component
@@ -285,10 +285,43 @@
        )
      }
      ```
-
   <br>
 
-- **<span>useReducer</span>**
+- **<span>useReducer</span>**: lets you add a **reducer** to your component.
+
+  - `const [state, dispatch] = useReducer(reducer, initialArg, init?)`
+  <br>
+  - `reducer`: a function that specifies how the state gets updated.
+  - `initialArg`: the input for `init`. 
+  - `init`: _optional_ the initializer that should return the `initialState`. 
+  - `InitialState = init ? init(initialArg) : initialArg`
+  - **return**: the `state` and the `dispatch` function in an array
+    - `state`: The current state
+    - `dispatch`: update state and <span>trigger</span> a re-render: `dispatch(action)`
+      - `action`: an object identifying the action performed by user. By convention, an action is usually an object with a `type` property with other optional properties containing the <span>minimal information</span> about what happened. `e.g., { type: 'what_happened, /* other fields? */ }`
+      - **return**: no return value
+      <br>
+  - <span>Reducer </span>
+    ```
+    function yourReducer(state, action) {
+      // return next state for the React to set
+    }
+    ```
+    - reducer is a <span>pure</span> function, meaning itself makes no impact to its environment when executing.
+    - Takes in two arguments: `state` and `action`
+    - **return**: the updated state, must be <span>different reference</span>
+    - Conventionally use **switch statement** inside reducers, and wrap each `case` into `{`and`}`, and `return` inside of each `case`
+    <br>
+
+  - <span>VS</span> `useState`:
+    - **Code size**: `useState` have less setup code, but `useReducer` can help cut down on the code if many event handlers behave similarly
+    - **Readability**: `useState` is very easy to read when state updates are simple, while `useReducer` have better organized event handler logic
+    - **Debugging**: `useState` is difficult to debug from, while `useReducer` could have console log for each case to pinpoint which action is causing the bug
+    - **Testing**: reducer is a pure function and can be export and test separately.
+    - **Personal preference**: `useState` and `useReducer` are essentially the same.
+
+
+
 
 <br>
 
@@ -308,7 +341,7 @@
          ```
          const inputRef = useRef(null);
          ```
-      1. Then pass `ref` object as the `ref` attribute to the JSX of the DOM node you want to manipulate:
+      2. Then pass `ref` object as the `ref` attribute to the JSX of the DOM node you want to manipulate:
          ```
          return (
           <>
@@ -318,8 +351,8 @@
           </>
          )
          ```
-      1. After React creates the DOM node and puts it on the screen, React will set the `current` property of your `ref` object to that DOM node: `inputRef.current.focus();`
-      1. React will set the current property back to `null` when the node is removed from the screen.
+      3. After React creates the DOM node and puts it on the screen, React will set the `current` property of your `ref` object to that DOM node: `inputRef.current.focus();`
+      4. React will set the current property back to `null` when the node is removed from the screen.
 
   <br>
 

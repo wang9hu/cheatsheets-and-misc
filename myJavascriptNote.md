@@ -748,11 +748,14 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 #### Array callback methods
 
-- `CallbackFn` types (_fn_): (`thisArg` is used as `this` when executing `callbackFn`)
+- Parameters: `array.prototype.xxx(callbackFn, thisArg?)` 
+  - `callbackFn`:
+    - Arrow function: `(element, index?, array?) => {/*...*/}`
+    - Callback function: `callbackFn`
+    - Inline callback funciton: `function(element, index?, array?) {/*...*/}`
+    <br>
+  - `thisArg`: `this` when executing `callbackFn`)
 
-  - Arrow function: `(element, index?, array?) => {/*...*/}`
-  - Callback function: `callbackFn, thisArg?`
-  - Inline callback funciton: `function(element, index?, array?) {/*...*/}, thisArg?`
     <br>
 
 - **<span>Note</span>**: index manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
@@ -1269,7 +1272,8 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
 ## Function
 
-Every JS function is a `Function` object: 
+### Noraml Function:
+Every typical function is a <span>Function</span> object: 
   ```
   function fn(){/*...*/}
 
@@ -1283,18 +1287,90 @@ Every JS function is a `Function` object:
 - **argument**: value passed to function during function invocation
 - **parameter**: placeholder in function definition
 
-- function default properties:
+- `fn`: A typical function has default properties:
 
-  - `length`: the number of parameters expected by the function
+  - `fn.length`: the number of parameters expected by the `fn`
 
-  - `name`: the name of the function
+  - `fnname`: the name of the function
 
-  - **prototype**: A Function object's prototype property is used when the function is used as a constructor with the new operator. It will become the new object's prototype.
-    - **constructor**: function constructor will always point at function itself: `fn.prototype.constructor === fn // true`
+  - `fn.prototype`: When function is called by `new` operator and create an instance, the `prototype` property will become the new object instance's `[[Prototype]]`.
+    - `fn.prototype.constructor`: function constructor will always point at function itself: `fn.prototype.constructor === fn // true`
     <br>
-    - **[[Prototype]]**: `prototype` is a property, so its `[[Prototype]]` will always be `Object` object's `prototype`:`fn.prototype.__proto__ === Object.prototype // true`
+    - `fn.prototype.[[Prototype]]`: `prototype` is an object property, so its `[[Prototype]]` will always be <span>Object</span> object's `prototype`:`fn.prototype.__proto__ === Object.prototype // true`
     <br>
-  - **[[Prototype]]**: function's `[[Prototype]]` is usually `Function` object's `prototype`: `fn.__proto__ === Function.prototype // true`
+  - `fn.[[Prototype]]`: function's `[[Prototype]]` is the <span>Function</span> object's `prototype`: `fn.__proto__ === Function.prototype // true`
+    - `apply`: `fn.apply(thisArg, argsArray?)`
+    - `call`: `fn.call(thisArg, arg1?, arg2?, /*...*/, argN?)`
+      - `thisArg`: value of `this` provided for the call
+      - `argsArray`: _optional_ an array-like object, specifiying the arguments. Default `null` or `undefined`
+      - `argN`: _optional_ arguments for `fn`
+      - **return**: result of calling the `fn` with specified `this` and arguments if provided
+      - <Span>Note</span>: `apply` is almost identical to `call`, except `apply` accepts an array of arguments, while `call` accepts an argument list.
+      <br>
+    - `bind`: `fn.bind(thisArg, arg1?, arg2?, /*...*/?, argN?)`
+      - `thisArg` and `argN` are similar to those in `call`
+      - **return**: a copy of `fn` with specified `this` and initial arguments if provided
+      - <span>Note</span>: `bind` does not call any function, and it can only specify values from the beginning of the argument list.
+      <br>
+    - `constructor`: <span>Function</span>
+    <br>
+  
+### Arrow Function expression:
+```
+(param?) => expression
+
+param => expression
+
+(param1?, /*...*/, paramN?) => expression
+
+(param?) => {statements}
+
+param => {statements}
+
+(param1?, /*...*/, paramN?) => {statements}
+```
+
+Semantic differences and deliberate limitations:
+  1. Arrow functions <span>don't have</span> own binding `this`, `arguments`, or `super`, and should not be used as methods
+  1. Arrow function <span>cannot be used</span> as **contructors** (arrow function doesn't have `prototype` property as typical function does, therefore no `constructor`)
+  1. Arrow functions <span>cannot use</span> `yield` within their body and cannot be created as generator functions.
+
+**Common usage**:
+  - use as anonymous callback function
+  - use when want to purposely manipulate `this` behavior
+
+### `this` keyword
+The value of `this` depends on in which context it appears: <span>function</span>, <span>class</span>, or <span>global</span>.
+
+1. Function context: 
+    - Typically, the value of `this` depends on how the function is **called** (runtime binding), not where the function is defined.
+      - if called without accessed on anything (e.g., inner function called inside of a outter function)
+        - In **strict** mode: `this` will be `undefined`
+        - In **non-strict** mode: a special process called **this substitution** ensures that the value of `this` always an object (`globalThis` or primitive wrapper object)
+      - <span>Note</span>: `this` inside of a inner function when directly invoked inside of an outter function will be `undefined`/`globalThis`
+        <br>
+    - **Callbacks**: the value of `this` depends on how the callback is called, which is determined by the implementor of the API. 
+      - if **typical** function: `undefined`/`globalThis` (like invoke inner function)
+      - if **arrow** function: depends on the callback implementor.
+    <br>
+
+    - **Arrow functions**: `this` retains the value of the enclosing lexical context's `this`. 
+      ```
+      const outThis = this;
+      const myArrowFunc = () => {
+        console.log(outThis === this);  // true
+      }
+      ```
+    - **Constructor**: work with `new` operator, `this` refers to the created instance
+    <br>
+2. Class context:
+    - **typical constructor**: same as above, `this` refers to instance object
+    - **static fields**: due to only class can access static fields, so `this` in static fields always refers to the class object.
+    <br>
+
+3. Global context: `globalThis` (strict or not)
+
+<br>
 
 ### Factory function
 
@@ -1363,17 +1439,29 @@ A special function that can only be called with `new` operator, capitcalized fir
   const instance = new ConstructorName(prop)
   ```
 
-  When use `new` operator on a constructor, it would do the following:
+  - When use `new` operator on a constructor, it would do the following:
 
-  1. Create a empty object (e.g., `newInstance`)
-  2. Points the `[[Prototype]]` of `newInstance` to the constructor function's `prototype` property
-  3. Executes the constructor function with the given arguments, binding `newInstance` as the `this` context
-  4. If the constructor function returns a non-primitive, this return value becomes the result of the whole `new` expression. Otherwise, if the constructor function doesn't return anything or returns a primitive, `newInstance` is returned instead.
-  <br>
+    1. Create a empty object (e.g., `newInstance`)
+    2. Points the `[[Prototype]]` of `newInstance` to the constructor function's `prototype` property
+    3. Executes the constructor function with the given arguments, binding `newInstance` as the `this` context
+    4. If the constructor function returns a non-primitive, this return value becomes the result of the whole `new` expression. Otherwise, if the constructor function doesn't return anything or returns a primitive, `newInstance` is returned instead.
+    <br>
 
-  without `new` operator, `this` refers to global object.
+  - without `new` operator, `this` refers to global object.
 
-  (In constructor definition, use `try ... catch` with `new.target` to detect whether a function or constructor was called using `new` operator)
+  - `new.target`: if constructor was called using `new`, `new.target` will return a reference to the constructor or function that `new` was called upon. In typical function calls, `new.target` is `undefined`
+    ```
+    function Foo() {
+      if (!new.target) { throw new TypeError('calling Foo constructor without new is invalid'); }
+    }
+
+    // Expected output: TypeError: calling Foo constructor without new is invalid
+    try {
+      Foo();
+    } catch (e) {
+      console.log(e);
+    }
+    ```
 
   <br>
 
@@ -1488,7 +1576,7 @@ const classInstanc = new ClassName(args);
   - **super**: used in the constructor body of a derived class (with extends), or as a "property lookup" (`super.prop` and `super[expr]`)
 
     - when used as a "function call" in child class constructor:
-      - calls the parent class's constructor
+      - calls the parent class's constructor while `this` refers to child instance
       - binds the parent class's public fields
       - the child class's constructor can further access and modify `this`
       - must be called before the `this` keyword is used, and before the constructor returns.
@@ -1558,25 +1646,21 @@ A class element can be characterized by three aspects:
 
 Take part of the code and move it to the top of the file
 
-- **Hoisting function**: only work with normal `function` declaration
+- **Hoisting function**: only work with typical `function` declaration
 
 ```
-
 funcName() // This works
 ...
 function funcName(){}
-
 ```
 
 - **Hoisting variable**: only variable declared with `var` can be hoisted, but its value would be undefined before initialization. (`var` is less used than `let` and `const`)
 
 ```
-
 console.log(x) // undefined
 var x = 1
 console.log(x) // 1
 ```
-
 <br>
 
 ##### **[Back to table](#table)**
