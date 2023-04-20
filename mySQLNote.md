@@ -1,3 +1,7 @@
+# Database notes
+
+## SQL
+
 Popular Databases languages: Oracle, MySQL, MS SQL Server, **PostgreSQL**, **MongoDB**(NoSQL), etc
 
 SQL: Structured Querry Language, a relational database
@@ -181,7 +185,7 @@ Install `npm install pg`
 
 ---
 
-### NoSQL
+## NoSQL
 
 **MongoDB document store**
 

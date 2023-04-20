@@ -1,3 +1,5 @@
+# Leetcode Notes
+
 - <span>DP problem common characteristics:</span>
 
   - Ask for optimum value:
@@ -37,13 +39,13 @@
     <br>
 - <span>Backtrack recursive</span>
 
-  - ==Permutation==, similar to DFS (_depth first search_), traverse through all possible outcome
+  - **Permutation**, similar to DFS (_depth first search_), traverse through all possible outcome
   - its time complexity will always be
-  - 3Q (three questions):
+  - Three questions:
 
     1. Decisions that have already been made (track)
-    1. Choices list (choice)
-    1. No choice condition (ends)
+    2. Choices list (choice)
+    3. No choice condition (ends)
 
     ```
     // pseudo codes
@@ -93,3 +95,72 @@
       return res;
     }
     ```
+    <br>
+- <span>Binary Search</span>
+  - Binary Search should be considered every time you need to **search for an index or element** in a collection. If the collection is unordered, we can always **sort it first** before applying Binary Search.
+  <br>
+  - Composed of 3 main sections:
+    1. Pre-processing: sort if collection is unsorted
+    1. Binary Search: Using a loop or recursion to divide search space in half after each comparison. <span>Note</span>: _When defining the boundries, consider which boundary to be **excluded** for the **next iteration**
+    1. Post-processing: Determine viable candidates in the remaining space.
+    <br>
+  - Templates:
+    1. Most basic and elementary form: no depend on other elements or neighbors to determine if the condition is met
+        ```
+        while (left <= right) {
+          const mid = left + Math.floor((right - left) / 2);
+          if (nums[mid] === target) {
+            return mid;
+          } else if(nums[mid] < target) {
+            left = mid + 1;
+          } else {
+            right = mid - 1;
+          }
+        }
+
+        return -1;
+        ```
+      - search space: could be just **1** element, hence the `left <= right` 
+      - **No post-porcessing** required becasue all elements are checked in the iteration
+      <br>
+    2. Use the element's <span>right neighbor</span> to determine if the condition is met and decide whether to go left or right
+        ```
+        while (left < right) { 
+          const mid = left + Math.floor((right - left) / 2);
+          if (nums[mid] === target) {
+            return mid;
+          } else if (nums[mid] < target) {
+            left = mid + 1;
+          } else {
+            right = mid;
+          }
+        }
+        // Post-processing:
+        if (nums[left] === target) return left
+
+        return -1;
+        ```
+      - search space: at least **2** in size at each step, hence the `left < right` 
+      - Post-processing required, iteration ends when `left === right`, need to check `nums[left]` or `nums[right]` for condition
+      <br>
+    3. Use element's <span>neighbors</span> to determine if condition is met and decide whether to go left or right
+       ```
+       while (left + 1 < right) {
+        const mid = left + Math.floor((right - left) / 2);
+          if (nums[mid] === target) {
+            return mid;
+          } else if (nums[mid] < target) {
+            left = mid;
+          } else {
+            right = mid;
+          }
+       }
+       // Post-processing:
+       if (nums[left] === target) return left;
+       if (nums[right] === target) return right;
+
+       return -1
+       ```
+       - search space: at least **3** in size at each step, hence the `left + 1 < right` 
+       - Post-processing is required, iteration ends when `left + 1 === right`, need to check `nums[left]` and `nums[right]` for condition.
+        

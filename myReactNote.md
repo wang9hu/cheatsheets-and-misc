@@ -1,4 +1,4 @@
-## React
+# React notes
 
 - [Docs](https://reactjs.org/docs/getting-started.html)
 - component is essentially function
@@ -12,6 +12,7 @@
   - use class to create React component
   - class need to `extends React.Component`
     <br>
+- 
 
 ### Create-React-App 
   a packge created by facebook
@@ -31,7 +32,10 @@
     document.getElementByID('root')
   )
   ```
-  - React.StrictMode: remove deprecated things
+  - `<React.StrictMode>`: enables followings
+    - re-render an extra time to find bugs caused by **impure rendering**
+    - re-run Effects an extra time to find bugs caused by missing **Effect cleanup**
+    - check for usage of **deprecated APIs**
 
 ### Component Class:
 

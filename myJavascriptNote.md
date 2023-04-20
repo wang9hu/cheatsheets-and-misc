@@ -866,7 +866,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
 ## Map
 
-- The `Map` object holds key-value pairs and remembers the ==original insertion order== of the keys.
+- The `Map` object holds key-value pairs and remembers the <span>original insertion order</span> of the keys.
 - Any value (both **objects** and **primitive values**) may be used as either a **key** or a **value**.
   <br>
 

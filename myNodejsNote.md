@@ -1,4 +1,4 @@
-# Node related notes
+# Node notes
 
 - `npm init -y`
   - npm initialize, create a package.json file
