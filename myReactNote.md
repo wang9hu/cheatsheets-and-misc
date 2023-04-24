@@ -1,7 +1,7 @@
 # React notes
 
-- [Docs](https://reactjs.org/docs/getting-started.html)
-- component is essentially function
+- [Docs](https://react.dev/)
+- A component is essentially a function
 - component:
 
   - splite UI into independent, reusable pieces
@@ -12,30 +12,35 @@
   - use class to create React component
   - class need to `extends React.Component`
     <br>
-- 
 
-### Create-React-App 
-  a packge created by facebook
+- [React Component](#react-component)
+  1. [Component Class](#component-class)
+  1. [Functional Component](#functional-component)
+- [When does rerender trigger](#when-does-rerender-trigger)
+- [React conventions](#react-conventions)
+- [Create-React-App](#create-react-app)
+- [Redux](#redux)
+- [Webpack](#webpack)
 
-  - `npx create-react-app my-app-name`: create react project barebones with all the necessary files to run a SPA
-  - `react`: the engine that runs how does the app get built
-  - `react-dom`: directed towards web related application
-    - `react-native`: for mobile application
-  - `react-scripts`: 
+## React Component
 
-#### In index.js
-  ```
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementByID('root')
-  )
-  ```
-  - `<React.StrictMode>`: enables followings
-    - re-render an extra time to find bugs caused by **impure rendering**
-    - re-run Effects an extra time to find bugs caused by missing **Effect cleanup**
-    - check for usage of **deprecated APIs**
+- **JSX**: javascript XML (file name): precompiled syntax exntension to JS, React 'element' can be rendered into HTML element on DOM by JSX
+  - e.g., `<h1>Hello, {this.props.anykeylabel}</h1>`
+  - could have js inside of DOM element, wrapped in `{}`
+    - `<h1>{2 + 2}</h1>`
+    - `<p{user.firstName}`
+    - `{formatName(user)}`
+  - JSX attribute: key value pair: used to pass in data
+    - for component attributes, could use `'for string'` or `{js expression}`, one or another
+    - in child component, use `this.props.childVariable`
+    - in parent component, use `childVariable = {js exoression}`
+  - JSX can interpret an array of JSX statements and take each individule out e.g., `{boxes}`
+    <br>
+
+- **Virtual DOM**: representing DOM elements purely in a lightweight JS form.
+  - use **React-DOM** library,
+  - achieve fast render time
+  - React processes changes very quickly, only rendering to the real DOM when and where needed.
 
 ### Component Class:
 
@@ -53,63 +58,56 @@
 - may need other library (npm & import)
   <br>
 
-- **JSX**: javascript XML (file name): precompiled syntax exntension to JS, React 'element' can be rendered into HTML element on DOM by JSX
-  - e.g., `<h1>Hello, {this.props.anykeylabel}</h1>`
-  - could have js inside of DOM element, wrapped in `{}`
-    - `<h1>{2 + 2}</h1>`
-    - `<p{user.firstName}`
-    - `{formatName(user)}`
-  - JSX attribute: key value pair: used to pass in data
-    - for component attributes, could use `'for string'` or `{js expression}`, one or another
-    - in child component, use `this.props.childVariable`
-    - in parent component, use `childVariable = {js exoression}`
-  - JSX can interpret an array of JSX statements and take each individule out e.g., `{boxes}`
-    <br>
+
 
 - **State**: top down, uni-directional data flow, used to pass data
   - accessible and easily maintained
   - **State** maintained in top level components (as an obj called `State`) and passed down (through `props`) to child component
   - `props` never go upstream or to sibling component.
   - values in props are **immutable**
-  - use `setState()` in order to update **State**, **never** manually set `state`.
-  - only use `setState()` where `state` is defined
-  - `setState()` will only update what is passed in, the rest stay the same
+  - use `setState()` in order to update **State**:
+    `setState(nextState, callback?)`
+    - `nextState`: either an object or a function 
+      - if object, it is **shallow merged**, it will look for the keys that passed in and update its value in state.
+      - if function, it is an **updater**, having two optional arguments: `state` and `props`
+    - `callback`: _optional_, invoke after update is commited
+    - <span>Never</span> manually set `state`.
+    - only use `setState()` where `state` is defined in component
+    - `setState()` will only update what is passed in, the rest stay the same
+        ```
+        // in constructor:
+        this.state = {
+          name: 'Ken',
+          sex: 'male'
+        }
+
+        // invoking setState()
+        this.setState({name: 'Andy'}) // sex is stll 'male' after update
+        ```
   - Any changes to the state will trigger an update, or "re-render", of components that depends on it.
     <br>
 
-- virtual DOM: representing DOM elements purely in a lightweight JS form.
-  - use **React-DOM** library,
-  - achieve fast render time
-  - React processes changes very quickly, only rendering to the real DOM when and where needed.
 
-### React Component
 
-#### Class:
-  - **Life cycle component**: if the function definition is given in the component class
-    - `componentDidMount(){ /.../ }`: this will run the **first time** component is rendered on the DOM
-    - `componentDidUpdate(){ /.../ }`: this will run **after updating** is complete, but not for the initial rendering
-    - `componentWillUnmount( /.../ )`: this will run **before the removal** of rendered Box from DOM
-  - **Can have state**
-    ```
-    class Car extends React.Component {
-      constructor() {
-        super();
-        this.state = {color: "red"};
-      }
-      render() {
-        return <h2>I am a Car!</h2>;
-      }
-    }
-    ```
-    <br>
 
-#### Stateless Functional Component
+- **Life cycle component**: if the function definition is given in the component class
+  - `componentDidMount(){ /.../ }`: this will run the **first time** component is rendered on the DOM
+  - `componentDidUpdate(){ /.../ }`: this will run **after updating** is complete, but not for the initial rendering
+  - `componentWillUnmount( /.../ )`: this will run **before the removal** of rendered Box from DOM
+  <br>
+ ##### **[Back to top](#react-notes)**
+ <br>
+
+ ---
+
+
+### Functional Component
 
   - Pros:
-    - No need to use `this` keyword! You don't have to deal with `state` / `methods`, and your `props` are passed in as a parameter.
-    - Less boilerplate. As your component is simply a function, free of the constraints of a React component class, the amount of boilerplate in creating a stateless functional component is greatly reduced. This makes it so the resulting code for you component is concise and and clear.
+    - <span>No this!!</span> No need to use `this` keyword! You don't have to deal with `state` / `methods`, and your `props` are passed in as a parameter.
+    - <span>Less boilerplate</span>. As your component is simply a function, free of the constraints of a React component class, the amount of boilerplate in creating a stateless functional component is greatly reduced. This makes it so the resulting code for you component is concise and and clear.
     - Clearly separates your concerns. This is important when you're separating your application into container and presentational components.
-    - **React Hooks**: functions that allow functional components the ability to do things that were typically only reserved for class components.
+    - <span>React Hooks</span>: functions that allow functional components the ability to do things that were typically only reserved for class components.
   - Cons:
     - No access to component lifecycle methods (ie `ComponentDidMount`).
       <br>
@@ -119,7 +117,7 @@
 
 <br>
 
-### React Hooks
+#### React Hooks
 
 - Two rules:
 
@@ -413,13 +411,76 @@
   - Combine with `useMemo`, `useCallback` in parent component to ensure on `props` not changing accidentally
     <br>
 
-### When does rerender trigger
+ ##### **[Back to top](#react-notes)**
+ <br>
+
+ ---
+
+
+## When does rerender trigger
 
 Initial render: when a component first appears on the screen
 
 1. The props passed in component changed
 1. Internal state change (`useState`, `useContext`, `setState`...)
 1. Parent component rerendered (unless `React.memo()` is called for a component)
+<br>
+##### **[Back to top](#react-notes)**
+ <br>
+
+---
+
+
+## React conventions:
+
+  - <span>Key</span> Attribute: when use `filter()` and `map()` to process lists of JSX elements, it is conventional to assign a `key` attribute to each direct JSX element. 
+    - React is the only thing that requires this `key` attribute
+    - Works like a name for each item, the `key` lets React identify the item throughout its lifetime. If not given, react would assign index to key, which is not tighly binded with each item and would cause errors due to data array manipulation
+    <br>
+    - Sources of keys: (bind key value with each item)
+      - **Data from database**: use unique keys/ID from database
+      - **Logically generated**: (when adding new items) use incrementing counter, `crypto.randomwUUID()` or a package like `uuid` to create keys
+      <br>
+    - Rules of keys:
+      - Keys must be **unique** among siblings
+      - Keys must **not change**
+      - Keys usually at the **top level** of each JSX element
+
+<br>
+
+##### **[Back to top](#react-notes)**
+ 
+<br>
+
+---
+
+## Create-React-App 
+  a packge created by facebook
+
+  - `npx create-react-app my-app-name`: create react project barebones with all the necessary files to run a SPA
+  - `react`: the engine that runs how does the app get built
+  - `react-dom`: directed towards web related application
+    - `react-native`: for mobile application
+  - `react-scripts`: 
+
+#### In index.js
+  ```
+  ReactDOM.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementByID('root')
+  )
+  ```
+  - `<React.StrictMode>`: enables followings
+    - re-render an extra time to find bugs caused by **impure rendering**
+    - re-run Effects an extra time to find bugs caused by missing **Effect cleanup**
+    - check for usage of **deprecated APIs**
+  <br>
+##### **[Back to top](#react-notes)**
+ <br>
+
+---
 
 ## Redux:
 
@@ -553,7 +614,10 @@ put on UI:
     
 - use Hooks as a more popular method instead of `mapStateToProps`
 
-## <br>
+<br>
+
+##### **[Back to top](#react-notes)**
+ <br>
 
 ---
 

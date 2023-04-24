@@ -98,6 +98,13 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 ### Numbers
 
 - No positive|negative|integers|decimal classes, uses **double-precision 64-bit binary format IEEE 754**
+  - Binary 64 has (from left to right):
+    - Sign bit: 1 bit (63)
+    - Exponent: 11 bits (62 to 52)
+    - Significand precision: 53 bits (**1 implicit starting bit** + 51 to 0)
+  - precision range: 53-bit significand precision gives **15** to **17** significant decimal digits: (below start and final numbers and the same)
+    - a digits decimal with **at most 15 significant digits** converted to double-precision format and then converted back to decimal
+    - a double-precision format number converted to a decimal with **at least 17 significant digits**, and then converted back to double-precision format 
 - `NaN` is in also `number` type;
 - Two zeros: `0` & `-0`
 - Two infinities: `Infinity` & `-Infinity`
@@ -157,7 +164,10 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
     - `isNAN('a') // true`;
     <br>
 
-- **Number.parseInt() / parseInt()**: From left to right, return starting integer part
+- **Number.parseInt() / parseInt()**: From left to right, **one digit** at a time, parse and convert to number: `parseInt(string, radix?)`
+  - `radix`: _optional_, an integer between 2 and 36 that represents the radix. Default `10`. 
+  - if any digit in string cannot be parsed by the radix, it will stop at that digit
+    - `parseInt('123', 3)` will return `12`, because first two digits can be parsed at radix of 3, which has `0`, `1` and `2`, three avaiable number outputs, but the third digit `3` is out of the range of 0 to 2, so for this digit it will return `NaN`. The final result is `12`
   - `Number.parseInt() === parseInt() // true`
   - `parseInt('123a456.7') // 123`
     <br>
@@ -176,6 +186,7 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 - **.toPrecision()**: `123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4` : return a <span>string</span> representing fixed-point or exponential notation rounded to precision significant digits
   <br>
 - **.toString()**: `123.456.toString(b) = '443.212' // b = 5` : return a <span>string</span> representing the object in the specified radix (base), default [b] = 10
+  - for integers, use double period: `123..toString(2) // '1111011'`
   <br>
 
 ##### **[Back to table](#table)**
@@ -1312,7 +1323,7 @@ Every typical function is a <span>Function</span> object:
       - **return**: a copy of `fn` with specified `this` and initial arguments if provided
       - <span>Note</span>: `bind` does not call any function, and it can only specify values from the beginning of the argument list.
       <br>
-    - `constructor`: <span>Function</span>
+    - `constructor`: <span>Function</span> Class
     <br>
   
 ### Arrow Function expression:
