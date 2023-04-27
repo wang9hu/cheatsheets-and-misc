@@ -20,7 +20,7 @@
 - [Hoist](#hoist)
 - [Asynchronous Javascript](#asynchronous-javascript)
 - [Promise](#promise)
-- [Async/await](#async\/await)
+- [Async/await](#async/await)
 - [Renderer Process](#renderer-process)
 - [Task queue vs Microtask queue](#task-queue-vs-microtask-queue)
 - [Event Loop](#event-loop)
@@ -30,7 +30,7 @@
 
 ---
 
-### Js Primitive Types
+### JS Primitive Types
 
 - Number, String, Boolean, null, undefined, BigInt, Symbol (#js primitive)
 
@@ -77,7 +77,7 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 ### Null
 
- Intentional absence of any value, **must be assigned**
+Intentional absence of any value, **must be assigned**
 
 <br>
 
@@ -87,7 +87,7 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 ### Undefined
 
- Variables that do not have an assigned value, from values that **hasn't been defined** or **doesn't exist**
+Variables that do not have an assigned value, from values that **hasn't been defined** or **doesn't exist**
 
 <br>
 
@@ -104,7 +104,7 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
     - Significand precision: 53 bits (**1 implicit starting bit** + 51 to 0)
   - precision range: 53-bit significand precision gives **15** to **17** significant decimal digits: (below start and final numbers and the same)
     - a digits decimal with **at most 15 significant digits** converted to double-precision format and then converted back to decimal
-    - a double-precision format number converted to a decimal with **at least 17 significant digits**, and then converted back to double-precision format 
+    - a double-precision format number converted to a decimal with **at least 17 significant digits**, and then converted back to double-precision format
 - `NaN` is in also `number` type;
 - Two zeros: `0` & `-0`
 - Two infinities: `Infinity` & `-Infinity`
@@ -162,10 +162,10 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
     - `isNaN()` will only give `false` when the input is `number` or number in string type.
     - `isNaN('3') // false`
     - `isNAN('a') // true`;
-    <br>
+      <br>
 
 - **Number.parseInt() / parseInt()**: From left to right, **one digit** at a time, parse and convert to number: `parseInt(string, radix?)`
-  - `radix`: _optional_, an integer between 2 and 36 that represents the radix. Default `10`. 
+  - `radix`: _optional_, an integer between 2 and 36 that represents the radix. Default `10`.
   - if any digit in string cannot be parsed by the radix, it will stop at that digit
     - `parseInt('123', 3)` will return `12`, because first two digits can be parsed at radix of 3, which has `0`, `1` and `2`, three avaiable number outputs, but the third digit `3` is out of the range of 0 to 2, so for this digit it will return `NaN`. The final result is `12`
   - `Number.parseInt() === parseInt() // true`
@@ -179,15 +179,15 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 #### Instance Methods
 
-- **.toExponential()**: `123.456.toExponential() = '1.23456e+2' `: return a <span>string</span> representing the scientific notation formatted number
+- `.toExponential()`: `123.456.toExponential() = '1.23456e+2' `: return a <span>string</span> representing the scientific notation formatted number
   <br>
-- **.toFixed()**: `123.456.toFixed(x) = '123.4' // x = 1 `: return a <span>string</span> representing the fixed-point notation number, [x] = 0
+- `.toFixed()`: `123.456.toFixed(x) = '123.4' // x = 1 `: return a <span>string</span> representing the fixed-point notation number, [x] = 0
   <br>
-- **.toPrecision()**: `123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4` : return a <span>string</span> representing fixed-point or exponential notation rounded to precision significant digits
+- `.toPrecision()`: `123.456.toPrecision(x) = '1.2e+2' // x = 2 | '123.5' // x = 4` : return a <span>string</span> representing fixed-point or exponential notation rounded to precision significant digits
   <br>
-- **.toString()**: `123.456.toString(b) = '443.212' // b = 5` : return a <span>string</span> representing the object in the specified radix (base), default [b] = 10
+- `.toString()`: `123.456.toString(b) = '443.212' // b = 5` : return a <span>string</span> representing the object in the specified radix (base), default [b] = 10
   - for integers, use double period: `123..toString(2) // '1111011'`
-  <br>
+    <br>
 
 ##### **[Back to table](#table)**
 
@@ -225,135 +225,131 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 #### Instance methods
 
-- **.length** : return the length of string
+- length: `str.length`
+
+  - **return** the length of string
 
   <br><br>
 
-- **.charAt()**: `'hello'.charAt(1) = "e";` :
+- characterAt: `'hello'.charAt(1) = "e";` :
 
   <br>
 
-- **.charCodeAt()**: return UTF-16 code of the first letter `'hello'.charCodeAt(1) = "101";`
+- characterCodeAt: **return** UTF-16 code of the first letter `'hello'.charCodeAt(1) = "101";`
 
-  <br><br>
+  <br>
 
-- **.concat()**: `"Hello".concat(", ", "World!")`
+- concat: `"Hello".concat(", ", "World!")`
 
-  - return: a modified <span>copy</span> of `str` with concatenated `chars`/`substring`(`"Hello, World!`)
+  - **return**: a modified <span>copy</span> of `str` with concatenated `chars`/`substring`(`"Hello, World!`)
 
-  <br><br>
+  <br>
 
-- **.endsWith()**: `str.endsWith(searchstring, length?)`
+- endsWith: `str.endsWith(searchstring, length?)`
 
-  - return: `true` or `false`
+  - **return**: `true` or `false`
   - `length`: _optional_ default `str.length`
   - `"markdown file".endsWith('down', 8) // true`
+    <br>
+
+- startsWith: `str.startsWith(searchstring, position?)`
+
+  - **return**: `true` or `false`
+  - `position`: _optional_ starting position (included), default`0`
+
   <br>
 
-- **.startsWith()**: `str.startsWith(searchstring, position?)`
+- includes: `str.includes(searchstring, position?)`
 
-  - return: `true` or `false`
-  - `position`: _optional_ starting position (included), default`0`
-  
-  <br><br>
-
-- **.includes()**: `str.includes(searchstring, position?)`
-
-  - return: `true` or `false`
+  - **return**: `true` or `false`
   - `position`: _optional_ starting position (included), default`0`
   - `"This is a markdown file".includes('This', 1) // false`
 
     <br>
 
-- **.indexOf()**: `str.indexOf(searchstring, position?)`
+- indexOf: `str.indexOf(searchstring, position?)`
 
-  - return: first index of the first occurrence or -1 (not found)
+  - **return**: first index of the first occurrence or -1 (not found)
   - `position`: _optional_ starting position (included), default`0`
 
   <br>
 
-- **.lastIndexOf()**: `str.lastIndexOf(searchstring, position?)`
+- lastIndexOf: `str.lastIndexOf(searchstring, position?)`
 
-  - return: first index of the last occurrence or -1 (not found)
+  - **return**: first index of the last occurrence or -1 (not found)
   - `position`: _optional_ ending position (included), default`0`
 
-  <br><br>
-
-- **.padEnd()**: `str.padEnd(targetlength, padstring?)`
-
-  - return: a modified <span>copy</span> of `str` with `targetlength` and `padstring`
-  - `targetlength`: length of the return `str`
-  - `padstring`: _optional_ default <code>"&UnderBracket;"</code>(space)
-  - `"hello".padEnd(3) // "hello"` : `targetlength` < `str.length`
-  - <code>"hello".padEnd(10) // "hello&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;" </code> :
-  - `"hello".padEnd(10, '123') // "hello12312"` : `padstring.length` < `targetlength` - `str.length`
-  - `"hello".padEnd(10, '12345678') // "hello12345"` : `padstring.length` > `targetlength` - `str.length`
   <br>
 
-- **.padStart()**: `str.padStart(targetlength, padstring?)`
+- padStart: `str.padStart(targetlength, padstring?)`
+- padEnd: `str.padEnd(targetlength, padstring?)`
 
-  - return: a modified <span>copy</span> of `str` with `targetlength` and `padstring`
+  - **return**: a modified <span>copy</span> of `str` with `targetlength` and `padstring`
   - `targetlength`: length of the return `str`
   - `padstring`: _optional_ default <code>"&UnderBracket;"</code>(space)
-  - `"hello".padStart(3) // "hello"` : `targetlength` < `str.length`
-  - <code>"hello".padStart(10) // "&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;hello" </code>
-  - `"hello".padStart(10, '123') // "12312hello"` : `padstring.length` < `targetlength` - `str.length`
-  - `"hello".padStart(10, '12345678') // "12345hello"` : `padstring.length` > `targetlength` - `str.length`
+  - return same copy if `targetLength` < `str.length`
+    - `"hello".padStart(3) // "hello"` : `targetlength` < `str.length`
+    - `"hello".padEnd(3) // "hello"` : `targetlength` < `str.length`
+  - <code>"hello".padStart/End(10) // "&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;hello"/"hello&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;&UnderBracket;" </code>
+  - `"hello".padStart/padEnd(10, '123') // "12312hello"/"hello12312"` : `padstring.length` < `targetlength` - `str.length`
+  - `"hello".padStart/padEnd(10, '12345678') // "12345hello"/"hello12345"` : `padstring.length` > `targetlength` - `str.length`
 
   <br><br>
 
-- **.trim()**: `str.trim()`
-  - return: a modified <span>copy</span> of `str` with whitespaces at beginning and end are removed
-<br>
-- **.trimStart()**: `str.trimStart()`
-  - return: a modified <span>copy</span> of `str` with whitespaces from beginning are removed
-<br>
-- **.trimEnd()**:`str.trimEnd()`
+- str.trim: `str.trim()`
+  - **return**: a modified <span>copy</span> of `str` with whitespaces at beginning and end are removed
+    <br>
+- trimStart: `str.trimStart()`
+  - **return**: a modified <span>copy</span> of `str` with whitespaces from beginning are removed
+    <br>
+- trimEnd:`str.trimEnd()`
 
-  - return: a modified <span>copy</span> of `str` with whitespaces from end are removed
-
-  <br><br>
-
-- **.repeat()**: `"Aaa".repeat(3)`
-
-  - return: a modified <span>copy</span> of `str` with repeating (`"AaaAaaAaa"`)
+  - **return**: a modified <span>copy</span> of `str` with whitespaces from end are removed
 
   <br><br>
 
-- **.replace()**: `"Aaa".replace('a', '-') // "A-a"`
+- repeat: `"Aaa".repeat(3)`
 
-  - return: a modified <span>copy</span> of `str` with <span>first</span> occurance replaced
-
-- **.replaceAll()**: `"Aaa".replaceAll('a', '-') // "A--"`
-
-  - return: a modified <span>copy</span> of `str` with <span>all</span> occurance replaced
+  - **return**: a modified <span>copy</span> of `str` with repeating (`"AaaAaaAaa"`)
 
   <br><br>
 
-- **.search()**: `"hello".search('e') // 1`
+- replace: `"Aaa".replace('a', '-') // "A-a"`
 
-  - return: index of first occurence or -1 (not found)
-  - vs `.indexOf()`: 
+  - **return**: a modified <span>copy</span> of `str` with <span>first</span> occurance replaced
+
+- replaceAll: `"Aaa".replaceAll('a', '-') // "A--"`
+
+  - **return**: a modified <span>copy</span> of `str` with <span>all</span> occurance replaced
+
+  <br><br>
+
+- search: `"hello".search('e') // 1`
+
+  - **return**: index of first occurence or -1 (not found)
+  - vs `.indexOf()`:
     - `.search()` can take Regex while `.indexOf` cannot
     - `.search()` cannot take second argument as start position
 
   <br><br>
 
-- **.slice()**: `str.slice(start, end?)`
+- slice: `str.slice(start, end?)`
 
-  - return: a modified <span>copy</span> of `str[start]` (included) to `str[end]` (excluded)
+  - **return**: a modified <span>copy</span> of `str[start]` (included) to `str[end]` (excluded)
   - `start`: starting index (included)
   - `end`: _optional_ ending index (excluded), default `str.length`
   - `start` and `[end]` could be negative integer
   - `"hello".slice(1) // "ello", remove first char`
   - `"hello".slice(-1,1) // ""` : `start` > `end`
-<br>
-- **.substring()**: `str.substring(start, end?)`
+    <br>
 
-  - return: a <span>copy</span> from `str[start]` (included) to `str[end]` (excluded)
+- substring: `str.substring(start, end?)`
+
+  - **return**: a <span>copy</span> from `str[start]` (included) to `str[end]` (excluded)
   - vs `str.slice()`:
 
     - Negative and larger than `str.length` indexes are treated as 0 and `str.length` in `.substring`, repectively:
+
       ```
       "hello".substring(-1,6) // same as "hello".substring(0,5), 'hello'
       ```
@@ -365,25 +361,25 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
     <br><br>
 
-- **.split()**: `str.split(seperator?,limit?)`
+- split: `str.split(seperator?,limit?)`
 
-  - return: an `array` whose elements are substrings of `str` seperated by `seperator`, and `array.length` <= `limit`
+  - **return**: an `array` whose elements are substrings of `str` seperated by `seperator`, and `array.length` <= `limit`
   - `seperator`: _optional_ if leave blank, will put entire string as only element in an array, `'abc'.split(); // ['abc']`
   - `limit`: _optional_ Maximum number of elements in the returned subarray. If `limit` is `0`, `[]` is returned
   - `"a b c d e f".split(' ',4) // ['a','b','c','d']` : 4 elements
   - `"a b c d e f".split(',') // ['a b c d e f']` : 1 element cause `['a b c d e f']` has no `','`
     <br>
 
-- **.toLowerCase()**: `"Hello".toLowerCase() // "hello"`
-- **.toUpperCase()**: `"Hello".toUpperCase() // "HELLO"`
+- toLowerCase: `"Hello".toLowerCase() // "hello"`
+- toUpperCase: `"Hello".toUpperCase() // "HELLO"`
 
   <br>
 
-- **.toString()**: `str.toString() // works on String Object, same as str.valueOf()`
+- toString: `str.toString() // works on String Object, same as str.valueOf()`
   <br>
 
-- **.match()**: `str.match(regex) // retrieves the result of matching a string against a regular expression.`
-  - return: An Array whose contents depend on the presence or absence of the global (`g`) flag, or `null` if no matches are found.
+- match: `str.match(regex)` retrieves the result of matching a string against a regular expression.
+  - **return**: An Array whose contents depend on the presence or absence of the global (`g`) flag, or `null` if no matches are found.
     - with `g` : all matches
     - without `g`: the first match
 
@@ -395,7 +391,7 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 ### Symbol
 
-- can only be created with `Symbol(lable?)`
+- can only be created with `Symbol(lable?)` without `new`
   - `label`: _optional_ a note for this symbol
 - each symbol is unique
 - a symbol value is only used as an identifier for object propeties
@@ -485,14 +481,14 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 ## Regular expression
 
-- RegEx is used to ==match character== combinations in strings
+- RegEx is used to <span>match character</span> combinations in strings
   <br>
 - A RegEx is an <span>object</span>
   <br>
 - RegExs are used with the RegExp methods
   <br>
 
-- RegEx is ==case sensitive==, and by default it only return the <span>FIRST</span> match
+- RegEx is <span>case sensitive</span>, and by default it only return the <span>FIRST</span> match
   <br>
 
 - Two ways to create a `RegEx` object: a literal notation and a constructor:
@@ -511,7 +507,7 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
     - `[c-h]`: any single digit letter from c to h.// `c` or `d` or `e` or .... or `h`
     - `[c-hD-Z]`: any single digit letter from c to h or from D to Z.
       <br>
-  - `.` (wildcard character): matches ==any single character== except for line terminators (\n, \r, \u2028, \u2029)
+  - `.` (wildcard character): matches <span>any single character</span> except for line terminators (\n, \r, \u2028, \u2029)
     <br>
   - `[^...]`(Negate symbol): `[^abc]` matches any single character that is **NOT** from these characters.
     <br>
@@ -522,11 +518,11 @@ Primitives are immutable, can be **replaced** but **not directly altered**, e.g.
 
 - Quantifiers:
 
-  - `x+`: matches the preceding item "x" ==1 or more== times (unlimited).
-  - `x*`: matches the preceding item "x" ==0 or more== times (unlimited).
+  - `x+`: matches the preceding item "x" <span>1 or more</span> times (unlimited).
+  - `x*`: matches the preceding item "x" <span>0 or more</span> times (unlimited).
   - `x{n}`: matches <span>EXACTLY</span> "n" (a positive integer) occurrences of the preceding item "x".
-    - `x{n,}`: matches ==AT LEAST== "n" (a positive integer) occurrences of the preceding item "x".
-    - `x{n,m}`: matches ==at least== "n", ==at most== "m" (n < m) occurrences of the preceding item "x".
+    - `x{n,}`: matches <span>AT LEAST</span> "n" (a positive integer) occurrences of the preceding item "x".
+    - `x{n,m}`: matches <span>at least</span> "n", <span>at most</span> "m" (n < m) occurrences of the preceding item "x".
       <br>
   - `x?`: matches the preceding item "x" 0 or 1 times.
 
@@ -584,9 +580,9 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - iterable objects (like `Map` and `Set`)
     <br>
 
-- **Array()**:
+- Array: `Array(/*...*/)`
 
-  - return: a new `Array` instance
+  - **return**: a new `Array` instance
   - can work as a constructor or a function
 
     1. constructor: work with `new` operator
@@ -604,9 +600,9 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
     <br>
 
-- **Array.of()**: `Array.of(element0, element1?, /* … ,*/?, elementN?)` creates a new Array instance from a variable number of arguments, regardless of number or type of the arguments.
+- Array.of: `Array.of(element0, element1?, /* … ,*/?, elementN?)` creates a new Array instance from a variable number of arguments, regardless of number or type of the arguments.
 
-  - return a new `Array` instance.
+  - **return**: a new `Array` instance.
   - `elementN`: Elements used to create the array.
   - `Array.of()` vs `Array()`
     ```
@@ -615,9 +611,9 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     ```
     <br>
 
-- **Array.from()**: `Array.from(arrayLike, callbackFn(element, index?) { /*...*/ }?, thisArg?)`
+- Array.from: `Array.from(arrayLike, callbackFn(element, index?) { /*...*/ }?, thisArg?)`
 
-  - return: a new `Array` instance
+  - **return**: a new `Array` instance
   - `callbackFn`: _optional_ A function to call on every element of the array
     - `element`: the current element being processed in the array.
     - `index`: _optional_ the index of the current element being processed in the array.
@@ -634,9 +630,9 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     Array.from('hello') // ['h', 'e', 'l', 'l', 'o']
     ```
 
-- **Array.isArray()**: determine whether the passed value is an `Array`
+- Array.isArray: `Array.isArray(value)` determine whether the passed `value` is an `Array`
 
-  - return: true if the value is an Array; otherwise, false.
+  - **return**: true if the `value` is an Array; otherwise, `false`.
     <br>
 
 #### Array instance methods
@@ -644,66 +640,66 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 `const arr = [1, 2, 3, 'a', 'b', 'c']`
 <br>
 
-- **.at()**: `arr.at(-1) // 'c'`
+- at: `arr.at(-1) // 'c'`
 
-  - return: item at the index
+  - **return**: item at the index
   - negative number count back from last item.
     <br>
 
-- **.indexOf()**: `arr.indexOf(searchElement, start?)`
+- indexOf: `arr.indexOf(searchElement, start?)`
 
-  - return: the <span>index</span> of the first element in the array or -1 (not found)
+  - **return**: the <span>index</span> of the first element in the array or -1 (not found)
   - `start`: _optional_ starting index (included)
 
-- **.lastIndexOf()**: `arr.lastIndexOf(searchElement, start?)`
+- lastIndexOf: `arr.lastIndexOf(searchElement, start?)`
 
-  - return: the <span>index</span> of the last element in the array or -1 (not found)
+  - **return**: the <span>index</span> of the last element in the array or -1 (not found)
   - `start`: _optional_ starting index (included)
     <br>
 
-- **.includes()**: `arr.includes(searchElement, start?)`(case-sensitive)
+- includes: `arr.includes(searchElement, start?)`(case-sensitive)
 
-  - return: `true` or `false`
+  - **return**: `true` or `false`
   - `start`: _optional_ starting index (included), default `0`
   - `arr.includes('a', 4) // false`
 
   <br>
 
-- **.join()**: `arr.join(seperator?)`
+- join: `arr.join(seperator?)`
 
-  - return: a <span>string</span> with all array elements joined.
+  - **return**: a <span>string</span> with all array elements joined.
   - `seperator`: _optional_ default `","`
 
-- **.toString()**: `arr.toString()`
+- toString: `arr.toString()`
 
-  - return: a <span>string</span> representing the elements of the array.
+  - **return**: a <span>string</span> representing the elements of the array.
   - is the same as `arr.join()`
     <br>
 
-- **.concat()**: `arr.concat(arr, value1?, /*...*/?, valueN?])`
+- concat: `arr.concat(arr, value1?, /*...*/?, valueN?])`
 
-  - return: a modified <span>copy</span> of `arr` with concatenated elements
+  - **return**: a modified <span>copy</span> of `arr` with concatenated elements
   - `valueN`: _optional_ Arrays and/or values to concatenate into a new array
   - `arr.concat([4,5,6],'d','e','f') // [1,2,3,'a','b','c',4,5,6,'d','e','f']`
     <br>
 
-- **.slice()**: `arr.slice(start?, end?)`
+- slice: `arr.slice(start?, end?)`
 
-  - return: a modified <span>copy</span> of `arr` with array elements from `arr[start]` (included) to `arr[end]` (excluded)
+  - **return**: a modified <span>copy</span> of `arr` with array elements from `arr[start]` (included) to `arr[end]` (excluded)
   - `start`: _optional_ default `0`, could be negative integer
   - `end`: _optional_ default `arr.length`, could be negative integer
     <br>
 
-- **.flat()**: `arr.flat(depth?)`
+- flat: `arr.flat(depth?)`
 
-  - return: a modified <span>copy</span> of `arr` with sub-array elements concatenated into it
+  - **return**: a modified <span>copy</span> of `arr` with sub-array elements concatenated into it
   - `depth`: _optional_ default `1` (from outside to inside)
   - `[1,[2,[3,4]]].flat() // [1,2,[3,4]]`
     <br>
 
-- **.copyWithin()**: `arr.copyWithin(targetIndex, start?, end?)`(<span>mutator method</span>)
+- copyWithin: `arr.copyWithin(targetIndex, start?, end?)`(<span>mutator method</span>)
 
-  - return: the modified array whose elements are replaced starting from `targetIndex` with elements from `start`(included) to `end` (excluded), no change to `arr.length`
+  - **return**: the modified array whose elements are replaced starting from `targetIndex` with elements from `start`(included) to `end` (excluded), no change to `arr.length`
   - `start`: _optional_ starting index (included), default `0`
   - `end`: _optional_ ending index (excluded), default `arr.length`
   - `targetIndex`, `start`, `end` could be negative integer
@@ -712,39 +708,39 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - `arr.copyWithin(1,3,5) // [1,'a','b','a','b','c']`: start from `arr[1]`,replace `arr[1]`, `arr[2]` with `arr[3]`, `arr[4]`, the rest remain the same
     <br>
 
-- **.fill()**: `arr.fill(value, start?, end?)`(<span>mutator method</span>)
+- fill: `arr.fill(value, start?, end?)`(<span>mutator method</span>)
 
-  - return: the modified array whose elements are replaced with `value` from `start`(included) to `end` (excluded), no change to `arr.length`
+  - **return**: the modified array whose elements are replaced with `value` from `start`(included) to `end` (excluded), no change to `arr.length`
   - `start`: _optional_ starting index (included), default `0`
   - `end`: _optional_ ending index (excluded), default `arr.length`
     <br>
 
-- **.reverse()**: `arr.reverse()` (<span>mutator method</span>)
+- reverse: `arr.reverse()` (<span>mutator method</span>)
 
-  - return: the modified array whose elements order are reversed
+  - **return**: the modified array whose elements order are reversed
     <br>
 
-- **.pop()**: `arr.pop()` (<span>mutator method</span>)
+- pop: `arr.pop()` (<span>mutator method</span>)
 
-  - return: the removed element (last) from the array; undefined if the array is empty.
+  - **return**: the removed element (last) from the array; undefined if the array is empty.
 
-- **.push()**: `arr.push(element(s))` (<span>mutator method</span>)
+- push: `arr.push(element(s))` (<span>mutator method</span>)
 
-  - return: the new `length` property
+  - **return**: the new `length` property
 
-- **.shift()**: `arr.shift()` (<span>mutator method</span>)
+- shift: `arr.shift()` (<span>mutator method</span>)
 
-  - return: the removed element (first) from the array; undefined if the array is empty.
+  - **return**: the removed element (first) from the array; undefined if the array is empty.
 
-- **.unshift()**: `arr.unshift(element(s))` (<span>mutator method</span>)
+- unshift: `arr.unshift(element(s))` (<span>mutator method</span>)
 
-  - return: the new `length` property
+  - **return**: the new `length` property
 
   <br>
 
-- **.splice()**: `arr.splice(start, deletecount?, additem(s)?)` (<span>mutator method</span>)
+- splice: `arr.splice(start, deletecount?, additem(s)?)` (<span>mutator method</span>)
 
-  - return: an array containing the deleted elements
+  - **return**: an array containing the deleted elements
   - `start`: starting index (included)
   - `deletcount`: _optional_ default `array.length - start` (number of elements in array), if omitted, will delete all elements in array and return them in an array.
 
@@ -759,12 +755,13 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
 #### Array callback methods
 
-- Parameters: `array.prototype.xxx(callbackFn, thisArg?)` 
+- Parameters: `array.prototype.xxx(callbackFn, thisArg?)`
+
   - `callbackFn`:
     - Arrow function: `(element, index?, array?) => {/*...*/}`
     - Callback function: `callbackFn`
     - Inline callback funciton: `function(element, index?, array?) {/*...*/}`
-    <br>
+      <br>
   - `thisArg`: `this` when executing `callbackFn`)
 
     <br>
@@ -772,14 +769,15 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 - **<span>Note</span>**: index manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
   <br>
 
-- **.every(_f_)**: return `true` if `callbackFn` returns a truthy value for <span>every</span> `element`
-  **.some(_f_)**: return `true` if `callbackFn` returns a truthy value for ==at least one== `element`
+- .every(_f_): **return** `true` if `callbackFn` returns a truthy value for <span>every</span> `element`
+  .some(_f_): **return** `true` if `callbackFn` returns a truthy value for <span>at least one</span> `element`
   <br>
 
-- **.forEach(_f_)**: return `undefined`, it executes `callbackFn` once for <span>each</span> `element`
-- **.map(_f_)**: return a new `array` with the results of `callbackFn` for <span>each</span> `element`
+- .forEach(_f_): **return** `undefined`, it executes `callbackFn` once for <span>each</span> `element`
+- .map(_f_): **return** a new `array` with the results of `callbackFn` for <span>each</span> `element`
   <br>
-- **.reduce(_f_)**: return the **<span>accumulated</span>** value from running `callbackFn` over the entire array
+- .reduce(_f_): **return** the **<span>accumulated</span>** value from running `callbackFn` over the entire array
+- .reduceRight(_f_): same as `.reduce()`, but the order is right-to-left
 
   - `element` here are two arguments: `accumulator` & `currentElement`
   - `index` here is `currentElementIndex`
@@ -793,19 +791,19 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     - `currentElement` = `array[1]`
     - start from second element `array[1]`
 
-- **.reduceRight(_f_)**: same as `.reduce()`, but the order is right-to-left
   <br>
 
-- **.find(_f_)**: return the **first** `element` in array which makes `callbackFn` return `true`, or `undefined` if not found
-- **.findIndex(_f_)**: return **index** of the first `element` in the array which makes `callbackFn` return `true`, or `-1` if not found
-- **.filter(_f_)**: return a **new array** with all the `elements` which makes `callbackFn` return `true`, or `[]` if no `element` is found
+- .find(_f_): **return** the <span>first</span> `element` in array which makes `callbackFn` return `true`, or `undefined` if not found
+- .findIndex(_f_): **return** <span>index</span> of the first `element` in the array which makes `callbackFn` return `true`, or `-1` if not found
+- .filter(_f_): **return** a <span>new array</span> with all the `elements` which makes `callbackFn` return `true`, or `[]` if no `element` is found
   <br>
-- **.sort(_f_)**: return the sorted array (<span>mutator method</span>)
+- .sort(_f_): **return** the sorted array (<span>mutator method</span>)
 
-  - `arr.sort([compareFn(a,b)])`
-  - `compareFn` return negative: a placed before b
-  - `compareFn` return positive: b placed before a
-  - `compareFn` return `0`: a, b order unchange
+  - `arr.sort([compareFn(a,b)])` e.g., `arr.sort((a, b) => a - b)`
+  - `compareFn` return
+    - negative: a placed before b
+    - positive: b placed before a
+    - `0`: a, b order unchange
   - if omit `compareFn`, a & b are converted to strings, then sorted according to each `char` Unicode value
 
 <br>
@@ -878,8 +876,44 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 ## Map
 
 - The `Map` object holds key-value pairs and remembers the <span>original insertion order</span> of the keys.
-- Any value (both **objects** and **primitive values**) may be used as either a **key** or a **value**.
+- Any value (Primitive or Composites) may be used as either a **key** or a **value**.
   <br>
+- <span>Objects vs Maps</span>
+  ✔ Accidental Keys: An object usually has `prototype`, which contains default keys and may collide with user assigned keys; Map does not contain any key by default, and keys must be **explicitly** put into it
+  ✔ Security: As shown above, objects have `prototype` which may lead to **object injection attacks**, while maps is safe to use user-provided keys and values
+  ✔ Key Types: Maps can have **any** value for key, even functions
+  ✔ Key Order: Map object iterates entries, keys, and values in the **order of entry insertion**
+  ✔ Size: Map object has `size` property to easily access its number of items.
+  ✔ Iteration: Map object is **iterable**, so it can use `for ... of` directly
+  ✔ Performance: Map object perform better in frequent **additions** and **removals** of key-value pairs
+  ❌ Serialization and Parsing: Map object **cannot** direcly be passed to `JSON.stringify()`/`JSON.parse()`, not without replacer argument and reviver argument. See [Stack Overflow question](https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map)
+  <br>
+
+- Methods: `const myMap = new Map()`
+  - size: `myMap.size`: **return** the number of key/value pairs in the Map object.
+    <br>
+  - set: `myMap.set(key, value)`: <span>adds or updates</span> an entry in a Map object with a specified key and a value.
+    - **return**: the Map object
+      <br>
+  - get: `myMap.get(key)`: get a specified element from a Map object.
+    - **return**: the element associated with the specified key, or `undefined` if the key can't be found.
+      <br>
+  - delete: `myMap.delete(key)`: removes the specified element from a Map object by key.
+    - **return**: `true` if an element in the Map object existed and has been removed, `false` if key did not existed.
+      <br>
+  - has: `myMap.has(key)`: whether an element with the specified key exists or not.
+    - **return**: `true` if an element in the Map object existed, `false` if key did not existed.
+      <br>
+  - clear: `myMap.clear()`: removes all elements from a Map object.
+    - **return**: `undefined`
+      <br>
+  - keys/values/entries: `myMap.keys/values/entries()`: returns a new map **iterator** object that contains the keys/values/`[key, value]` for each element in the Map object in <span>insertion order</span>.
+    - **return**: A new iterable iterator object.
+      <br>
+  - forEach: `myMap.forEach(callbackFn, thisArg?)`: executes a provided function once per each key/value pair in the Map object, in <span>insertion order</span>.
+    - **return**: undefined
+    - `callbackFn`: takes in 3 arguments:`value`, `key`, `map`
+    - `thisArg`: _optional_ A value to use as `this` when executing `callbackFn`.
 
 ### WeakMap
 
@@ -891,9 +925,9 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
 ## Object
 
-- { key : value } pair
-  - key: string (identifier), anything other than string will be forced to string type
-  - value: anything (primitive data, array, function, other objects)
+- <span>{ [key] : [value] }</span> pair
+  - **key**: string (identifier), anything other than string will be forced to string type
+  - **value**: anything (primitive data, array, function, other objects)
     <br>
 - property accessors: dot(`.`) & bracket notation(`[]`)
   - `const obj = {'name' : 'Xiao', '2' : 2}`
@@ -926,8 +960,9 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
     <br>
 
 - **Getter**: `get propertyName(){}` / `get [expression](){}`
-  Retrieve the value of an object property, when access getter function name, return its return value. 
-    - `[expression]`: for a computed property name to bind to the given function
+  Retrieve the value of an object property, when access getter function name, return its return value.
+
+  - `[expression]`: for a computed property name to bind to the given function
     <br>
 
   ```
@@ -946,9 +981,10 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
 - **Setter**: `set propertyName(val){}` / `set [expression](val){}`
   Set the value of an object property, when assign new value, pass in the new value as the input and execute the setter function
-    - `val`: the value attempted to be assigned to `propertyName`
-    - `[expression]`: for a computed property name to bind to the given function
-    - _Note_ : Setters are not meant to be accessed directly, any attempts to access it will result in `undefined`.
+
+  - `val`: the value attempted to be assigned to `propertyName`
+  - `[expression]`: for a computed property name to bind to the given function
+  - _Note_ : Setters are not meant to be accessed directly, any attempts to access it will result in `undefined`.
     <br>
 
   ```
@@ -984,7 +1020,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
   - `Object.is(value1, value2)`
 
-    - return: A Boolean indicating whether or not the two arguments are the same value.
+    - **return**: A Boolean indicating whether or not the two arguments are the same value.
     - truthy: both `undefined`|`null`|`NaN`|`true`/`false`|same strings|same reference|same number|`+0`/`-0`
     - vs `==`: `Object.is()` does not coerce value types
     - vs `===`:
@@ -994,7 +1030,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
   - `Object.assign(target, ...sources)`
 
-    - return: modified target object
+    - **return**: modified target object
     - Update target properties by properties in the sources if they have the same key
     - Define new properties to target if not exist
 
@@ -1011,7 +1047,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
   - `Object.create(protoObj, propertiesObject?)`
 
-    - return: always return an <span>empty object</span>, with the specified `__proto__` object and properties if `propertiesObject` is passed in
+    - **return**: always return an <span>empty object</span>, with the specified `__proto__` object and properties if `propertiesObject` is passed in
     - `propertiesObject`: _optional_ an object whose enumerable own properties specify property descriptors to be added to the newly-created object, with the corresponding property names.
 
       ```
@@ -1033,7 +1069,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
   - `Object.defineProperty(obj, prop, descriptor)`
 
-    - return: the object that was passed to the function
+    - **return**: the object that was passed to the function
     - `prop`: the name or Symbol of the property to be defined or modified
     - `descriptor`: objects, could be _data descriptor_ or _accessor descriptor_
 
@@ -1076,39 +1112,39 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
   - `Object.defineProperties(obj, props)`
 
-    - return: the object that was passed to the function
+    - _return_: the object that was passed to the function
     - props: `{prop1:{descriptors}, prop2:{descriptors}}`
 
       <br>
 
   - `Object.getOwnPropertyDescriptor(obj, prop)`
 
-    - return: A property `descriptor` of the given property if it exists on the object, `undefined` otherwise.
+    - **return**: A property `descriptor` of the given property if it exists on the object, `undefined` otherwise.
 
   - `Object.getOwnPropertyDescriptors(obj)`
 
-    - return: An object containing all own property descriptors of an object. Might be an empty object, if there are no properties.
+    - **return**: An object containing all own property descriptors of an object. Might be an empty object, if there are no properties.
 
     <br>
 
   - `Object.keys(obj)`
 
-    - return: an array of strings representing all the <span>enumerable</span> properties
+    - **return**: an array of strings representing all the <span>enumerable</span> properties
     - **non-negative integer** keys will be stored **_in front of_** `String` keys or float or negative number keys when using `Object.keys()`
 
   - `Object.values(obj)`
 
-    - return: an array containing all the <span>enumerable</span> property values
+    - **return**: an array containing all the <span>enumerable</span> property values
 
       <br>
 
   - `Object.entries(obj)`
 
-    - return: An array of the given object's own enumerable string-keyed property `[key, value]` pairs.
+    - **return**: An array of the given object's own enumerable string-keyed property `[key, value]` pairs.
 
   - `Object.fromEntries(iterable)`
 
-    - return: A new object whose properties are given by the entries of the iterable.
+    - **return**: A new object whose properties are given by the entries of the iterable.
 
     - `Object.fromEntries()` performs the reverse of `Object.entries()`:
 
@@ -1139,19 +1175,19 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
     <br>
 
   - `Object.getPrototypeOf(obj)`
-    - return: The `[[Prototype]]` of the given object, which may be `null`.
+    - **return**: The `[[Prototype]]` of the given object, which may be `null`.
 
   <br>
 
   - `Object.hasOwn(instance, prop)`
 
-    - return: `true` if the specified object has directly defined the specified property. Otherwise `false`
+    - **return**: `true` if the specified object has directly defined the specified property. Otherwise `false`
     - `Object.hasOwn()` is recommended over `Object.prototype.hasOwnProperty()` because it works for objects created using `Object.create(null)` and with objects that have overridden the inherited `hasOwnProperty()` method.
 
   <br>
 
   - `Object.preventExtensions(obj)` vs `Object.isExtensible(obj)`
-    - return: same `obj` vs `true|false`
+    - **return**: same `obj` vs `true|false`
     - **Can not**:
       - add new properties
       - re-assign its prototype
@@ -1163,7 +1199,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
         <br>
   - `Object.seal(obj)` vs `Object.isSealed(obj)`
 
-    - return: same `obj` vs `true|false`
+    - **return**: same `obj` vs `true|false`
     - Equals `Object.preventExtension(obj)` plus **Can not**:
       - remove existing properties
       - change enumerability and configurability
@@ -1173,7 +1209,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
         <br>
 
   - `Object.freeze(obj)` vs `Object.isFrozen(obj)`
-    - return: same `obj` vs `true|false`
+    - **return**: same `obj` vs `true|false`
     - Equals `Object.seal(obj)` plus **Can not**:
       - change values of existing writable properties
     - **Still can**:
@@ -1240,6 +1276,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
     }
   }
   ```
+
   <br>
 
 - `yield [expression]` operator: pause and resume a generator function.
@@ -1273,7 +1310,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
 **Iterator**
 
-- an iterator is any object which implements the Iterator protocol by having a `next()` method that returns an object with two properties:
+- an iterator is any object which implements the <span>Iterator protocol</span> by having a `next()` method that returns an object with two properties:
   - `value`: The next value in the iteration sequence.
   - `done`: This is `true` if the last value in the sequence has already been consumed. If `value` is present alongside `done`, it is the iterator's return value.
 
@@ -1284,16 +1321,18 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 ## Function
 
 ### Noraml Function:
-Every typical function is a <span>Function</span> object: 
-  ```
-  function fn(){/*...*/}
 
-  fn.constructor === Function // true
-  // the constuctor above is from fn's [[Protoype]] chain, not prototype property
+Every typical function is a <span>Function</span> object:
 
-  fn.constructor === fn.prototype.constructor // false
-  fn.prototype.constructor === fn // true
-  ```
+```
+function fn(){/*...*/}
+
+fn.constructor === Function // true
+// the constuctor above is from fn's [[Protoype]] chain, not prototype property
+
+fn.constructor === fn.prototype.constructor // false
+fn.prototype.constructor === fn // true
+```
 
 - **argument**: value passed to function during function invocation
 - **parameter**: placeholder in function definition
@@ -1306,9 +1345,9 @@ Every typical function is a <span>Function</span> object:
 
   - `fn.prototype`: When function is called by `new` operator and create an instance, the `prototype` property will become the new object instance's `[[Prototype]]`.
     - `fn.prototype.constructor`: function constructor will always point at function itself: `fn.prototype.constructor === fn // true`
-    <br>
+      <br>
     - `fn.prototype.[[Prototype]]`: `prototype` is an object property, so its `[[Prototype]]` will always be <span>Object</span> object's `prototype`:`fn.prototype.__proto__ === Object.prototype // true`
-    <br>
+      <br>
   - `fn.[[Prototype]]`: function's `[[Prototype]]` is the <span>Function</span> object's `prototype`: `fn.__proto__ === Function.prototype // true`
     - `apply`: `fn.apply(thisArg, argsArray?)`
     - `call`: `fn.call(thisArg, arg1?, arg2?, /*...*/, argN?)`
@@ -1317,16 +1356,39 @@ Every typical function is a <span>Function</span> object:
       - `argN`: _optional_ arguments for `fn`
       - **return**: result of calling the `fn` with specified `this` and arguments if provided
       - <Span>Note</span>: `apply` is almost identical to `call`, except `apply` accepts an array of arguments, while `call` accepts an argument list.
-      <br>
+        <br>
     - `bind`: `fn.bind(thisArg, arg1?, arg2?, /*...*/?, argN?)`
       - `thisArg` and `argN` are similar to those in `call`
       - **return**: a copy of `fn` with specified `this` and initial arguments if provided
       - <span>Note</span>: `bind` does not call any function, and it can only specify values from the beginning of the argument list.
-      <br>
+        <br>
     - `constructor`: <span>Function</span> Class
-    <br>
-  
+      <br>
+
+#### Pure Function:
+
+A pure function should always return the <span>same result</span> when given the <span>same argument</span>, no matter how many times it gets called, and it should have <span>**no side effects**</span> or <span>**rely on**</span> anything outside the function.
+
+```
+// Pure:
+const funcA = (a, b) => {
+  return a + b;
+}
+
+// Both below are impure:
+let c = 1;
+const funB = (a, b) => {
+  return a + b + c
+}
+
+const funC = (a, b) => {
+  c = a * b;
+  return a + b
+}
+```
+
 ### Arrow Function expression:
+
 ```
 (param?) => expression
 
@@ -1342,42 +1404,49 @@ param => {statements}
 ```
 
 Semantic differences and deliberate limitations:
-  1. Arrow functions <span>don't have</span> own binding `this`, `arguments`, or `super`, and should not be used as methods
-  1. Arrow function <span>cannot be used</span> as **contructors** (arrow function doesn't have `prototype` property as typical function does, therefore no `constructor`)
-  1. Arrow functions <span>cannot use</span> `yield` within their body and cannot be created as generator functions.
+
+1. Arrow functions <span>don't have</span> own binding `this`, `arguments`, or `super`, and should not be used as methods
+1. Arrow function <span>cannot be used</span> as **contructors** (arrow function doesn't have `prototype` property as typical function does, therefore no `constructor`)
+1. Arrow functions <span>cannot use</span> `yield` within their body and cannot be created as generator functions.
 
 **Common usage**:
-  - use as anonymous callback function
-  - use when want to purposely manipulate `this` behavior
+
+- use as anonymous callback function
+- use when want to purposely manipulate `this` behavior
 
 ### `this` keyword
+
 The value of `this` depends on in which context it appears: <span>function</span>, <span>class</span>, or <span>global</span>.
 
-1. Function context: 
-    - Typically, the value of `this` depends on how the function is **called** (runtime binding), not where the function is defined.
-      - if called without accessed on anything (e.g., inner function called inside of a outter function)
-        - In **strict** mode: `this` will be `undefined`
-        - In **non-strict** mode: a special process called **this substitution** ensures that the value of `this` always an object (`globalThis` or primitive wrapper object)
-      - <span>Note</span>: `this` inside of a inner function when directly invoked inside of an outter function will be `undefined`/`globalThis`
-        <br>
-    - **Callbacks**: the value of `this` depends on how the callback is called, which is determined by the implementor of the API. 
-      - if **typical** function: `undefined`/`globalThis` (like invoke inner function)
-      - if **arrow** function: depends on the callback implementor.
-    <br>
+1. Function context:
 
-    - **Arrow functions**: `this` retains the value of the enclosing lexical context's `this`. 
-      ```
-      const outThis = this;
-      const myArrowFunc = () => {
-        console.log(outThis === this);  // true
-      }
-      ```
-    - **Constructor**: work with `new` operator, `this` refers to the created instance
-    <br>
+   - Typically, the value of `this` depends on how the function is **called** (runtime binding), not where the function is defined.
+     - if called without accessed on anything (e.g., inner function called inside of a outter function)
+       - In **strict** mode: `this` will be `undefined`
+       - In **non-strict** mode: a special process called **this substitution** ensures that the value of `this` always an object (`globalThis` or primitive wrapper object)
+     - <span>Note</span>: `this` inside of a inner function when directly invoked inside of an outter function will be `undefined`/`globalThis`
+       <br>
+   - **Callbacks**: the value of `this` depends on how the callback is called, which is determined by the implementor of the API.
+
+     - if **typical** function: `undefined`/`globalThis` (like invoke inner function)
+     - if **arrow** function: depends on the callback implementor.
+       <br>
+
+   - **Arrow functions**: `this` retains the value of the enclosing lexical context's `this`.
+     ```
+     const outThis = this;
+     const myArrowFunc = () => {
+       console.log(outThis === this);  // true
+     }
+     ```
+   - **Constructor**: work with `new` operator, `this` refers to the created instance
+     <br>
+
 2. Class context:
-    - **typical constructor**: same as above, `this` refers to instance object
-    - **static fields**: due to only class can access static fields, so `this` in static fields always refers to the class object.
-    <br>
+
+   - **typical constructor**: same as above, `this` refers to instance object
+   - **static fields**: due to only class can access static fields, so `this` in static fields always refers to the class object.
+     <br>
 
 3. Global context: `globalThis` (strict or not)
 
@@ -1432,7 +1501,7 @@ A special function that can only be called with `new` operator, capitcalized fir
   ```
 
   **Note**: methods created in constructor definition is <span>duplicated</span> in every instance
-<br>
+  <br>
 
 - **Add shared methods/props to prototype property**:
 
@@ -1456,11 +1525,12 @@ A special function that can only be called with `new` operator, capitcalized fir
     2. Points the `[[Prototype]]` of `newInstance` to the constructor function's `prototype` property
     3. Executes the constructor function with the given arguments, binding `newInstance` as the `this` context
     4. If the constructor function returns a non-primitive, this return value becomes the result of the whole `new` expression. Otherwise, if the constructor function doesn't return anything or returns a primitive, `newInstance` is returned instead.
-    <br>
+       <br>
 
   - without `new` operator, `this` refers to global object.
 
   - `new.target`: if constructor was called using `new`, `new.target` will return a reference to the constructor or function that `new` was called upon. In typical function calls, `new.target` is `undefined`
+
     ```
     function Foo() {
       if (!new.target) { throw new TypeError('calling Foo constructor without new is invalid'); }
@@ -1496,7 +1566,7 @@ A special function that can only be called with `new` operator, capitcalized fir
 ```
 // class declaration
 class ClassName {
-  // Field declarations 
+  // Field declarations
   publicInstanceField;   // initialize to undefined
   publicInstanceFieldWithInitializer = "public instance field";
   #privateInstanceField;  // initialize to undefined
@@ -1545,13 +1615,13 @@ const classInstanc = new ClassName(args);
 
 - <span>NOTE</span>:
 
-   - **public instance field** can be omitted in Field declaration, but not recommanded.
-   - **private instance field** <span>must be declared</span> before initialized.
-   - for **instanceFields**, `this` refers to the **instance** object created with class
-   - for **staticFields**, `this` refers to the **class** object and it has nothing to do with instances.
-   - **instance methods** are saved in class's `prototype` property, and will be linked to instance's `[[Prototype]]`
-   - chrome dev tool has a privileged access to private fields called "brand checks"
-   <br>
+  - **public instance field** can be omitted in Field declaration, but not recommanded.
+  - **private instance field** <span>must be declared</span> before initialized.
+  - for **instanceFields**, `this` refers to the **instance** object created with class
+  - for **staticFields**, `this` refers to the **class** object and it has nothing to do with instances.
+  - **instance methods** are saved in class's `prototype` property, and will be linked to instance's `[[Prototype]]`
+  - chrome dev tool has a privileged access to private fields called "brand checks"
+    <br>
 
 - Using `new` operator on a class goes through the following steps:
 
@@ -1559,20 +1629,22 @@ const classInstanc = new ClassName(args);
   2. (If it's a derived class) The `super()` call is evaluated, which initializes the parent class through the same process.
   3. The current class's <span>fields</span> are initialized.
   4. The `constructor` body after the `super()` call (or the entire body, if it's a base class) is evaluated.
-  <br>
+     <br>
 
 - **instanceof**: `classInstance instancof constructor/class`
 
   - check if `constructor/class.prototype` (not `[[Prototype]]`) in object instance's `[[Prototype]]` chain.
-  <br>
+    <br>
 
 - **extends & super**:
 
   - **extends**: make these two chains
+
     - `ParentClass.prototype` === `ChildClass.prototype.constructor.[[Prototype]]`
       - ChildClass can access all instance methods of ParentClass
     - `ParentClass` === `ChildClass.[[Prototype]]`
       - ChildClass can access all static methods of ParentClass
+
     ```
     class ChildClass extends ParentClass { /* ... */ }
     const parentInstance = new ParentClass()
@@ -1586,68 +1658,75 @@ const classInstanc = new ClassName(args);
 
   - **super**: used in the constructor body of a derived class (with extends), or as a "property lookup" (`super.prop` and `super[expr]`)
 
-    - when used as a "function call" in child class constructor:
-      - calls the parent class's constructor while `this` refers to child instance
-      - binds the parent class's public fields
-      - the child class's constructor can further access and modify `this`
-      - must be called before the `this` keyword is used, and before the constructor returns.
-    - when used in "property lookup" form
-      - referring to an object literal's or class's `[[Prototype]]` to access its methods and properties 
+        - when used as a "function call" in child class constructor:
+          - calls the parent class's constructor while `this` refers to child instance
+          - binds the parent class's public fields
+          - the child class's constructor can further access and modify `this`
+          - must be called before the `this` keyword is used, and before the constructor returns.
+        - when used in "property lookup" form
+          - referring to an object literal's or class's `[[Prototype]]` to access its methods and properties
 
-    <br>
-A class element can be characterized by three aspects:
+        <br>
+
+    A class element can be characterized by three aspects:
 
   - Kind: Getter, setter, method, or field
   - Location: Static or instance
   - Visibility: Public or private
-  <br>
-  
+    <br>
+
 **Public class fields**
 
 - Public class fields: writable, enumerable, and configurable properties
- 
+
 - Public instance fields/methods:
+
   - exist on every created instance, usually evaluate to the same value for each instance, unless the same expression can have different evaluated value
   - essentially, declare an instanceField `property = value` before constructor works the same as using `this.property = value` in constructor
   - public methods are in the `prototype` property of class, which will be linked to the `[[Prototype]]` of any instance created by this class
-  <br>
+    <br>
 
 - Public static fields/methods:
   - declared using the `static` keyword
-  - exist <span>only</span> on class, does not exist in class `prototype` 
+  - exist <span>only</span> on class, does not exist in class `prototype`
   - can be accessed via prototype chain by subclasses (since `extends` will link ParentClass to subclass's `[[Prototype]]`)
   - in subclass, use `super` to refer the parent class
-  <br>
+    <br>
 
 **Private class fields** (may not be fully supported by all browsers)
 
-- Created by using a hash `#` prefix, all private identifiers declared within a class must be unique. 
+- Created by using a hash `#` prefix, all private identifiers declared within a class must be unique.
 - Private properties are <span>not part of the prototypical</span> inheritance model since they can only be accessed within the current class's body and aren't inherited by subclasses.
 - Private instance field/methods:
-  - <span>binding with instance</span>, but can't be accessible directly outside of the class (*but can still be accessed by some public class method that have access to it*) 
+
+  - <span>binding with instance</span>, but can't be accessible directly outside of the class (_but can still be accessed by some public class method that have access to it_)
   - if declared before **constructor**, it is accessible <span>inside</span> the class declaration; if declared in **constructor**, it is accessible within **constructor** function.
   - can't be refered in constructor if not declared before
   - can't be accessible from subClass neither
   - declared private property can't be deleted in constructor
-  <br>
+    <br>
 
 - Private static field/methods:
+
   - only accessible on the class itself or on the `this` context of static methods, but not on the `this` context of instance methods.
   - always access static private fields through the <span>class name</span>, not through `this`, so inheritance doesn't break the method.
-    ```
+
+    ````
     class BaseClassWithPrivateStaticField {
-      static #PRIVATE_STATIC_FIELD;
+    static #PRIVATE_STATIC_FIELD;
 
-      static basePublicStaticMethod() {
-        return this.#PRIVATE_STATIC_FIELD;
-      }
-    }
+          static basePublicStaticMethod() {
+            return this.#PRIVATE_STATIC_FIELD;
+          }
+        }
 
-    class SubClass extends BaseClassWithPrivateStaticField {}
+        class SubClass extends BaseClassWithPrivateStaticField {}
 
-    SubClass.basePublicStaticMethod(); // TypeError: Cannot read private member #PRIVATE_STATIC_FIELD from an object whose class did not declare it
-    ```
-<br>
+        SubClass.basePublicStaticMethod(); // TypeError: Cannot read private member #PRIVATE_STATIC_FIELD from an object whose class did not declare it
+        ```
+
+    <br>
+    ````
 
 ##### **[Back to table](#table)**
 
@@ -1672,6 +1751,7 @@ console.log(x) // undefined
 var x = 1
 console.log(x) // 1
 ```
+
 <br>
 
 ##### **[Back to table](#table)**
@@ -1686,7 +1766,7 @@ console.log(x) // 1
     <br>
 - _**Asynchronous**_ means something happens in the future, not right now.
 - Javascript is just a programming language that is implemented in browsers.
-- Browsers are usually written by C++, which can do things that JS is bad at, hence ==Web APIs== in general.
+- Browsers are usually written by C++, which can do things that JS is bad at, hence <span>Web APIs</span> in general.
   <br>
 - XML vs JSON
 
@@ -1857,9 +1937,9 @@ console.log(x) // 1
 
     - Fetch Intefaces
       - `fetch(resource, options?)`: method used to fetch a resource.
-        - return: a `Promise` that resolves to a `Response` object
+        - **return**: a `Promise` that resolves to a `Response` object
         - `options`: _optional_ an object, can include { parameter: value } pairs
-        - ==Only reject== when a network error is encountered (does not reject on HTTP errores)
+        - <span>Only reject</span> when a network error is encountered (does not reject on HTTP errores)
       - `Headers`: Represents response/request headers, allowing you to query them and take different actions depending on the results.
       - `Request`: Represents a resource request.
       - `Response`: Represents the response to a request.
@@ -1969,7 +2049,7 @@ console.log(x) // 1
 
 ## Promise
 
-Promise is an object represents the resulting value of an ==asynchronous operation==, working as a proxy for a value that was not necessarily known when the promise is created.
+Promise is an object represents the resulting value of an <span>asynchronous operation</span>, working as a proxy for a value that was not necessarily known when the promise is created.
 
 ```
 new Promise(executor) // only work with 'new' operator
@@ -1981,7 +2061,7 @@ new Promise((resolveFunc, rejectFunc) => {
 })
 ```
 
-- return: a promise object, has three states:
+- **return**: a promise object, has three states:
   - pending: initial state, neither fulfilled nor rejected.
   - resolved: meaning that the operation was completed successfully. (Colloquially, 'resolved' equals 'fulfilled')
   - rejected: meaning that the operation failed.
@@ -1998,7 +2078,7 @@ Promises are handled by [microtasks queue](#microtask)
 - Execution of a task is initialted only when nothing else is running (empty call stack)
   <br>
 
-==Chained Promises==: `Promise.prototype.then/catch/finally`<br>
+<span>Chained Promises</span>: `Promise.prototype.then/catch/finally`<br>
 
 - `then(onFulfilled, onRejected?)`: Returns a new `Promise` immediately. This new promise is always `pending` when returned, regardless of the current promise's status.
 
@@ -2015,12 +2095,12 @@ Promises are handled by [microtasks queue](#microtask)
   - When `onRejected` is not a function: internally replaced with an **_thrower_** function `(x) => throw x`, which <span>throws</span> the `receivedRejectionReason`
     <br>
   - Assuming `x` is the return of `onFulfilled` / `onRejected`, and `p` is the return promise of `then()`:
-    - `x` is a value ==> `p` is resolved with value `x`
-    - `x` is `undefined` ==> `p` is resolved with `undefined`
-    - `x` is an error throwed by handler ==> `p` is rejected with value `x`
-    - `x` is a resolevd promise ==> `p` is resovled with `x`'s value
-    - `x` is a rejected promise ==> `p` is rejected with `x`'s value
-    - `x` is pending promise ==> `p` is pending until `x` is settled, then apply rules above
+    - `x` is a value => `p` is resolved with value `x`
+    - `x` is `undefined` => `p` is resolved with `undefined`
+    - `x` is an error throwed by handler => `p` is rejected with value `x`
+    - `x` is a resolevd promise => `p` is resovled with `x`'s value
+    - `x` is a rejected promise => `p` is rejected with `x`'s value
+    - `x` is pending promise => `p` is pending until `x` is settled, then apply rules above
       <br>
 
 - `catch(onRejected)`: Internally calls `Promise.prototype.then` on the object upon which it was called, passing the parameters `undefined` and the received `onRejected` handler. Returns the value of that call, which is a `Promise`.
@@ -2032,7 +2112,7 @@ Promises are handled by [microtasks queue](#microtask)
   ```
 
   - equals to `Promise.prototype.then(undefined, onRejected)`
-  - The `Promise` returned by `catch()` will be ==fulfilled (resovled)== with the handler function `onRejected`'s return value unless `onRejected` ==throws an error== or returns an already <span>rejected</span> `Promise`.
+  - The `Promise` returned by `catch()` will be <span>fulfilled (resovled)</span> with the handler function `onRejected`'s return value unless `onRejected` <span>throws an error</span> or returns an already <span>rejected</span> `Promise`.
 
   - Example with comments
 
@@ -2066,7 +2146,7 @@ Promises are handled by [microtasks queue](#microtask)
 
   <br>
 
-- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` ==throws an error== or returns an already <span>rejected</span> `Promise`.
+- `finally(onFinally)`: Returns an **equivalent** `Promise` with its finally handler set to the specified function. - **Equivalent** means the returned `Promise` is the same as the original promise (the same `fulfilledValue` / `error`), unless the handler function `onFinally` <span>throws an error</span> or returns an already <span>rejected</span> `Promise`.
 
   - `onFinally` callback does not receive any argument.
     `promise.finally(() => { // Code that will run after promise is settled (fulfilled or rejected) })`
@@ -2103,7 +2183,7 @@ Promises are handled by [microtasks queue](#microtask)
 - `async` functions always return a `promise`. If the return value of an `async` function is not explicitly a `promise`, it will be implicitly wrapped in a `promise`.
   <br>
 - `await` is an <span>operator</span>, its operand is a promise, a thenable object, or any value to wait for.
-  - **return**: the ==fulfillment value== of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved, the await expression throws the rejected value.
+  - **return**: the <span>fulfillment value</span> of the promise or thenable object, or the expression itself's value if it's not thenable. If the promise is not resolved, the await expression throws the rejected value.
   - It can only be used inside an async function or a JavaScript module.
     <br>
 
@@ -2119,13 +2199,13 @@ async function name (args) {
 
 - The body of an `async function` can be thought of as being split by zero or more `await` expressions.
   <br>
-- ==Top-level code==, down to and including the first `await` expression (if there is one), is executed <span>synchronously</span>.
+- <span>Top-level code</span>, down to and including the first `await` expression (if there is one), is executed <span>synchronously</span>.
   - an `async` function <span>without</span> an `await expression` will run <span>synchronously</span>.
   - when there is an `await expression` inside the function body, the `async` function will always complete <span>asynchronously</span>.
     <br>
 - An `await` splits execution flow, allowing the caller of the `async` function to resume execution.
   - **Important**: only when `expression` is resolved, the function can resume
-  - **Imagine**: `await expression` wraps the rest of codes in current function as a promise handler callback, and only when `await expression` resolve/reject, this handler callback is pushed in the ==microtask queue==
+  - **Imagine**: `await expression` wraps the rest of codes in current function as a promise handler callback, and only when `await expression` resolve/reject, this handler callback is pushed in the <span>microtask queue</span>
     <br>
 - After the `await` defers the continuation of the `async` function, execution of following statements resumes.
 
@@ -2226,7 +2306,7 @@ async function name (args) {
      3. Compositor thread will pass the quad info to GPU thread, which makes system call and send it to GPU hardware, finish the final image on sreen.
         <br>
 
-  9.  **Handle user events**: The main thread handles user events such as clicks, scrolls, and keyboard inputs. When a user event occurs, the main thread executes the JavaScript code associated with the event and updates the DOM and rendering tree accordingly.
+  9. **Handle user events**: The main thread handles user events such as clicks, scrolls, and keyboard inputs. When a user event occurs, the main thread executes the JavaScript code associated with the event and updates the DOM and rendering tree accordingly.
      <br>
 
      <br>
@@ -2288,7 +2368,7 @@ async function name (args) {
 
 ## Task queue vs Microtask queue
 
-- ==Macrotask queue== (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
+- <span>Macrotask queue</span> (or just **task queue** or **callback queue**): after web api handles the JS request, it passes callabcks to task queue which is handled by JS engine. Only after JS finishes all the codes, it starts to execute whatever is in the task queue chronologically (FIFO).
 - Nowadays as the browser gets more and more complex, browsers have more than one task queue, and their priorities are:
 
   - **Microtask queue** -- <span>highest</span>: handling **promises** and **mutationObserver**
@@ -2298,7 +2378,7 @@ async function name (args) {
   - **Network queue** -- <span>lowest</span>: handling network request callbacks
     <br>
 
-- Promises are handled by ==microtasks queue==
+- Promises are handled by <span>microtasks queue</span>
   - The queue is first-in-first-out(FIFO);
   - only resolved/rejected promise handlers can be enqueued, pending
   - Execution of a task is initialted only when nothing else is running (empty call stack)
@@ -2318,7 +2398,7 @@ async function name (args) {
 - JavaScript has a concurrency model based on an event loop, which is responsible for executing the code, collecting and processing events, and executing queued sub-tasks.
   <br>
 
-1. Dequeue and run the oldest task from the **task** queues (Attention: ==main script execution== can be considered a **task**, so this part holds true).
+1. Dequeue and run the oldest task from the **task** queues (Attention: <span>main script execution</span> can be considered a **task**, so this part holds true).
 1. Execute all **microtasks**:
    - While the **microtask** queue is not empty:
      - Dequeue and run the oldest **microtask**.
@@ -2492,8 +2572,9 @@ In DOM:
 
 ## Interesting concepts
 
-let JS file execute after html is loaded 
-  ##### Three ways 
+let JS file execute after html is loaded
+
+##### Three ways
 
 1. add `defer` to `<script>` tag:
 

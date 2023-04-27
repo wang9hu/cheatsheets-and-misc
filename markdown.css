@@ -1,15 +1,19 @@
-
 body {
   background-color: #262335;
   color: beige;
 }
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   display: block;
   padding-top: 2rem;
-  color: #51f505;
+  color: #afdbff;
   font-weight: 600;
 }
-h1, h2 {
+h1,
+h2 {
   font-size: 2rem;
   padding-top: 1rem;
   font-weight: 800;

@@ -40,13 +40,13 @@
       - self-closing tag
       - inline
       - attributes:
-        - _src_= "pic_url"
-        - _alt_= "text_for_screen_reader"
+        - `src` "pic_url"
+        - `alt` "text_for_screen_reader"
    1. `<a>`: anchor element, link to another page
       - inline
       - attributes:
-        - _target_= "where_to_display"
-        - _href_= "url"
+        - `target` "where_to_display"
+        - `href` "url"
           - "url": could be the following values:
             - a absolute URL (like `http://www.example.com`)
             - a relative URL (like `default.html`)
@@ -57,36 +57,36 @@
       - inline
    1. `<form>`: for submitting information
       - attributes:
-        - _action_= "where_to_send_data"
-        - _method_= "get | post | ...": how to send the data
-        - _target_= "where to display the response that is received after submitting the form."
-        - _autocomplete_="on | off": whether a form should have autocomplete on or off
+        - `action` "where_to_send_data"
+        - `method` "get | post | ...": how to send the data
+        - `target` "where to display the response that is received after submitting the form."
+        - `autocomplete`"on | off": whether a form should have autocomplete on or off
           ...
       - `<form>` elements:
         - `<input>`: interactive controls for web-based forms
           - self-closing tag
           - attributes:
-            - _type_= "input_type"
-            - _name_= "represent_data_when_submitted"
-            - _value_= "input_initial_value" - optional
-            - _id_= "identification"
+            - `type` "input_type"
+            - `name` "represent_data_when_submitted"
+            - `value` "input_initial_value" - optional
+            - `id` "identification"
               - must be unique
-            - _placeholder_= "hint _for_ `text`\_type_input"
-            - _required_ (bool): must fill before submitting for `text` type input
-            - _checked_ (bool): for `checkbox` type input
+            - `placeholder` "hint for `text` type input"
+            - `required`(bool): must fill before submitting for `text` type input
+            - `checked`(bool): for `checkbox` type input
         - `<label>`: a caption for an item
           - usually used with `<input>`
           - can be used as
           - `<label><input>LABEL</label>`
           - `<input><label for= "input_id">LABEL</label>`
           - attributes:
-            - _for_= "item_id"
+            - `for` "item_id"
         - `<fieldset>`: group related elements together
         - `<legend>`: a caption for the `<fieldset>` content
         - `<button>`: interactive element activated by "pressing"
           - inline
           - attributes:
-            - _type_= "default_behavior"
+            - `type` "default_behavior"
         - `<textarea>`: defines a multi-line input field
         - `<select>`: defines a drop-down list
           - `<option>`: defines an option that can be selected
@@ -102,18 +102,18 @@
    1. `<hr>`: thematic break between paragraph-level elements
       - self-closing tag
       - attributes:
-        - _height_= "height_of_the_line"
-        - _background-color_= "color_of_the_line"
+        - `height` "height_of_the_line"
+        - `background-color`= "color_of_the_line"
    1. `<audio>`: embed sound content in a document, such as music or other audio streams.
 
       - attributes:
 
-        - _src_="audio_url"
-        - _controls_ (bool): Specifies that audio controls should be displayed
-        - _autoplay_ (bool): Specifies that the audio will start playing as soon as it is ready
-        - _loop_ (bool): Specifies that the audio will start over again, every time it is finished
-        - _muted_ (bool): Specifies that the audio output should be muted
-        - _preload_ = "auto | metadata | none" : Specifies if and how the author thinks the audio should be loaded when the page loads
+        - `src`"audio_url"
+        - `controls`(bool): Specifies that audio controls should be displayed
+        - `autoplay`(bool): Specifies that the audio will start playing as soon as it is ready
+        - `loop`(bool): Specifies that the audio will start over again, every time it is finished
+        - `muted`(bool): Specifies that the audio output should be muted
+        - `preload`= "auto | metadata | none" : Specifies if and how the author thinks the audio should be loaded when the page loads
 
           <br>
 
@@ -127,7 +127,7 @@
 - Element `id` and `name` must **start with letter**, can have numbers, hypens (`-`), underscores (`_`), colons (`:`) and period (`.`)
   <br>
 
-- ==Emmet abbreviation== + enter: (use Tab to jump to next edit position)
+- <span>Emmet abbreviation</span> + enter: (use Tab to jump to next edit position)
 
   - `!` =>
 
@@ -197,6 +197,17 @@
        <nav></nav>
     </header>
     <main></main>
+    <footer></footer>
+    ```
+
+    <br>
+
+  - Climb up `^`: `header>nav^footer` =>
+
+    ```
+    <header>
+      <nav></nav>
+    </header>
     <footer></footer>
     ```
 

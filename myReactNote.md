@@ -16,7 +16,7 @@
 - [React Component](#react-component)
   1. [Component Class](#component-class)
   1. [Functional Component](#functional-component)
-- [When does rerender trigger](#when-does-rerender-trigger)
+- [React Re-render](#react-re-render)
 - [React conventions](#react-conventions)
 - [Create-React-App](#create-react-app)
 - [Redux](#redux)
@@ -25,15 +25,16 @@
 ## React Component
 
 - **JSX**: javascript XML (file name): precompiled syntax exntension to JS, React 'element' can be rendered into HTML element on DOM by JSX
+
   - e.g., `<h1>Hello, {this.props.anykeylabel}</h1>`
   - could have js inside of DOM element, wrapped in `{}`
     - `<h1>{2 + 2}</h1>`
     - `<p{user.firstName}`
     - `{formatName(user)}`
   - JSX attribute: key value pair: used to pass in data
-    - for component attributes, could use `'for string'` or `{js expression}`, one or another
+    - for component attributes, could use `'for string'` or `{js-expression}`, one or another
     - in child component, use `this.props.childVariable`
-    - in parent component, use `childVariable = {js exoression}`
+    - in parent component, use `childVariable = {js-expression}`
   - JSX can interpret an array of JSX statements and take each individule out e.g., `{boxes}`
     <br>
 
@@ -44,7 +45,24 @@
 
 ### Component Class:
 
-- in class, `render() {}` is a special method and it will show whatever is being returned on the DOM
+Write these first when starting a new class component file:
+
+```
+import { Component } from 'react';
+
+class MyComponent extends Component {
+  render() {
+    return ()
+  }
+}
+
+export default MyComponent;
+```
+
+- class component must `extends React.Component` in its declaration
+- class component have **reserved** keyword `props` specifically for passed-in data, and data can be accessed by `this.props.name`
+- if `constructor`, **first** need to use `super()` or `super(props)` if `props`
+- in class, `render() {}` is a special method and it will show whatever is being returned on the DOM. **Re-render** will only execute `render()` each time.
   <br>
 
 - child component can set parameters on `{this.props}` object in the return DOM element statement, e.g., `return <h1>Hello, {this.props.childComponentlaber}</h1>;`
@@ -54,63 +72,76 @@
 - Class component with constructor and `this.state` could use `{this.state.propertyName}` to access data in its own state
   <br>
 
-- Methods can be defined inside of
+- **Methods/variables**:
+  - if created in constructor: they will be instance methods/variables (usually just `this.state`)
+  - If created outside of constructor: starting with React v16.3, these methods are automatically bound to the instance of the component, no need to explicitly bind them using `.bind()`. When being invoked in `render()`, use `this.methodName` or destructing it first `const { methodName } = this`
+  - **Do Not** create any methods in `render(){}`
+    <br>
 - may need other library (npm & import)
   <br>
 
-
-
 - **State**: top down, uni-directional data flow, used to pass data
+
   - accessible and easily maintained
   - **State** maintained in top level components (as an obj called `State`) and passed down (through `props`) to child component
   - `props` never go upstream or to sibling component.
   - values in props are **immutable**
   - use `setState()` in order to update **State**:
     `setState(nextState, callback?)`
-    - `nextState`: either an object or a function 
+
+    - `nextState`: either an object or a function
       - if object, it is **shallow merged**, it will look for the keys that passed in and update its value in state.
       - if function, it is an **updater**, having two optional arguments: `state` and `props`
     - `callback`: _optional_, invoke after update is commited
     - <span>Never</span> manually set `state`.
     - only use `setState()` where `state` is defined in component
     - `setState()` will only update what is passed in, the rest stay the same
-        ```
-        // in constructor:
-        this.state = {
-          name: 'Ken',
-          sex: 'male'
-        }
 
-        // invoking setState()
-        this.setState({name: 'Andy'}) // sex is stll 'male' after update
-        ```
+      ```
+      // in constructor:
+      this.state = {
+        name: 'Ken',
+        sex: 'male'
+      }
+
+      // invoking setState()
+      this.setState({name: 'Andy'}) // sex is stll 'male' after update
+      ```
+
   - Any changes to the state will trigger an update, or "re-render", of components that depends on it.
     <br>
 
-
-
-
 - **Life cycle component**: if the function definition is given in the component class
-  - `componentDidMount(){ /.../ }`: this will run the **first time** component is rendered on the DOM
-  - `componentDidUpdate(){ /.../ }`: this will run **after updating** is complete, but not for the initial rendering
+  - `componentDidMount(){ /.../ }`: this will run after the **first time** component is rendered on the DOM
+  - `componentDidUpdate(prevProps, prevState, snapshot?){ /.../ }`: this will run **after updating** is complete, but not for the initial rendering
   - `componentWillUnmount( /.../ )`: this will run **before the removal** of rendered Box from DOM
-  <br>
- ##### **[Back to top](#react-notes)**
+    <br>
+
+##### **[Back to top](#react-notes)**
+
  <br>
 
- ---
-
+---
 
 ### Functional Component
 
-  - Pros:
-    - <span>No this!!</span> No need to use `this` keyword! You don't have to deal with `state` / `methods`, and your `props` are passed in as a parameter.
-    - <span>Less boilerplate</span>. As your component is simply a function, free of the constraints of a React component class, the amount of boilerplate in creating a stateless functional component is greatly reduced. This makes it so the resulting code for you component is concise and and clear.
-    - Clearly separates your concerns. This is important when you're separating your application into container and presentational components.
-    - <span>React Hooks</span>: functions that allow functional components the ability to do things that were typically only reserved for class components.
-  - Cons:
-    - No access to component lifecycle methods (ie `ComponentDidMount`).
-      <br>
+Mostly in arrow function form, and should be a pure function (no outside effect):
+
+```
+const MyComponent = () => {
+  return ()
+}
+```
+
+- Pros:
+  - <span>No `this`!!</span>: No need to use `this` keyword! You don't have to deal with `state` / `methods`, and your `props` are passed in as a parameter.
+  - <span>Less boilerplate</span>. As your component is simply a function, free of the constraints of a React component class, the amount of boilerplate in creating a stateless functional component is greatly reduced. This makes it so the resulting code for you component is concise and and clear.
+  - Clearly separates your concerns. This is important when you're separating your application into container and presentational components.
+  - <span>React Hooks</span>: functions that allow functional components the ability to do things that were typically only reserved for class components.
+- Cons:
+
+  - No access to component lifecycle methods (ie `ComponentDidMount`), but react hooks can compensate that
+    <br>
 
 - **Higher-Order Components**
   - a higher-order component is a function that takes a component and returns a new component.
@@ -134,11 +165,12 @@
   - `initialState`: the value you want the state to be initially
   - **return**: state and the function that can changed the state
     <br>
-  
+
   - `state`: The current state.
   - `setState`: `setState(nextState/updater)` set function that updates the `state` to a different value and trigger a re-render. Will match the `initialState` during the first render.
-    - `nextState`: The value that you want the state to be, if it is the <span>same reference</span> from state, React will <span>skip re-rendering</span>.
+    - `nextState`: The value that you want the state to be next.
     - `updater`: a pure function that take the current state as its only argument, and return the next state.
+    - If the next state is the <span>same reference</span> or <span>same primitive value</span> from current state, React will <span>skip re-rendering</span>.
   - make sure the passed-in **Reference is Different** from the original state reference (_use a new reference or use spread syntax_)
     <br>
 
@@ -159,7 +191,7 @@
     <br>
 
   - `setup`: a setup function with setup code that connects to external system
-    - `setup` return: [optional] a cleanup function with cleanup code that disconnects from external system
+    - **return**: _optional_ a cleanup function that will run when this component unmounts
   - `dependencies`:
     - if no `[dependencies]`, will run `setup` after initial and each update
     - if `[dependencies]`, only run `setup` if `dependencies` changed
@@ -186,7 +218,7 @@
   - `calculateValueFn`: the function that **calculating the value**, should take **no input** and return a value.
   - `dependencies`: the array of dependencies that triggered the useMemo
   - **return**: the calculated value and cache it in `cachedValue`. Will return previous `cachedValue` if `dependencies` are the same for rerender
-  -  On the initial render, `useMemo` returns the result of calling `calculateValueFn` with no arguments.
+  - On the initial render, `useMemo` returns the result of calling `calculateValueFn` with no arguments.
     <br>
 
     **Common use cases:**
@@ -201,7 +233,8 @@
     <br>
   - just like `useMemo`, but it return the first paramenter, which is the **entire function**, instead of returning the calculated value of the function, and the function could have inputs
   - `useCallback(myFunction, dependencies)` = `useMemo(()=>myFunction, dependencies)`
-  <br>
+    <br>
+
   ```
   const [number, setNumber] = useState(1);
 
@@ -215,6 +248,7 @@
     return [number, number + 1, number + 2]
   }, [number])
   ```
+
   <br>
 
   **Common use case:**
@@ -237,11 +271,11 @@
      // and export it if in seperate contextcreator file
      export const SomeContext = createContext(defaultValue)
      ```
+
      - if no defaultValue, specify `null` as input
      - **return**: a context object that doesn't hold any information, it represents which context other components read or provide.
      - This could be done in _contextcreator_ file, or integrated in highest parent component
-     <br>
-
+       <br>
 
   2. In parent component, import the created **SomeContext** from _contextcreator_ file
 
@@ -265,6 +299,7 @@
        )
      }
      ```
+
      <br>
 
   3. In child component, import `useContext` hook and **Somecontext**
@@ -287,33 +322,36 @@
        )
      }
      ```
-  <br>
+
+     <br>
 
 - **<span>useReducer</span>**: lets you add a **reducer** to your component.
 
   - `const [state, dispatch] = useReducer(reducer, initialArg, init?)`
-  <br>
+    <br>
   - `reducer`: a function that specifies how the state gets updated.
-  - `initialArg`: the input for `init`. 
-  - `init`: _optional_ the initializer that should return the `initialState`. 
+  - `initialArg`: the input for `init`.
+  - `init`: _optional_ the initializer that should return the `initialState`.
   - `InitialState = init ? init(initialArg) : initialArg`
   - **return**: the `state` and the `dispatch` function in an array
     - `state`: The current state
     - `dispatch`: update state and <span>trigger</span> a re-render: `dispatch(action)`
       - `action`: an object identifying the action performed by user. By convention, an action is usually an object with a `type` property with other optional properties containing the <span>minimal information</span> about what happened. `e.g., { type: 'what_happened, /* other fields? */ }`
       - **return**: no return value
-      <br>
+        <br>
   - <span>Reducer </span>
+
     ```
     function yourReducer(state, action) {
       // return next state for the React to set
     }
     ```
+
     - reducer is a <span>pure</span> function, meaning itself makes no impact to its environment when executing.
     - Takes in two arguments: `state` and `action`
     - **return**: the updated state, must be <span>different reference</span>
     - Conventionally use **switch statement** inside reducers, and wrap each `case` into `{`and`}`, and `return` inside of each `case`
-    <br>
+      <br>
 
   - <span>VS</span> `useState`:
     - **Code size**: `useState` have less setup code, but `useReducer` can help cut down on the code if many event handlers behave similarly
@@ -321,9 +359,6 @@
     - **Debugging**: `useState` is difficult to debug from, while `useReducer` could have console log for each case to pinpoint which action is causing the bug
     - **Testing**: reducer is a pure function and can be export and test separately.
     - **Personal preference**: `useState` and `useReducer` are essentially the same.
-
-
-
 
 <br>
 
@@ -338,23 +373,24 @@
     <br>
 
   **Common use cases**:
-    - It’s particularly common to use a `ref` to <span>manipulate the DOM</span>. React has built-in support for this:
-      1. Initial `ref` to `null`
-         ```
-         const inputRef = useRef(null);
-         ```
-      2. Then pass `ref` object as the `ref` attribute to the JSX of the DOM node you want to manipulate:
-         ```
-         return (
-          <>
-            ...
-            <input ref={inputRef} />;
-            ...
-          </>
-         )
-         ```
-      3. After React creates the DOM node and puts it on the screen, React will set the `current` property of your `ref` object to that DOM node: `inputRef.current.focus();`
-      4. React will set the current property back to `null` when the node is removed from the screen.
+
+  - It’s particularly common to use a `ref` to <span>manipulate the DOM</span>. React has built-in support for this:
+    1. Initial `ref` to `null`
+       ```
+       const inputRef = useRef(null);
+       ```
+    2. Then pass `ref` object as the `ref` attribute to the JSX of the DOM node you want to manipulate:
+       ```
+       return (
+        <>
+          ...
+          <input ref={inputRef} />;
+          ...
+        </>
+       )
+       ```
+    3. After React creates the DOM node and puts it on the screen, React will set the `current` property of your `ref` object to that DOM node: `inputRef.current.focus();`
+    4. React will set the current property back to `null` when the node is removed from the screen.
 
   <br>
 
@@ -411,73 +447,93 @@
   - Combine with `useMemo`, `useCallback` in parent component to ensure on `props` not changing accidentally
     <br>
 
- ##### **[Back to top](#react-notes)**
- <br>
-
- ---
-
-
-## When does rerender trigger
-
-Initial render: when a component first appears on the screen
-
-1. The props passed in component changed
-1. Internal state change (`useState`, `useContext`, `setState`...)
-1. Parent component rerendered (unless `React.memo()` is called for a component)
-<br>
 ##### **[Back to top](#react-notes)**
+
  <br>
 
 ---
 
+## React Re-render
+
+Initial render: when a component first appears on the screen
+<br>
+
+Render-triggers:
+
+1. **<span>props changed</span>** (passed in `props`)
+2. **<span>Internal state change</span>** (`useState`, `useContext`, `setState`...)
+3. **<span>Parent component rerendered</span>** (unless `React.memo()` is called for a component)
+   <br>
+
+Virtual DOM: a JavaScript representation of the real DOM tree
+
+##### **[Back to top](#react-notes)**
+
+ <br>
+
+---
 
 ## React conventions:
 
-  - <span>Key</span> Attribute: when use `filter()` and `map()` to process lists of JSX elements, it is conventional to assign a `key` attribute to each direct JSX element. 
-    - React is the only thing that requires this `key` attribute
-    - Works like a name for each item, the `key` lets React identify the item throughout its lifetime. If not given, react would assign index to key, which is not tighly binded with each item and would cause errors due to data array manipulation
-    <br>
-    - Sources of keys: (bind key value with each item)
-      - **Data from database**: use unique keys/ID from database
-      - **Logically generated**: (when adding new items) use incrementing counter, `crypto.randomwUUID()` or a package like `uuid` to create keys
-      <br>
-    - Rules of keys:
-      - Keys must be **unique** among siblings
-      - Keys must **not change**
-      - Keys usually at the **top level** of each JSX element
+- <span>Key</span> Attribute: when use `filter()` and `map()` to process lists of JSX elements, it is conventional to assign a `key` attribute to each direct JSX element.
 
-<br>
+  - React is the only thing that requires this `key` attribute
+  - Works like a name for each item, the `key` lets React identify the item throughout its lifetime. If not given, react would assign index to key, which is not tighly binded with each item and would cause errors due to data array manipulation
+    <br>
+  - Sources of keys: (bind key value with each item)
+    - **Data from database**: use unique keys/ID from database
+    - **Logically generated**: (when adding new items) use incrementing counter, `crypto.randomwUUID()` or a package like `uuid` to create keys
+      <br>
+  - Rules of keys:
+    - Keys must be **unique** among siblings
+    - Keys must **not change**
+    - Keys usually at the **top level** of each JSX element
+      <br>
+
+- <span>React.createElement()</span>: create a React element. Serves as an alternative to writing JSX
+  `const element = createElement(type, props, ...children)`
+  - `type`: must be a valid React component, could be a tag name (`div`) or a React component(class or functional or special component like `Fragment`)
+  - Only use this when initializing the app from a file that is **NOT** JSX
+    <br>
+- <span>React DOM</span>: for building up DOM element for browser
+  - `ReactDOM.render(component)`:
+    <br>
 
 ##### **[Back to top](#react-notes)**
- 
+
 <br>
 
 ---
 
-## Create-React-App 
-  a packge created by facebook
+## Create-React-App
 
-  - `npx create-react-app my-app-name`: create react project barebones with all the necessary files to run a SPA
-  - `react`: the engine that runs how does the app get built
-  - `react-dom`: directed towards web related application
-    - `react-native`: for mobile application
-  - `react-scripts`: 
+a packge created by facebook
+
+- `npx create-react-app my-app-name`: create react project barebones with all the necessary files to run a SPA
+- `react`: the engine that runs how does the app get built
+- `react-dom`: directed towards web related application
+  - `react-native`: for mobile application
+- `react-scripts`:
 
 #### In index.js
-  ```
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementByID('root')
-  )
-  ```
-  - `<React.StrictMode>`: enables followings
-    - re-render an extra time to find bugs caused by **impure rendering**
-    - re-run Effects an extra time to find bugs caused by missing **Effect cleanup**
-    - check for usage of **deprecated APIs**
-  <br>
+
+```
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementByID('root')
+)
+```
+
+- `<React.StrictMode>`: enables followings
+  - re-render an extra time to find bugs caused by **impure rendering**
+  - re-run Effects an extra time to find bugs caused by missing **Effect cleanup**
+  - check for usage of **deprecated APIs**
+    <br>
+
 ##### **[Back to top](#react-notes)**
+
  <br>
 
 ---
@@ -611,12 +667,12 @@ put on UI:
 - presentational component vs container component
   - if component is connected to the store
     <br>
-    
 - use Hooks as a more popular method instead of `mapStateToProps`
 
 <br>
 
 ##### **[Back to top](#react-notes)**
+
  <br>
 
 ---
