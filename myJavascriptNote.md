@@ -296,7 +296,7 @@ Variables that do not have an assigned value, from values that **hasn't been def
 
   <br><br>
 
-- str.trim: `str.trim()`
+- trim: `str.trim()`
   - **return**: a modified <span>copy</span> of `str` with whitespaces at beginning and end are removed
     <br>
 - trimStart: `str.trimStart()`
@@ -418,21 +418,21 @@ Variables that do not have an assigned value, from values that **hasn't been def
 
 ## Operators
 
-- Logical AND (`&&`):
+- `&&` Logical AND:
 
   - `expr1 && expr2 && expr3 && ....`
   - from left to right, return immediately with the value of the first falsy operand (`false`, `null`, `NaN`, `0`, emtpy string, `undefined`)
   - if all values are truthy, the value of the last operand is returned.
     <br>
 
-- Logical OR (`||`)
+- `||` Logical OR
 
   - `expr1 || expr2 || expr3 || ....`
   - from left to right, return immediately with the value of the first truthy operand (anything that is not falsy)
   - if all values are falsy, the value of the last operand is returned.
     <br>
 
-- Nullish coalescing operator (`??`)
+- `??` Nullish coalescing operator
 
   - `leftExpr ?? rightExpr`
   - from left to right, return immediately with the value of the first operand that is **not** `null` or `undefined`
@@ -440,19 +440,19 @@ Variables that do not have an assigned value, from values that **hasn't been def
   - cannot directly be used with `&&` or `||`, must use parenthesis to explicityly indicate precedence.
     <br>
 
-- Logical AND assignment (`&&=`)
+- `&&=` Logical AND assignment
 
   - `expr1 &&= expr2`
   - equivalent to `expr1 && (expr1 = expr2)`, meaning if `expr1` is truthy, assign the evaluated value of `expr2` to `expr1`;
     <br>
 
-- Logical OR assignment (`||=`)
+- `||=` Logical OR assignment
 
   - `expr1 ||= expr2`
   - equivalent to `expr1 || (expr1 = expr2)`, meaning if `expr1` is falsy, assign the evaluated value of `expr2` to `expr1`;
     <br>
 
-- Nullish coalescing assignment (`??=`)
+- `??=` Nullish coalescing assignment
 
   - `expr1 ??= expr2`
   - equivalent to `expr1 ?? (expr1 = expr2)`, meaning if `expr1` is `null/undefined`, assign the evaluated value of `expr2` to `expr1`;
@@ -611,7 +611,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     ```
     <br>
 
-- Array.from: `Array.from(arrayLike, callbackFn(element, index?) { /*...*/ }?, thisArg?)`
+- Array.from: `Array.from(arrayLike, callbackFn?(element, index?){/*...*/}], thisArg?)`
 
   - **return**: a new `Array` instance
   - `callbackFn`: _optional_ A function to call on every element of the array
@@ -829,45 +829,41 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
   <br>
 
-- **Size**: `setObj.size`
+- size: `setObj.size`
 
   - how many entries the Set object has
     <br>
 
-- **Add**: `setObj.add(value1)[.add(value2)]`
+- add: `setObj.add(value1)[.add(value2)]`
 
-  - return the Set object with added value
+  - **return**: the Set object with added value
   - chainable, but can only add one element at a time
   - if pass multiple values, it will only try to add the first value
     <br>
 
-- **Delete**: `setObj.delete(value)`
+- delete: `setObj.delete(value)`
 
-  - return `true` if value was found and removed in Set object; otherwise `false`
+  - **return**: `true` if value was found and removed in Set object; otherwise `false`
     <br>
 
-- **Clear**: `setObj.clear()`
+- clear: `setObj.clear()`
 
-  - return `undefined`
+  - **return**: `undefined`
     <br>
 
-- **Check**: `setObj.has(value)`
+- has: `setObj.has(value)`
 
-  - return `true` if value exists in the Set object; otherwise `false`
+  - **return**: `true` if value exists in the Set object; otherwise `false`
     <br>
 
-- **Iterators**:
+- values/keys:`setObj.valuse/keys()` both **return** an iterator that contains the values for each element in Set object
+- entries: `setObj.entries()` **return** an iterator that contains an array of `[value, value]` for each element in Set Object, in **insertion** order.
+  <br>
 
-  - `setObj.valuse()` and `setObj.keys()` both return an iterator that contains the values for each element in Set object
-  - `setObj.entries()` return an iterator that contains an array of `[value, value]` for each element in Set Object, in **insertion** order.
-    <br>
-
-- **forEach**: `setObj.forEach(fn)`
-  - executes a provided function once for each value in the Set object, in **insertion** order.
-  - `fn`:
-    - `(value, key?, set?) => { /* ... */ }`
-    - `function(value, key?, set?) { /* ... */ }, thisArg?`
-    - `callbackFn, thisArg?`
+- forEach: `setObj.forEach(callbackFn, thisArg?)`: executes a provided function once for each value in the Set object, in **insertion** order.
+  - **return** : `undefined`
+  - `callbackFn`: takes in 3 arguments:`value?`, `key?`, `setObj?`
+  - `thisArg`: _optional_ A value to use as `this` when executing `callbackFn`.
 
 ##### **[Back to table](#table)**
 
@@ -889,30 +885,42 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
   ❌ Serialization and Parsing: Map object **cannot** direcly be passed to `JSON.stringify()`/`JSON.parse()`, not without replacer argument and reviver argument. See [Stack Overflow question](https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map)
   <br>
 
-- Methods: `const myMap = new Map()`
-  - size: `myMap.size`: **return** the number of key/value pairs in the Map object.
+- Methods:
+
+  - constructor: must use with `new`
+
+  ```
+  // Create a new empty Map:
+  const mapObj = new Map()
+
+  // Pass an iterable object to Set, each element must be key-value pair, duplicated will only set to the last element
+  const arr = [[1, 'a'], [2, 'a'], [1, 'b'], [2, 'c']];
+  const mapObj = new Map(arr); // Map(2) {0: {1 => 'b'}, 1: {2 => 'c'}}
+  ```
+
+  - size: `mapObj.size`: **return** the number of key/value pairs in the Map object.
     <br>
-  - set: `myMap.set(key, value)`: <span>adds or updates</span> an entry in a Map object with a specified key and a value.
+  - set: `mapObj.set(key, value)`: <span>adds or updates</span> an entry in a Map object with a specified key and a value.
     - **return**: the Map object
       <br>
-  - get: `myMap.get(key)`: get a specified element from a Map object.
+  - get: `mapObj.get(key)`: get a specified element from a Map object.
     - **return**: the element associated with the specified key, or `undefined` if the key can't be found.
       <br>
-  - delete: `myMap.delete(key)`: removes the specified element from a Map object by key.
+  - delete: `mapObj.delete(key)`: removes the specified element from a Map object by key.
     - **return**: `true` if an element in the Map object existed and has been removed, `false` if key did not existed.
       <br>
-  - has: `myMap.has(key)`: whether an element with the specified key exists or not.
+  - has: `mapObj.has(key)`: whether an element with the specified key exists or not.
     - **return**: `true` if an element in the Map object existed, `false` if key did not existed.
       <br>
-  - clear: `myMap.clear()`: removes all elements from a Map object.
+  - clear: `mapObj.clear()`: removes all elements from a Map object.
     - **return**: `undefined`
       <br>
-  - keys/values/entries: `myMap.keys/values/entries()`: returns a new map **iterator** object that contains the keys/values/`[key, value]` for each element in the Map object in <span>insertion order</span>.
+  - keys/values/entries: `mapObj.keys/values/entries()`: returns a new map **iterator** object that contains the keys/values/`[key, value]` for each element in the Map object in <span>insertion order</span>.
     - **return**: A new iterable iterator object.
       <br>
-  - forEach: `myMap.forEach(callbackFn, thisArg?)`: executes a provided function once per each key/value pair in the Map object, in <span>insertion order</span>.
+  - forEach: `mapObj.forEach(callbackFn, thisArg?)`: executes a provided function once per each key/value pair in the Map object, in <span>insertion order</span>.
     - **return**: undefined
-    - `callbackFn`: takes in 3 arguments:`value`, `key`, `map`
+    - `callbackFn`: takes in 3 arguments:`value?`, `key?`, `mapObj?`
     - `thisArg`: _optional_ A value to use as `this` when executing `callbackFn`.
 
 ### WeakMap
@@ -943,7 +951,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
       <br>
 - Properties can be enumerated (for...in loop) if they are enumerable
   <br>
-- **Optional chaining (?.)**: If the object accessed or function called using this operator is `undefined` or `null`, the expression short circuits and evaluates to undefined instead of throwing an error.
+- Optional chaining (`?.`): If the object accessed or function called using this operator is `undefined` or `null`, the expression short circuits and evaluates to undefined instead of throwing an error.
 
   - `obj.val?.prop`:
   - `obj.val?.[expr]`:
@@ -959,7 +967,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
     <br>
 
-- **Getter**: `get propertyName(){}` / `get [expression](){}`
+- Getter: `get propertyName(){}` / `get [expression](){}`
   Retrieve the value of an object property, when access getter function name, return its return value.
 
   - `[expression]`: for a computed property name to bind to the given function
@@ -979,7 +987,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
   <br>
 
-- **Setter**: `set propertyName(val){}` / `set [expression](val){}`
+- Setter: `set propertyName(val){}` / `set [expression](val){}`
   Set the value of an object property, when assign new value, pass in the new value as the input and execute the setter function
 
   - `val`: the value attempted to be assigned to `propertyName`
@@ -2670,7 +2678,7 @@ let JS file execute after html is loaded
 
 1. `addEventListener(type, listener, options/capture?)`:
 
-   - By default, event listeners are executed in a process known as **bubbling**, where the event starts at the target element, then propagates up the DOM tree to its parent elements, executing event listeners on each element along the way, until it reaches the root element.
+   - By default, event listeners are executed in a process known as <span>bubbling</span>, where the event starts at the target element, then <span>propagates</span> up the DOM tree to its parent elements, executing event listeners on each element along the way, until it reaches the root element.
      <br>
    - `listener`: The object that receives a notification (an object that implements the Event interface) when an event of the specified type occurs.
      - can be a callback function ro an object whose `handeEvent()` method servers as the callback function

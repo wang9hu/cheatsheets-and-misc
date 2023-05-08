@@ -4,6 +4,7 @@
   <br>
 - The keyword for defining a function is `def` instead of `function`.
   .js
+
   ```
   function addTwo(x){
       var sum = x + 2;
@@ -11,7 +12,9 @@
   }
   console.log(addTwo(3)) // prints 5
   ```
+
   .py
+
   ```
   # The same function would be written as follows in python:
   def add_two(x):
@@ -20,7 +23,9 @@
 
   print(add_two(3)) # prints 5
   ```
+
    <br>
+
 - In almost all cases where you would use a set of curly braces in javascript, in python, we will use a colon(`:`) followed by an **indented block** of code. How many spaces/indents does not matter, as long as everything in the **same block** has the same amount of indentation.
   <br>
 - Python variables are usually written in **snake-case** rather than camel-case
@@ -67,4 +72,4 @@
 - <span>Numpy</span>: a python library for better data manipulation
   - Numpy array Broadcasting
     <br>
-- <span>Matplotlib</span>:
+- <span>Matplotlib</span>: draw histogram

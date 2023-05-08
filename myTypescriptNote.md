@@ -1,5 +1,6 @@
-TypeScript: Javascript with type checking
+## TypeScript: Javascript with type checking
 <br>
+
 **Benefits**:
 
 - Static typing

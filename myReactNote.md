@@ -9,13 +9,12 @@
   - component can have **DOM** elements
   - component can have other component inside
   - need to npm install react and import before use
-  - use class to create React component
-  - class need to `extends React.Component`
+
     <br>
 
 - [React Component](#react-component)
   1. [Component Class](#component-class)
-  1. [Functional Component](#functional-component)
+  2. [Functional Component](#functional-component)
 - [React Re-render](#react-re-render)
 - [React conventions](#react-conventions)
 - [Create-React-App](#create-react-app)
@@ -493,10 +492,38 @@ Virtual DOM: a JavaScript representation of the real DOM tree
 - <span>React.createElement()</span>: create a React element. Serves as an alternative to writing JSX
   `const element = createElement(type, props, ...children)`
   - `type`: must be a valid React component, could be a tag name (`div`) or a React component(class or functional or special component like `Fragment`)
+  - `props`: must either be an object or `null`.
   - Only use this when initializing the app from a file that is **NOT** JSX
     <br>
 - <span>React DOM</span>: for building up DOM element for browser
-  - `ReactDOM.render(component)`:
+
+  - Before ReactV18: `ReactDOM.render(component, htmlElement)`
+
+    ```
+    import ReactDOM from 'react-dom';
+
+    ReactDOM.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>,
+      document.getElementById('root')
+    )
+    ```
+
+  - After ReactV18: create a root first use `createRoot(htmlElement)`
+
+    ```
+    import { createRoot } from 'react-dom/client'
+
+    const container = document.getElementById('root');
+    const root = createRoot(container)
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    )
+    ```
+
     <br>
 
 ##### **[Back to top](#react-notes)**
