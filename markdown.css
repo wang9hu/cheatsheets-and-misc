@@ -9,8 +9,9 @@ h4,
 h5 {
   display: block;
   padding-top: 2rem;
-  color: #afdbff;
+  color: #e69f1d;
   font-weight: 600;
+  /* -webkt-text-stroke: 2px yellow; */
 }
 h1,
 h2 {
@@ -33,7 +34,7 @@ strong {
   color: rgb(205, 50, 50);
 }
 span {
-  color: yellow;
+  color: rgb(255, 255, 0);
   font-size: 1.2rem;
 }
 code {

@@ -1,35 +1,39 @@
 # Node notes
 
 - `npm init -y`
+
   - npm initialize, create a package.json file
   - `-y`: use default
-  <br>
+    <br>
 
 - `npm i -g package-name`
+
   - `i` is short for `install`
   - `-g` is short for `--global`
   - install a packge globally
-  <br>
+    <br>
 
 - `npm i package-name --save`
+
   - install the package as a development dependency
   - `--save` means the package is saved in `package.json`, which is already the default setting of `npm i package-name`
   - `--save-prod`: means this saves the package in `dependencies`, this is the default
   - `--save-dev`: means this saves the package in `devDependencies`
   - `--save-optional`: means this saves the package in `optionalDependencies`
-  <br>
+    <br>
 
 - `npm ls package-name?`
+
   - `ls` is short for `list`
   - outputs installed packages and their dependencies of the current project as a tree-structure to the stdout
   - if no `package-name`, output all the dependencies
   - `-g`: only display the globally installed packages/dependencies
   - `--prod` or `--dev`: only dependency for `dependencies` or `devDependencies`
   - `--json`: format the packages in the JSON format
-  <br>
+    <br>
 
 - `npm test`, `npm start`, `npm restart`, and `npm stop` are all aliases for `npm run xxx`, other `scripts` defined will need to use `npm run xxx` syntax
-<br>
+  <br>
 
 - Execute files in the same directory in node: read contents in filename, and execute them
 
@@ -88,15 +92,18 @@
 
 ### things need to address later
 
-- Node version manager: `nvm`
+- <span>Node version manager</span>: `nvm`
   - install other version: `nvm install latest` or `nvm install vX.Y.Z`
   - make a version default: `nvm alias default vX.Y.Z`
   - use other verison: `nvm use [version]`
+    - **Note**: when changing node version, all the globally installed packages are different.
+    - It is **not recommanded** to install packages globally
   - all versiona available: `nvm ls`
     <br>
-- Node Package eXecute: `npx`
+- <span>Node Package eXecute</span>: `npx`
+
   - execute javascript packages directly without installing.
-  <br>
+    <br>
 
 - err handle first callbacks
 - post data: stream
@@ -112,6 +119,10 @@
   `sudo lsof -i -P -n | grep LISTEN`
 - kill port:
   `npx kill-port 3000`
+  <br>
+
+- Delete all other git branches:
+  `git branch | grep -v "develop" | grep -v "master" | grep -v "main" | xargs git branch -D`
 
 ### Common JS vs ES6 Module
 

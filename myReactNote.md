@@ -8,7 +8,7 @@
   - a component represent a part of DOM
   - component can have **DOM** elements
   - component can have other component inside
-  - need to npm install react and import before use
+  - need to `npm install react` and import before use
 
     <br>
 
@@ -491,13 +491,22 @@ Virtual DOM: a JavaScript representation of the real DOM tree
 
 - <span>React.createElement()</span>: create a React element. Serves as an alternative to writing JSX
   `const element = createElement(type, props, ...children)`
+
   - `type`: must be a valid React component, could be a tag name (`div`) or a React component(class or functional or special component like `Fragment`)
   - `props`: must either be an object or `null`.
   - Only use this when initializing the app from a file that is **NOT** JSX
     <br>
-- <span>React DOM</span>: for building up DOM element for browser
 
-  - Before ReactV18: `ReactDOM.render(component, htmlElement)`
+- <span>Components</span>:
+
+  - `<Fragment>`: often used via `<>...</>` syntax, for grouping elements without a wrapper node.
+    - `key`:_optional_ only available to Fragment, not `<>...</>`, usually need to do this when **Rendering a list of Fragments**
+    - Usage: when rendering, react will remove the fragment tag and directly render its children on page.
+      <br>
+
+- <span>react-dom</span>: for building up DOM element for browser
+
+  - <span>Before</span> ReactV18: `ReactDOM.render(component, htmlElement)`
 
     ```
     import ReactDOM from 'react-dom';
@@ -510,7 +519,7 @@ Virtual DOM: a JavaScript representation of the real DOM tree
     )
     ```
 
-  - After ReactV18: create a root first use `createRoot(htmlElement)`
+  - <span>After</span> ReactV18: create a root first use `createRoot(htmlElement)`
 
     ```
     import { createRoot } from 'react-dom/client'
@@ -523,6 +532,86 @@ Virtual DOM: a JavaScript representation of the real DOM tree
       </React.StrictMode>
     )
     ```
+
+    <br>
+
+- <span>react-router-dom</span>: React Router enables "client side routing".
+
+  - Client side routing allows your app to update the URL from a link click without making another request for another document from the server.
+  - This enables faster user experiences because the browser doesn't need to request an entirely new document or re-evaluate CSS and JavaScript assets for the next page. It also enables more dynamic user experiences with things like animation.
+    <br>
+
+  ```
+  import { Routes, Route } from "react-router-dom";
+  import Home from './home';
+  import Cart from './cart';
+
+  const Shop = () => {
+    return (
+      <h1>I am the shop page</h1>
+    )
+  }
+
+
+  const App = () => {
+    return (
+      <Routes>
+        <Route path='/cart' element={<Cart />} />
+        <Route path='/' element={<Home />}>
+          <Route path='shop' element={<Shop />} />
+        </Route>
+      </Routes>
+    )
+  }
+
+  export default App;
+  ```
+
+  - `<Routes>...</Routes>`:
+    - `<Route /?>`:
+      - `index`: _bool_ if matching the parent url exactly, render this as default
+  - **Nested routing**:
+
+    - In `Route`: use `<Outlet />` representing passed-in nested component
+
+    ```
+    import { Routes, Route, Outlet } from "react-router-dom";
+    import Home from "./routes/home";
+
+    const Navigation = () => {
+      return (
+        <>
+          <div>
+            <h1>I am navigation bar</h1>
+          </div>
+          <Outlet />
+        </>
+      )
+    }
+
+    const Shop = () => {
+      return <h1>I am the shop page</h1>
+    }
+
+    const App = () => {
+      return (
+        <Routes>
+          <Route path='/' element={<Navigation />}>
+            <Route path='home' element={<Home />} />
+            <Route path='shop' element={<Shop />} />
+          </Route>
+        </Routes>
+      )
+    }
+
+    export default App;
+    ```
+
+    <br>
+
+  - `<Link to=... /?>`: works like anchor tag, but for React routers.
+
+    - `to`: url relative to parent route, which means that it builds upon the URL path that was matched by the route that rendered that `<Link>`.
 
     <br>
 
@@ -567,136 +656,241 @@ ReactDOM.render(
 
 ## Redux:
 
-- having a store to save data for the component tree, and inject data to where it is needed, solve prop drilling problem
-- redux is an **opinionated** (specific syntax role, boilerplate, setup) state management library
-- based on **Flux** architechture: emphasize on <span>unidirectional</span> data flow
+- Having a store to save data for the component tree, and inject data to where it is needed, solve prop drilling problem
+- Redux is an **opinionated** (specific syntax role, boilerplate, setup) state management library
+- Based on **Flux** architechture: emphasize on <span>unidirectional</span> data flow
 - **Won't use it if not need it**
+- Redux itself is <span>synchorous</span>, any asynchronous process are done by other middleware like **redux-thunk**
+- Observer pattern: the subject(an object), maintains a list of dependents that have subscribed to notifications of any updates(observers / listener), notifies them when state changes. Primarily in **event-driven** applications. (both React and Redux are based on Flux arch)
+
   <br>
 
-  pros:
+  <span>Pros</span>:
 
-- 'simplified' access to state across complex app
-- better debugging: time travel
-- simplified testing
-- a single source of truth (Redux Store)
-  <br>
+  - 'Simplified' access to state across complex app
+  - Better debugging: time travel
+  - Simplified testing
+  - A single source of truth (Redux Store)
+    <br>
 
   Terms in redux:
 
-  - **Action Creator**: function (create action)
-  - **Action**: object {type(reserved key):....[, payload(**not** reserved key): ....]}
+  - **Action Creator**: function that creates action
+    ```
+    export const actionCreator = () => action;
+    ```
+  - **Action**: object containing action type and optional property, both names must matches with `reducer`.
+
+    ```
+    {
+      type: actionType
+      payload: actionPayload
+    }
+    ```
+
   - **Dispatcher**: function (send action to reducers)
-  - **Reducer**: function (apply action to state, update data, return new state)
-    - `f(state = initialState, action) = new state`
-      - cannot mutate the original state, make a copy of it and make changes on the copy and return the copy
+  - **Reducer**: function (apply actions to state, update data, return new state), use reducer is the only way to change redux state.
+
+    ```
+    const reducer = (state = initialState, action) => {
+      switch (action.type) {
+        case type1: {
+          // do something
+
+          return {
+            ...state,
+            modifiedProp: modifiedValue
+          }
+        }
+
+        case type2: {}
+
+        ...
+
+        default: {
+          return state;
+        }
+      }
+    }
+    ```
+
+    - **Never** mutate the original state, make a copy of it and make changes on the copy and return the copy
     - all fire when dispacth is invoked
     - initialized store
+
   - **Store**(s): object (nested, initialized and updated by reducers)
   - **views**: UI
 
-    <br>
-
-- observer pattern: the subject(an object), mainetains a list of dependents that have subscribed to notifications of any updates(observers / listener), notifies them when stae changes. Primarily in **event-driven** applications. (both React and Redux are based on Flux arch)
   <br>
-
-  - `dispatch` : a function, passed in mapDispatchToProps as input parameter and accept action
-
-    ```
-    const mapDispatchToProps = dispatch => ({
-      addMarket: (location) => dispatch(actions.addMarketActionCreator(location)),
-      addCard : (id) => dispatch(actions.addCardActionCreator(id)),
-      deleteCard : (id) => dispatch(actions.deleteCardActionCreator(id)),
-    });
-    ```
 
     <br>
 
-Create reducer:
+- <span>Create reducer</span>:
 
-- create an obj to store initial state value
-- create a function taking two parameters: state and action
-  - state default to initial state obj
-- Create a switch statement that checks the `action.type` and performs the logic to create the new state object
-- Return the new state. This will update the state in Redux and re-render subscribed React components.
-  <br>
+  - create an obj to store initial state value
+  - create a function taking two parameters: state and action
+    - state default to initial state obj
+  - Create a `switch` statement that checks the `action.type` and performs the logic to create the new state object
+  - Return the new state. This will update the state in Redux and re-render subscribed React components.
+    <br>
 
-  ```
-  // dispatch is a function in react-redux
-  dispatch ({ type: CHANGE_count, payload: 5 });
+    ```
+    // dispatch is a function in react-redux
 
-  const initialState = {count : 0}
 
-  function counterReducer (state = initialState, action) {
-    switch (action.type) {
-      case CHANGE_COUNT:
-        return Object.assign({}, state, {key: action.payload});
-      default:
-        return state;
+    const initialState = {count : 0}
+
+    function counterReducer (state = initialState, action) {
+      switch (action.type) {
+        case CHANGE_COUNT:
+          return Object.assign({}, state, {key: action.payload});
+        default:
+          return state;
+      };
     };
-  };
+    ```
+
+    <br>
+
+- <span>Create store</span>:
+
+  ```
+  import { createStore } from 'redux';
+  import { composeWithDevTools } from 'redux-devtools-extension';
+  import reducers from './reducers';
+
+  // adding composeWithDevTools here to get easy access to the Redux dev tools
+  const store = createStore(
+    reducers,
+    composeWithDevTools()
+  );
+
+  export default store;
   ```
 
-  <br>
+  - combine reducers into single function/object using `combineReducers` ( from redux )
 
-Create store:
+    - import reducers from other files
 
-- combine reducers into single function/object using `combineReducers` ( from redux )
-  - import reducers from other files
-- import the object returned by `combineReducers` and pass it into the `createStore`( from redux ) method from redux to create your store
-  <br>
+    ```
+    // reducers.js
+    import { combineReducers } from 'redux';
 
-Make store available to React:
+    // import all reducers here
+    import reducer1 from './reducer1';
+    import reducer2 from './reducer2';
 
-- Import `Provider` from react-redux, the store from store.js, and your top level component.
-- Wrap your top level component in the `Provider` (from react-redux) component
-- Pass the store as a attribute to the `Provider` component
-  <br>
 
-Access store from within components:
+    // combine reducers
+    const reducers = combineReducers({
+      reducerOne: reducer1,
+      reducerTwo: reducer2,
+    });
 
-- `mapStateToProps`:
+    // make the combined reducers available for import
+    export default reducers;
+    ```
 
-  - `mapStateToProps` receives `state`, return an obj listing any properties of state that the component want to subscribe to.
-  - keys in return obj will be passed on as props to the component they are connected to
-  - access props property use `this.props.key`
+  - import the object returned by `combineReducers` and pass it into the `createStore`( from redux ) method from redux to create your store
+    <br>
+
+- <span>Make store available to React</span>:
+
+  ```
+  import { Provider } from 'react-redux';
+  import store from './store';
+  ...
+  <Provider store={store}>
+    <App />
+  </Provider>
+  ```
+
+  - Import `Provider` from react-redux, the store from store.js, and your top level component.
+  - Wrap your top level component in the `Provider` (from react-redux) component
+  - Pass the store as a attribute to the `Provider` component
+    <br>
+
+- <span>Access store from within components</span>:
+
+  - `mapStateToProps`:
+
+    ```
+    const mapStateToProps = (state) => ({
+      // find the intended property
+      propName: state.prop;
+      ...
+    })
+    ```
+
+    - `mapStateToProps` receives `state`, return an obj listing any properties of state that the component want to subscribe to.
+    - keys in return obj will be passed on as props to the component they are connected to
+    - access props property use `this.props.key`
+
+      <br>
+
+  - `mapDispatchToProps`: inject actions to props
+
+    ```
+    const mapDispatchToProps = (dispatch) => ({
+      // actionCreator will generate an action based on the input value
+      actionName: ([input]) => dispatch(actionCreator([input]))
+      ...
+    })
+    ```
+
+    - `dispatch` : a function, passed in `mapDispatchToProps` as input parameter and accept action
+
+      ```
+      dispatch ({ type: CHANGE_count, payload: 5 });
+      ```
+
+    - `mapDispatchToProps` can be object with handlers or function that return the object containing the handles
+      - `mapDispatchToProps` receives dispatch as a argument and return an obj containing event handlers
+      - returned obj consist of event handlers as keys and function definition as value.
+    - event handler can pass dispatches to reducer
+    - when invoke, these event handlers will dispatch actions, by invoking action creator which will return action objects, which are passed into dispatch
+    - access event handler use `this.props.eventhandler`
+      <br>
+
+  - `connect`: connect store with class component
+    ```
+    import { connect } from 'react-redux';
+    ...
+    export default connect([mapStateToProps], [mapDispatchToProps])(ComponetName)
+    ```
+    - This ties our component to the redux store.
+    - receives `mapStateToProps` and `mapDispatchToProps` as input (both optional) and return a function that takes component as input
+    - if `mapDispatchToProps` is null, then inject `dispatch` methods to `props`.
+      <br>
+
+- <span>Write action creators</span>:
+
+  - Create a file and export constant variables that represent all of the ways we want to change state. These will be the values passed as the type properties in your action objects.
+  - All processing of side effects (ajax calls) should be handled in Action Creators. Once all the data necessary to facilitate the state change is derived, the value should be passed as the payload in your action objects. ○ In order to implement asynchronous functionality in Redux, you’ll need to employ middleware like redux-thunk or redux-saga
+  - Each Action Creator should return an action object (which will be passed to dispatch, which will invoke your reducers)
 
     <br>
 
-- `mapDispatchToProps`:
+- <span>put on UI</span>:
 
-  - `mapDispatchToProps` receives dispatch as a argument and return an obj containing event handlers
-  - returned obj consist of event handlers as keys and function definition as value.
-  - event handler can pass dispatches to reducer
-  - when invoke, these event handlers will dispatch actions, by invoking action creator which will return action objects, which are passed into dispatch
-  - access event handler use `this.props.eventhandler`
+  - use render(components, HTMLelement) (from react-dom)
     <br>
 
-- `connect` (from react-redux):
-  `
-  - This ties our component to the redux store.
-  - receives `mapStateToProps` and `mapDispatchToProps` as input ans return a function that takes component as input
-  - `export default connect(mapStateToProps, mapDispatchToProps)(Component)`
-    <br>
+  - presentational component vs container component
+    - if component is connected to the store
+      <br>
+  - use Hooks as a more popular method instead of `mapStateToProps`
 
-Write action creators:
+<span>Class vs Functional</span>
 
-- Create a file and export constant variables that represent all of the ways we want to change state. These will be the values passed as the type properties in your action objects.
-- All processing of side effects (ajax calls) should be handled in Action Creators. Once all the data necessary to facilitate the state change is derived, the value should be passed as the payload in your action objects. ○ In order to implement asynchronous functionality in Redux, you’ll need to employ middleware like redux-thunk or redux-saga
-- Each Action Creator should return an action object (which will be passed to dispatch, which will invoke your reducers)
-
+- Class: use `connect`, `mapStateToProps`, `mapDispatchToProps`, `porps.dispatch`,
+- Functional: use `useSelector` (over `useStore`), `useDispatch`
   <br>
 
-put on UI:
+<span>Redux-thunk</span>
+Thunk is a redux middleware, and it adds asynchronous to redux by interacting with a Redux store's `dispatch` and `getState` methods.
 
-- use render(components, HTMLelement) (from react-dom)
-  <br>
-
-- presentational component vs container component
-  - if component is connected to the store
-    <br>
-- use Hooks as a more popular method instead of `mapStateToProps`
-
-<br>
+- **Thunk function**:
 
 ##### **[Back to top](#react-notes)**
 

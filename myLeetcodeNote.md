@@ -1,12 +1,15 @@
 # Leetcode Notes
 
 - [Leetcode Notes](#leetcode-notes)
-    - [Tricks](#tricks)
-    - [DP problem](#dp-problem)
-    - [2 sum, 3 sum](#2-sum-3-sum)
-    - [Backtrack recursive](#backtrack-recursive)
-    - [Binary Search](#binary-search)
-    - [Sliding Window](#sliding-window)
+  - [Tricks](#tricks)
+  - [DP problem](#dp-problem)
+  - [2 sum, 3 sum](#2-sum-3-sum)
+  - [Backtrack recursive](#backtrack-recursive)
+  - [Binary Search](#binary-search)
+  - [Sliding Window](#sliding-window)
+  - [Double Linked List](#double-linked-list)
+  - [Pointers](#pointers)
+  - [BTS](#bts)
 
 ### Tricks
 
@@ -204,3 +207,71 @@ Mostly used when getting dealing with <span>array</span> or <span>string</span>,
 1. move **right** to next index, and decide if **left** needs to move to a new index
 1. get the info in between current **left** and **right**
 1. repeat 2 and 3 until **right** reach the end. Usually, set **right** as the <span>next</span> iteration boundary (exclusive) by the end of current loop, so that if while condition unsatisfied, no next iteration.
+
+<br>
+
+### Double Linked List
+
+- One advantage of double linked list is that the node can <span>remove itself without other reference</span>. In addition, it takes <span>constant time</span> to add and remove nodes from the head or tail.
+  ```
+  cur.next.prev = cur.prev;
+  cur.prev.next = cur.next;
+  ```
+  <br>
+- One paticular implementation is that there could have pseudo head and tail to mark the boundary, so that no need to check `null` node during the update
+  <br>
+
+### Pointers
+
+- One trick when dealing with pointers is that use a pseudo `prevHead` before `head`, and use `cur` starting from `prevHead` so that when moving to `cur.next`, `cur` is ensured existing.
+  ```
+  const prevHead = new ListNode();
+  prevHead = head;
+  let cur = prevHead.next;
+  while (cur) {
+    // do something
+    cur = cur.next;
+  }
+  return prevHead.next;
+  ```
+  <br>
+
+### BTS
+
+```
+  1
+ / \
+2   3
+```
+
+- <span>Traversal</span>:
+  - Inorder: 2 -> 1 -> 3
+  - Preorder: 1 -> 2 -> 3
+  - Postorder: 2 -> 3 -> 1
+- <span>Search</span>
+  - Recursively:
+    ```
+    function recursiveTreeSearch(root, value) {
+      if (!root || root.val = value) {
+        return root;
+      } else if (root.val < value) {
+        recursiveTreeSearch(root.right, value)
+      } else {
+        recursiveTreeSearch(root.left, value)
+      }
+    }
+    ```
+  - Iteratively:
+    ```
+    function iterativeTreeSearch(root, value) {
+      let cur = root;
+      while (cur && cur.val !== value) {
+        if (cur.val < value) {
+          cur = cur.right
+        } else {
+          cur = cur.left
+        }
+      }
+      return cur
+    }
+    ```

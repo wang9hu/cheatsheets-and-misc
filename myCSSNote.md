@@ -29,7 +29,7 @@ For element tag
    - by id: `#idName { color: red }`
    - universal: `* { color: red }`
    - grouping: `a, p { color: red }`
-    
+
      <br>
 
 1. Combinators:
@@ -38,7 +38,7 @@ For element tag
    - child (>): `div > p { color: red }` only **Text 1** will change
    - adjacent sibling (+): `div + p { color: red }` only **Text 3** will change
    - general sibling (~): `div ~ p { color: red }` **Text 3** and **Text 4** will change
-    
+
      <br>
 
 1. Pseudo-classes selector (**:**) style an element when it is (commonly used):
@@ -49,7 +49,7 @@ For element tag
    - first-child of another element: `p:first-child { color: red }`
    - last-child of another element: `p:last-child { color: red }`
      ...
-     
+
      <br>
 
 1. Pseudo-elements selector (**::**) style specified parts of an element:
@@ -60,14 +60,15 @@ For element tag
    - inser after: `p::after { content: url }`
    - highlighted parts: `p::selection { color: red }`
    - marker of list items: `::marker { color: red }`
-    
+
      <br>
 
 1. Attribute selector style elements with specific attributes or attribute values:
+
    - attribute: `a[id] { background-color: yellow }`
    - attribute value: `a[id='idName'] { background-color: yellow }`
      ... atrribute value variants
-     
+
      <br>
 
 ---
@@ -79,11 +80,12 @@ For element tag
   - <span>Outer display type</span>: how is the **contents** of the element are displayed
 
     - Block box
+
       - The box will **break onto a new line**.
       - The width and height properties are **respected**.
       - **Padding, margin and border** will cause other elements to be **pushed away** from the box.
       - If **not specified**, the box width will extend in the inline direction to **fill** the space available in its container. In most cases, the box will become as wide as its container, filling up 100% of the space available.
-        
+
         <br>
 
     - Inline box:
@@ -91,19 +93,19 @@ For element tag
       - The width and height properties will **not apply** (except for image).
       - **Vertical padding**, **margins**, and **borders** will <span>apply</span> but will <span>not cause</span> other inline boxes to move away from the box.
       - **Horizontal padding**, **margins**, and **borders** will <span>apply</span> and will <span>cause</span> other inline boxes to move away from the box.
-       
-       <br>
+        <br>
 
   - <span>Inner display type</span>: how does the element display **within its parent container**.
 
     - By default and without any other instruction, the elements inside a box are also laid out in normal flow and behave as block or inline boxes.
+
       - Block elements: content within fills the available inline space of the element, and the element grows along the block dimension to accommodate its content.
       - Inline elements: The size of inline elements is just the size of their content.
 
         <br>
 
 - common block box elements:
-  
+
   |`<address>`|`<article>`|`<aside>`|`<blockquote>`|`<canvas>`|`<dd>`|`<div>`|
   |`<dl>`|`<dt>`|`<fieldset>`|`<figcaption>`|`<figure>`|`<footer>`|`<form>`|
   |`<h1>-<h6>`|`<header>`|`<hr>`|`<li>`|`<main>`|`<nav>`|`<noscript>`|
@@ -120,14 +122,16 @@ In general, you can set various values for the display type using the `display` 
 ### Things that are Good to Know
 
 1. Precedence of style:
+
    1. Inline style (in HTML style attribute)
    1. ID selector
    1. Class selector
    1. Element selector
-      
+
       <br>
 
 1. Block-element-modifier ( <span>BEM</span> ) class naming rule:
+
    - Names are written in **lowercase** Latin letters.
    - Words are separated by a hyphen (-).
    - The **block name** defines the namespace for its elements and modifiers.
@@ -141,26 +145,46 @@ In general, you can set various values for the display type using the `display` 
    - The **modifier value** is separated from the modifier name by a single underscore (\_).
      - `block-name__elem-name_mod-name_mod-val`
    - For boolean modifiers, the value is not included in the name.
-     
+
      <br>
 
 1. <span>At-rules</span> (@idnetifier (RULE)): instruct CSS how to behave.
+
    - Regular: `@charset`, `@import`, `@namespace`
    - Nested: A subset of nested statements, which can be used as a statement of a style sheet as well as inside of conditional group rules: `@media`, `@keyframe`, `@supports`, `@document`, `@page`, `@font-face`, `@viewport`, `@counter-style`, `@font-feature-values`, `@layer`
    - Conditional group rules: statements that share a common syntax and each can include nested statements, conveying a common semantic meaning which evaluates to either true or false, and the statements will apply under true condition: `@media`, `@supports`, `@document`.
-     
+
      <br>
 
-1. Use <span>Media Queries</span> when
+1. <span>CSS Media Queries</span> `@media`:
+
+   ```
+   @media not|only mediatype and (expressions) {
+     CSS-Code;
+   }
+   ```
+
+   - `not`: Used to negate a media query, returning true if the query would otherwise return false.
+   - `only`: Applies a style only if an entire query matches.
+   - CSS3 Media Types: `all` (default if not specified), `print`, `screen` and `speech`
+     <br>
    - conditionally apply styles with CSS `@media` and `@import` at-rules
    - target specific media for the `<style>`, `<link>`, `<source>`, and other HTML element with the `meida=` attribute
    - test and monitor media states using the `Window.matchMedia()` and `MediaQueryList.addListener()` JavaScript methods
-     
+     <br>
+   - examples:
+     ```
+     @media (min-width: 600px) {
+       p {
+         font-size: 1.25rem;
+       }
+     }
+     ```
      <br>
 
 1. Some attributes can be <span>inherited</span> from parent element. See `inherited: Yes/no`
    in MDN
-   
+
    <br>
 
 1. `<script>` should be put right before the end tag of `<body>`, which is `</body>`, so that DOM could be ready when executing script.
@@ -172,33 +196,34 @@ In general, you can set various values for the display type using the `display` 
    <br>
 
 1. `box-sizing`: sets how the total width and height of an element is calculated
+
    - `content-box`: (default) content width/height is fixed as element's `width`/`height`, border width and paddings are added upon content width/height
    - `border-box`: element's `width`/`height` includes border width and padding, content width will adapt accordingly.
-     
+
      <br>
 
 1. `white-space` attribute controls if text could be wrapped.
-   
+
    <br>
 
-
 1. `auto` is not a valid value for `padding` attribute;
-   
+
    <br>
 
 1. To change element color in `<svg>`, add `fill = 'currentColor'` attribute in its tag and change the font color in CSS.
-   
+
    <br>
 
 1. `transition` defines the transition between two states of an <span>element</span>,
 
    - only works for <span>number value</span> attribute
    - it is a shorthand property for:
+
      - `transition-property`
      - `transition-duration`
      - `transition-timing-function`
      - `transition-delay`
-       
+
        <br>
 
 1. animation
@@ -225,18 +250,18 @@ In general, you can set various values for the display type using the `display` 
 
 1. To make the `height` of an element change with `tansition` by toggle classname, don't use `height`, use `max-height` in the transition and set a value on `max-height` to something bigger than your box will ever get.
 
-    ```
+   ```
 
-    .item-base {
-      max-height: 0;
-      transition: all 1s ease;
-    }
+   .item-base {
+     max-height: 0;
+     transition: all 1s ease;
+   }
 
-    .item-changes {
-      max-height: 300px; /_ this is way larger than it should reach _/
-    }
+   .item-changes {
+     max-height: 300px; /_ this is way larger than it should reach _/
+   }
 
-    ```
+   ```
 
    <br>
 
@@ -260,18 +285,18 @@ In general, you can set various values for the display type using the `display` 
       - when `flex-direction` is `column` or `column-reverse`: `flex-basis` control `height` - when applied, has higher priority than `width` / `height`, but not higher than `max/min-width/heigth`
       - `flex-basis` has no effect on absolutely-positioned flex items, of which `width` and `height` properties would be necessary
       - `flex` is a shorthand property for `flex-grow`, `flex-shrink` and `flex-basis`.
-  
+
         <br>
 
-2. `text-align: center`
+1. `text-align: center`
 
    - inherited: true
    - horizontal alignment of the **inline box** inside a **block box** or table-cell box
    - this will make all the inline boxes to be centeralized in their parent block boxes
-  
+
      <br>
 
-3. Margin collapsing:
+1. Margin collapsing:
 
    - If two <span>vertically adjacent</span> elements both have a margin set on them and their margins touch, the larger of the two margins remains and the smaller one disappears.
      <br>
@@ -294,7 +319,12 @@ In general, you can set various values for the display type using the `display` 
    - margin collapsing only happens within vertical-block margins and flex container's margin doesn't collapse at all.
      <br>
 
-4. Bootstrap:
+1. Child element dimension larger than parent element value:
+
+   - By default, `overflow` is `visible`, but the parent dimension decides how much space is taken for that element, so it is possible for child element go over the boundary of parent element and invade parent sibling element.
+     <br>
+
+1. Bootstrap:
    1. **Content delivery network** ( <span>CDN</span> ) is a quick and easy way of applying css framework, like bootstrap e.g.
       ```
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">

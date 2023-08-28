@@ -117,6 +117,8 @@
 
           <br>
 
+    1. `<svg>`: scallable vector graph (**No pixelation**)
+
 ---
 
 ## Miscellaneous

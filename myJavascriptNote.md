@@ -20,7 +20,7 @@
 - [Hoist](#hoist)
 - [Asynchronous Javascript](#asynchronous-javascript)
 - [Promise](#promise)
-- [Async/await](#async/await)
+- [Async Await](#async-await)
 - [Renderer Process](#renderer-process)
 - [Task queue vs Microtask queue](#task-queue-vs-microtask-queue)
 - [Event Loop](#event-loop)
@@ -646,6 +646,13 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - negative number count back from last item.
     <br>
 
+- with: `arr.with(index, newValue)`
+
+  - **return**: a <span>copy</span> with a `newValue` at the `index`
+  - negative index count back from last item.
+  - If `index` > `array.length` or `index` < `-array.length`, throww `RangeError`
+    <br>
+
 - indexOf: `arr.indexOf(searchElement, start?)`
 
   - **return**: the <span>index</span> of the first element in the array or -1 (not found)
@@ -716,8 +723,10 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     <br>
 
 - reverse: `arr.reverse()` (<span>mutator method</span>)
+  - **return**: the <span>modified</span> array whose elements order are reversed
+- toReversed: `arr.toReversed()`
 
-  - **return**: the modified array whose elements order are reversed
+  - **return**: a modified <span>copy</span> array whose elements order are reversed
     <br>
 
 - pop: `arr.pop()` (<span>mutator method</span>)
@@ -743,6 +752,10 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - **return**: an array containing the deleted elements
   - `start`: starting index (included)
   - `deletcount`: _optional_ default `array.length - start` (number of elements in array), if omitted, will delete all elements in array and return them in an array.
+
+- toSpliced: `arr.toSpliced(start, deletecount?, additem(s)?)`
+
+  - **return**: a <span>copy</span> array with some elements removed and/or replaced at a given index.
 
   ```
   let arr = [1,2,3]
@@ -805,6 +818,8 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     - positive: b placed before a
     - `0`: a, b order unchange
   - if omit `compareFn`, a & b are converted to strings, then sorted according to each `char` Unicode value
+
+- .toSorted(_f_): **return** the sorted <span>copy</span> array, other than that same as `sort()`
 
 <br>
 
@@ -874,20 +889,20 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 - The `Map` object holds key-value pairs and remembers the <span>original insertion order</span> of the keys.
 - Any value (Primitive or Composites) may be used as either a **key** or a **value**.
   <br>
-- <span>Objects vs Maps</span>
-  ✔ Accidental Keys: An object usually has `prototype`, which contains default keys and may collide with user assigned keys; Map does not contain any key by default, and keys must be **explicitly** put into it
-  ✔ Security: As shown above, objects have `prototype` which may lead to **object injection attacks**, while maps is safe to use user-provided keys and values
-  ✔ Key Types: Maps can have **any** value for key, even functions
-  ✔ Key Order: Map object iterates entries, keys, and values in the **order of entry insertion**
-  ✔ Size: Map object has `size` property to easily access its number of items.
-  ✔ Iteration: Map object is **iterable**, so it can use `for ... of` directly
-  ✔ Performance: Map object perform better in frequent **additions** and **removals** of key-value pairs
+- Objects vs Maps
+  ✔ <span>Accidental Keys</span>: An object usually has `prototype`, which contains default keys and may collide with user assigned keys; Map does not contain any key by default, and keys must be **explicitly** put into it
+  ✔ <span>Security</span>: As shown above, objects have `prototype` which may lead to **object injection attacks**, while maps is safe to use user-provided keys and values
+  ✔ <span>Key Types</span>: Maps can have **any** value for key, even functions
+  ✔ <span>Key Order</span>: Map object iterates entries, keys, and values in the **order of entry insertion**
+  ✔ <span>Size</span>: Map object has `size` property to easily access its number of items.
+  ✔ <span>Iteration</span>: Map object is **iterable**, so it can use `for ... of` directly
+  ✔ <span>Performance</span>: Map object perform better in frequent **additions** and **removals** of key-value pairs
   ❌ Serialization and Parsing: Map object **cannot** direcly be passed to `JSON.stringify()`/`JSON.parse()`, not without replacer argument and reviver argument. See [Stack Overflow question](https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map)
   <br>
 
 - Methods:
 
-  - constructor: must use with `new`
+  - Constructor: must use with `new`
 
   ```
   // Create a new empty Map:
@@ -898,27 +913,30 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
   const mapObj = new Map(arr); // Map(2) {0: {1 => 'b'}, 1: {2 => 'c'}}
   ```
 
-  - size: `mapObj.size`: **return** the number of key/value pairs in the Map object.
+  - Size: `mapObj.size`: **return** the number of key/value pairs in the Map object.
     <br>
-  - set: `mapObj.set(key, value)`: <span>adds or updates</span> an entry in a Map object with a specified key and a value.
+  - Set: `mapObj.set(key, value)`: <span>adds or updates</span> an entry in a Map object with a specified key and a value.
     - **return**: the Map object
       <br>
-  - get: `mapObj.get(key)`: get a specified element from a Map object.
+  - Get: `mapObj.get(key)`: get a specified element from a Map object.
     - **return**: the element associated with the specified key, or `undefined` if the key can't be found.
       <br>
-  - delete: `mapObj.delete(key)`: removes the specified element from a Map object by key.
+  - Delete: `mapObj.delete(key)`: removes the specified element from a Map object by key.
     - **return**: `true` if an element in the Map object existed and has been removed, `false` if key did not existed.
       <br>
-  - has: `mapObj.has(key)`: whether an element with the specified key exists or not.
+  - Has: `mapObj.has(key)`: whether an element with the specified key exists or not.
     - **return**: `true` if an element in the Map object existed, `false` if key did not existed.
       <br>
-  - clear: `mapObj.clear()`: removes all elements from a Map object.
+  - Clear: `mapObj.clear()`: removes all elements from a Map object.
     - **return**: `undefined`
       <br>
-  - keys/values/entries: `mapObj.keys/values/entries()`: returns a new map **iterator** object that contains the keys/values/`[key, value]` for each element in the Map object in <span>insertion order</span>.
+  - Keys/Values/Entries: `mapObj.keys/values/entries()`: returns a new map **iterator** object that contains the keys/values/`[key, value]` for each element in the Map object in <span>insertion order</span>.
     - **return**: A new iterable iterator object.
+    - get the first set key:` mapObj.keys().next().value`;
+    - get the first set value:` mapObj.values().next().value`;
+    - get the first set pair array:` mapObj.entries().next().value`;
       <br>
-  - forEach: `mapObj.forEach(callbackFn, thisArg?)`: executes a provided function once per each key/value pair in the Map object, in <span>insertion order</span>.
+  - ForEach: `mapObj.forEach(callbackFn, thisArg?)`: executes a provided function once per each key/value pair in the Map object, in <span>insertion order</span>.
     - **return**: undefined
     - `callbackFn`: takes in 3 arguments:`value?`, `key?`, `mapObj?`
     - `thisArg`: _optional_ A value to use as `this` when executing `callbackFn`.
@@ -935,6 +953,17 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
 - <span>{ [key] : [value] }</span> pair
   - **key**: string (identifier), anything other than string will be forced to string type
+    - name can be wrapped with brackets to get a computed value from an expression:
+
+      ```
+      const key = 'name';
+
+      const obj = {
+        [key]: 'xiao',
+        [1 + 2]: 3,
+      }
+      // obj is { name: 'xiao', 3: 3}
+      ```
   - **value**: anything (primitive data, array, function, other objects)
     <br>
 - property accessors: dot(`.`) & bracket notation(`[]`)
@@ -1666,15 +1695,16 @@ const classInstanc = new ClassName(args);
 
   - **super**: used in the constructor body of a derived class (with extends), or as a "property lookup" (`super.prop` and `super[expr]`)
 
-        - when used as a "function call" in child class constructor:
-          - calls the parent class's constructor while `this` refers to child instance
-          - binds the parent class's public fields
-          - the child class's constructor can further access and modify `this`
-          - must be called before the `this` keyword is used, and before the constructor returns.
-        - when used in "property lookup" form
-          - referring to an object literal's or class's `[[Prototype]]` to access its methods and properties
+    - when used as a "function call" in child class constructor:
+      - calls the parent class's constructor while `this` refers to child instance
+      - binds the parent class's public fields
+      - the child class's constructor can further access and modify `this`
+      - must be called before the `this` keyword is used, and before the constructor returns.
+    - when used in "property lookup" form
 
-        <br>
+      - referring to an object literal's or class's `[[Prototype]]` to access its methods and properties
+
+      <br>
 
     A class element can be characterized by three aspects:
 
@@ -2186,7 +2216,7 @@ Promises are handled by [microtasks queue](#microtask)
 
 ---
 
-## Async/Await
+## Async Await
 
 - `async` functions always return a `promise`. If the return value of an `async` function is not explicitly a `promise`, it will be implicitly wrapped in a `promise`.
   <br>
@@ -2493,6 +2523,11 @@ In DOM:
 
 - **API**: application programming interface
   <br>
+- **cookies** vs **localStorage** vs **sessionStorage**
+  - <span>cookies</span>:
+  - <span>localStorage</span>:
+  - <span>sessionStorage</span>:
+    <br>
 - **className vs classList**:
   - `Element.className`: a string representing the class(s) of the element, seperated by space.
   - `Element.classList`: (read-only) returns a live `DOMTokenList` collection of the class attribute of the element.
@@ -2571,6 +2606,33 @@ In DOM:
       - Adjacent sibling combinator: `+`
       - Column combinator: `||`
     - Pseudo-classes and pseudo-elements: `:` / `::`
+      <br>
+
+- **Event Listener**: `addEventListener(type, listener, options/capture?)`:
+
+  - By default, event listeners are executed in a process known as <span>bubbling</span>, where the event starts at the target element, then <span>propagates</span> up the DOM tree to its parent elements, executing event listeners on each element along the way, until it reaches the root element.
+    <br>
+  - `listener`: The object that receives a notification (an object that implements the Event interface) when an event of the specified type occurs.
+    - can be a callback function ro an object whose `handeEvent()` method servers as the callback function
+    - `e.preventDefault()`: if the event does not get explicitly handled, its default action should not be taken as it normally would be
+    - `e.stopPropagation()`: prevents further propagation of the current event in the capturing and bubbling phases (to parent or other element)
+      <br>
+  - `options`: _optional_ An object that specifies characteristics about the event listener `{...}`
+
+    - `capture` (bool): _optional_ If `true`, the event listeners are executed in the opposite order, starting at the root element and propagating down the DOM tree to the target element, before finally reaching the end of the propagation phase. Default `false`
+    - `once` (bool): If `true`, the `listener` would be automatically removed when invoked. Default `false`
+    - `passive` (bool): If `true`, `listener` will never call `preventDefault()`. Default `false`
+    - `signal`: The listener will be removed when the given `AbortSignal` object's `abort()` method is called (Same as `removeEventListener(type, listerner, options/useCapture?)`). If not specified, no `AbortSignal` is associated with the listener.
+
+      ```
+      const controller = new AbortController();
+      const signal = controller.signal;
+      document.getElementById('myButton').addEventListener('click', handleClick, { signal});
+
+      setTimeout(() => {
+        controller.abort();
+      }, 5000);
+      ```
 
   <br>
 
@@ -2675,31 +2737,5 @@ let JS file execute after html is loaded
    - JavaScript Modules
    - ...
      <br>
-
-1. `addEventListener(type, listener, options/capture?)`:
-
-   - By default, event listeners are executed in a process known as <span>bubbling</span>, where the event starts at the target element, then <span>propagates</span> up the DOM tree to its parent elements, executing event listeners on each element along the way, until it reaches the root element.
-     <br>
-   - `listener`: The object that receives a notification (an object that implements the Event interface) when an event of the specified type occurs.
-     - can be a callback function ro an object whose `handeEvent()` method servers as the callback function
-     - `e.preventDefault()`: if the event does not get explicitly handled, its default action should not be taken as it normally would be
-     - `e.stopPropagation()`: prevents further propagation of the current event in the capturing and bubbling phases (to parent or other element)
-       <br>
-   - `options`: _optional_ An object that specifies characteristics about the event listener `{...}`
-
-     - `capture` (bool): _optional_ If `true`, the event listeners are executed in the opposite order, starting at the root element and propagating down the DOM tree to the target element, before finally reaching the end of the propagation phase. Default `false`
-     - `once` (bool): If `true`, the `listener` would be automatically removed when invoked. Default `false`
-     - `passive` (bool): If `true`, `listener` will never call `preventDefault()`. Default `false`
-     - `signal`: The listener will be removed when the given `AbortSignal` object's `abort()` method is called (Same as `removeEventListener(type, listerner, options/useCapture?)`). If not specified, no `AbortSignal` is associated with the listener.
-
-       ```
-       const controller = new AbortController();
-       const signal = controller.signal;
-       document.getElementById('myButton').addEventListener('click', handleClick, { signal});
-
-       setTimeout(() => {
-         controller.abort();
-       }, 5000);
-       ```
 
 ##### **[Back to table](#table)**
