@@ -1,15 +1,15 @@
 # Leetcode Notes
 
 - [Leetcode Notes](#leetcode-notes)
-  - [Tricks](#tricks)
-  - [DP problem](#dp-problem)
-  - [2 sum, 3 sum](#2-sum-3-sum)
-  - [Backtrack recursive](#backtrack-recursive)
-  - [Binary Search](#binary-search)
-  - [Sliding Window](#sliding-window)
-  - [Double Linked List](#double-linked-list)
-  - [Pointers](#pointers)
-  - [BTS](#bts)
+    - [Tricks](#tricks)
+    - [DP problem](#dp-problem)
+    - [2 sum, 3 sum](#2-sum-3-sum)
+    - [Backtrack recursive](#backtrack-recursive)
+    - [Binary Search](#binary-search)
+    - [Sliding Window](#sliding-window)
+    - [Double Linked List](#double-linked-list)
+    - [Pointers](#pointers)
+    - [BTS](#bts)
 
 ### Tricks
 
@@ -39,6 +39,19 @@
 - **When caching a string or an array in obj**:
   - if existed in `cache` then add `1`, or assign it to `0`:
     `cache[key] = (cache[key] || 0) + 1;`
+  - if existed as array, push or assign `ele`, can't use `push` cause it returns the number of elements
+    `cached[key] = (cached[key] || []).concat(ele)`
+    <br>
+- **Empty an array**
+  - use `arr.length = 0` to empty an array;
+    ```
+    const arr = [1, 2, 3]
+    arr.length = 0; 
+    console.log(arr) // [];
+    ```
+    <br>
+- **Create M * N array filled with 0**
+  - `const grid = new Array(M).fill(0).map((el) => new Array(N).fill(0))`
 
 ### DP problem
 
@@ -239,25 +252,34 @@ Mostly used when getting dealing with <span>array</span> or <span>string</span>,
 ### BTS
 
 ```
-  1
+  A
  / \
-2   3
+B   C
 ```
 
 - <span>Traversal</span>:
-  - Inorder: 2 -> 1 -> 3
-  - Preorder: 1 -> 2 -> 3
-  - Postorder: 2 -> 3 -> 1
+  - Inorder: B -> A -> C
+    ```
+    // recursively
+    function recursiveInorder(root) {
+      function 
+      const leftResult = recursiveInorder(root.left);
+      const rootResult = 
+      return something
+    }
+    ```
+  - Preorder: A -> B -> C
+  - Postorder: B -> C -> A
 - <span>Search</span>
-  - Recursively:
+  - Recursively Search:
     ```
     function recursiveTreeSearch(root, value) {
       if (!root || root.val = value) {
         return root;
       } else if (root.val < value) {
-        recursiveTreeSearch(root.right, value)
+        return recursiveTreeSearch(root.right, value)
       } else {
-        recursiveTreeSearch(root.left, value)
+        return recursiveTreeSearch(root.left, value)
       }
     }
     ```

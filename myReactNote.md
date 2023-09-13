@@ -168,9 +168,27 @@ const MyComponent = () => {
   - `state`: The current state.
   - `setState`: `setState(nextState/updater)` set function that updates the `state` to a different value and trigger a re-render. Will match the `initialState` during the first render.
     - `nextState`: The value that you want the state to be next.
-    - `updater`: a pure function that take the current state as its only argument, and return the next state.
-    - If the next state is the <span>same reference</span> or <span>same primitive value</span> from current state, React will <span>skip re-rendering</span>.
-  - make sure the passed-in **Reference is Different** from the original state reference (_use a new reference or use spread syntax_)
+    - `updater`: a pure function that take the current state as its only argument, and return the next state: `setState(prev => prev + 1)`
+    **Note**:
+      - If the `setState()` uses `state` in its `nextState` expression, multiple calls on it will not have accumulate effects on the final state value. However, `prev` in updater is up to date and will have accumulate effects on the final `state`
+        ```
+        // below one click will only make count to 2;
+        const [count, setCount] = useState(1);
+        const handleClick = () => {
+          setCount(count + 1); // here count is not up to date
+          setCount(count + 1);
+          setCount(count + 1);
+        }
+
+        // below one click will make count to 4;
+        const [count, setCount] = useState(1);
+        const handleClick = () => {
+          setCount(prev => prev + 1); // here prev is up to date
+          setCount(prev => prev + 1);
+          setCount(prev => prev + 1);
+        }
+        ``` 
+      - If the next state is the <span>same reference</span> or <span>same primitive value</span> from current state, React will <span>skip re-rendering</span>. Make sure the passed-in **Reference is Different** from the original state reference (_use a new reference or use spread syntax_)
     <br>
 
   ```
@@ -568,9 +586,12 @@ Virtual DOM: a JavaScript representation of the real DOM tree
   ```
 
   - `<Routes>...</Routes>`:
-    - `<Route /?>`:
+    - `<Route element={<ComponentName />}/?>`: 
       - `index`: _bool_ if matching the parent url exactly, render this as default
-  - **Nested routing**:
+      - Before React Router V6, use `component={...}` instead of `element={...}`
+      <br>
+      
+  - **Nested routing: \<Outlet />**:
 
     - In `Route`: use `<Outlet />` representing passed-in nested component
 
@@ -825,7 +846,6 @@ ReactDOM.render(
     - `mapStateToProps` receives `state`, return an obj listing any properties of state that the component want to subscribe to.
     - keys in return obj will be passed on as props to the component they are connected to
     - access props property use `this.props.key`
-
       <br>
 
   - `mapDispatchToProps`: inject actions to props
@@ -875,7 +895,6 @@ ReactDOM.render(
 
   - use render(components, HTMLelement) (from react-dom)
     <br>
-
   - presentational component vs container component
     - if component is connected to the store
       <br>
@@ -904,7 +923,7 @@ Module/Code bundler
 
 - reason to use:
 
-  - uglifying and minifying: save resources
+  - **uglifying** and **minifying**: save resources
   - can use Modularity, which prevents global namespace polluting, and converts to one file ( bundle.js ) when uploading
   - can use newest tech for building: e.g., can transfer JSX to JS, Html, and CSS
 

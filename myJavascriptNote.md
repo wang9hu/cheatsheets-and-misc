@@ -382,6 +382,19 @@ Variables that do not have an assigned value, from values that **hasn't been def
   - **return**: An Array whose contents depend on the presence or absence of the global (`g`) flag, or `null` if no matches are found.
     - with `g` : all matches
     - without `g`: the first match
+    <br>
+
+- matchAll: `str.matchAll(regex)` 
+  - **return**: an iterator of all results matching this string against a regular expression, including capturing groups.
+    ```
+    const regexp = /t(e)(st(\d?))/g;
+    const str = 'test1test2';
+
+    const array = [...str.matchAll(regexp)];
+
+    console.log(array);
+    // Expected output: [["test1", "e", "st1", "1"], ["test2", "e", "st2", "2"]]
+    ```
 
 <br>
 
@@ -535,12 +548,17 @@ Variables that do not have an assigned value, from values that **hasn't been def
   - `\s`: match whitespace characters (spaces, tabs etc)
     - `\S`: match any characters but whitespace characters (spaces, tabs etc)
   - `\t`: match tab character only
-    <br>
+  <br>
 
 - Assertions (boundaries)
   - `^...`: matches the <span>beginning</span> of input. (notice the difference with `[^]`)
   - `...$`: matches the <span>end</span> of input.
     - `^x{n}$`: <span>EXACTLY</span> n (positive integer) characters
+    <br>
+
+- Groups and backreferences: ()
+  - `(x)`: capturing group
+  - ``
 
 #### Optional Flags at the end:
 
@@ -775,11 +793,12 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     - Callback function: `callbackFn`
     - Inline callback funciton: `function(element, index?, array?) {/*...*/}`
       <br>
-  - `thisArg`: `this` when executing `callbackFn`)
+  - `thisArg`: `this` when executing `callbackFn`, defaults to `undefined`
+    - **the usual rules:**: if `non-strict`, primitive `this` are wrapped into objects, and `undefined/null` is substituted with `globalThis`. The `thisArg` is irrelevant for any arrow callback functionse
 
     <br>
 
-- **<span>Note</span>**: index manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration
+- **<span>Note</span>**: index manipulation during iteration doesn't affect next iteration, this is different from `for (let i = 0; i < array.length; i++)`iteration. However, any modification to the original array will affect the next iteration.
   <br>
 
 - .every(_f_): **return** `true` if `callbackFn` returns a truthy value for <span>every</span> `element`
@@ -977,6 +996,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
   - when working with variables: `let key = 'name'`
     - `obj[key] = 'Xiao'`
     - ~~`obj.key`~~
+    - `{ [key]: 'Xiao' } // { name: 'Xiao' };`
       <br>
 - Properties can be enumerated (for...in loop) if they are enumerable
   <br>
