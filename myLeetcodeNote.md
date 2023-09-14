@@ -62,6 +62,13 @@
   - distinguish DP problem from greedy algorithm / divide and conquer problem
 - Tips:
   - DP[i] should have close connection to nums[i];
+  <br>
+- Two ways: <span>tabulation & memoization</span>
+  - **tabulation**: bottom-up way, solving related sub-problem first, filling up the n-dimensional table, then based on the table to compute the top problem
+    - mostly used when all subproblems must be solved at least once, from bottom to top
+    - iteratively
+  - **memoization**: top-down way, from the original problem and split it into multiple sub-problem, and store subproblem solution dynamically.
+    - recursive functions from top to down order
     <br>
 
 ### 2 sum, 3 sum
@@ -73,19 +80,21 @@
 
 ### Backtrack recursive
 
-- **Permutation**, similar to DFS (_depth first search_), traverse through all possible outcome
+- **Permutation**, similar to **DFS** (_depth first search_), traverse through all possible outcome
 - its time complexity will always be
 - Three questions:
 
   1. Decisions that have already been made (track)
   2. Choices list (choice)
   3. No choice condition (ends)
+  <br>
+- **Note**: choices doesn't have to be a single value, it could be a combination of different values, e.g. row and column index of a 2-D table
 
   ```
   // pseudo codes
   result = [];
   backtrack(track, choices) {
-    if (ends):
+    if (no more choices):
       result add track
       return
     for (choice in choices) {
@@ -95,6 +104,21 @@
     }
   }
   ```
+- <span>Duplicate choices & Repeated choices</span>
+  - Sort array when possible 
+  - use a `start` parameter to indicate which element is current backtrack starts from
+  - use `let i = start | 0` to iterate from `start` or `0`
+  - If choices 
+    - **no duplicates && no repeats**: use `start` with `i + 1`, end condition is run out of choices, no same track
+    <br>
+    - **has duplicates && no repeats**: use `start` with `i + 1`, end condition is run out of choices, possible same track, use cache to check if existed already, 
+      - for array, sorted, and use iteration of all choices and check `i > start && choices[i] === choices[i - 1] ? skip current iteration : finish current iteration` so that iteration afterwards don't need to count that element again.
+      - like`JSON.stringify(track)` 
+    <br>
+    - **no duplicates && can repeats**: use `start` with `i`, end condition is decided by problem matching condition, maybe something else like `sum === target`, no same track
+    <br>
+    - **has duplicates && can repeats** (Very Rarely): use `start` with `i`, end condition is decided by problem matching condition.  
+    <br>
 
 - Example: Generate Parentheses
 
