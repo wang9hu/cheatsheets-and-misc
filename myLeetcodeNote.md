@@ -80,7 +80,7 @@
 
 ### Backtrack recursive
 
-- **Permutation**, similar to **DFS** (_depth first search_), traverse through all possible outcome
+- **Permutation**, similar to **DFS** (_depth first search_), traverse through all possible outcome, differences is that **DFS** focus on every single point and **backtrack** focus on the path it goes by.
 - its time complexity will always be
 - Three questions:
 

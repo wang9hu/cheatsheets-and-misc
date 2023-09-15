@@ -1322,9 +1322,10 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 - The `function*` declaration (`function` keyword followed by an asterisk `*`) defines a generator function, which returns a `Generator` object if invoked.
 
   ```
+  // Define a generator
   function* generateId(id) {
     while(id <= 7) {
-      const increment = yield id          // will stop at yield operator each time
+      const increment = yield id          
       if (increment !== undefined) {
         id += increment
       } else {
@@ -1332,12 +1333,17 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
       }
     }
   }
+
+  // Create a Generator object
+  const generatorObj = generateId(1);
   ```
 
   <br>
 
 - `yield [expression]` operator: pause and resume a generator function.
   - `expression`: the value to yield from generator function via the iterator protocal. yield `undefined` if omitted.
+  - when `generatorObj` run `.next([input1])`, the generator will stop at yield operator, return whatever is being yielded `id` as the `value` field in the return object `{value: value, done: false}`, when `.next([input2])` method invokes again, the previous `input1/undefined` will be passed as the return of `yield` operator (`increment`) and continue executing the codes until reach the next `yield` operator, 
+  - when no more `yield`, return `{value: undefined, done: true}`
     <br>
 
 **Generator object**:
@@ -1345,9 +1351,6 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 - returned by a generator function
 
   ```
-  // create a Generator object
-  const generatorObj = generateId(1);
-
   console.log(generatorObj.next());   // { value: 1, done: false }
   console.log(generatorObj.next(4));  // { value: 5, done: false }
   console.log(generatorObj.next());   // { value: 6, done: false }
