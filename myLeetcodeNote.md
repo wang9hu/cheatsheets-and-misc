@@ -10,6 +10,7 @@
     - [Double Linked List](#double-linked-list)
     - [Pointers](#pointers)
     - [BTS](#bts)
+    - [Heap](#heap)
 
 ### Tricks
 
@@ -52,6 +53,9 @@
     <br>
 - **Create M * N array filled with 0**
   - `const grid = new Array(M).fill(0).map((el) => new Array(N).fill(0))`
+  <br>
+
+**[Back to top](#leetcode-notes)**
 
 ### DP problem
 
@@ -71,12 +75,16 @@
     - recursive functions from top to down order
     <br>
 
+**[Back to top](#leetcode-notes)**
+
 ### 2 sum, 3 sum
 
 - unique nums: hash
 - duplicates: sort + two pointers (start, end)
 - unsortable: use hashset, for inner loop, set `nums[j]: i` pair and check for complement value (will be slower than sorted method);
   <br>
+
+**[Back to top](#leetcode-notes)**
 
 ### Backtrack recursive
 
@@ -155,6 +163,8 @@
   ```
 
   <br>
+
+**[Back to top](#leetcode-notes)**
 
 ### Binary Search
 
@@ -235,6 +245,8 @@
      - Post-processing is required, iteration ends when `left + 1 === right`, need to check `nums[left]` and `nums[right]` for condition.
        <br>
 
+**[Back to top](#leetcode-notes)**
+
 ### Sliding Window
 
 Mostly used when getting dealing with <span>array</span> or <span>string</span>, like getting info about **subarray** or **substring**, like **max/min sum**, **max diff**, or **non-repeat substring**.
@@ -247,6 +259,8 @@ Mostly used when getting dealing with <span>array</span> or <span>string</span>,
 
 <br>
 
+**[Back to top](#leetcode-notes)**
+
 ### Double Linked List
 
 - One advantage of double linked list is that the node can <span>remove itself without other reference</span>. In addition, it takes <span>constant time</span> to add and remove nodes from the head or tail.
@@ -257,6 +271,8 @@ Mostly used when getting dealing with <span>array</span> or <span>string</span>,
   <br>
 - One paticular implementation is that there could have pseudo head and tail to mark the boundary, so that no need to check `null` node during the update
   <br>
+
+**[Back to top](#leetcode-notes)**
 
 ### Pointers
 
@@ -272,6 +288,8 @@ Mostly used when getting dealing with <span>array</span> or <span>string</span>,
   return prevHead.next;
   ```
   <br>
+
+**[Back to top](#leetcode-notes)**
 
 ### BTS
 
@@ -321,3 +339,114 @@ B   C
       return cur
     }
     ```
+
+  <br>
+
+**[Back to top](#leetcode-notes)**
+
+### Heap
+  - **Complete Binary Tree (CBT)**: Each level of a Complete Binary Tree contains the maximum number of nodes, except possibly the last layer, which must be filled from **left to right**.  
+  <br>
+  - A Complete Binary Tree of **n** nodes can only have **one possible shape**
+    <br>
+  - Heap property: for any given node C, if P is a parent node of C, then:
+    - max heap: P.val >= C.val
+    - min heap: P.val <= C.val
+  <br>
+  - All heaps must be <span>Complete Binary Trees</span>
+    ```
+    // max heap: | // min heap: |  // index tree:
+         30      |       3      | Math.floor((i-1)/2)      
+        /  \     |      / \     |       /  \     
+       25  17    |     9   14   |      i   i+1   
+      /  \       |    / \       |     / \       
+    19   21      |  10   15     |  2i+1 2i+2     
+    ```
+  - Heap operations:
+    - insert(num): add a new key to heap
+    - delete(num): remove a key from heap
+    - **heapify**:  creat a heap (max or min) from the given array
+    - findMax/Min: return max/min element from heap
+    - extractMax/Min: remove and return max/min element from heap
+    - deleteMax/Min: remove max/min element from heap
+    - size: return the size
+    - isEmpty: check for empty
+    - getList: get the heap as an array
+    <br>
+  - Binary heap represented using array index
+    - for any node whose index position in an array is `i`
+      - its left child index: `2i + 1`
+      - its right child index: `2i + 2`
+      - its parent index: `Math.floor((i - 1) / 2)`
+    ```
+    class Heap {
+      constructor() {
+        this.data = [];
+      }
+
+      getParentIndex(i) {
+        return Math.floor((i - 1) / 2);
+      }
+
+      getLeftChildIndex(i) {
+        return 2 * i + 1;
+      }
+
+      getRightIndex(i) {
+        return 2 * i + 2;
+      }
+
+      swap(i1, i2) {
+        const temp = this.data[i1];
+        this.data[i2] = this.data[i1];
+        this.data[i1] = this.data[i2];
+      }
+
+      maxHeapifyUp(i) {
+        if (i === 0) return;
+        const parentIndex = this.getParentIndex(i);
+        if (this.data[i] > this.data[parentIndex]) {
+          this.swap(i, parentIndex);
+          this.maxHeapifyUp(parentIndex);
+        }
+      }
+
+      maxHeapifyDown(i) {
+        if (i > this.data.length - 1) return;
+        const leftChildIndex = this.getLeftChildIndex(i);
+        const rightChildIndex = this.getRightChildIndex(i);
+
+        const leftChildValue = this.data[leftChildIndex]
+        const rightChildValue = this.data[rightChildIndex]
+
+        let maxChildIndex;
+        
+        if (leftChildValue !== undefined && rightChildValue !== undefined) {
+          const maxChildIndex = leftChildValue > rightChildValue ? leftChildValue : rightChildValue;
+        } else if (leftChildValue !== undefined && rightChildValue === undefined) {
+          maxChildIndex = leftChildIndex;
+        } else if (leftChildValue === undefined && rightChildValue !== undefined) {
+          maxChildIndex = rightChildIndex;
+        } else {
+          return;
+        }
+        this.swap(i, maxChildIndex);
+        this.maxHeapifyDown(maxChildIndex);
+      }
+
+      insert(num) {
+        this.data.push(num);
+        this.maxHeapifyUp(this.data.length - 1);
+      }
+
+      extract(num) {
+        let numIndex = this.data.findIndex(n => n === num);
+        this.swap(numIndex, this.data.length - 1);
+        const res = this.data.pop();
+        maxHeapifyDown(numIndex);
+        return res;
+      }
+    }
+    ```
+
+**[Back to top](#leetcode-notes)**

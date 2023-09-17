@@ -223,7 +223,7 @@
 - For `<input type="radio">`, a **radio group** is defined by giving each of radio buttons in the group the same `name`, so that a radio group is established, selecting any radio button in that group **automatically deselects** any currently-selected radio button in the same group.
   <br>
 
-- ==HTML entities==: reserved characters in HTML (use HTML reference chart)
+- <span>HTML entities</span>: reserved characters in HTML (use HTML reference chart)
   a piece of text ("string") that begins with an ampersand `&` and ends with a semicolon `;`
 
   - `&_entity_name_;`: &amp; => `&amp;` | &num; => `&num;`
@@ -231,13 +231,13 @@
   - `&#x_entity_number_;`(hex nubmer) : &#x26; => `&#x26;` | &#x23; => `&#x23;`
     <br>
 
-- ==MouseEvent==: `clientX` vs `pageX` vs `screenX` vs `offsetX`
+- <span>MouseEvent</span> `clientX` vs `pageX` vs `screenX` vs `offsetX`
   - `clientX`: visible area on the page
   - `pageX`: entire page area, scrolling doesn't matter
   - `screenX`: entire screen area (window usually not take the whole screen, e.g. browser interface)
   - `offsetX`: relative to the position of the padding edge of the target node
     <br>
-- Difference between ==node== and ==element== in DOM
+- Difference between <span>node</span> and <span>element</span> in DOM
 
   - a DOM document consists of a hierarchy of **nodes**, each node can have a parent and/or children.
   - There are several types of nodes, which can be represented in `Node.nodetype` property:
@@ -262,3 +262,39 @@
   ```
 
   - An **element** is just a node that's written using a tag in the HTML document.
+  <br>
+  
+- <span>Event Propagation<span/>: <span>Capturing</span> vs <span>Bubbling</span>
+  - <span>Propagation</span>: how events travel through the DOM tree.
+    - `event.stopPropagation()`: doesn't propagate the event;
+  <br>
+  - When an <span>event</span> is triggered on a child element, and its parent element and root element also have the same eventlistener:
+    - <span>Bubbling</span>: event trigger order is: <span>child</span> -> <span>parent</span> -> <span>root</span>
+    - <span>Capturing</span>: event trigger order is : <span>root</span> -> <span>parent</span> -> <span>child</span>
+    <br>
+  - <span>W3C model</span>:  first **captured** until it reaches the **target element** and then **bubbles up** again.
+    ```
+    root             | |  / \
+    -----------------| |--| |-----------------
+    | element1       |1|  |2|                |
+    |   -------------| |--| |-----------     |
+    |   |element2    \ /  | |          |     |
+    |   --------------------------------     |
+    |        W3C event model                 |
+    ------------------------------------------
+    ```
+    - use `addEventListener(event, callback, useCapture)` to handle propagation.
+      - `useCapture`: default `false` is bubbling phase, if `true` is capturing phase
+      - e.g. If:
+        `root.addEventListener('click',doSomethingR,false) &&
+        element1.addEventListener('click',doSomething1,true) &&
+        element2.addEventListener('click',doSomething2,false);`
+        1. Click `element2`, event propagation starts
+        2. event starts capturing phase: `root`->`element2`->`element2`
+        3. `root` is in bubbling phase, pass
+        4. `element1` is in capturing phase, `doSomething1` trigger 
+        5. `element2` is the target element, `doSomething2` trigger
+        6. event starts bubbling phase: `element2`->`element1`->`root`
+        1. `element1` is in capturing phase, pass
+        1. `root` is in bubbling phase, `doSomethingR` trigger
+        1. event propagation finishes.

@@ -518,7 +518,7 @@ Virtual DOM: a JavaScript representation of the real DOM tree
 - <span>Components</span>:
 
   - `<Fragment>`: often used via `<>...</>` syntax, for grouping elements without a wrapper node.
-    - `key`:_optional_ only available to Fragment, not `<>...</>`, usually need to do this when **Rendering a list of Fragments**
+    - `key`:_optional_ only available to `<Fragment>...</Fragment>` not `<>...</>`, usually need to do this when **Rendering a list of Fragments**
     - Usage: when rendering, react will remove the fragment tag and directly render its children on page.
       <br>
 
