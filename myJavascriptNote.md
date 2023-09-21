@@ -1397,7 +1397,7 @@ fn.prototype.constructor === fn // true
 - **argument**: value passed to function during function invocation
 - **parameter**: placeholder in function definition
 
-- `fn`: A typical function has default properties:
+- `fn`: A typical function has default standard properties, and they can't be overwritten.`fn.name = 'fn2' // this will not work`
 
   - `fn.length`: the number of parameters expected by the `fn`
 

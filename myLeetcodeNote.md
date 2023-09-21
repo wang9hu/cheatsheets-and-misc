@@ -52,7 +52,8 @@
     ```
     <br>
 - **Create M * N array filled with 0**
-  - `const grid = new Array(M).fill(0).map((el) => new Array(N).fill(0))`
+  - `const grid = Array(M).fill(0).map((el) => Array(N).fill(0))`
+  - `const grid = Array.from({ length: M }).map(() => Array(N).fill(0))`
   <br>
 
 **[Back to top](#leetcode-notes)**
@@ -420,15 +421,13 @@ B   C
         const rightChildValue = this.data[rightChildIndex]
 
         let maxChildIndex;
-        
-        if (leftChildValue !== undefined && rightChildValue !== undefined) {
-          const maxChildIndex = leftChildValue > rightChildValue ? leftChildValue : rightChildValue;
-        } else if (leftChildValue !== undefined && rightChildValue === undefined) {
-          maxChildIndex = leftChildIndex;
-        } else if (leftChildValue === undefined && rightChildValue !== undefined) {
-          maxChildIndex = rightChildIndex;
+        if (leftChildIndex < this.data.length && rightChildIndex < this.data.length) {
+          maxChildIndex = leftChildValue > rightChildValue ? leftChildValue : rightChildValue;
+        } else if (leftChildIndex < this.data.length) {
+          maxChildIndex = leftChildIndex;     
         } else {
-          return;
+          // because complete binary tree, if no left child, then no right child
+          return; 
         }
         this.swap(i, maxChildIndex);
         this.maxHeapifyDown(maxChildIndex);

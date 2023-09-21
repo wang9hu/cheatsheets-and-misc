@@ -52,10 +52,11 @@
 
     - **exports**: [A reference to the module.exports]
       e.g.: `exports.newProp = newPropValue`;
-      - Caution: if use `exports = newValue`, it will unbound exports with `module.exports`
+      - Caution: if use `exports = newValue`, it will unbound exports with `module.exports`, and if use `module.exports = newValue`, 
         <br>
     - **require**: [import modules, JSON, and local files]
       e.g.: `const myLocalModule = requre('./path/myLocalModule');`
+      - Take from `module.exports`, not `exports`
       - `require(id)`
         - id (string) module name or path
         - Returns: (any type) exported module content (from cache)
@@ -128,20 +129,27 @@
 
 CJS and ESM are two module systesm in JavaScript that are actively being used.
 
-- CJS was introduced as the default module system for Node.js
+- <span>CJS</span> was introduced as the default module system for Node.js
 
   ```
   // importing
   const fs = require("fs");
 
-  // exporting
-  module.exports = function() { return "Hi there!";}
-  ```
+  // exporting using exports or module.exports, but stick to one only 
+  module.exports.someVariable = ...
+  exports.someVariable = ...
 
-  CJS was initially specific for Nodejs when browser did not have a module system yet.
+  // this will disconnect exports entirely
+  module.exports = someVariable 
+
+  // this will disconnect with module.exports, DON'T USE THIS!!
+  exports = someVariable 
+  ```
+  - `exports` and `module.exports` initially refer to the same object, but `require` only takes from `module.exports`
+  - CJS was initially specific for Nodejs when browser did not have a module system yet.
   <br>
 
-- ESM was introduced by ECMAScript 2015 (ES6) as the standardized module system for working in browsers.
+- <span>ESM</span> was introduced by ECMAScript 2015 (ES6) as the standardized module system for working in browsers.
 
   ```
   // importing
@@ -152,15 +160,19 @@ CJS and ESM are two module systesm in JavaScript that are actively being used.
   export nonDefaultExport1() { return "Hi there!";}
   ```
 
-  ESM as the standard in browser-land, and CJS as the standard in node-land.
+  ESM as the standard in **browser-land**, and CJS as the standard in node-land.
   Frontend frameworks like React or Vue have been using the ESM syntax even before it became a standard in the browser. Though they used tools like Babel to transpile it to CommonJS syntax
   <br>
 
-- Since most modules were initially written in CommonJS, It is possible to import CJS modules in ESM (`import * as CJS from 'cjs-module'`), but ESM cannot be used in CJS modules.
+- CJS is **synchronous**, it will block execution of code until module is fully loaded, which ESM is **asynchronously** imported.
+- ESM **can** `import` CJS modules, but CJS **cannot** `require` a ESM.
+- Both **CJS** and **ESM** are loaded and evaluated at run time in nodejs with dynamic imports, but **ESM** in compliation are evaluated statically at compile-time before code execution.
+- Browsers don't support **CJS**, require bundlers like webpack; **ESM** is supported in modern browsers
+
 
 Ways to adopt ESM in Node:
 
-- use `.mjs` file extension for all ESM files
+- use `.mjs` file extension for ESM files
 - use `.js` file and in nearest parent `package.json`, contains a top-level `"type": "module"` (default is `"commonjs"`), this will tell Node that all `.js` files are written with ESM
 
 Tell HTML file that you are using module:
