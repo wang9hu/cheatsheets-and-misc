@@ -521,6 +521,14 @@ Virtual DOM: a JavaScript representation of the real DOM tree
     - `key`:_optional_ only available to `<Fragment>...</Fragment>` not `<>...</>`, usually need to do this when **Rendering a list of Fragments**
     - Usage: when rendering, react will remove the fragment tag and directly render its children on page.
       <br>
+  
+  - `<Suspense>`: lets you display a fallback until its children have finished loading
+    ```
+    <Suspense fallback={<Loading />}>
+      <SomeComponent />
+    </Suspense>
+    ```
+    <br>
 
 - <span>react-dom</span>: for building up DOM element for browser
 
@@ -902,7 +910,7 @@ ReactDOM.render(
 
 <span>Class vs Functional</span>
 
-- Class: use `connect`, `mapStateToProps`, `mapDispatchToProps`, `porps.dispatch`,
+- Class: use `connect`, `mapStateToProps`, `mapDispatchToProps`, `props.dispatch`,
 - Functional: use `useSelector` (over `useStore`), `useDispatch`
   <br>
 

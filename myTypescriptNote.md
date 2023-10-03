@@ -62,7 +62,7 @@
 
 ## Types
 
-### <span>TypeScript basic types:</span> 
+#### <span>TypeScript basic types:</span> 
 `number`, `string`, `boolean`, `null` and `undefined`
 
 - No type notation is needed cause compiler will figure it out based on the value (**implicit** type assignment)
@@ -82,7 +82,7 @@
   `let num: number = 123_456_789;`
 
 
-### <span>TypeScript new primitive types:</span> `any`, `unknown`, `never`
+#### <span>TypeScript new primitive types:</span> `any`, `unknown`, `never`
 
 - `any`: if not assigned any type, it will be `any` type, meaning it could be **anything**, so TS will give no error or warning on any operation of that variable, it **disables type checking** for that variable. This is useful when you don’t want to write out a long type just to convince TypeScript that a particular line of code is okay.
 
@@ -134,7 +134,7 @@
       ```
       <br>
 
-### <span>Enum</span>: 
+#### <span>Enum</span>: 
   
 `enum`: associate a set of **named constants** with **values**, and make it a type for a variable that could be one of the values.
   ```
@@ -196,9 +196,7 @@
 - In modern TypeScript, you may not need an `enum` when an object with `as const` type assertion could suffice:
   <br>
 
-
-
-### <span>Arrays</span>:
+#### <span>Arrays</span>:
 
 - TS can annotate the array element type (two ways)
   - `let numbers: number[] = [1, 2, 3]`
@@ -211,14 +209,14 @@
 
 <br>
 
-### <span>Tuple</span>: 
+#### <span>Tuple</span>: 
 
 - a tuple is a typed array with pre-defined length and types:
   `let user: [number, string] = [33, 'age']`
 
   <br>
 
-### <span>Functions</span>:
+#### <span>Functions</span>:
 
 Best Practice: annotate every parameters and variables in functions
 
@@ -236,7 +234,7 @@ function calculatedTax(income: number, taxYear = 2023, name?: string): number {
 }
 ```
 
-### <span>Generics Types</span>:
+#### <span>Generics Types</span>:
 
 - When invoking, depending on what `Type` is (_name is arbitrary, could be anything_), and the function will take that `Type` as input or returns
 
@@ -258,7 +256,7 @@ map<>
 
 <br>
 
-### <span>Object</span>:
+#### <span>Object</span>:
 
 - when annotate type of an object, add a `?` after property indicating this property may not be shown in the object, or annotate normally and temporarily assign a empty string to it.
 - `readonly` can also apply to properties by adding in the front to make it unchangable
@@ -282,7 +280,7 @@ employee.fax = '123-456-7890';
 
 <br>
 
-### <span>Class</span>:
+#### <span>Class</span>:
 
 - when define classes, specifiy the type of each property **above the constructor method**
 - access modifiers: optional
@@ -297,7 +295,7 @@ class User {
 
 <br>
 
-### <span>Type Alias</span>:
+#### <span>Type Alias</span>:
  can be used for primitives and complex types
 
 ```
@@ -311,7 +309,7 @@ type Employee = {
 
 <br>
 
-### <span>Interfaces</span>:
+#### <span>Interfaces</span>:
 
 - just like type alias, but have two distinctions:
   - Interfaces can only apply to object types
@@ -330,7 +328,7 @@ interface ColoredRectangle extends Rectangle {
 
 <br>
 
-### <span>Union Type</span>: 
+#### <span>Union Type</span>: 
 one or another
 use `|` between types
 
@@ -346,7 +344,7 @@ const numAndStr: (number | string)[] = [1, 'apple', 2, 'banana']
 
 <br>
 
-### <span>Intersection Type</span>: 
+#### <span>Intersection Type</span>: 
 one and another
 use `&` between types
 
@@ -369,7 +367,7 @@ let textBox: UIWidget = {
 
 <br>
 
-### <span>Literal Type</span>: 
+#### <span>Literal Type</span>: 
 exact, specific value
 
 ```
@@ -383,7 +381,7 @@ type Metric = 'cm' | 'inch';
 <br>
 
 
-### <span>Optional Chaining</span>:
+#### <span>Optional Chaining</span>:
 
 - use `?.` to access the property that may or may not exist, return `undefined` if not.
 - this can also be used with array if the target array may or may not exist
@@ -405,7 +403,8 @@ let log: any = null;
 log?.('a') // will execute only log is a actual function, or return undefined
 ```
 ## Concepts
-### Type assertion:
+
+#### <span>Type assertion:</span>
 - To **ensure TS** that a specific variable has a certain type. 
   - Non-null assertion operator`!`:
     ```
@@ -431,6 +430,20 @@ log?.('a') // will execute only log is a actual function, or return undefined
     // below is equivalent to above, except in .tsx files
     const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
     ```
+#### <span>types.d.ts</span>
+  - in `tsconfig.json`, set `"include": [..., **/*.ts, ...]`
+  - then `.d.ts` files do not need export anything, TS will know about them.
+  <br>
+
+#### <span>import type</span>
+  - a TS syntax added after 3.8 for type-only imports and exports
+  ```
+  import type { SomeThing } from "./some-module.js";
+
+  export type { SomeThing }
+  ```
+
+
 
 
 ## Topics to check later
