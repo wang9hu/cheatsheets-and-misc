@@ -1,4 +1,36 @@
-## TypeScript: Javascript with type checking
+# TypeScript
+
+- [TypeScript](#typescript)
+  - [Types](#types)
+    - [TypeScript basic types](#typescript-basic-types)
+    - [TypeScript new primitive types `any`, `unknown`, `never`](#typescript-new-primitive-types-any-unknown-never)
+    - [Enum](#enum)
+    - [Arrays](#arrays)
+    - [Tuple](#tuple)
+    - [Functions](#functions)
+    - [Object](#object)
+    - [Class](#class)
+    - [Type Alias](#type-alias)
+    - [Interfaces](#interfaces)
+    - [Union Type](#union-type)
+    - [Intersection Type](#intersection-type)
+    - [Literal Type](#literal-type)
+    - [Optional Chaining](#optional-chaining)
+    - [Type Manipulation](#type-manipulation)
+      - [Generics](#generics)
+      - [The `keyof` type operator](#the-keyof-type-operator)
+      - [The `typeof` type operator](#the-typeof-type-operator)
+      - [The Indexed Type operator](#the-indexed-type-operator)
+      - [The Conditional Types](#the-conditional-types)
+      - [The Mapped Types](#the-mapped-types)
+      - [Template Literal Types](#template-literal-types)
+    - [Untility TYpes](#untility-types)
+  - [Concepts](#concepts)
+      - [Type assertion](#type-assertion)
+      - [types.d.ts](#typesdts)
+      - [import type](#import-type)
+  - [Topics to check later](#topics-to-check-later)
+
 <br>
 
 **Benefits**:
@@ -29,7 +61,8 @@
     - `let age: number = 20`;
 - `.d.ts`: type declaration files, only contain type information used for type checking.
   <br>
-- Configure typescript compiler:
+
+- **Configure typescript compiler**:
   - in terminal: `tsc --init` // create a tsconfig.json file, in it:
     - Language and Environment sesson:
       - `"target": "ES2016"` // version of JS complier is going to generate, can be changed depends where the application is going to run
@@ -62,7 +95,7 @@
 
 ## Types
 
-#### <span>TypeScript basic types:</span> 
+### TypeScript basic types 
 `number`, `string`, `boolean`, `null` and `undefined`
 
 - No type notation is needed cause compiler will figure it out based on the value (**implicit** type assignment)
@@ -82,7 +115,7 @@
   `let num: number = 123_456_789;`
 
 
-#### <span>TypeScript new primitive types:</span> `any`, `unknown`, `never`
+### TypeScript new primitive types `any`, `unknown`, `never`
 
 - `any`: if not assigned any type, it will be `any` type, meaning it could be **anything**, so TS will give no error or warning on any operation of that variable, it **disables type checking** for that variable. This is useful when you don’t want to write out a long type just to convince TypeScript that a particular line of code is okay.
 
@@ -134,7 +167,7 @@
       ```
       <br>
 
-#### <span>Enum</span>: 
+### Enum 
   
 `enum`: associate a set of **named constants** with **values**, and make it a type for a variable that could be one of the values.
   ```
@@ -196,7 +229,7 @@
 - In modern TypeScript, you may not need an `enum` when an object with `as const` type assertion could suffice:
   <br>
 
-#### <span>Arrays</span>:
+### Arrays
 
 - TS can annotate the array element type (two ways)
   - `let numbers: number[] = [1, 2, 3]`
@@ -209,16 +242,16 @@
 
 <br>
 
-#### <span>Tuple</span>: 
+### Tuple
 
 - a tuple is a typed array with pre-defined length and types:
   `let user: [number, string] = [33, 'age']`
 
   <br>
 
-#### <span>Functions</span>:
+### Functions
 
-Best Practice: annotate every parameters and variables in functions
+**Best Practice**: annotate every parameters and variables in functions
 
 - parameter types are annotated in the parentheses and return type is annotated outside of the parentheses
 
@@ -228,37 +261,64 @@ Best Practice: annotate every parameters and variables in functions
 - Optional parameters can be used if add `?` after
 
 ```
-function calculatedTax(income: number, taxYear = 2023, name?: string): number {
-  if (taxYear < 2022) return income * 1.2;
-  return income * 1.3;
-}
-```
-
-#### <span>Generics Types</span>:
-
-- When invoking, depending on what `Type` is (_name is arbitrary, could be anything_), and the function will take that `Type` as input or returns
-
-```
-function identity<Type>(arg: Type): Type {
-  return arg;
+function rectangleArea(h: number, w: number): number {
+  return h * m;
 }
 
-function map<Input, Output>(array: Input[], callback: (Input) => Output): Output[] {
-  const newArray: Output[] = [];
-  for (let item of array) {
-    newArray.push(callback(item));
-  }
-  return newArray
+function getArea(shape: string, h = 100, w?: number, calculateFn: (a: number, b: number) => number): number {
+  if (shape === 'Square') return calculateFn(h, h);
+  return calculateFn(h, w);
 }
-
-map<>
 ```
+**Call Signatures**: add properties to function type in addition to functionp type expressions.
+```
+type DescribableFunction = {
+  description: string;
+  (someArg: number): boolean;
+};
+function doSomething(fn: DescribableFunction) {
+  console.log(fn.description + " returned " + fn(6));
+}
+ 
+function myFunc(someArg: number) {
+  return someArg > 3;
+}
+myFunc.description = "default description";
+ 
+doSomething(myFunc);
+```
+  - here function type expression uses `:` instead of `=>`:  `(someArg: number): boolean;`
+  <br>
+
+**Construct Signatures**: for functions that work with `new` operator:
+```
+type SomeConstructor = {
+  new (s: string): SomeObject;
+};
+function fn(ctor: SomeConstructor) {
+  return new ctor("hello");
+}
+```
+  - add `new` in call signature to make is construct signatures
+  - call signature and construct signature can be used together for one function that can be called with or without `new`, like `Date` object:
+    ```
+    interface CallOrConstruct {
+      (n?: number): string;
+      new (s: string): Date;
+    }
+    ```
+    <br>
+
+
 
 <br>
 
-#### <span>Object</span>:
+### Object
 
 - when annotate type of an object, add a `?` after property indicating this property may not be shown in the object, or annotate normally and temporarily assign a empty string to it.
+<br>
+- properties without `?` must match the Object literal
+<br>
 - `readonly` can also apply to properties by adding in the front to make it unchangable
 
 ```
@@ -277,10 +337,46 @@ let emplyee: {
 employee.name = 'xiao';
 employee.fax = '123-456-7890';
 ```
+<br>
+
+- **Index Signatures**: use this when the names of a type's properties are not known, but the shape of the values are known ahead of time.
+  ```
+  interface StringArray {
+    [index: number]: string;
+  }
+  
+  const myArray: StringArray = getStringArray();
+  const secondItem = myArray[1]; 
+  // This index signature states that when a StringArray is indexed with a number, it will return a string.
+  ```
+    - Only some types are allowed for index signature properties: **string**, **number**, **symbol**, **template string patterns**, and **union types consisting only of these**.
+    - Index signatures enforce that **all properties** must match their return type
+    ```
+    interface NumberDictionary {
+      [index: string]: number;
+      length: number; // ok
+      name: string; // Not ok, Property 'name' of type 'string' is not assignable to 'string' index type 'number'.
+    }
+
+    interface NumberOrStringDictionary {
+      [index: string]: number | string;
+      length: number; // ok, length is a number
+      name: string; // ok, name is a string
+    }
+    ```
+    - Index signatures can be readonly in order to prevent assignment to their indices:
+    ```
+    interface ReadonlyStringArray {
+      readonly [index: number]: string;
+    }
+    
+    let myArray: ReadonlyStringArray = getReadOnlyStringArray();
+    myArray[2] = "Mallory"; // Error: Index signature in type 'ReadonlyStringArray' only permits reading.
+    ```
 
 <br>
 
-#### <span>Class</span>:
+### Class
 
 - when define classes, specifiy the type of each property **above the constructor method**
 - access modifiers: optional
@@ -295,7 +391,7 @@ class User {
 
 <br>
 
-#### <span>Type Alias</span>:
+### Type Alias
  can be used for primitives and complex types
 
 ```
@@ -309,7 +405,7 @@ type Employee = {
 
 <br>
 
-#### <span>Interfaces</span>:
+### Interfaces
 
 - just like type alias, but have two distinctions:
   - Interfaces can only apply to object types
@@ -328,7 +424,7 @@ interface ColoredRectangle extends Rectangle {
 
 <br>
 
-#### <span>Union Type</span>: 
+### Union Type
 one or another
 use `|` between types
 
@@ -341,10 +437,51 @@ function kgToLbs (weigth: number | string): number {
 
 const numAndStr: (number | string)[] = [1, 'apple', 2, 'banana']
 ```
+  - **Discriminated Union (or tagged union)**: a special type of union, there is an **identical** property in each variant as the **discriminant** (shared discriminative property), may has an optional leading `|` , useful in type checking and exhaustiveness checking. Also works great with `switch`
+
+    ```
+    {
+      type Shape = 
+        | { kind: "circle", radius: number }
+        | { kind: "square", sideLength: number }
+        | { kind: "triangle", base: number, height: number }
+
+      /* -------------- or below --------------- */
+
+      interface Circle {
+        kind: "circle";
+        radius: number;
+      }
+
+      interface Square {
+        kind: "square";
+        sideLength: number;
+      }
+
+      interface Triangle {
+        kind: "triangle";
+        base: number;
+        height: number;
+      }
+
+      type Shape = Circle | Square | Triangle;
+    }
+
+    function calculateArea(shape: Shape): number {
+      switch (shape.kind) {
+          case "circle":
+              return Math.PI * Math.pow(shape.radius, 2);
+          case "square":
+              return shape.sideLength * shape.sideLength;
+          case "triangle":
+              return (shape.base * shape.height) / 2;
+      }
+    }
+    ```
 
 <br>
 
-#### <span>Intersection Type</span>: 
+### Intersection Type 
 one and another
 use `&` between types
 
@@ -367,8 +504,8 @@ let textBox: UIWidget = {
 
 <br>
 
-#### <span>Literal Type</span>: 
-exact, specific value
+### Literal Type
+exact, specific value as types
 
 ```
 type Quantity = 50 | 100;
@@ -381,7 +518,7 @@ type Metric = 'cm' | 'inch';
 <br>
 
 
-#### <span>Optional Chaining</span>:
+### Optional Chaining
 
 - use `?.` to access the property that may or may not exist, return `undefined` if not.
 - this can also be used with array if the target array may or may not exist
@@ -402,9 +539,110 @@ customer?.[0] // access its first element if customer is an array, or return und
 let log: any = null;
 log?.('a') // will execute only log is a actual function, or return undefined
 ```
+<br>
+
+### Type Manipulation
+
+#### Generics
+  - **Generic function**: When invoking, depending on what `<Type> or <T>` is (_name is arbitrary, could be anything_), and the function will take that `<Type> or <T>` as input or returns
+
+    ```
+    function identity<Type>(arg: Type): Type {
+      return arg;
+    }
+
+    let myIdentity: <T>(arg: T) => T = identity; //  (<T>(arg: T) => T) is the function type
+
+    function map<Input, Output>(array: Input[], callback: (Input) => Output): Output[] {
+      const newArray: Output[] = [];
+      for (let item of array) {
+        newArray.push(callback(item));
+      }
+      return newArray
+    }
+
+    map<>
+    ```
+  - **Generic Interface**: 
+
+#### The `keyof` type operator
+  - takes an object type and produces a string or numberic **literal union** of its keys.
+  ```
+  type Point = { x: number; y: number };
+  type P = keyof Point; // same as type P = 'x' | 'y'
+  ```
+  - if the type has a string or number index signature, `keyof` will return those types instead. Note JS object keys are always coerced to a string, so key could be either string or number.
+  ```
+  type Arrayish = { [n: number]: unknown };
+  type A = keyof Arrayish; // same as type A = number
+
+  type Mapish = { [k: string]: boolean };
+  type M = keyof Mapish; // same as type M = string | number
+  ```
+  <br>
+
+#### The `typeof` type operator
+  - In JS, `typeof` can be used as an expression context, in TS, `typeof` refers to the type of a variable or property
+  ```
+  let s = "hello";
+  let n: typeof s; // same as let n: string
+
+  const greet = "hello";
+  type Greet = typeof greet; // same as type Greet = "hello";
+
+  const obj = {
+    name: 'xiao',
+    age: 34,
+  }
+  type NameType = typeof obj.name; // same as type NameType = "string";
+  type Person = keyof typeof obj; // same as type Person = "name" | "age";
+
+  const func = () => {
+    const val = 'string';
+    return val
+  }
+  type Return = ReturnType<typeof func> // same as type Return = "string"
+  ```
+  - Be careful that there are two `typeof`: 
+    - JS `typeof`: only works on **value** or identifiers or their property;
+    - TS `typeof`: only works with **type** identifiers.
+  <br>
+
+#### The Indexed Type operator
+
+#### The Conditional Types
+#### The Mapped Types
+#### Template Literal Types
+
+<br>
+
+### Untility TYpes
+- `Awaited<Type>`
+- `Patial<Type>`
+- `Required<Type>`
+- `Readonly<Type>`
+- `Record<Keys, Type>`
+- `Pick<Type, Keys>`
+- `Omit<Type, Keys>`
+- `Exclude<UnionType, ExcludedMembers>`
+- `Extract<Type, Union>`
+- `NonNullable<Type>`
+- `Parameters<Type>`
+- `ConstructorParameters<Type>`
+- `ReturnType<Type>`
+- `InstanceType<Type>`
+- `ThisParameterType<Type>`
+- `OmitThisParameter<Type>`
+- `ThisType<Type>`
+- Intrinsic String Manipulation Types:
+  - `Uppercase<StringType>`
+  - `Lowercase<StringType>`
+  - `Capitalize<StringType>`
+  - `Uncapitalize<StringType>`
+
 ## Concepts
 
-#### <span>Type assertion:</span>
+#### Type assertion
 - To **ensure TS** that a specific variable has a certain type. 
   - Non-null assertion operator`!`:
     ```
@@ -430,12 +668,12 @@ log?.('a') // will execute only log is a actual function, or return undefined
     // below is equivalent to above, except in .tsx files
     const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
     ```
-#### <span>types.d.ts</span>
+#### types.d.ts
   - in `tsconfig.json`, set `"include": [..., **/*.ts, ...]`
   - then `.d.ts` files do not need export anything, TS will know about them.
   <br>
 
-#### <span>import type</span>
+#### import type
   - a TS syntax added after 3.8 for type-only imports and exports
   ```
   import type { SomeThing } from "./some-module.js";

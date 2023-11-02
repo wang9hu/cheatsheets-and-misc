@@ -1273,6 +1273,19 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
       - add/remove new properties to its prototype
         - To freeze its prototype: `Object.freeze(obj.prototype)`
           <br>
+- Instance methods 
+  - `Object.prototype.toString()`: convert an object to a primitive value
+    - for **numeric and primitive** convernsion, call `valueof()` in priority, otherwise call `toString()` method
+    - can be overwritten on customized object, by default it is inherited from `Object.prototype`, which returns `[object Type]`, where `Type` is the object type.
+    - For different type of Objects, default `Object.prototype.toString()` may be overwritten already:
+      - `Boolean`, `Number`, `String` => Apply `.valueof()` method, a string representation of the primitive value
+
+      - `Function`, `Error`, `Date`, `RegExp` => A string representing the object.
+
+      - `Array` => Apply `.join()` method, a string representation of the specified array and its elements.
+
+      - other `Object` (`Set`, `Map`, `null`, `undefined`...) => `[object Object (Set, Map, Null, Undefined)]`
+
 
 #### Error Object:
 
@@ -1310,6 +1323,10 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
     e.toString(); // 'ParseError: Could not parse input'
     ```
     <br>
+
+#### Intl
+The `Intl` namespace object contains several constructors as well as functionality common to the **internationalization** constructors and other language sensitive functions. 
+
 
 ##### **[Back to table](#table)**
 
@@ -1722,7 +1739,7 @@ const classInstanc = new ClassName(args);
       - calls the parent class's constructor while `this` refers to child instance
       - binds the parent class's public fields
       - the child class's constructor can further access and modify `this`
-      - must be called before the `this` keyword is used, and before the constructor returns.
+      - <span>must be called</span> before the `this` keyword is used, and before the constructor returns.
     - when used in "property lookup" form
 
       - referring to an object literal's or class's `[[Prototype]]` to access its methods and properties
@@ -2551,113 +2568,8 @@ In DOM:
   - <span>localStorage</span>:
   - <span>sessionStorage</span>:
     <br>
-- **className vs classList**:
-  - `Element.className`: a string representing the class(s) of the element, seperated by space.
-  - `Element.classList`: (read-only) returns a live `DOMTokenList` collection of the class attribute of the element.
-    ```
-    const div = document.createElement('div');
-    div.className = 'col border text-center'; // A string.
-    div.classList = ['col', 'border', 'text-center'] // A DOMTokenList, not an array
-    ```
-    - To turn `DOMTokenList` into an `array`, use `const elementArray = Array.from(DOMTokenList)`
-      <br>
-- **srollHeight vs clientHeight vs offsetHeight**:
-  - `Element.scrollHeight`: (read-only) returns the minimum height the element would require in order to fit all the content in the viewport without using a vertical scrollbar, including content not visible on the screen due to overflow.
-  - `Element.clientHeigth`: (read-only) returns the height of an element's content.
-    - both including padding but excludes borders, margins, and horizontal scrollbars.
-    - `scrollHeight` doesn't care about the text content if `Element` is a `textarea`, if no content inside `textarea`, it will just show the rendered `height`.
-    - If the element's content can fit without a need for a vertical scrollbar, its `scrollHeight` equal to its `clientHeight`
-  - `Element.offsetHeight`: (read-only) returns the viewable height of an element (in pixels), including padding, border and scrollbar, but not the margin.
-    <br>
-- **innerHTML vs innerText vs textContent**:
 
-  - `Element.innerHTML`: The text content of the element, including all spacing and inner HTML tags.
-  - `Element.innerText`: Just the text content of the element and all its children, without CSS hidden text spacing and tags, except `<script>` and `<style>` elements.
-  - `Element.textContent`: The text content of the element and all descendaces, with spacing and CSS hidden text, but without tags.
-
-  ```
-  // HTML
-  <div id="mylinks">
-    This is my <b>link collection</b>:
-    <ul>
-      <li><a href="www.borland.com">Bye bye <b>Borland</b> </a></li>
-      <li><a href="www.microfocus.com">Welcome to <b>Micro Focus</b></a></li>
-    </ul>
-  </div>
-  ```
-
-  ```
-  // JS
-  const div = document.getElementById('mylinks');
-
-  console.log(div.textContent) // This is my link collection:
-
-  console.log(div.innerText) // This is my link collection:Bye bye Borland Welcome to Micro Focus
-
-  console.log(div.innerHTML)
-  // This is my <b>link collection</b>:
-  // <ul>
-  //   <li><a href="www.borland.com">Bye bye <b>Borland</b></a></li>
-  //   <li><a href="www.microfocus.com">Welcome to <b>Micro Focus</b></a></li>
-  // </ul>
-  ```
-
-    <br>
-
-- **querySelector**:
-
-  - `Element.querySelector(selector(s))`: returns the first Element within the document that matches the specified CSS `selector`, or group of `selectors`. If no matches are found, null is returned.
-    - `selector(s)`:
-      - Universal selector: `*`
-      - Type selector: `tagname`
-      - Class selector: `.classname`
-      - ID seletor: `#id`
-      - Attribute selector:
-        - `[attr]`: has attribute
-        - `[attr=value]`: equal to value
-        - `[attr~=value]`: contain and space-separated
-        - `[attr|=value]`: contain and as a whole or be followed by `-`
-        - `[attr^=value]`: contain and starts with value, not necessarily have to be a whole word
-        - `[attr$=value]`: contain and ends with value, not necessarily have to be a whole word
-        - `[attr*=value]`: contain, no other limits.
-    - Grouping selectors:
-      - Selector list: `,`
-    - Combinators:
-      - Descendant combinator: space '` `'
-      - Child combinator: `>`
-      - General sibling combinator: `~`
-      - Adjacent sibling combinator: `+`
-      - Column combinator: `||`
-    - Pseudo-classes and pseudo-elements: `:` / `::`
-      <br>
-
-- **Event Listener**: `addEventListener(type, listener, options/capture?)`:
-
-  - By default, event listeners are executed in a process known as <span>bubbling</span>, where the event starts at the target element, then <span>propagates</span> up the DOM tree to its parent elements, executing event listeners on each element along the way, until it reaches the root element.
-    <br>
-  - `listener`: The object that receives a notification (an object that implements the Event interface) when an event of the specified type occurs.
-    - can be a callback function ro an object whose `handeEvent()` method servers as the callback function
-    - `e.preventDefault()`: if the event does not get explicitly handled, its default action should not be taken as it normally would be
-    - `e.stopPropagation()`: prevents further propagation of the current event in the capturing and bubbling phases (to parent or other element)
-      <br>
-  - `options`: _optional_ An object that specifies characteristics about the event listener `{...}`
-
-    - `capture` (bool): _optional_ If `true`, the event listeners are executed in the opposite order, starting at the root element and propagating down the DOM tree to the target element, before finally reaching the end of the propagation phase. Default `false`
-    - `once` (bool): If `true`, the `listener` would be automatically removed when invoked. Default `false`
-    - `passive` (bool): If `true`, `listener` will never call `preventDefault()`. Default `false`
-    - `signal`: The listener will be removed when the given `AbortSignal` object's `abort()` method is called (Same as `removeEventListener(type, listerner, options/useCapture?)`). If not specified, no `AbortSignal` is associated with the listener.
-
-      ```
-      const controller = new AbortController();
-      const signal = controller.signal;
-      document.getElementById('myButton').addEventListener('click', handleClick, { signal});
-
-      setTimeout(() => {
-        controller.abort();
-      }, 5000);
-      ```
-
-  <br>
+- <span>Web Workers API</span>
 
 ##### **[Back to table](#table)**
 

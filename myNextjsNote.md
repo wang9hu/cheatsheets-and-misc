@@ -47,6 +47,7 @@
   - `default`: ???
 
   - `error`: defines an error UI boundary in case of error, doesn't crash the rest of the app.
+    - must use `use clinet` at the top, Error components **must** be Client Components
 
   - `layout`: UI component that shared between routes
 
@@ -98,8 +99,10 @@
   - draftMode
   - fetch
   - generateImageMetadata
-  - `generateMetadata`: 
-  - `generateStaticParams`: used in combination with **dynamic route segments** to **statically** generate routes **in advance** at build time instead of on-demand at request time.
+  - `generateMetadata`: See above file conventions
+  <br>
+  
+  - `generateStaticParams`: used in combination with **dynamic route segments** to **statically** generate routes **in advance** at build time instead of on-demand at request time. (SSG)
     ```
     // in app/blog/[slug]/page.js
     // Return a list of `params` to populate the [slug] dynamic segment
@@ -136,7 +139,7 @@
   - userParams
   - usePathname
   - useReportWebVitals
-  - useRouter
+  - `useRouter`: 
   - useSearchParams
   - useSelectedlayoutSegment
   - useSelectedLayoutSegments
@@ -192,22 +195,28 @@
 1. How does `import styles from './page.module.css'` + `<main className={styles.main}>` work? what is module.css file?
   <br>
 
-2. Does NEXT create its own server? How to implement on an existing server?
+1. Does NEXT create its own server? How to implement on an existing server?
   <br>
 
-3. SSR vs SSG vs ISR
+1. SSR vs SSG vs ISR
   - **SSR**: server-side render
   - **SSG**: server-side generation
   - **ISR**: incremental static regeneration, adding **validation** (use static-generation on a per-page basis, without needing to rebuild the entire site)
   <br>
 
-4. when use `npm run build` in next.js:
-  - λ  (Server)  server-side renders at runtime (uses getInitialProps or getServerSideProps)
+1. when use `npm run build` in next.js:
+  - λ  (Server)  server-side renders at runtime (uses `getInitialProps` or `getServerSideProps`)
   - ○  (Static)  automatically rendered as static HTML (uses no initial props)
   - ●  (SSG)     automatically generated as static HTML + JSON (uses getStaticProps)
   <br>
 
-5. Hydration: attaching event handlers and making the page interactive. 
+1. Hydration: attaching event handlers and making the page interactive. 
 <br>
 
 1. How does fetch validation work in dynamica routes?
+<br>
+
+1. Web Workers API
+<br>
+
+1. MIME types (Multipurpose Internet Mail Extensions)

@@ -5,6 +5,8 @@
     - [DP problem](#dp-problem)
     - [2 sum, 3 sum](#2-sum-3-sum)
     - [Backtrack recursive](#backtrack-recursive)
+    - [Graph Data Structure](#graph-data-structure)
+    - [Topological Sort](#topological-sort)
     - [Binary Search](#binary-search)
     - [Sliding Window](#sliding-window)
     - [Double Linked List](#double-linked-list)
@@ -118,15 +120,15 @@
   - use a `start` parameter to indicate which element is current backtrack starts from
   - use `let i = start | 0` to iterate from `start` or `0`
   - If choices 
-    - **no duplicates && no repeats**: use `start` with `i + 1`, end condition is run out of choices, no same track
+    - **No duplicates && No repeats**: use `start` with `i + 1`, end condition is run out of choices, no same track
     <br>
-    - **has duplicates && no repeats**: use `start` with `i + 1`, end condition is run out of choices, possible same track, use cache to check if existed already, 
+    - **Has duplicates && No repeats**: use `start` with `i + 1`, end condition is run out of choices, possible same track, use cache to check if existed already, 
       - for array, sorted, and use iteration of all choices and check `i > start && choices[i] === choices[i - 1] ? skip current iteration : finish current iteration` so that iteration afterwards don't need to count that element again.
       - like`JSON.stringify(track)` 
     <br>
-    - **no duplicates && can repeats**: use `start` with `i`, end condition is decided by problem matching condition, maybe something else like `sum === target`, no same track
+    - **No duplicates && Can repeats**: use `start` with `i`, end condition is decided by problem matching condition, maybe something else like `sum === target`, no same track
     <br>
-    - **has duplicates && can repeats** (Very Rarely): use `start` with `i`, end condition is decided by problem matching condition.  
+    - **Has duplicates && Can repeats** (Very Rarely): use `start` with `i`, end condition is decided by problem matching condition.  
     <br>
 
 - Example: Generate Parentheses
@@ -164,6 +166,54 @@
   ```
 
   <br>
+
+**[Back to top](#leetcode-notes)**
+
+### Graph Data Structure
+A **Graph** is a non-linear data structure consisting of <span>vertices</span> and <span>edges</span>. 
+
+Graph is denoted by G(E, V):
+  - graph: G 
+  - vertices: V, aka, nodes, 
+    - degree: number of edges connected to a node
+    - indegree: (directed graph) number of edges pointing **to** a node
+    - outdegree: (directed graph) number of edges pointing **from** a node
+  - edges: E, lines that connect nodes
+  <br>
+
+**Types of graphs**:
+
+  - <span>Directed Graphs</span>: edges have a direction
+  - <span>Undirected Graphs</span> edges have **no** direction
+  <br>
+  - <span>Weighted Graphs</span>: edges have weights or costs associated with them (e.g. distance)
+  - <span>Unweighted Graphs</span>: edges have **no** weights or costs associated with them 
+  <br>
+  - <span>Complete Graphs</span>: each vertex is connected to every other vertex
+  <br>
+  - <span>Bipartite Graphs:</span>: vertices can be divided into two disjoint sets such that every edge connects a vertex in one set to a vertex in the other set.
+  <br>
+  - <span>Trees</span>: A connected graph with **no** cycles
+  - <span>Cyclic Graph</span>: A graph with **at least one** cycle, doesn't have to be directed.
+  <br>
+
+**Topological sort:** 
+  This algorithm takes a directed graph and returns an array of the nodes where each node appears before all the nodes it points to.
+
+
+
+
+### Topological Sort
+The **topological sort** algorithm takes a <span>directed graph</span> and returns an <span>array</span> of the nodes where each node appears <span>before</span> all the nodes it points to.
+- **Cyclic graphs** don't have valid topological orderings.
+
+<span>Implementation</span>: (edges are direction pointing from one to another)
+  1. Identify a node with no incoming edges.
+  1. Add that node to the ordering.
+  2. Remove it from the graph. (also remove the edges from it to other nodes)
+  1. Repeat.
+  <br>
+
 
 **[Back to top](#leetcode-notes)**
 
@@ -376,10 +426,54 @@ B   C
     <br>
   - Binary heap represented using array index
     - for any node whose index position in an array is `i`
-      - its left child index: `2i + 1`
-      - its right child index: `2i + 2`
-      - its parent index: `Math.floor((i - 1) / 2)`
+      - `const leftChildIndex = 2i + 1`
+      - `const rightChildIndex = 2i + 1`
+      - `const parentIndex = Math.floor((i - 1) / 2)`
     ```
+    /** ----------function approach---------- */
+    const heap = [];
+
+    function (max|min)HeapUp(index) {
+      if (index === 0) return;
+      const parentIndex = Math.floor((index - 1) / 2);
+      if (heap[index] (>|<) heap[parentIndex]) {
+        [heap[index], heap[parentIndex]] = [heap[parentIndex], heap[index]];
+        (max|min)HeapUp(parentIndex);
+      }
+    }
+
+    function (max|min)HeapDown(index) {
+      const leftChildIndex = 2 * index + 1;
+      const rightChildIndex = 2 * index + 2;
+      if (leftChildIndex > heap.length - 1) {
+        return
+      } else if (rightChildIndex > heap.length - 1) {
+        if (heap[index] (<|>) heap[leftChildIndex]) {
+          [heap[index], heap[leftChildIndex]] = [heap[leftChildIndex], heap[index]];
+          return
+        }
+      } else {
+        const (max|min)ChildIndex = heap[leftChildIndex] >|< heap[rightChildIndex] ? leftChildIndex : rightChildIndex;
+        if (heap[index] <|> heap[maxChildIndex]) {
+          [heap[index], heap[maxChildIndex]] = [heap[maxChildIndex], heap[index]];
+          (max|min)HeapDown(maxChildIndex);
+        }
+      }
+    }
+
+    function insert(val) {
+      heap.push(val);
+      (max|min)HeapUp(heap.length - 1);
+    }
+
+    function extract(val) {
+      const index = heap.findIndex(val);
+      [heap[index], heap[heap.length - 1]] = [heap[heap.length - 1], heap[index]];
+      heap.pop();
+      (max|min)HeapDown(index);
+    }
+
+    /** ----------class approach---------- */
     class Heap {
       constructor() {
         this.data = [];
@@ -429,8 +523,10 @@ B   C
           // because complete binary tree, if no left child, then no right child
           return; 
         }
-        this.swap(i, maxChildIndex);
-        this.maxHeapifyDown(maxChildIndex);
+        if (heap[i] < heap[maxChildIndex]) {
+          this.swap(i, maxChildIndex);
+          this.maxHeapifyDown(maxChildIndex);
+        }
       }
 
       insert(num) {

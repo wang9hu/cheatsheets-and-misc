@@ -161,7 +161,8 @@ const MyComponent = () => {
   - `const [state, setState] = useState(initialState)`
     <br>
 
-  - `initialState`: the value you want the state to be initially
+  - `initialState`: the value you want the state to be initially, 
+    - if it is a **function**, then it will be treated as an initializer. It should be pure and return the value as then initial state.
   - **return**: state and the function that can changed the state
     <br>
 
@@ -644,6 +645,56 @@ Virtual DOM: a JavaScript representation of the real DOM tree
 
     <br>
 
+- <span>common knowledge or tips</span>
+
+  1. state update is not immediate if not using updater function (e.g. `prev => prev + 1`) 
+    ```
+    const [count, setCount] = useState(0);
+
+    // below will only make count 1, because it is equivalent to calling setCount(1) twice
+    const handleClick = () => {
+      setCount(count + 1);
+      setCount(count + 1);
+    }
+
+    // below will make count 2, because in the second setCount, prevCount is always up-to-date
+    const handleClick2 = () => {
+      setCount(count + 1);
+      setCount(prevCount => prevCount + 1);
+    }
+    ```
+    <br>
+
+  1. in conditional rendering, hooks must be in the same order in rerendering, so make the conditional return at the end of the component function
+    ```
+    // below is not allowed, since hooks may not execute if no id provided
+    export default function App({ id }) {
+      if (!id) return 'No id provided';
+
+      const [something, setSomething] = useState('something')
+      useEffect(() => {}, [something])
+
+      return <div>{something}</div>
+    }
+
+    // below is better implementation
+    export default function App({ id }) {
+      const [something, setSomething] = useState('something')
+      useEffect(() => {}, [something])
+
+      return (
+        <>
+          {!id 
+                ? 'No id provided'
+                : <div>{something}</div>
+          }
+        </>
+      );
+    ```
+    <br>
+
+  1. 
+
 ##### **[Back to top](#react-notes)**
 
 <br>
@@ -676,6 +727,7 @@ ReactDOM.render(
   - re-run Effects an extra time to find bugs caused by missing **Effect cleanup**
   - check for usage of **deprecated APIs**
     <br>
+
 
 ##### **[Back to top](#react-notes)**
 
