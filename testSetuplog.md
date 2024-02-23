@@ -74,3 +74,46 @@
 1. in `jest.config.js` file, set `verbose: true"`
 
 1. in `babel.config.js` file, add `"@babel/preset-react"` to presets
+
+### testing-library/react:
+   1. query methods:
+      1. `getBy`: expect an element to be present in DOM\
+         - throws error if no match or multiple matches are found
+         - `getAllBy`: returns an array of all matching nodes, throw error if no match
+         - **Recommended for**: most cases when only one match is present before proceeding with test
+      2. `queryBy`: check that an element is not present in DOM
+         - return 'null' if element is not found, throw error if multiple matches are found
+         - `queryAllBy`: return an array of all matching nodes, return `[]` if no match
+         - **Recommended for**: right choice for negative assertions.
+      3. `findBy`: find an element that might not be immediately present because of asynchronous operations. `findBy` => `getBy` + `waitfor`
+         - return a Promise resolves when a match is found, or reject when no match or multiple matches are found after a default timeout (1000ms)
+         - `findAllBy`: returns a Promise resolves to an array of matches, reject if no match after a default timeout (1000ms)
+         - **Recommended for**: testing element appear as a result of asynchronous actions, like data fetching
+  <br>
+
+   1. Guilding Principles:
+      1. If it relates to rendering components, then it should deal with DOM nodes her than component instances, and it should not encourage dealing with component instances.
+      2. It should be generally useful for testing the application components in  way the user would use it. We are making some trade-offs here because we're using a computer and often a simulated browser environment, but in general, utilities should encourage tests that use the components the way they're intended to be used.
+      3. Utility implementations and APIs should be simple and flexible.
+  <br>
+   1. query targets:
+      1. `byRole`: by its **accessibility** role, one of the most preferred selectors because it encourages accessibility practices, useful for selecting elements that have **explicit roles** (e.g., button, link, checkbox) in the UI. It closely aligns with how users **identify elements** on the page.
+   
+      2. `byLabelText`:  by its label text, which is useful for form fields.
+   
+      3. `byPlaceholderText`:  input or textarea element by its placeholder value.
+   
+      4. `byText`: by text content, suitable for selecting buttons, links, paragraphs, and other elements that are **identified by their text content**.
+   
+      5. `byDisplayValue`:  input, textarea, or select element by its **current value**, useful for asserting the value of form elements, especially when you want to check that **a form field has been populated with the expected initial value** or **has changed to a new value** after user interactions.
+   
+      6. `byAltText`: particularly useful for finding an `<img>`, but can also be used for other elements like `<input>` of type image) by its alt attribute.
+   
+      7. `byTitle`:  by `title` attribute or svg `title` tag. The title attribute is commonly used to provide additional information about an element, often displayed as a tooltip when the user hovers over the element.
+   
+      8. `byTestId`: by a test ID (must be given to the element beforehand like `data-testid="submit-button"`), useful when you need to select elements that are difficult to query by text or role, or when you're working with a component that doesn't render any user-facing text, not encouraging best practices for accessibility or semantic HTML. It's a **"last resort"** selector for when other queries won't work.
+   <br>
+    1. User Interaction `userEvent`
+       1. setup: recommended invoking `userEvent.setup()` before the component is rendered. 
+
+### jest 

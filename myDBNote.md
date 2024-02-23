@@ -114,6 +114,7 @@ SQL: Structured Querry Language, a relational database
   - `*`: everything
   - `E%`: begins with `E`
   - `E___ %`: four letter long and begins with `E`
+  - `NULL`: NULL values, always use `IS NULL` and `IS NOT NULL` for testing NULL values
   - ...
 
 - **Queries**:

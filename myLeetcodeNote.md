@@ -1,12 +1,14 @@
 # Leetcode Notes
 
 - [Leetcode Notes](#leetcode-notes)
-    - [Tricks](#tricks)
+  - [Tricks](#tricks)
     - [DP problem](#dp-problem)
     - [2 sum, 3 sum](#2-sum-3-sum)
     - [Backtrack recursive](#backtrack-recursive)
     - [Graph Data Structure](#graph-data-structure)
-    - [Topological Sort](#topological-sort)
+      - [Dijkstra algorithm](#dijkstra-algorithm)
+      - [Union find (Disjoint Set/Bipartite Group)](#union-find-disjoint-setbipartite-group)
+      - [Topological Sort](#topological-sort)
     - [Binary Search](#binary-search)
     - [Sliding Window](#sliding-window)
     - [Double Linked List](#double-linked-list)
@@ -14,7 +16,7 @@
     - [BTS](#bts)
     - [Heap](#heap)
 
-### Tricks
+## Tricks
 
 - **Check if a Character is a Letter**
   Compare the lowercase and uppercase variants of the character
@@ -197,13 +199,59 @@ Graph is denoted by G(E, V):
   - <span>Cyclic Graph</span>: A graph with **at least one** cycle, doesn't have to be directed.
   <br>
 
-**Topological sort:** 
-  This algorithm takes a directed graph and returns an array of the nodes where each node appears before all the nodes it points to.
+#### Dijkstra algorithm
 
 
+#### Union find (Disjoint Set/Bipartite Group)
+Used for storing non-overlapping **subsets** of elements. For each subset there is a unique **representative** that represent current subset. Disjoint sets have these operations:
 
+- Add new set to disjoint sets
+  - find the parent of a element x: `Parent[x]`
+  - if x has no parent, use initialization: `Parent[x] = x`
+- Find representative of a disjoint set: **find**
+  ```
+  function find(x) {
+    if (Parent[x] !== x) return find(Parent[x]);
+    return x; // reach representative
+  }
+  ```
+- Merge disjoint sets to a single set: **union**
+  ```
+  // x, y are elements from different subset
+  function union(x, y) {
+    // now two subsets are merged into one and the representative is find(x)
+    Parent[find(y)] = find(x) 
+  }
+  ```
+- check if two sets are disjoint or not
+  ```
+  // x, y are elements from different subset
+  return find(x) === find(y)
+  ```
+**Example**: find redundant connection in undirected graph:
+```
+function findRedundantConnection(edges: number[][]): number[] {
+    const parent: { [key:number]: number } = {};
+    const find = (x: number): number => {
+        if (parent[x] !== x) return find(parent[x]);
+        return x;
+    }
+    const union = (x: number, y: number) => {
+        parent[find(y)] = find(x);
+    }
+    for (const [a, b] of edges) {
+        if (parent[a] === undefined) parent[a] = a;
+        if (parent[b] === undefined) parent[b] = b;
+        if (find(a) !== find(b)) {
+            union(a, b)
+        } else {
+            return [a, b];
+        }
+    }
+};
+```
 
-### Topological Sort
+#### Topological Sort
 The **topological sort** algorithm takes a <span>directed graph</span> and returns an <span>array</span> of the nodes where each node appears <span>before</span> all the nodes it points to.
 - **Cyclic graphs** don't have valid topological orderings.
 

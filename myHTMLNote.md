@@ -274,7 +274,7 @@
   ```
     - To turn `DOMTokenList` into an `array`, use `const elementArray = Array.from(DOMTokenList)`
       <br>
-- <span>srollHeight vs clientHeight vs offsetHeight</span>:
+- <span>scrollHeight vs clientHeight vs offsetHeight</span>:
   - `Element.scrollHeight`: (read-only) returns the minimum height the element would require in order to fit all the content in the viewport without using a vertical scrollbar, including content not visible on the screen due to overflow.
   - `Element.clientHeigth`: (read-only) returns the height of an element's content.
     - both including padding but excludes borders, margins, and horizontal scrollbars.
@@ -374,7 +374,8 @@
   
 - Event Propagation: <span>Capturing</span> vs <span>Bubbling</span>
   - <span>Propagation</span>: how events travel through the DOM tree.
-    - `event.stopPropagation()`: doesn't propagate the event;
+    - `event.stopPropagation()`: doesn't propagate the event, but it has no effects on previous propagation;
+      - if ancestor has eventListener whose `useCapture` is `true`, descendants' `event.stopPropagation()` won't stop it from happening
   <br>
   - When an <span>event</span> is triggered on a child element, and its parent element and root element also have the same eventlistener:
     - <span>Bubbling</span>: event trigger order is: <span>child</span> -> <span>parent</span> -> <span>root</span>
@@ -382,27 +383,34 @@
     <br>
   - <span>W3C model</span>:  first **captured** until it reaches the **target element** and then **bubbles up** again.
     ```
+                        bubbling
     root             | |  / \
     -----------------| |--| |-----------------
     | element1       |1|  |2|                |
     |   -------------| |--| |-----------     |
     |   |element2    \ /  | |          |     |
+    |   |         capturing            |     |
     |   --------------------------------     |
     |        W3C event model                 |
     ------------------------------------------
     ```
     - use `addEventListener(event, callback, useCapture)` to handle propagation.
-      - `useCapture`: default `false` is bubbling phase, if `true` is capturing phase
+      - `useCapture`: 
+        - `false`: (default) callback only trigger when event bubbling through
+        - `true`: callback only trigger when event capturing through
       - e.g. If:
-        `root.addEventListener('click',doSomethingR,false) &&
-        element1.addEventListener('click',doSomething1,true) &&
-        element2.addEventListener('click',doSomething2,false);`
+        ```
+        root.addEventListener('click', rootHandler, false) &&
+        element1.addEventListener('click', element1Handler, true) &&
+        element2.addEventListener('click', element2Handler, false);
+        ```
         1. Click `element2`, event propagation starts
         2. event starts capturing phase: `root`->`element2`->`element2`
         3. `root` is in bubbling phase, pass
-        4. `element1` is in capturing phase, `doSomething1` trigger 
-        5. `element2` is the target element, `doSomething2` trigger
+        4. `element1` is in capturing phase, `element1Handler` trigger 
+        5. `element2` is the target element, `element2Handler` trigger
         6. event starts bubbling phase: `element2`->`element1`->`root`
         7. `element1` is in capturing phase, pass
-        8. `root` is in bubbling phase, `doSomethingR` trigger
+        8. `root` is in bubbling phase, `rootHandler` trigger
         9. event propagation finishes.
+

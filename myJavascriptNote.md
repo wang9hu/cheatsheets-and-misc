@@ -26,6 +26,7 @@
 - [Event Loop](#event-loop)
 - [DOM Traversal](#dom-traversal)
 - [Web APIs](#web-apis)
+- [Interfaces](#interfaces)
 - [Interesting concepts](#interesting-concepts)
 
 ---
@@ -538,6 +539,8 @@ Variables that do not have an assigned value, from values that **hasn't been def
     - `x{n,m}`: matches <span>at least</span> "n", <span>at most</span> "m" (n < m) occurrences of the preceding item "x".
       <br>
   - `x?`: matches the preceding item "x" 0 or 1 times.
+    - Without `?` is <span>greedy</span> quantifier, will match the longest 
+    - With `?` is <span>lazy</span> quantifier To get the <span>smallest</span> match, use `+?` or `*?`: 
 
 - Metacharacters: (metacharacters can also be used in "[]": `[abc\d]` same as `[abc0-9]`)
 
@@ -548,6 +551,11 @@ Variables that do not have an assigned value, from values that **hasn't been def
   - `\s`: match whitespace characters (spaces, tabs etc)
     - `\S`: match any characters but whitespace characters (spaces, tabs etc)
   - `\t`: match tab character only
+  - `\b`: word (`\w`) boundary, 3 positions qualify as word boundary: `|Hello|, |world|`
+    1. before the first word character: `|Hello, world`
+    2. after the last word character: `Hello, world|`
+    3. between a word character and a non-word character: `Hello|, |world`
+    - `\B`: any other position that is not `\b`
   <br>
 
 - Assertions (boundaries)
@@ -555,10 +563,18 @@ Variables that do not have an assigned value, from values that **hasn't been def
   - `...$`: matches the <span>end</span> of input.
     - `^x{n}$`: <span>EXACTLY</span> n (positive integer) characters
     <br>
+  - `(?=pattern)`, `(?!pattern)`: lookahead assertion, asserts what's on the right
+  - `(?<=pattern)`, `(?<!pattern)`: lookbehind assertion, asserts what's on the left. (limited compatibility)
+    - attempts to match the subsequent input with the given pattern, but it does not consume any of the input — if the match is successful, the current position in the input stays the same.
+    - `/\d(?=px)/g` => "1pt <span>2</span>px 3em <span>4</span>px"
+    - `/\d(?!px)/g` => "<span>1</span>pt 2px <span>3</span>em 4px"
+    - `/(?<=4)p/g` => "1pt 2px 3em <span>4</span>px"
+    - `/(?<!4)p/g` => "<span>1</span>pt <span>2</span>px 3em 4px"
+    - `=` succeed if match, `!` succeed if doesn't match
 
 - Groups and backreferences: ()
   - `(x)`: capturing group
-  - ``
+  - `\N`(`N` is a number): backreference
 
 #### Optional Flags at the end:
 
@@ -2561,19 +2577,91 @@ In DOM:
 
 ## Web APIs
 
-- **API**: application programming interface
-  <br>
-- **cookies** vs **localStorage** vs **sessionStorage**
-  - <span>cookies</span>:
-  - <span>localStorage</span>:
-  - <span>sessionStorage</span>:
-    <br>
+- <span>API</span>: a set of application programming interfaces that involving communication between different software components
+<br>
 
-- <span>Web Workers API</span>
+- <span>Web Worker APIs</span>: a script operation that can be running in a background thread separate from the main execution thread of a web application. 
+  - A lot of Web APIs are avaiable in web workers, [see docs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API#supported_web_apis)
+
+  <br>
+
+- <span>Fetch API</span>
+
+<br>
+
+- <span>URL API</span>:
+  - Used to parse, construct, normalize, and encode URLs
+    <br>
+  
+  - `window.location.href`: the url of current page
+  <br>
+
+  - **Constructor**: `new URL(url, [base])`
+      ```
+      const baseURL = 'http://www.youtube.com';
+      const myUrl = new URL('/?name=dom&age=24', baseURL);
+
+      console.log(myUrl)
+      // host: "www.youtube.com"
+      // hostname: "www.youtube.com"
+      // href: "http://www.youtube.com/?name=dom&age=24"
+      // origin: "http://www.youtube.com"
+      // password: ""
+      // pathname: "/"
+      // port: ""
+      // protocol: "http:"
+      // search: "?name=dom&age=24" 
+      // searchParams: [URLSearchParams instance]
+      // ...
+      ```
+  - **Instance properties**: `host`, `href`, `origin`, `search`, `protocal`, `pathName`, `port`,...
+  <br>
+
+  - **Instance method**: `searchParams`
+  <br>
+  
+  - Can be used with `fetch(myUrl)`.
+  <br>
+
+  - `URLSearchParams` **interface**: 
+    - Defines utility methods to work with the query string of a URL
+    - create a `URLSearchParams` instance from: 
+      1. `URL` instance: `const params = myUrl.searchParams;`
+      2. retrieve params via url.search: `const params = new URLSearchParams(myUrl.search);`
+      3. pass in as a string, a sequence of pairs or a record, [see docs](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams)
+    - Instance property: `size`, total number of search parameters
+    - get/set params from searchParams:
+      - `params.get("name")`
+      - `params.set("name", "new value")`
+   
+  <br>
+
+  - **Static methods**: 
+    - `URL.createObjectURL(object)`: creates a string containing a URL representing the object given in the parameter.
+      - `object`: a `File`, `Blob` or `MediaSource` object to create an object URL for
+    - `URL.revokeObjectURL(objectURL)`: releases an existing object URL which was created by `URL.createObjectURL()`;
+  <br>
+
+- <span>File API</span>:
+   - `Blob` **Interface**: 
+      - Binary Large Object (`Blob`): file-like object of immutable, raw data.
+      - Aim to store resources locally and reuse it without requesting from server
+      - can be read as text or binary data, or converted into a `ReadableStream`
+      - 
+  <br>
 
 ##### **[Back to table](#table)**
 
 ---
+
+## Interfaces
+
+
+##### **[Back to table](#table)**
+
+---
+
+
 
 ## Interesting concepts
 

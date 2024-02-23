@@ -90,6 +90,41 @@
       - `__filemane`: [The file name of the current module.]
         <br>
       - `__dirname`: [The directory name of the current module.]
+  <br>
+
+- Continuation-Passing Style 
+  - a technique used to represent **asynchronous** computations by passing continuation functions as arguments, often involves using callback functions.
+  - Instead of returning a value, a function takes an extra callback function as argument, which will be called 
+  ```
+  function addAsync(a, b, callback) {
+    setTimeout(() => {
+      const result = a + b;
+      callback(result);
+    }, 1000);
+  }
+
+  // Using the continuation function
+  addAsync(3, 4, (result) => {
+    console.log(result); // Prints 7 after 1 second
+  });
+  ``` 
+  - very commonly used before `async/await`, 
+
+- Error-first function
+  - a convention way of handling errors in asynchronous functions in node.js.
+  - passed in as a continuation function and its first parameter `error` is reserved for an error object.
+  ```
+  exampleAsyncFunction('value1', 'value2', (error, result) => {
+    if (error) {
+      console.error('Error:', error.message);
+      // Handle the error appropriately
+    } else {
+      console.log('Result:', result);
+      // Continue with the successful result
+    }
+  });
+  ``` 
+  - if `error` is not `null` or `undefined`, it indicates an error occurred during that async operation. Or else, the operatio is successful.
 
 ### things need to address later
 
@@ -178,3 +213,14 @@ Ways to adopt ESM in Node:
 Tell HTML file that you are using module:
 
 - in `<script></script>` tag, add `type="module"` (probably also add `defer` to wait for script to load)
+
+
+
+### Node Modules
+
+- #### cross-evn
+<br>
+
+- #### msw
+  - Mock Service Worker (MSW) is a seamless REST/GraphQL API mocking library for browser and Node.js.
+  - mocking HTTP requests at the network level, ideal for **testing API calls**, simulating **different server states** (like errors, loading states, and empty states)
