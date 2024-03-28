@@ -3,6 +3,7 @@
     - [Web-related terms](#web-related-terms)
     - [Concepts](#concepts)
     - [ASCII vs Unicode (UTF-8, UTF-16 \& UTF-32)](#ascii-vs-unicode-utf-8-utf-16--utf-32)
+    - [RSA (Rivest–Shamir–Adleman) cryptosystem](#rsa-rivestshamiradleman-cryptosystem)
     - [Elliptic Curve Cryptography (ECC)](#elliptic-curve-cryptography-ecc)
 
 ---
@@ -133,7 +134,23 @@
       - `{ 'typ': 'JWT', 'alg': 'HS256' }`
     - Payload: actual "claim", like unique identifier, expiration time, issuer..., Base64Url encoded.
       - `{ "sub": "1234567", "name": "John Doe", "iat": 14225354532 ...}`
-    - Signature: hashing header and payload together with a secret key. The primary goal of the signature is to ensure that the message has not been altered during transfer.
+    - Signature: hashing header and payload together with a secret key. The primary goal of the signature is to **ensure that the message has not been altered** during transfer, message can be decoded without signature
+- <span>SEO (search engine optimization)</span> :
+  - **benifits**: 
+    - free of charge
+    - organic traffic is typically consistent once ranking is high
+    - potential to reach massive audience
+  
+  - **How google works**
+    1. crawling and indexation
+       1. google crawlers (spiders) => known urls (seeds) => follow hyperlinks to other pages => repeat
+       2. collected data => create search index
+   
+    2. ranking algorithm
+       1. changed 500 - 600 per year (hard to know exactly)
+       2. speculated factors:
+          1. backlinks: links of a page of one website to another prominent websites
+          2. 
 ---
 
 ### ASCII vs Unicode (UTF-8, UTF-16 & UTF-32)
@@ -159,6 +176,27 @@
     - UTF-32: always requires 32 bits to encode a character
     <br>
   - must use the **same strategy** for decode
+
+### RSA (Rivest–Shamir–Adleman) cryptosystem
+1. Give two primes: 
+   - p, q // p = 2, q = 7
+2. Get product: 
+   - n = p * q // n = 14
+3. Get the totient (number of positive integers less that n that are relatively prime to n): 
+   - $\phi$(n) = (p - 1) * (q - 1); // $\phi$(14) = 6;
+4. choose public key e: 
+   - 1 < e < $\phi$(n); // e $\in$ [2, 3, 4, 5]
+   - e is coprime with n and $\phi$(n); // e = 5
+5. choose private key d: 
+   - (d * e) === 1 (mod $\phi$(n)); // 5d === 1 (mod 6), d could be 5, 11, 17, ....
+<br>
+
+- message: m
+- encryption: m^e === c (mod n) // c - cipher text
+- decryption: c^d === m (mod n)
+<br>
+
+-  
 
 ### Elliptic Curve Cryptography (ECC)
   - a public key crypto system, a type of cryptography

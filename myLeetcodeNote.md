@@ -8,7 +8,7 @@
     - [Graph Data Structure](#graph-data-structure)
       - [Dijkstra algorithm](#dijkstra-algorithm)
       - [Union find (Disjoint Set/Bipartite Group)](#union-find-disjoint-setbipartite-group)
-      - [Topological Sort](#topological-sort)
+      - [Topological Sort (Kahn's algorithm)](#topological-sort-kahns-algorithm)
     - [Binary Search](#binary-search)
     - [Sliding Window](#sliding-window)
     - [Double Linked List](#double-linked-list)
@@ -251,7 +251,7 @@ function findRedundantConnection(edges: number[][]): number[] {
 };
 ```
 
-#### Topological Sort
+#### Topological Sort (Kahn's algorithm)
 The **topological sort** algorithm takes a <span>directed graph</span> and returns an <span>array</span> of the nodes where each node appears <span>before</span> all the nodes it points to.
 - **Cyclic graphs** don't have valid topological orderings.
 
@@ -387,6 +387,12 @@ Mostly used when getting dealing with <span>array</span> or <span>string</span>,
   return prevHead.next;
   ```
   <br>
+
+- find loop in linked list
+  1. use two pointers: *fast* vs *slow*
+  1. fast pointer move *two steps* and slow pointer move *one step*
+  1. when fast and slow meet, they must be inside of the loop
+  1. from where they meet, counting the steps it takes to loop back to the same node 
 
 **[Back to top](#leetcode-notes)**
 

@@ -89,6 +89,9 @@
   
 
 ### Python build-in types
+- In python everything is an **object**, each entity (string, function, class, etc) has a value and associated properties and methods. 
+  - In JS, primitives types have no methods, JS will automatically wrap them in respective prototype object wrappers when invoking methods for better performance, higher memory efficiency and simplicity.
+
 - <span>Numeric Types</span>: `int`, `float`, `complex`
   - All numeric types (except complex) support the following operations:
     - `+`, `-`, `*`, `/`, `%`, `//`(floor division), `**`(to the power of), `@`(matrix multiplication[new]), `==`(check equality)
@@ -101,7 +104,22 @@
 
 - <span>Text Sequence Type</span>: `str` 
   - **immutable** sequences of Unicode code points.
-  - Written in: `'s"t"r'`, `"s't'r"`, `'''str'''`/`"""str"""`(may span multiple lines)
+  - String expressions: 
+    - Single and Double quotes: `'s"t"r'`, `"s't'r"`, 
+    - Triple-quoted: `'''str'''`/`"""str"""`(can span multiple lines)
+    - Raw strings(prefixing `r` or `R`): backslashes (`\`) are treated as **literal characters** and do not interpreted as escape characters.
+      - `raw_string = r"C:\new_folder"`
+    - Formated strings(f-string): allow for embeded expressions with curly braces `{}`:
+      - `name = "Alice"`
+      - `age = 30`
+      - `f_string = f"My name is {name} and I am {age} years old."`
+      - `fr` or `rf` string: both works
+    - Byte strings(prefixing `b` or `B`): sequences of bytes instead of Unicode characters, used for working with binary data, such as files in binary mode.
+      - `byte_string = b"This is a byte string."`
+    - Unicode strings(prefixing `u` or `U`): only in py2, all strings are unicode in py3)
+      - unicode_string = u"This is a Unicode string."
+
+
   - `str` class methods:
     - `static str.maketrans({'a': '1'})`: create a translation table to replace characters in a string
     - `my_str.translate(translate_table)`: return the translated string
@@ -167,7 +185,7 @@
   - Only two value: `True` and `False`
 <br>
 
-- <span>None Types</span>: `none`
+- <span>None Types</span>: `none` (like `null` in JS)
 
 <br>
 
@@ -186,6 +204,10 @@
   - `print()`: log to cli
     
   - `input()`: display prompt message and waits for user input in cli, accept input with Enter key
+   
+  - `len(s)`: Return the length (the number of items) of an object. The argument may be a sequence (such as a string, bytes, tuple, list, or range) or a collection (such as a dictionary, set, or frozen set).
+
+  - `all(iterable)`: return `True` if all elements of the `iterable` are true or `iterable` is empty. Otherwise `False`
 
 ### Python library:
 - <span>Numpy</span>: for better data manipulation
@@ -193,3 +215,47 @@
     <br>
 
 - <span>Matplotlib</span>: for draw histogram
+    <br>
+
+
+---
+
+### python module (import XXX)
+
+  1. **string**
+      - `string.ascii_letters` 
+        - same as `string.ascii_lowercase` + `string.ascii_uppercase`
+        - `string.ascii_lowercase`: `'abcdefghijklmnopqrstuvwxyz'`
+        - `string.ascii_uppercase`: `'ABCDEFGHIJKLMNOPQRSTUVWXYZ'`
+      - `string.digits`: `'0123456789'`
+      - `string.punctuation`: ``'!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~'``
+     
+  2. **random**
+       - `random.random()`: 0.0 <= X < 1.0
+       - `random.choice(seq)`: randomly choose one from `seq` (for crypographic uses, use `secrets.choice`)
+
+  3. **secrets**
+       - `secrets.choice(seq)`: randomly choose one from `seq` (more randomness)
+  
+  4. **re**
+      - regular expression
+      - `re.search(pattern, string, flags=0)`: Scan through string looking for the **first** location where the regular expression pattern produces a match, and return a corresponding `Match`
+        - `flags`: RegexFlag object
+      - `re.findall(pattern, string, flags=0)`: Return all non-overlapping matches of pattern in string, as a **list of strings** or **tuples**.
+      - `re.compile(pattern, flags=0)`: compile a re into a re object, used for matching
+        <br>
+
+      - class re.Pattern: Pattern object returned by `re.compile()`
+        - `pattern = re.compile("d")`
+        - `Pattern.search(string[, pos=0[, endpos=len(excluded)]])`: 
+          - same as `re.search(patternLiteral, string)`
+          - return: `None` if no match, or Match object
+      - class re.Match: Match object returned by successful `pattern.match()` and `pattern.search()`
+        - `m = pattern.search("dog")`;
+      - class re.RegexFlag: regex flag object ([docs](https://docs.python.org/3/library/re.html#re.RegexFlag))
+
+
+##### memo
+  - generator expression (like list comprehension, but with parentheses)
+  - call function with assigned arguments: `add(x=1, y=7)`, this can change the order of arguments: same as `add(y=7, x=1)`
+  - `if __name__ == '__main__':`

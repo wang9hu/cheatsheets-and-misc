@@ -203,6 +203,7 @@ Variables that do not have an assigned value, from values that **hasn't been def
 - unchangeable (immutable), but reassignable;
 - quotes in strings: `'He said "Hello!"'` or `"She says 'Goodbye'"`
 - String template literals: <code> \`${expression}\` </code>
+  - <code> String.raw\`${foo} \n ${bar}\` </code>: substitutions are processed, but escape sequences (e.g. `\n`) are not.
 - Backslash (`\`) turns special characters (such as quote `'` or double quote `"`) into string characters. Use `\` to escape `'`, `"` and `\` in string (the escape backslash will only exist in the string value, it is not a string character and it can not be printed out by console.log):
 
   | Code | Result | Description  |
@@ -212,7 +213,7 @@ Variables that do not have an assigned value, from values that **hasn't been def
   | `\"` |  `"`   | Double quote |
   | `\t` |        |     Tab      |
   | `\n` |        |   Newline    |
-  | ...  |        |   and more   |
+  | …  |        |   and more   |
 
   - `'\'` can not be printed out, because it escapes the closing single quote (`'`), which turns into a string character not a funcitonal character
 
@@ -220,9 +221,14 @@ Variables that do not have an assigned value, from values that **hasn't been def
 
 #### Static methods
 
-- **String.fromCharCode(num1, [num2, ..., numN])**: returns a string created from the specified sequence of UTF-16 code units.
-  - `num1, ..., numN`: A sequence of numbers that are UTF-16 code units. The range is between 0 and 65535
+- **String.fromCharCode(num1, [num2, …, numN])**: returns a string created from the specified sequence of UTF-16 code units.
+  - `num1, …, numN`: A sequence of numbers that are UTF-16 code units. The range is between 0 and 65535
     <br>
+
+- **String.raw(strings, sub1, sub2, …, subN)**: returns a The raw string form of a given template literal.
+  - `sub1, sub2, …, subN`: Contains substitution values.
+    <br>
+
 
 #### Instance methods
 
@@ -391,7 +397,7 @@ Variables that do not have an assigned value, from values that **hasn't been def
     const regexp = /t(e)(st(\d?))/g;
     const str = 'test1test2';
 
-    const array = [...str.matchAll(regexp)];
+    const array = […str.matchAll(regexp)];
 
     console.log(array);
     // Expected output: [["test1", "e", "st1", "1"], ["test2", "e", "st2", "2"]]
@@ -421,7 +427,7 @@ Variables that do not have an assigned value, from values that **hasn't been def
     [propSym] : propValue
   }
   ```
-- Symbols are not enumerable, so it will not show up in `for...in` loop or `Object.getOwnPropertyNames()`
+- Symbols are not enumerable, so it will not show up in `for … in` loop or `Object.getOwnPropertyNames()`
 - Symbols can be accessed by `Object.getOwnPropertySymbols()`
 
 <br>
@@ -434,14 +440,14 @@ Variables that do not have an assigned value, from values that **hasn't been def
 
 - `&&` Logical AND:
 
-  - `expr1 && expr2 && expr3 && ....`
+  - `expr1 && expr2 && expr3 && …`
   - from left to right, return immediately with the value of the first falsy operand (`false`, `null`, `NaN`, `0`, emtpy string, `undefined`)
   - if all values are truthy, the value of the last operand is returned.
     <br>
 
 - `||` Logical OR
 
-  - `expr1 || expr2 || expr3 || ....`
+  - `expr1 || expr2 || expr3 || …`
   - from left to right, return immediately with the value of the first truthy operand (anything that is not falsy)
   - if all values are falsy, the value of the last operand is returned.
     <br>
@@ -506,24 +512,24 @@ Variables that do not have an assigned value, from values that **hasn't been def
   <br>
 
 - Two ways to create a `RegEx` object: a literal notation and a constructor:
-  - **literal notation** : a pattern between **two forward slashes** (`/.../`), followed by **optional flags**
+  - **literal notation** : a pattern between **two forward slashes** (`/ … /`), followed by **optional flags**
     - `let re = /ab+c/i`
   - **constructor function**: two parameters(a string or a RegExp object as its first parameter, and a string of optional flags as its second parameter) - `let re = new RegExp('ab+c', 'i')`
     <br>
 
-#### RegEx syntax within `/.../`:
+#### RegEx syntax within `/ … /`:
 
 - Character Classes .
 
   - `[]`:
     - `[abc]`: match **ONE single character** from **a set of characters**. // `a` or `b` or `c`;
-    - `[2-8]`: any single digit number from 2 to 8.// `2` or `3` or `4` or .... or `8`
-    - `[c-h]`: any single digit letter from c to h.// `c` or `d` or `e` or .... or `h`
+    - `[2-8]`: any single digit number from 2 to 8.// `2` or `3` or `4` or  … . or `8`
+    - `[c-h]`: any single digit letter from c to h.// `c` or `d` or `e` or  … . or `h`
     - `[c-hD-Z]`: any single digit letter from c to h or from D to Z.
       <br>
   - `.` (wildcard character): matches <span>any single character</span> except for line terminators (\n, \r, \u2028, \u2029)
     <br>
-  - `[^...]`(Negate symbol): `[^abc]` matches any single character that is **NOT** from these characters.
+  - `[^…]`(Negate symbol): `[^abc]` matches any single character that is **NOT** from these characters.
     <br>
   - `|` (or): `abc|xyz` matches "abc" or "xyz"
     - `(p|b)ear`: matches "pear" or "bear", use `()` to represent an entity.
@@ -559,8 +565,8 @@ Variables that do not have an assigned value, from values that **hasn't been def
   <br>
 
 - Assertions (boundaries)
-  - `^...`: matches the <span>beginning</span> of input. (notice the difference with `[^]`)
-  - `...$`: matches the <span>end</span> of input.
+  - `^ …`: matches the <span>beginning</span> of input. (notice the difference with `[^]`)
+  - ` …$`: matches the <span>end</span> of input.
     - `^x{n}$`: <span>EXACTLY</span> n (positive integer) characters
     <br>
   - `(?=pattern)`, `(?!pattern)`: lookahead assertion, asserts what's on the right
@@ -614,7 +620,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - iterable objects (like `Map` and `Set`)
     <br>
 
-- Array: `Array(/*...*/)`
+- Array: `Array(/* … */)`
 
   - **return**: a new `Array` instance
   - can work as a constructor or a function
@@ -624,8 +630,8 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 
     ```
     // From elements
-    new Array(element0, element1, ... , elementN)
-    Array(element0, element1, ... , elementN)
+    new Array(element0, element1, …, elementN)
+    Array(element0, element1, …, elementN)
 
     // From array length (interger argument), empty array with a length
     new Array(arrayLength)
@@ -645,7 +651,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
     ```
     <br>
 
-- Array.from: `Array.from(arrayLike, callbackFn?(element, index?){/*...*/}], thisArg?)`
+- Array.from: `Array.from(arrayLike, callbackFn?(element, index?){/* … */}], thisArg?)`
 
   - **return**: a new `Array` instance
   - `callbackFn`: _optional_ A function to call on every element of the array
@@ -717,7 +723,7 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
   - is the same as `arr.join()`
     <br>
 
-- concat: `arr.concat(arr, value1?, /*...*/?, valueN?])`
+- concat: `arr.concat(arr, value1?, /*…*/?, valueN?])`
 
   - **return**: a modified <span>copy</span> of `arr` with concatenated elements
   - `valueN`: _optional_ Arrays and/or values to concatenate into a new array
@@ -805,9 +811,9 @@ Settings added at the **end of RegEx** that can be applied to **modify its behav
 - Parameters: `array.prototype.xxx(callbackFn, thisArg?)`
 
   - `callbackFn`:
-    - Arrow function: `(element, index?, array?) => {/*...*/}`
+    - Arrow function: `(element, index?, array?) => {/* … */}`
     - Callback function: `callbackFn`
-    - Inline callback funciton: `function(element, index?, array?) {/*...*/}`
+    - Inline callback funciton: `function(element, index?, array?) {/* … */}`
       <br>
   - `thisArg`: `this` when executing `callbackFn`, defaults to `undefined`
     - **the usual rules:**: if `non-strict`, primitive `this` are wrapped into objects, and `undefined/null` is substituted with `globalThis`. The `thisArg` is irrelevant for any arrow callback functionse
@@ -930,7 +936,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
   ✔ <span>Key Types</span>: Maps can have **any** value for key, even functions
   ✔ <span>Key Order</span>: Map object iterates entries, keys, and values in the **order of entry insertion**
   ✔ <span>Size</span>: Map object has `size` property to easily access its number of items.
-  ✔ <span>Iteration</span>: Map object is **iterable**, so it can use `for ... of` directly
+  ✔ <span>Iteration</span>: Map object is **iterable**, so it can use `for … of` directly
   ✔ <span>Performance</span>: Map object perform better in frequent **additions** and **removals** of key-value pairs
   ❌ Serialization and Parsing: Map object **cannot** direcly be passed to `JSON.stringify()`/`JSON.parse()`, not without replacer argument and reviver argument. See [Stack Overflow question](https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map)
   <br>
@@ -1014,7 +1020,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
     - ~~`obj.key`~~
     - `{ [key]: 'Xiao' } // { name: 'Xiao' };`
       <br>
-- Properties can be enumerated (for...in loop) if they are enumerable
+- Properties can be enumerated (for … in loop) if they are enumerable
   <br>
 - Optional chaining (`?.`): If the object accessed or function called using this operator is `undefined` or `null`, the expression short circuits and evaluates to undefined instead of throwing an error.
 
@@ -1083,8 +1089,8 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 #### Methods:
 
 - functions in objects
-- `obj[methodName] = function () {/*...*/}`
-- shorthand: `const obj = { methodName(){/*...*/} }`
+- `obj[methodName] = function () {/* … */}`
+- shorthand: `const obj = { methodName(){/* … */} }`
 - method invoke: `obj.methodName()`
 
   <br>
@@ -1101,7 +1107,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
       - `NaN === NaN` is false while `Object.is(NaN, NaN)` is true
         <br>
 
-  - `Object.assign(target, ...sources)`
+  - `Object.assign(target, … sources)`
 
     - **return**: modified target object
     - Update target properties by properties in the sources if they have the same key
@@ -1164,7 +1170,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
       - **data descritpor**: a property that has a value [default]
         - configurable [`false`]: `true` if this `prop` descriptor may be changed and this `prop` could be deleted from object
-        - enumerable [`false`]: `true` if this `prop` shows up during enumeration (e.g., `for...in` loop, `console.log()` and `Object.keys()` returns enumerable properties only)
+        - enumerable [`false`]: `true` if this `prop` shows up during enumeration (e.g., `for … in` loop, `console.log()` and `Object.keys()` returns enumerable properties only)
         - <span>value</span> [`undefined`]: property value
         - <span>writable</span> [`false`]: `true` if value can be changed with an assignment operator
         ```
@@ -1300,7 +1306,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
 
       - `Array` => Apply `.join()` method, a string representation of the specified array and its elements.
 
-      - other `Object` (`Set`, `Map`, `null`, `undefined`...) => `[object Object (Set, Map, Null, Undefined)]`
+      - other `Object` (`Set`, `Map`, `null`, `undefined` …) => `[object Object (Set, Map, Null, Undefined)]`
 
 
 #### Error Object:
@@ -1418,7 +1424,7 @@ The `Intl` namespace object contains several constructors as well as functionali
 Every typical function is a <span>Function</span> object:
 
 ```
-function fn(){/*...*/}
+function fn(){/* … */}
 
 fn.constructor === Function // true
 // the constuctor above is from fn's [[Protoype]] chain, not prototype property
@@ -1443,14 +1449,14 @@ fn.prototype.constructor === fn // true
       <br>
   - `fn.[[Prototype]]`: function's `[[Prototype]]` is the <span>Function</span> object's `prototype`: `fn.__proto__ === Function.prototype // true`
     - `apply`: `fn.apply(thisArg, argsArray?)`
-    - `call`: `fn.call(thisArg, arg1?, arg2?, /*...*/, argN?)`
+    - `call`: `fn.call(thisArg, arg1?, arg2?, /* … */, argN?)`
       - `thisArg`: value of `this` provided for the call
       - `argsArray`: _optional_ an array-like object, specifiying the arguments. Default `null` or `undefined`
       - `argN`: _optional_ arguments for `fn`
       - **return**: result of calling the `fn` with specified `this` and arguments if provided
       - <Span>Note</span>: `apply` is almost identical to `call`, except `apply` accepts an array of arguments, while `call` accepts an argument list.
         <br>
-    - `bind`: `fn.bind(thisArg, arg1?, arg2?, /*...*/?, argN?)`
+    - `bind`: `fn.bind(thisArg, arg1?, arg2?, /* … */?, argN?)`
       - `thisArg` and `argN` are similar to those in `call`
       - **return**: a copy of `fn` with specified `this` and initial arguments if provided
       - <span>Note</span>: `bind` does not call any function, and it can only specify values from the beginning of the argument list.
@@ -1487,13 +1493,13 @@ const funC = (a, b) => {
 
 param => expression
 
-(param1?, /*...*/, paramN?) => expression
+(param1?, /* … */, paramN?) => expression
 
 (param?) => {statements}
 
 param => {statements}
 
-(param1?, /*...*/, paramN?) => {statements}
+(param1?, /* … */, paramN?) => {statements}
 ```
 
 Semantic differences and deliberate limitations:
@@ -1678,27 +1684,27 @@ class ClassName {
   static #privateStaticField; // initilaze to undefined
   static #privateStaticFieldWithInitializer = "private static field";
 
-  publicInstanceMethod() {/*...*/}
-  #privateInstanceMethod() {/*...*/}
+  publicInstanceMethod() {/* … */}
+  #privateInstanceMethod() {/* … */}
 
-  static publicStaticMethod() {/*...*/}
-  static #privateStaticMethod() {/*...*/}
+  static publicStaticMethod() {/* … */}
+  static #privateStaticMethod() {/* … */}
 
-  get publicInstanceGetter() {/*...*/}
-  get #privateInstanceGetter() {/*...*/}
+  get publicInstanceGetter() {/* … */}
+  get #privateInstanceGetter() {/* … */}
 
-  set publicInstanceSetter(val) {/*...*/}
-  set #privateInstanceSetter(val) {/*...*/}
+  set publicInstanceSetter(val) {/* … */}
+  set #privateInstanceSetter(val) {/* … */}
 
-  static get publicStaticGetter() {/*...*/}
-  static get #privateStaticGetter() {/*...*/}
+  static get publicStaticGetter() {/* … */}
+  static get #privateStaticGetter() {/* … */}
 
-  static set publicStaticSetter(val) {/*...*/}
-  static set #privateStaticSetter(val) {/*...*/}
+  static set publicStaticSetter(val) {/* … */}
+  static set #privateStaticSetter(val) {/* … */}
 }
 
 // class expression
-const ClassName = class ClassName?{/*...*/}
+const ClassName = class ClassName?{/* … */}
 
 // class instance
 const classInstanc = new ClassName(args);
@@ -1739,7 +1745,7 @@ const classInstanc = new ClassName(args);
       - ChildClass can access all static methods of ParentClass
 
     ```
-    class ChildClass extends ParentClass { /* ... */ }
+    class ChildClass extends ParentClass { /* … */ }
     const parentInstance = new ParentClass()
     const childInstance = new ChildClass()
 
@@ -1834,7 +1840,7 @@ Take part of the code and move it to the top of the file
 
 ```
 funcName() // This works
-...
+…
 function funcName(){}
 ```
 
@@ -1991,7 +1997,7 @@ console.log(x) // 1
         - Client error responses: 400-499
         - Server error responses: 500-599
         - [Cut puppy reference](https://httpstatusdogs.com/)
-      - check if xhr is succeeded: `if (xhr.status === 200) { ... }`
+      - check if xhr is succeeded: `if (xhr.status === 200) { … }`
         <br>
 
     - `xhr.responseText` returns the text received from a server following a request being sent.
@@ -2063,7 +2069,7 @@ console.log(x) // 1
           - `datatype`: type of data expected from the server (default: `Intelligent Guess (xml, json, script, or html)`)
           - `cache`: If set to `false`, it will force requested pages not to be cached by the browser. (default: `true, false for dataType 'script' and 'jsonp'`)
           - `success`: A <span>function</span> to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
-            ...
+            …
             <br>
 
     - 3 Shorthand methods that are commonly used:
@@ -2116,8 +2122,8 @@ console.log(x) // 1
     - get request:
       ```
       axios.get(url)
-      .then(function(res){ ... })
-      .catch(function(err){ ... })
+      .then(function(res){ … })
+      .catch(function(err){ … })
       ```
       - have nice error handlers: `error.request` / `error.response`
       - Axios vs Fetch
@@ -2283,11 +2289,11 @@ Promises are handled by [microtasks queue](#microtask)
 
 ```
 async function name (args) {
-  // ...statement...
-  // [...await... ] // execute synchronously
-  // [...statement...] // continue only when first await finished
-  // [...await...]
-  // ...
+  // …statement…
+  // […await…] // execute synchronously
+  // […statement…] // continue only when first await finished
+  // […await…]
+  // …
 }
 ```
 
@@ -2435,7 +2441,7 @@ async function name (args) {
       - `getComputedStyle()`
       - `getBoundingClientRect()`
       - `getClientRects()`
-        ...
+        …
         <br>
 
 #### What is <span>Repaint</span> in browser?
@@ -2556,13 +2562,13 @@ In DOM:
 
   - Root: StyleSheetList: `document.styleSheets` (an **DOMTokenList** of CSSStyleSheet)
   - A styling source is a CSSStyleSheet in the StyleSheetList, e.g.:
-    - `<style>...</style>`
-    - `<link.../>`
+    - `<style> … </style>`
+    - `<link … />`
   - Inline styling is not included in document.styleSheets, it can only be access by that its element
 
     ```
     // html
-    <div style="color: red" id="test">...</div>
+    <div style="color: red" id="test"> … </div>
 
     // js
     const myElement = document.getElementById("test");
@@ -2612,9 +2618,9 @@ In DOM:
       // protocol: "http:"
       // search: "?name=dom&age=24" 
       // searchParams: [URLSearchParams instance]
-      // ...
+      // …
       ```
-  - **Instance properties**: `host`, `href`, `origin`, `search`, `protocal`, `pathName`, `port`,...
+  - **Instance properties**: `host`, `href`, `origin`, `search`, `protocal`, `pathName`, `port`, …
   <br>
 
   - **Instance method**: `searchParams`
@@ -2685,7 +2691,7 @@ let JS file execute after html is loaded
 
    ```
    <body>
-     ...
+     …
      <script type='text/javascript' src='feed.js'></script>
    </body>
    ```
@@ -2758,7 +2764,7 @@ let JS file execute after html is loaded
    - Symbol
    - Default parameters
    - JavaScript Modules
-   - ...
+   - …
      <br>
 
 ##### **[Back to table](#table)**

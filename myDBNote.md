@@ -98,12 +98,15 @@ SQL: Structured Querry Language, a relational database
 
 ### SQL syntax:
 
-- **CRUD**:
-
-  - create: INSERT
-  - read: SELECT
-  - update: UPDATE
-  - delete: DELETE
+- **Statements**:
+  - create table:
+    - `CREATE TABLE [ IF NOT EXISTS ] table_name (column_name data_type, ....)`
+    <br>
+  - create: `INSERT`
+  - read: `SELECT`
+    - `SELECT DISTINCT`: select only different values from result set 
+  - update: `UPDATE`
+  - delete: `DELETE`
 
 - **Syntax**:
 
@@ -115,56 +118,119 @@ SQL: Structured Querry Language, a relational database
   - `E%`: begins with `E`
   - `E___ %`: four letter long and begins with `E`
   - `NULL`: NULL values, always use `IS NULL` and `IS NOT NULL` for testing NULL values
-  - ...
-
-- **Queries**:
-
   - `table-name.col-name`: get col from table
-  - `AND`:
-  - `OR`:
-  - `NOT`:
-  - `AS`: rename a column or table with an alias which will show up in the result and only exists for the duration of the query. ( [SQL Alias](https://www.sqltutorial.org/sql-alias/) )
-    <br>
-  - create table:
-    - CREATE TABLE [ IF NOT EXISTS ] table_name (column_name data_type, ....)
-      <br>
-  - join tables: set up search area
-    - `INNER JOIN`: only overlapping part of two tables
-    - `LEFT OUTER JOIN`: all left table and overlapping part of right table
-    - `RIGHT OUTER JOIN`: all right table and overlapping part of left table
-    - `FULL OUTER JOIN`: all left and right tables
-    - `ON`: condition of joined table
-      <br>
-  - read:
-    - `SELECT` col-name
-    - `FROM` table-name
-    - `WHERE` condition
-    - `LIKE` wildcards word
-    - `NOT LIKE`: anything but...
-    - `ORDER BY` sort-order
-    - use `;` to end a query
-  - create:
-    - `INSERT INTO` table-name (col-name) //
-      - for postgres, INSERT INTO does not return anything in `response.rows`, need to add `RETURNING *` at the end to have the inserted data in `response.rows`
-    - `VALUES` (col-valumes)
-  - update:
-    - `UPDATE` table-name
-    - `SET` col-name `=` col-new-value
-    - `WHERE` condition
-  - delete:
-    - `DELETE FROM` table-name
-    - `WHERE` condition (must include `WHERE` or SQL will delete the entire table)
-      <br>
+  <br>
 
-- **Aggregate functions**:
-  - `min(col)`: smallest value
-  - `max(col)`: largest value
-  - `sum(col)`: sum of the numeric values
-  - `average(col)`: average value
-  - `count(col)`: count values in a col
-  - `count(*)`: count rows in a table
-    ...
+- **Operators**:
+  - `AND`: all the conditions are TRUE
+  - `OR`: any of the conditions are TRUE
+  - `IN`: `WHERE column_name IN (value1, value2, ...);`specify multiple values in a WHERE clause, shorthand for multiple `OR` conditions
+    - `WHERE column_name IN (SELECT...)`: works only with single column 
+  - `EXISTS`:  test for the existence of any record in a subquery. 
+    - `WHERE EXISTS (SELECT 1 FROM ...)`: useful when you want to cheaply determine if record matches your `WHERE` clause
+  - `NOT`: in combination with other operators to give the opposite result
+  - `AS`: rename a column or table with an alias which will show up in the result and only exists for the duration of the query. ( [SQL Alias](https://www.sqltutorial.org/sql-alias/) )
+  
     <br>
+
+- **Functions**:
+  - `CHAR_LENGTH(string)`: return the length of a string (as character)
+  - `LENGTH(string)`: return the length of a string (as bytes), e.g., `'¥'` is one character but two bytes
+
+  <br>
+
+- **Aggregate functions**: usually used with `GROUP BY` to group the result-set by one or more columns.
+  - `MIN(col)`: smallest value
+  - `MAX(col)`: largest value
+  - `SUM(col)`: sum of the numeric values
+  - `AVERAGE(col)`: average value
+  - `COUNT(col)`: count total number in a col
+  - `COUNT(*)`: count total total number in a table
+    
+- **Clause**:
+  - `FROM`:
+  - `WHERE`:
+  - `GROUP BY`:  `SELECT` list that is not part of an aggregate function should be included in the `GROUP BY` clause.
+  - `ORDER BY`:
+  - `HAVING`:
+  - `JOIN`:
+    - - use `ON` to specify the condition of joined table,  
+  - Below are joins with `ON left_table.name = right_table.name`
+  - `INNER JOIN`: only overlapping part of two tables, if a row (data) doesn't match both table at the same time, it won't be included
+    ```
+     # left_table:   |# right_table:  |# inner joined table
+       Id    name    |    name   age  | Id    name    age
+      ---------------|----------------|-------------------   
+        1    Adam    |    Adam   20   |  1    Adam    20
+        2   Brown    |   Brown   31   |  2   Brown    31
+        3  Charles   |   Danny   42   |  4   Danny    42
+        4   Danny    |   Elon    53   |           
+    ```
+  - `LEFT OUTER JOIN`/`LEFT JOIN`: based on left table, pick the matching part of the right table, give `NULL` if no matches for certain column
+    ```
+     # left_table:   |# right_table:  |# left joined table
+       Id    name    |    name   age  | Id    name    age
+      ---------------|----------------|-------------------   
+        1    Adam    |    Adam   20   |  1    Adam    20
+        2   Brown    |   Brown   31   |  2   Brown    31
+        3  Charles   |   Danny   42   |  3   Charles  NULL
+        4   Danny    |   Elon    53   |  4   Danny    42         
+    ```
+  - `RIGHT OUTER JOIN`/`RIGHT JOIN`: similar to `LEFT JOIN`
+    ```
+     # left_table:   |# right_table:  |# right joined table
+       Id    name    |    name   age  | Id    name    age
+      ---------------|----------------|-------------------   
+        1    Adam    |    Adam   20   |  1    Adam    20
+        2   Brown    |   Brown   31   |  2   Brown    31
+        3  Charles   |   Danny   42   |  4   Danny    42
+        4   Danny    |   Elon    53   | NULL  Elon    53         
+    ```
+  - `FULL OUTER JOIN`: Keep all the columns from left and right tables
+    ```
+     # left_table:   |# right_table:  |# full joined table
+       Id    name    |    name   age  | Id    name    age   
+      ---------------|----------------|-------------------
+        1    Adam    |    Adam   20   |  1    Adam    20
+        2   Brown    |   Brown   31   |  2   Brown    31
+        3  Charles   |   Danny   42   |  3   Charles  NULL
+        4   Danny    |   Elon    53   |  4   Danny    42   
+                     |                | NULL  Elon    53      
+    ```
+
+  <br>
+
+
+
+- read:
+  - `SELECT` col-name
+  - `FROM` table-name
+  - `WHERE` condition
+  - `LIKE` wildcards word
+  - `NOT LIKE`: anything but...
+  - `ORDER BY` sort-order
+  - use `;` to end a query
+  <br>
+
+
+- create column:
+  - `INSERT INTO` table-name (col-name) //
+    - for postgres, INSERT INTO does not return anything in `response.rows`, need to add `RETURNING *` at the end to have the inserted data in `response.rows`
+  - `VALUES` (col-valumes)
+  <br>
+
+- update:
+  - `UPDATE` table-name
+  - `SET` col-name `=` col-new-value
+  - `WHERE` condition
+  <br>
+
+- delete:
+  - `DELETE FROM` table-name
+  - `WHERE` condition (must include `WHERE` or SQL will delete the entire table)
+  <br>
+
+
 - **Sub query**:
   e.g., `SELECT description FROM item_order WHERE price = (SELECT min(price) FROM item_order);`
   <br>
@@ -184,6 +250,32 @@ Install `npm install pg`
 - Cursor
   <br>
 
+### Postgresql interactive terminal
+  - `psql`: terminal-based front-end to PostgreSQL, [docs](https://www.postgresql.org/docs/current/app-psql.html)
+    - `psql [option...] [dbname [username]]`
+  - prompt  
+    ```
+    $ psql --username=freecodecamp --dbname=postgres
+    psql (16.2)
+    Type "help" for help.
+
+    postgres=> 
+    ```
+    - Meta-Commands: unquoted backslash commands processed by psql
+      - `\l[+]` or `\list[+] [ pattern ]`: List the databases in the server
+      - `\d[S+] [ pattern ]`: show all columns for each relation
+      - `\c` or `\connect [ -reuse-previous=on|off ] [ dbname [ username ] [ host ] [ port ] | conninfo ]`: start a new connection to a PostgreSQL server
+    - Command: **semicolon** `;` is a must
+      - `CREATE DATABASE database_name;`: create a database
+      - `CREATE TABLE table_name();`: create a table
+      - `ALTER TABLE table_name ADD COLUMN column_name DATATYPE;`: add column to table, `DATATYPE`  is the data type in the new column (INT, VARCHAR(max-length))
+      - `ALTER TABLE table_name DROP COLUMN column_name;`: remove column from table
+      - `ALTER TABLE table_name RENAME COLUMN column_name TO new_name;`: rename column
+      - `INSERT INTO table_name (column_1, column_2) VALUES (value1, value2);`: add row (data) to a table
+      - `DELETE FROM table_name WHERE condition;`: delete row (data)
+      - `DROP TABLE table_name;`: remove table
+      - `ALTER DATABASE database_name RENAME TO new_database_name;`: rename database
+  <br>
 ---
 
 ## NoSQL

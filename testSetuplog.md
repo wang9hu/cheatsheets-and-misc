@@ -76,6 +76,8 @@
 1. in `babel.config.js` file, add `"@babel/preset-react"` to presets
 
 ### testing-library/react:
+
+#### Queries
    1. query methods:
       1. `getBy`: expect an element to be present in DOM\
          - throws error if no match or multiple matches are found
@@ -91,10 +93,10 @@
          - **Recommended for**: testing element appear as a result of asynchronous actions, like data fetching
   <br>
 
-   1. Guilding Principles:
-      1. If it relates to rendering components, then it should deal with DOM nodes her than component instances, and it should not encourage dealing with component instances.
-      2. It should be generally useful for testing the application components in  way the user would use it. We are making some trade-offs here because we're using a computer and often a simulated browser environment, but in general, utilities should encourage tests that use the components the way they're intended to be used.
-      3. Utility implementations and APIs should be simple and flexible.
+   1. Guiding Principles:
+      1. **Rendering** => **DOM**: If it relates to **rendering components**, then it should deal with **DOM nodes** rather than component instances, and it should not encourage dealing with component instances.
+      2. It should be generally useful for testing the application components in  way **the user would use it**. We are making some trade-offs here because we're using a computer and often a simulated browser environment, but in general, utilities should encourage tests that use the components the way they're intended to be used.
+      3. Utility implementations and APIs should be **simple and flexible**.
   <br>
    1. query targets:
       1. `byRole`: by its **accessibility** role, one of the most preferred selectors because it encourages accessibility practices, useful for selecting elements that have **explicit roles** (e.g., button, link, checkbox) in the UI. It closely aligns with how users **identify elements** on the page.
@@ -113,7 +115,16 @@
    
       8. `byTestId`: by a test ID (must be given to the element beforehand like `data-testid="submit-button"`), useful when you need to select elements that are difficult to query by text or role, or when you're working with a component that doesn't render any user-facing text, not encouraging best practices for accessibility or semantic HTML. It's a **"last resort"** selector for when other queries won't work.
    <br>
-    1. User Interaction `userEvent`
-       1. setup: recommended invoking `userEvent.setup()` before the component is rendered. 
+
+#### User Interaction `userEvent`
+   1. setup: recommended invoking `userEvent.setup()` before the component is rendered. 
+   
+#### Async Methods
+   - `waitFor`: to wait for a specific condition to become true, will repeatedly execute the callback until it stops throwing an error or until a timeout is reached.
+     - usage:
+       - Waiting for data to be fetched and displayed on the UI after an asynchronous operation.
+       - Waiting for an element to become visible, hidden, or removed from the DOM as a result of state changes that might not be directly awaited or where the exact timing is uncertain.
+     - Commonly used with assertions inside the callback.
+     - If the callback is asynchronous, use await as necessary.
 
 ### jest 
