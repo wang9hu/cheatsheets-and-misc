@@ -982,7 +982,7 @@ The Set object lets you store <span>unique</span> values of any type, whether pr
     - `callbackFn`: takes in 3 arguments:`value?`, `key?`, `mapObj?`
     - `thisArg`: _optional_ A value to use as `this` when executing `callbackFn`.
 
-### WeakMap
+### WeakMap & WeakSet
 
 <br>
 
@@ -2671,86 +2671,86 @@ In DOM:
 
 ## Interesting concepts
 
-let JS file execute after html is loaded
+1. **let JS file execute after html is loaded**
 
-##### Three ways
+   Three ways: 
 
-1. add `defer` to `<script>` tag:
+   1. add `defer` to `<script>` tag:
 
-   - `<script defer type='text/javascript' src='feed.js'></script>`
-   - notice its difference with `async`
-     ![](./script%20async%20defer.png)
-   - usually `defer` is better than `async` cause it ensure the order of scripts and doesn't block the rendering of the page
-   - If the script is not critical to the functionality of the page and doesn't rely on the page's content, `async` can be used to improve the page's loading performance.
+      - `<script defer type='text/javascript' src='feed.js'></script>`
+      - notice its difference with `async`
+        ![](./script%20async%20defer.png)
+      - usually `defer` is better than `async` cause it ensure the order of scripts and doesn't block the rendering of the page
+      - If the script is not critical to the functionality of the page and doesn't rely on the page's content, `async` can be used to improve the page's loading performance.
+        <br>
+
+   2. in js file, put everything in the callback body
+      `document.addEventListener('DOMContentLoaded', (event) => {});`
+      <br>
+   3. put `<script>` at the end of `<body>`
+
+      ```
+      <body>
+        …
+        <script type='text/javascript' src='feed.js'></script>
+      </body>
+      ```
+
      <br>
 
-2. in js file, put everything in the callback body
-   `document.addEventListener('DOMContentLoaded', (event) => {});`
-   <br>
-3. put `<script>` at the end of `<body>`
-
-   ```
-   <body>
-     …
-     <script type='text/javascript' src='feed.js'></script>
-   </body>
-   ```
-
-  <br>
-
-1. **Time Complexity**
+2. **Time Complexity**
    ![Big O Cheatsheet](./Big_O_cheatsheet.png)
    <br>
 
-1. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
+3. A function to return one of two functions based on their execution results, which can only be decided during function invocation.
 
-   ```
-   function eitherCallback(callback1, callback2) {
-     return (x)=>{
-       return callback1(x) || callback2(x)
-     }
-   }
-   ```
+  ```
+    function eitherCallback(callback1, callback2) {
+      return (x)=>{
+        return callback1(x) || callback2(x)
+      }
+    }
+  ```
 
    <br>
 
-1. There are two types of <span>expressions</span>
+4. There are two types of <span>expressions</span>
 
    1. those that assign value to a variable with side effects: `x = 1`
-   1. those that in some sense evaluate and therefore resolve to a value `1 + 2`
+   2. those that in some sense evaluate and therefore resolve to a value `1 + 2`
       <br>
 
-1. **In `for` loop, the condition could be anything, it doesn't have to be related to `i`.**
+5. **In `for` loop, the condition could be anything, it doesn't have to be related to `i`.**
 
-   ```
-   let y = 3;
-   for (let i = 0; y < 5; i++) {
-       y += i;
-       console.log(y);
-   }
+```
+  let y = 3;
+  for (let i = 0; y < 5; i++) {
+      y += i;
+      console.log(y);
+  }
 
-   // 3
-   // 4
-   // 6
-   ```
+  // 3
+  // 4
+  // 6
+```
 
+<br>
+
+6. Find the checked radio `input` element: `document.querySelector('input:checked')`
    <br>
 
-1. Find the checked radio `input` element: `document.querySelector('input:checked')`
-   <br>
+7. for any array, you can use index at any position to set a value at that index
 
-1. for any array, you can use index at any position to set a value at that index
+```
+  const arr = [];
+  arr[3] = 4;
+  console.log(arr) // [empty * 3, 4]
+  console.log(arr.length) // 4
+```
 
-   ```
-   const arr = [];
-   arr[3] = 4;
-   console.log(arr) // [empty * 3, 4]
-   console.log(arr.length) // 4
-   ```
+<br>
 
-   <br>
-
-1. ES6 (ECMAScript 6 or ECMAScript 2015) added features:
+8. ES6 (ECMAScript 6 or ECMAScript 2015) added features:
 
    - `let` and `const`
    - arrow function
@@ -2766,5 +2766,16 @@ let JS file execute after html is loaded
    - JavaScript Modules
    - …
      <br>
+
+9. Garbage Collection - memory management
+   1.  unaccessible variables usually will be collected, when will them be collected depend on browser.
+   2.  `{ const x= ... }`: Scoped variables in curly braclets and not accessible outside, will be collected after execution
+   3.  WeakMap and WeakSet are better garbage collectable version at certain situation, like the object is constantly changing or most of what is inside is no longer needed
+    <br />
+    **Tool**:  
+      - chrome devtool - memory tab - snap shot to check the current memory used
+      - functions, variables are stored as strings in memory
+      - primitive variables will not be collected, composite values will be collected if possible
+      - *Tricks on debugging*: add a debugger at the top of the file, run the app, take a snapshot when debugger is hit, then continue execution, run another snapshot after execution, see allocated between snapshot 1 and 2.
 
 ##### **[Back to table](#table)**

@@ -1,5 +1,14 @@
-# Python
+## Table of content
+- [Table of content](#table-of-content)
+  - [Python General](#python-general)
+  - [Python build-in types](#python-build-in-types)
+  - [Python build-in function](#python-build-in-function)
+  - [Python library:](#python-library)
+  - [python module (import XXX)](#python-module-import-xxx)
+  - [memo](#memo)
 
+
+### Python General
 - comments start with `#`
   <br>
 - The keyword for defining a function is `def` instead of `function`.
@@ -86,8 +95,10 @@
      ```
      <br>
 
-  
+[back to top](#table-of-content)
+<br>
 
+  
 ### Python build-in types
 - In python everything is an **object**, each entity (string, function, class, etc) has a value and associated properties and methods. 
   - In JS, primitives types have no methods, JS will automatically wrap them in respective prototype object wrappers when invoking methods for better performance, higher memory efficiency and simplicity.
@@ -105,8 +116,9 @@
 - <span>Text Sequence Type</span>: `str` 
   - **immutable** sequences of Unicode code points.
   - String expressions: 
-    - Single and Double quotes: `'s"t"r'`, `"s't'r"`, 
-    - Triple-quoted: `'''str'''`/`"""str"""`(can span multiple lines)
+    - `'s"t"r'`
+    - `"s't'r"`, 
+    -  `'''str'''`/`"""str"""`(can span multiple lines)
     - Raw strings(prefixing `r` or `R`): backslashes (`\`) are treated as **literal characters** and do not interpreted as escape characters.
       - `raw_string = r"C:\new_folder"`
     - Formated strings(f-string): allow for embeded expressions with curly braces `{}`:
@@ -116,7 +128,7 @@
       - `fr` or `rf` string: both works
     - Byte strings(prefixing `b` or `B`): sequences of bytes instead of Unicode characters, used for working with binary data, such as files in binary mode.
       - `byte_string = b"This is a byte string."`
-    - Unicode strings(prefixing `u` or `U`): only in py2, all strings are unicode in py3)
+    - Unicode strings(prefixing `u` or `U`): (*only in py2, all strings are unicode in py3*)
       - unicode_string = u"This is a Unicode string."
 
 
@@ -195,6 +207,9 @@
 
 - <span>Generator Types</span>: `generator`
 
+<br>  
+
+[back to top](#table-of-content)
 <br>
 
 
@@ -209,6 +224,11 @@
 
   - `all(iterable)`: return `True` if all elements of the `iterable` are true or `iterable` is empty. Otherwise `False`
 
+  <br>
+
+[back to top](#table-of-content)
+<br>
+
 ### Python library:
 - <span>Numpy</span>: for better data manipulation
   - Numpy array Broadcasting
@@ -217,6 +237,8 @@
 - <span>Matplotlib</span>: for draw histogram
     <br>
 
+[back to top](#table-of-content)
+<br>
 
 ---
 
@@ -254,8 +276,15 @@
         - `m = pattern.search("dog")`;
       - class re.RegexFlag: regex flag object ([docs](https://docs.python.org/3/library/re.html#re.RegexFlag))
 
+  <br>
 
-##### memo
+[back to top](#table-of-content)
+<br>
+
+### memo
   - generator expression (like list comprehension, but with parentheses)
   - call function with assigned arguments: `add(x=1, y=7)`, this can change the order of arguments: same as `add(y=7, x=1)`
   - `if __name__ == '__main__':`
+  
+[back to top](#table-of-content)
+<br>
