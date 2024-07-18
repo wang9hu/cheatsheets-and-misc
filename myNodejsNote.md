@@ -1,4 +1,5 @@
 # Node notes
+- nodejs comes with REPL: read eval print loop, a command line env to run js
 
 - `npm init -y`
 
@@ -126,7 +127,7 @@
   ``` 
   - if `error` is not `null` or `undefined`, it indicates an error occurred during that async operation. Or else, the operatio is successful.
 
-### things need to address later
+### things good to know
 
 - <span>Node version manager</span>: `nvm`
   - install other version: `nvm install latest` or `nvm install vX.Y.Z`
@@ -164,9 +165,9 @@
 
 CJS and ESM are two module systesm in JavaScript that are actively being used.
 
-- <span>CJS</span> was introduced as the default module system for Node.js
+- <span>CJS</span> was introduced as the default module system for **Node.js**
 
-  ```
+```
   // importing
   const fs = require("fs");
 
@@ -179,21 +180,21 @@ CJS and ESM are two module systesm in JavaScript that are actively being used.
 
   // this will disconnect with module.exports, DON'T USE THIS!!
   exports = someVariable 
-  ```
+```
   - `exports` and `module.exports` initially refer to the same object, but `require` only takes from `module.exports`
   - CJS was initially specific for Nodejs when browser did not have a module system yet.
   <br>
 
-- <span>ESM</span> was introduced by ECMAScript 2015 (ES6) as the standardized module system for working in browsers.
+- <span>ESM</span> was introduced by ECMAScript 2015 (ES6) as the standardized module system for **working in browsers.**
 
-  ```
+```
   // importing
   import fs, { nonDefaultExport1, nonDefaultExport2 } from "fs"
 
   // exporting
   export default function() { return "Hi there!";}
   export nonDefaultExport1() { return "Hi there!";}
-  ```
+```
 
   ESM as the standard in **browser-land**, and CJS as the standard in node-land.
   Frontend frameworks like React or Vue have been using the ESM syntax even before it became a standard in the browser. Though they used tools like Babel to transpile it to CommonJS syntax
@@ -205,18 +206,37 @@ CJS and ESM are two module systesm in JavaScript that are actively being used.
 - Browsers don't support **CJS**, require bundlers like webpack; **ESM** is supported in modern browsers
 
 
-Ways to adopt ESM in Node:
+<span>Ways to adopt ESM in Node:</span>
 
 - use `.mjs` file extension for ESM files
 - use `.js` file and in nearest parent `package.json`, contains a top-level `"type": "module"` (default is `"commonjs"`), this will tell Node that all `.js` files are written with ESM
 
-Tell HTML file that you are using module:
+<span>Tell HTML file that you are using module:</span>
 
 - in `<script></script>` tag, add `type="module"` (probably also add `defer` to wait for script to load)
 
 
+### Node build-in Modules
 
-### Node Modules
+- <span>HTTP modules</span>
+```
+  import http from 'http';
+  const PORT = 8000;
+  const server = http.createServer((req, res) => {
+    //
+  })
+
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+```
+  - `http.createServer([options][, (req, res) => { ... }])`
+    - `res`: 
+      - `.write`: 
+
+
+
+### Node packages
 
 - #### cross-evn
 <br>

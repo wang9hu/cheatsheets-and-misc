@@ -226,7 +226,15 @@ In general, you can set various values for the display type using the `display` 
 
        <br>
 
-1. animation
+1. `transform`: transformations like translate, rotate, scale, etc
+    - `translate`: move up down left right
+    - `rotate`: rotate 
+    - `scale`: expand 
+  
+
+    <br>
+
+2. animation
 
    - `Window.requestAnimationFrame(callback)`: update the page's visual content at the next available opportunity
 
@@ -248,7 +256,7 @@ In general, you can set various values for the display type using the `display` 
      - The browser can pause the animation loop if the tab is in the background or if the computer is running on battery power, and resume it when appropriate.
        <br>
 
-1. To make the `height` of an element change with `tansition` by toggle classname, don't use `height`, use `max-height` in the transition and set a value on `max-height` to something bigger than your box will ever get.
+3. To make the `height` of an element change with `tansition` by toggle classname, don't use `height`, use `max-height` in the transition and set a value on `max-height` to something bigger than your box will ever get.
 
    ```
 
@@ -265,7 +273,7 @@ In general, you can set various values for the display type using the `display` 
 
    <br>
 
-1. `display: flex`
+4. `display: flex`
 
    1. defaults:
 
@@ -277,7 +285,7 @@ In general, you can set various values for the display type using the `display` 
       - `flex-shrink: 1`
         <br>
 
-   1. `flex-basis` vs `width` / `height`:
+   2. `flex-basis` vs `width` / `height`:
 
       - `flex-basis` only applies to flex items, sets the initial main size of a flex item - can be specific value or percentage: `10em` / `3px` / `50%`
       - can be intrinsic sizing keywords: `max-content` / `min-content` / `fit-content` - `flex-basis` only works with main axis:
@@ -288,7 +296,7 @@ In general, you can set various values for the display type using the `display` 
 
         <br>
 
-1. `text-align: center`
+5. `text-align: center`
 
    - inherited: true
    - horizontal alignment of the **inline box** inside a **block box** or table-cell box
@@ -296,7 +304,7 @@ In general, you can set various values for the display type using the `display` 
 
      <br>
 
-1. Margin collapsing:
+6. Margin collapsing:
 
    - If two <span>vertically adjacent</span> elements both have a margin set on them and their margins touch, the larger of the two margins remains and the smaller one disappears.
      <br>
@@ -319,12 +327,12 @@ In general, you can set various values for the display type using the `display` 
    - margin collapsing only happens within vertical-block margins and flex container's margin doesn't collapse at all.
      <br>
 
-1. Child element dimension larger than parent element value:
+7. Child element dimension larger than parent element value:
 
    - By default, `overflow` is `visible`, but the parent dimension decides how much space is taken for that element, so it is possible for child element go over the boundary of parent element and invade parent sibling element.
      <br>
 
-1. Bootstrap:
+8. Bootstrap:
    1. **Content delivery network** ( <span>CDN</span> ) is a quick and easy way of applying css framework, like bootstrap e.g.
       ```
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">

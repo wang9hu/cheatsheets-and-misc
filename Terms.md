@@ -1,6 +1,8 @@
 # Table of contents
 - [Table of contents](#table-of-contents)
     - [Web-related terms](#web-related-terms)
+    - [cookies vs ocalStorage vs sessionStorage](#cookies-vs-ocalstorage-vs-sessionstorage)
+    - [HTTP, HTTPS, SSL, TLS](#http-https-ssl-tls)
     - [Concepts](#concepts)
     - [ASCII vs Unicode (UTF-8, UTF-16 \& UTF-32)](#ascii-vs-unicode-utf-8-utf-16--utf-32)
     - [RSA (Rivest–Shamir–Adleman) cryptosystem](#rsa-rivestshamiradleman-cryptosystem)
@@ -74,7 +76,11 @@
     - For example, `PUT` and `DELETE` are idempotent, but not safe.
     <br>
 
-- <span>cookies</span> vs <span>localStorage</span> vs <span>sessionStorage</span>
+**[Back to table](#table-of-contents)**
+
+---
+
+### cookies vs ocalStorage vs sessionStorage
   - **cookies**: used for persist data of certain domain, primarily set and read by server-side(when receiving/sending requests)
     - usually have a limit size of 4KB per domain, some browsers, like chrome, don't have size limit
   <br>
@@ -88,14 +94,59 @@
   - **sessionStorage**: same as `localStorage`, except that sessionStorage will get cleared when page is closed.
     <br>
 
-- <span>HTTP</span>, <span>HTTPS</span>, <span>SSL</span>, <span>TLS</span>
+**[Back to table](#table-of-contents)**
+
+---
+
+### HTTP, HTTPS, SSL, TLS
   - HTTP: Hypertext Transfer Protocol
   - HTTPS: Secure Hypertext Transfer Protocol
   - SSL: Secure Socekt Layer
     - SSL certificate: 
   - TLS: Transport Layer Security (latest industry standard)
+  
+  <span>How a packet sent over internet</span>
+  - Application Layers:
+    - **HTTP**, **FTP**, **SMTP** ...
+    - e.g., A web browser requests a webpage using the HTTP protocol
+  - Transport Layer:
+    - **TCP**, **UDP**
+    - e.g., The HTTP request is encapsulated in a TCP segment. This segment includes source and destination port numbers and a sequence number.
+  - Network Layer
+    - **IP**
+    - e.g., The TCP segment is encapsulated in an IP packet, which includes the source and destination IP addresses.
+  - Data Link Layer
+    - **Ethernet**, **Wi-Fi** ...
+    - e.g., The IP packet is encapsulated in an Ethernet frame, which includes source and destination MAC (Media Access Control) addresses.
+  - Physical Layer
+    - **cable**, **fiber optics**, **wireless**
+  - Transmission Across the Network
+    - **switches**, **routers**, **modems**
+  - Intermediate Hops
+    - **multiple routers**
+  - Reassembly and Delivery
+  
 
- **[Back to table](#table-of-contents)**
+  <span>Diagram of Encapusulation</span>
+```
+  +------------------------------------+
+  | Application Data                   |
+  +------------------------------------+
+  | TCP Header | TCP Segment (Data)    |
+  +------------------------------------+
+  | IP Header  | IP Packet (TCP Segment)|
+  +------------------------------------+
+  | Ethernet Header | IP Packet        |
+  +------------------------------------+
+  | Ethernet Frame (IP Packet)         |
+  +------------------------------------+
+```
+
+  
+
+
+
+**[Back to table](#table-of-contents)**
 
 ---
 
