@@ -3,6 +3,7 @@
     - [Web-related terms](#web-related-terms)
     - [cookies vs ocalStorage vs sessionStorage](#cookies-vs-ocalstorage-vs-sessionstorage)
     - [HTTP, HTTPS, SSL, TLS](#http-https-ssl-tls)
+      - [HTTP (Hypertext Transfer Protocal)](#http-hypertext-transfer-protocal)
     - [Concepts](#concepts)
     - [ASCII vs Unicode (UTF-8, UTF-16 \& UTF-32)](#ascii-vs-unicode-utf-8-utf-16--utf-32)
     - [RSA (Rivest–Shamir–Adleman) cryptosystem](#rsa-rivestshamiradleman-cryptosystem)
@@ -21,20 +22,88 @@
   - clients and servers are just programs that run on a host
     <br>
 
-- <span>Origin</span>: `[scheme]://[hostname]:[port]`
+- <span>Origin</span>: `[scheme]://[hostname]:[port]/[path]`
 
   - defined by the scheme (**protocol**), hostname (**domain**), and port of the URL
-  - `http://example.com:8080`
+  - `http://example.com:8080/test/`
     - `http`: called "scheme",
       - http: resources transported over unencrypted connections using HTTP protocol.
       - https: resource is transported using the HTTP protocol, but over a secure TLS (Transport Layer Security) channel.
     - `example.com`: called domain name, it is hosted on a server where the document resides
-    - `8080`: called ports
+    - `8080`: ports
+      - When no port is specified in a URL, the default port for the given protocol is used. Here are the default ports for some common protocols:
+        •	*HTTP: Port 80*
+        •	*HTTPS: Port 443*
+        •	*FTP: Port 21*
+        •	*SSH: Port 22*
+    - `/test/`: path name
     - `wwww.example.com` is actually a subdomain of `example.com`
+  <br>
+
   - "Same-origin" means the client has the same origin as the server it's calling
   - "Cross-origin" means the client origin is different than the server it's calling
-  - CORS (Cross-Origin Resource Sharing) is a system, consisting of transmitting HTTP headers, that determines whether browsers block frontend JavaScript code from accessing responses for cross-origin requests.
+  - CORS (Cross-Origin Resource Sharing) is a system, consisting of transmitting HTTP headers, that determines whether **browsers** block frontend JavaScript code from accessing responses for cross-origin requests.
+    - **Browser** decide: pass or fail
+      - AJAX ---> browser send request ---> server response ---> browser check cors
+        - pass: browser ---> response to AJAX
+        - fail: browser show cors error
     <br>
+
+    - <span>request types</span>: simple and preflight
+      - **simple**: 
+        - `GET` `POST` or `HEAD` method 
+        - request header compliant with CORS standards
+        - Content-Type can only be 
+          - `text/plain` (default)
+          - `multippart/form-data` 
+          - `application/x-www-form-urlencoded`
+      - **preflight**: requests that are **NOT** simple request
+    <br>
+
+    - <span>validation rules</span>: 
+      - **Simple request**: 
+        - browser add `Origin: [current_origin]` in request head (browser behavior, can't be changed)
+        - pass: in response: `Access-Control-Allow_Origin: [current_origin] || *`
+          - in general, don't use `*`, server can just use `req.get('Origin')` to grap the request origin
+        - fail: in response, no `Access-Control-Allow-Origin` or no `[current_origin]`
+      - **Preflight request**: 
+        - browser won't send the request, instead send a `OPTIONS` method request with
+          - `Origin: [current_origin]`
+          - `Access-Control-Request-Method: [preflight_request_method]`
+          - `Access-Control-Request-Headers: a, b, content-type` (changed req head)
+        - pass: in response, must have at least these
+          - `Access-Control-Allow_Origin: [current_origin]`
+          - `Access-Control-Allow-Methods: [could have multiple values, must contain above]`
+          - `Access-Control-Allow-Headers: [could have multiple values, must contain above]`
+          - optional allowed period (1 day): `Access-Control-Max-Age: 86400`
+    <br>
+
+    - Cross-origin AJAX requst generally don't have cookies with it, so it need to set manually
+      - requests:
+        - XHR: `xhr.withCredentials = true`
+        - Fetch: `fetch(url, { credentials: "include" })`
+
+      - response:
+        - `Access-Control-Allow-Credentials: true`
+        - can't have: `Access-Control-Allow_Origin: *`
+    <br>
+
+    - Cross-origin AJAX client can have basic response headers like
+      - `Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma`
+      - Client can't have other headers unless response header have
+        - `Access-Control-Expose-Headers: authorization, a, b`
+
+    <br>
+
+  - JSONP: handle cross-origin request before CORS exist (mostly deprecated)
+    - browser have less restrictiond on tags
+    - can only send get request
+  
+  <br>
+
+  - Proxy: since cors error only happens in browser, use proxy server could avoid it completely
+  
+  <br>
 
 - <span>Client</span>: Any device that can send request to server, and receive respond from server;
 - <span>Server</span>: Any device that can receive a request and respond to it. Server could refer to hardware, software, or both.
@@ -107,7 +176,7 @@
   
   <span>How a packet sent over internet</span>
   - Application Layers:
-    - **HTTP**, **FTP**, **SMTP** ...
+    - **HTTP**, **FTP**, **DNS**, **SMTP**, **POP3** ...
     - e.g., A web browser requests a webpage using the HTTP protocol
   - Transport Layer:
     - **TCP**, **UDP**
@@ -142,9 +211,65 @@
   +------------------------------------+
 ```
 
+#### HTTP (Hypertext Transfer Protocal)
+- Request-response communication
+- text based format, only knows ASCII encoding
+  - use `encodeURIComponent()` to get the ASCII code for non-ASCII characters
+  - use `decodeURIComponent()` to show the non-ASCII character from encoded ASCII
+- request has 3 parts:
+  - req line, e.g. GET /api/movies?p=2&size=10 HTTP/1.1
+    - *GET*: semantic method name, can be customized (if server knows it)
+    - /api/movies?p=2&size=10: path
+    - HTTP/1.1: http version
+  - req head: key-value pairs
+    - Host: www.example.com   // domain (**required**)
+    - Content-Type: [**type/subtype**]    // req body format
+      - `application/x-www-form-urlencoded`   // 'name=John+Doe&age=28&city=New+York' / 'pic=.....(base64)'
+      - `application/json `   // '{"avater": "[base64]" }
+      - `image/png `  // 
+      - `text/plain`
+      - `multipart/form-data; boundary=aaa` // Used for form submissions with files
+        
+  - req body: format need to match with server requirement
+    - need to match req head Context-Type
+      - req body for 'multipart/form-data; boundary=aaa':
+        ```
+          --aaa
+          Content-Disposition: form-data; name="name"
+
+          John Doe
+          --aaa
+          Content-Disposition: form-data; name="age"
+
+          28
+          --aaa
+          Content-Disposition: form-data; name="profile_picture"; filename="photo.jpg"
+          Content-Type: image/jpeg
+
+          <binary data of photo.jpg, could be array buffer>
+          --aaa--
+        ```
   
+  <br>
+- response has 3 parts
+  - res line, e.g. HTTP/1.1 200 OK
+    - HTTP/1.1: http version
+    - 200: status code
+      - 1**: need more info, require more execution from client
+      - 2**: success
+      - 3**: success with other info (redirect)
+        - 301: resource is permanently redirected, recommand not to visit
+        - 302: resource is temperarily redirected, probably can be visit in the future
+      - 4**: request failed due to client error
+      - 5**: server error
+    - OK: status text, usually same as res code, controlled by server
+  - res head: key-value pair
+    - Content-Type: text/html   // res content
+    - Context-length: 276   // res size
+  - res body
 
 
+<br>
 
 **[Back to table](#table-of-contents)**
 
@@ -205,7 +330,7 @@
 ---
 
 ### ASCII vs Unicode (UTF-8, UTF-16 & UTF-32)
-- **encoding**: assigning numbers (code point) to graphical characters (*grapheme*)
+- **encoding standard**: assigning numbers (code point) to graphical characters (*grapheme*)
 <br>
 
 - **ASCII**: a character encoding mapping table: bits(0s and 1s) -> character
@@ -222,9 +347,18 @@
 <br>
 - **UTF**: Unicode transformation format
   - encoding strategies: UTF-8, UTF-32, ....
-    - UTF-8: requires 8, 16, 24 or 32 bits (one to four bytes) to encode a Unicode character, unequal size in bytes for each character, save spaces
-    - UTF-16: requires either 16 or 32 bits to encode a character
-    - UTF-32: always requires 32 bits to encode a character
+    - **UTF-8**: requires **8**, **16**, **24** or **32** bits (one to four bytes) to encode a Unicode character, unequal size in bytes for each character, save spaces
+      - 1 byte for ASCII (compatible): U+0000 to U+007F
+      - 2 bytes for U+0080 to U+07FF
+      - 3 bytes for Basic  Multilingual Plane (BMP): U+0800 to U+FFFF
+      - 4 bytes for characters outside of BMP: U+10000 to U+10FFFF
+    - **UTF-16**: requires either **16** or **32** bits to encode a character, different encoding with UTF-8, more efficienty (in storage) for many **non-English BMP chracters** than UTF-8, like *Chinese, Japanese, Korean*, ..., where 2 bytes is enough rather than 3 bytes in UTF-8.
+      - 2 bytes: U+0000 to U+FFFF (BMP)
+      - 4 bytes: U+10000 to U+10FFFF
+    - **UTF-32**: always requires **32** bits to encode a character
+      - 4 bytes for every character
+      - Simpler processing algorithms, no surrogate pairs (different bytes for different characters)
+      - High storage and memory usage, increased bandwidth consumption.
     <br>
   - must use the **same strategy** for decode
 

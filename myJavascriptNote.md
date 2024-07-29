@@ -26,6 +26,7 @@
 - [Event Loop](#event-loop)
 - [DOM Traversal](#dom-traversal)
 - [Web APIs](#web-apis)
+- [Browser](#browser)
 - [Interfaces](#interfaces)
 - [Interesting concepts](#interesting-concepts)
 
@@ -2019,20 +2020,30 @@ console.log(x) // 1
       - no streaming
         <br>
 
-1.  **Fetch API** (an update to XHR) is provided by browsers (webapi) based on [chained promise](#promise)
+2.  **Fetch API** (an update to XHR) is provided by browsers (webapi) based on [chained promise](#promise)
 
     - nice and clean
     - more powerful functionalites
 
     ```
-    fetch(url)                    // That's it, no XMLHttpRequest() constructor, no open(), no send()
-    .then(function(res) {         // fetch will return a promise, whose resolved value is a 'response' object,
-      return res.json();
-    }).then(function(data) {
-      console.log(data);
-    }).catch(function(e) {
-      console.log('problem!')
-    });
+      // fetch will return a promise, which resolves to a response object if response head is received
+
+      fetch(url)    
+      .then(function(res) {  
+        return res.json();
+      }).then(function(data) {
+        console.log(data);
+      }).catch(function(e) {
+        console.log('problem!')
+      });
+
+      or
+
+      async function loadURL() {
+        const resp = await fetch(ur);
+        const body = await resp.json();
+        console.log(body)
+      }
     ```
 
     - Fetch Intefaces
@@ -2043,105 +2054,126 @@ console.log(x) // 1
       - `Headers`: Represents response/request headers, allowing you to query them and take different actions depending on the results.
       - `Request`: Represents a resource request.
       - `Response`: Represents the response to a request.
-        - `Res.json()`: Returns a `Promise` that resolves with the result of parsing the response body text as JSON.
+        - <span>fetch will resolve once response head is received</span>
+          - If want to access response body as a whole, need to wait for promises from other response methods (like res.text(), res.json()) to resolve
+          - Or process readable stream once 
+            ```
+              const reader = res.body.getReader();
+              const decoder = new TextDecoder();
+              while (1) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                const txt = decoder.decode(value);
+                console.log(txt)
+              }
+            ```
+          - `res.json()`: Returns a `Promise` that resolves with the result of parsing the response body text as JSON.
+          - `res.text()`: resolves as plain text
+          - `res.blob()`: resolves to a binary large object, for file handling
+          - `res.arrayBuffer()`: resolve to a generic, fixed-length raw binary data buffer, for low level data manipulation
       - [more details](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
         <br>
 
-1.  **jQuery AJAX**: jQuery is 'The Write Less, Do More JavaScript **Library**' (based on JS)
 
-    - [Docs](https://api.jquery.com/)
-    - tons of functionality, not just AJAX
-    - heavy library
-    - Install: npm or CDN (content delivery network) or many other ways
-      <br>
-    - **jQuery AJAX** is another way of sending http request (evetually based on `XHR`), mainly differs from **fetch**:
-      - jQuery AJAX could respond to HTTP error
-      - jQuery AJAX could receive cookies from server
-        <br>
-    - The 'base' jQuery AJAX Method: `$.ajax(url?, settings?)`
+<span>XHR vs Fetch</span>
+  | Feature                   | XMLHttpRequest (XHR)                    | Fetch API                                             |
+|---------------------------|-----------------------------------------|-------------------------------------------------------|
+| **Basic Request**         | Both can perform GET, POST, PUT, DELETE, etc.              |
+| **Response Handling**     | Uses callbacks for handling responses.  | Uses Promises, allowing more readable and maintainable code with `.then()` and `catch()`. |
+| **Synchronous Requests**  | Supports synchronous requests (not recommended). | Only supports asynchronous requests.                   |
+| **Streaming**             | Does not support streaming.             | Supports streaming responses through `ReadableStream`. |
+| **Progress Events**       | Can track progress of uploads/downloads with `onprogress`. | Does not natively support progress events (but can be implemented with `ReadableStream`). |
+| **Request Cancellation**  | Can abort requests using `xhr.abort()`. | Can cancel requests with `AbortController`.            |
+| **Timeout**               | Can set a timeout for the request.      | Timeout must be implemented manually using `AbortController`. |
+| **Request Headers**       | Can set request headers.               | Can set request headers using the `Headers` interface. |
+| **Response Types**        | Supports various response types such as text, JSON, document, blob, arraybuffer. | Supports response types such as text, JSON, blob, formData, arrayBuffer. |
+| **Error Handling**        | More verbose error handling.           | More straightforward error handling with `catch()`.    |
+| **Cookies**               | Automatically sends cookies and handles CORS with `withCredentials`. | Requires `credentials` option (`same-origin`, `include`, `omit`) to send cookies. |
+| **Interception**          | Cannot be intercepted by Service Workers. | Can be intercepted by Service Workers.                |
+| **Built-in Support for JSON** | Needs manual JSON parsing.          | Automatically handles JSON with `response.json()`.     |
 
-      - `$.ajax()` is the same as `jQuery.ajax()`
-      - `settings`: _optional_ A set of key/value pairs that configure the Ajax request
-        - common setting keys:
-          - `method`: HTTP method to use for the request (default: `GET`)
-          - `url`: the URL to which the request is sent (default: `The current page`)
-          - `data`: data to be sent to the server
-          - `datatype`: type of data expected from the server (default: `Intelligent Guess (xml, json, script, or html)`)
-          - `cache`: If set to `false`, it will force requested pages not to be cached by the browser. (default: `true, false for dataType 'script' and 'jsonp'`)
-          - `success`: A <span>function</span> to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
-            …
-            <br>
 
-    - 3 Shorthand methods that are commonly used:
 
-      - `$.get(url, data?, success?, dataType?)` same as below:
-        - `success`: cb, Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.
+<span>AJAX libraries:</span>
 
-      ```
-      $.ajax({
-        url: url,
-        data: data,
-        success: success,
-        dataType: dataType
-      });
-      ```
+1. **jQuery AJAX**: jQuery is 'The Write Less, Do More JavaScript **Library**' (based on JS)
 
-      <br>
+   - [Docs](https://api.jquery.com/)
+   - tons of functionality, not just AJAX
+   - heavy library
+   - Install: npm or CDN (content delivery network) or many other ways
+     <br>
+   - **jQuery AJAX** is another way of sending http request (evetually based on `XHR`), mainly differs from **fetch**:
+     - jQuery AJAX could respond to HTTP error
+     - jQuery AJAX could receive cookies from server
+       <br>
+   - The 'base' jQuery AJAX Method: `$.ajax(url?, settings?)`
 
-      - `$.post(url, data?, success?, dataType?)` same as below:
-        - `success`: cb, Required if dataType is provided, but you can use null
+     - `$.ajax()` is the same as `jQuery.ajax()`
+     - `settings`: _optional_ A set of key/value pairs that configure the Ajax request
+       - common setting keys:
+         - `method`: HTTP method to use for the request (default: `GET`)
+         - `url`: the URL to which the request is sent (default: `The current page`)
+         - `data`: data to be sent to the server
+         - `datatype`: type of data expected from the server (default: `Intelligent Guess (xml, json, script, or html)`)
+         - `cache`: If set to `false`, it will force requested pages not to be cached by the browser. (default: `true, false for dataType 'script' and 'jsonp'`)
+         - `success`: A <span>function</span> to be called if the request succeeds. Arguments: **the data returned from the server** (formatted according to the dataType parameter or the dataFilter callback function, if specified), **a string describing the status**, and **the `jqXHR` object**.
+           …
+           <br>
 
-      ```
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: data,
-        success: success,
-        dataType: dataType
-      });
-      ```
+   - Shorthand methods that are commonly used:
 
-      <br>
+     - `$.get(url, data?, success?, dataType?)` same as below:
+       - `success`: cb, Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.
 
-      - `$.getJSON(url, data?, success?)` same as below:
+     ```
+     $.ajax({
+       url: url,
+       data: data,
+       success: success,
+       dataType: dataType
+     });
+     ```
+     <br>
 
-      ```
-      $.ajax({
-        dataType: "json",
-        url: url,
-        data: data,
-        success: success
-      });
-      ```
+     - `$.post(url, data?, success?, dataType?)` same as below:
+       - `success`: cb, Required if dataType is provided, but you can use null
 
-      <br>
+     ```
+     $.ajax({
+       type: "POST",
+       url: url,
+       data: data,
+       success: success,
+       dataType: dataType
+     });
+     ```
+     <br>
 
-1.  **Axios**: a lightweight HTTP request **library** (HTTP request only)
-    - [Docs](https://axios-http.com/docs/intro)
-    - Install: npm or CDN
-    - get request:
-      ```
-      axios.get(url)
-      .then(function(res){ … })
-      .catch(function(err){ … })
-      ```
-      - have nice error handlers: `error.request` / `error.response`
-      - Axios vs Fetch
-        | Axios | Fetch |
-        | :--- | :--- |
-        | Axios has `url` in request object.| Fetch has no `url` in request object. |
-        | Axios is a **stand-alone third party package** that can be easily installed. |Fetch is built into most modern browsers; **no installation** is required as such.|
-        | Axios enjoys built-in XSRF protection. |Fetch does not.|
-        | Axios uses the `data` property. |Fetch uses the `body` property.|
-        | Axios’ data contains the `Object`. |Fetch’s body has to be **stringified**.|
-        | Axios request is ok when `status` is `200` and `statusText` is `OK`. |Fetch request is `ok` when **response object contains** the `ok` property.|
-        | Axios performs **automatic transforms of JSON data**. |Fetch is a **two-step process** when handling JSON data- first, to make the actual request; second, to call the .json() method on the response.|
-        | Axios allows **cancelling request and request timeout**. |Fetch does not.|
-        | Axios has the ability to **intercept HTTP requests**. |Fetch, by default, doesn’t provide a way to intercept requests.|
-        | Axios has **built-in support for download progress**. |Fetch does not support upload progress.|
-        | Axios has **wide browser support**. |Fetch only supports Chrome 42+, Firefox 39+, Edge 14+, and Safari 10.1+ (This is known as Backward Compatibility).|
-        | Axios `GET` call can have body Content |Fetch `GET` call cannot have body Content|
-        <br>
+     - `$.getJSON(url, data?, success?)` same as below:
+
+     ```
+     $.ajax({
+       dataType: "json",
+       url: url,
+       data: data,
+       success: success
+     });
+     ```
+  <br>
+
+1.  **Axios**: a lightweight HTTP request **library** based on XHR (HTTP request only)
+     - [Docs](https://axios-http.com/docs/intro)
+     - Install: npm or CDN
+     - get request:
+       ```
+       axios.get(url)
+       .then(function(res){ … })
+       .catch(function(err){ … })
+       ```
+       - have nice error handlers: `error.request` / `error.response`
+
+2. **umi-request**: based on fetch
 
 ##### **[Back to table](#table)**
 
@@ -2597,11 +2629,7 @@ In DOM:
 
 - <span>URL API</span>:
   - Used to parse, construct, normalize, and encode URLs
-    <br>
-  
   - `window.location.href`: the url of current page
-  <br>
-
   - **Constructor**: `new URL(url, [base])`
       ```
       const baseURL = 'http://www.youtube.com';
@@ -2648,13 +2676,90 @@ In DOM:
     - `URL.revokeObjectURL(objectURL)`: releases an existing object URL which was created by `URL.createObjectURL()`;
   <br>
 
-- <span>File API</span>:
-   - `Blob` **Interface**: 
-      - Binary Large Object (`Blob`): file-like object of immutable, raw data.
-      - Aim to store resources locally and reuse it without requesting from server
-      - can be read as text or binary data, or converted into a `ReadableStream`
-      - 
+- <span>Blob</span>
+
   <br>
+
+- <span>File API</span>:
+  - `Blob` **Interface**: 
+    - Binary Large Object (`Blob`): file-like object of immutable, raw data.
+    - Aim to store resources locally and reuse it without requesting from server
+    - can be read as text or binary data, or converted into a `ReadableStream`
+
+  <br>
+
+- <span>FileReader</span>
+- <span>FormData</span>
+
+##### **[Back to table](#table)**
+
+---
+
+
+## Browser
+
+### HTTP Request and Response 
+  [see details](./Terms.md#http-hypertext-transfer-protocal) 
+
+### user agent
+  helped user finish request and analyze response
+
+  - <span>auto-send request</span>
+    1. when enter url, auto-send **get** request
+  
+    2. fill domain to relative/absolute path: 
+         - page: `https://www.example.com/a/b/index.html`
+         - link: `<a href=[path] />`
+         - absolute path => `'https://www.example.com/1.html'`
+           - `"/1.html"`
+           - `"//www.example.com/1.html">"`
+
+         - relative path
+           - `"./1.html"` => `'https://www.example.com/a/b/1.html'`
+           - `"1.html"` => `'https://www.example.com/a/b/1.html'`
+           - `"../1.html"` => `'https://www.example.com/a/1.html'`
+
+    3. send `<form>` request
+         - form has action and method
+         - a button with "submit" type (works with click and enter)
+         - input with "name" as property key, "value" as property value
+         - in react, can use onSubmit to customize send request
+         ```
+           <form action="/login" method="post">    
+             <div class="container">
+               <p>
+                 Username:
+                 <input type="text" name="username" />
+               </p>
+               <p>
+                 Password:
+                 <input type="password" name="password" />
+               </p>
+               <button type="submit">Login</button>
+             </div>
+           </form>
+         ```
+
+    <br>
+
+    4. send get request when reach `<link>`, `<img>`, `<script>`, `<video>`, `<audio>` ...
+    
+    <br> 
+
+    5. resend requests when refresh or show history
+         - only works with get requests
+
+  - <span>auto-parse response</span>
+    1. parse res code
+         - `301`: auto reirect to `location` from res-head
+       
+    <br>
+
+    2. parse res body according to `Context-Type` from res-head
+         - response body: `<i>Hello World</i>`
+         - if `Context-Type: text/plain`, show '&lt;i&gt;Hello World&lt;/i&gt;'
+         - if `Context-Type: text/html`, show '<i>Hello World</i>'
+
 
 ##### **[Back to table](#table)**
 
