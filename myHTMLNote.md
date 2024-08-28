@@ -363,7 +363,7 @@
       ```
       const controller = new AbortController();
       const signal = controller.signal;
-      document.getElementById('myButton').addEventListener('click', handleClick, { signal});
+      document.getElementById('myButton').addEventListener('click', handleClick, { signal });
 
       setTimeout(() => {
         controller.abort();

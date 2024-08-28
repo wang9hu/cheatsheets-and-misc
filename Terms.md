@@ -1,7 +1,7 @@
 # Table of contents
 - [Table of contents](#table-of-contents)
     - [Web-related terms](#web-related-terms)
-    - [cookies vs ocalStorage vs sessionStorage](#cookies-vs-ocalstorage-vs-sessionstorage)
+    - [cookies vs localStorage vs sessionStorage](#cookies-vs-localstorage-vs-sessionstorage)
     - [HTTP, HTTPS, SSL, TLS](#http-https-ssl-tls)
       - [HTTP (Hypertext Transfer Protocal)](#http-hypertext-transfer-protocal)
     - [Concepts](#concepts)
@@ -149,7 +149,7 @@
 
 ---
 
-### cookies vs ocalStorage vs sessionStorage
+### cookies vs localStorage vs sessionStorage
   - **cookies**: used for persist data of certain domain, primarily set and read by server-side(when receiving/sending requests)
     - usually have a limit size of 4KB per domain, some browsers, like chrome, don't have size limit
   <br>
@@ -198,17 +198,21 @@
 
   <span>Diagram of Encapusulation</span>
 ```
-  +------------------------------------+
-  | Application Data                   |
-  +------------------------------------+
-  | TCP Header | TCP Segment (Data)    |
-  +------------------------------------+
-  | IP Header  | IP Packet (TCP Segment)|
-  +------------------------------------+
-  | Ethernet Header | IP Packet        |
-  +------------------------------------+
-  | Ethernet Frame (IP Packet)         |
-  +------------------------------------+
+  +----------+-------------------------------------+----------------+
+  | Protocal | Encapsulation                       |  Max Seg size  |
+  -----------+-------------------------------------+----------------+
+  |    App   | Application Data                    |       N/A      |
+  +----------+-------------------------------------+----------------+
+  |    TCP   | TCP Header + TCP Segment (Data)     |  1440 ~ 1460 B |
+  +----------+-------------------------------------+----------------+
+  |    IP    | IP Header + IP Packet (TCP Segment) |   ~ 65,535 B   |
+  +----------+-------------------------------------+----------------+
+  +----------------+-------------------------------+----------------+
+  | Ethernet Frame | Ethernet Header + IP Packet   |    ~ 1,500 B   |
+  +----------------+-------------------------------+----------------+
+  |            Ethernet Frame defines the overall MTU               |
+  +-----------------------------------------------------------------+
+  Note: maximum transmission unit (MTU)
 ```
 
 #### HTTP (Hypertext Transfer Protocal)
