@@ -6,7 +6,12 @@
 - [Table of Content](#table-of-content)
 - [Machine Learning:](#machine-learning)
 - [Neural Nerwork:](#neural-nerwork)
-  - [Learning](#learning)
+  - [Learning from TextBook](#learning-from-textbook)
+    - [Design a learning system for checker game:](#design-a-learning-system-for-checker-game)
+      - [1. Choose the E (what data ML want to learn from)](#1-choose-the-e-what-data-ml-want-to-learn-from)
+      - [2. Choose the Target Function (what ML want to get from learning)](#2-choose-the-target-function-what-ml-want-to-get-from-learning)
+      - [3. Choose the representation for the Target Function (what would the Rep Func look like)](#3-choose-the-representation-for-the-target-function-what-would-the-rep-func-look-like)
+      - [4. Choose a Function approximation Algorithm (how to learn)](#4-choose-a-function-approximation-algorithm-how-to-learn)
   - [Intro(8/26/2024)](#intro8262024)
     - [Inductive vs Deductive](#inductive-vs-deductive)
       - [Supervised Learning (SL):](#supervised-learning-sl)
@@ -71,14 +76,86 @@ Layers of data processes
 - **Output Layer**: Produces the final output (e.g., classification label, regression output).
 - **Connections**: Each node in a layer is connected to nodes in the next layer through weighted connections, which are adjusted during training to minimize the error.
 
-## Learning
-- Task T
-- Experience E
-- Performance P
-$$
-  T\; \underset{\text{machine}}{\overset{\text{E}}{\xlongequal{\hspace{1cm}}>}}\;P\uparrow
-$$
+## Learning from TextBook
 
+- Task T
+- Training Experience E
+- Performance P
+  
+$$
+    T\;\underset{\underbrace{\text{machine learning}}_{\underset{\text{Target Function}}{\dArr}}}{\overset{\text{E}}{\xlongequal{\hspace{2cm}}>}}\;P\uparrow
+$$
+### Design a learning system for checker game:
+#### 1. Choose the E (what data ML want to learn from)
+
+Attributes of E:
+- Types of feedback: direct vs indirect
+  - Early decision had indirect impact on the final result, so credit assignment is hard because both early moves and later moves can affect the final results.
+  - Direct training feedback (correct for each move) is easier to train with than indirect feedback.
+- Degree of control
+  - learn from pre-selective information 
+  - self-proposed info with guidence 
+  - no teacher 
+  - ....
+- Representation distribution level of training data vs test examples (real-world senario)
+
+e.g., For checker, E is mostly indirect except for end game board state.
+
+#### 2. Choose the Target Function (what ML want to get from learning)
+Setup a output that is efficiently computable for measuring performance, reduce the problem to **an operational description of the ideal target function $V$**.
+
+Learning algorithms can only acquire some approximation ($\hat{V}$) to the target function, so this step is also called **function approximation**.
+
+e.g., 
+$$
+  V:B \rarr \mathbb{R}
+$$
+- $B$ is a set of all legal board state
+- mapping any legal board state from the set $B$ to some real value 
+
+#### 3. Choose the representation for the Target Function (what would the Rep Func look like)
+Find the representation (description) of the function ($\hat{V}$) that the learning program will use. 
+
+**Tradoffs**: the more expressiveness: the closer to target function($V$), but also need more training data
+
+e.g., representation function for checker game:
+$$
+  \hat{V}(b) = w_{0} + w_{1}x_{1} + w_{2}x_{2} + w_{3}x_{3} + w_{4}x_{4} + w_{5}x_{5} + w_{6}x_{6}
+$$
+- $\hat{V}(b)$ is the represent value
+- $x_{1}$: the number of black pieces on the board 
+- $x_{2}$: the number of red pieces on the board
+- $x_{3}$: the number of black kings on the board 0 
+- $x_{4}$: the number of red kings on the board
+- $x_{5}$: the number of black pieces threatened by red (i.e., which can be captured on red's next turn)
+- $x_{6}$: the number of red pieces threatened by black
+- $w_{0}$ to $w_{6}$ are numerical coefficients, or weights, to determine the impotance of each feature
+
+#### 4. Choose a Function approximation Algorithm (how to learn)
+- **Estimate training values**
+  e.g. for borad game, the $E$ is indirect, so a rule for estimating training values is below: 
+  $$
+    V_{train}(b)\;\larr\;\hat{V}(Successor(b))
+  $$
+  - $\substack{V}{train}(b)$ is any intermediate board state's training value.
+  - $\hat{V}(Successor(b))$ is the next board state's representation function value.
+  - The end game state is either 0 or 100 (loss or win), values are arbitary. 
+- **Adjust the weights**
+  specify learning algorithm for any training examples $\{ <b,\;\substack{V}{train}(b)> \}$.
+  e.g., one common approach is to define the best hypothesis(weights) by minimizing the squared error E
+  $$
+    E \equiv\underset{<b,\;V_{train}(b)> \;\subseteq{\text{ training examples}} }{\sum}(V_{train}(b)-\hat{V}{b})^{2}
+  $$
+
+  - Least mean squares (LMS) is known for finding weights of a linear function that minimize $E$ based on gradient descent. For each training example $\{ <b,\;\substack{V}{train}(b)> \}$:
+      - use current weigths to calculate $\hat{V}(b)$
+      - for each weigth $w_{i}$, update it as
+        $$
+            w_{i} \larr w_{i} + \eta\;(V_{train}(b) - \hat{V}(b))\;x_{i}
+        $$
+          - $\eta$ is a small constant (e.g., 0.1) that moderates the size of the weight update.
+      - update happends after each training example (data instance), which is called stochastic gradient descent.
+      - data order matters for this algorithm, so usually use the same set of data to train multiple times or use crose-validation to get more reliable estimate.
 ---
 
 ## Intro(8/26/2024)
@@ -240,7 +317,7 @@ where:
 
 #### Bias
 Two kinds of bias:
-  - **Restriction bias**: the hypothesis set (all possible hypothesis that generalized from training data)
+  - **Restriction bias**: the hypothesis set, or weight set (all possible hypothesis that generalized from training data)
   - **Preference bias** (inductive bias): $h \in \mathbb{H}$, 
     - good split at the top
     - correct over incorrect
@@ -544,7 +621,7 @@ Types of Gradient Descent
 
 ### Sigmoid - Differentiable threshold
 
-The sigmoid function, also known as the logistic function, is defined mathematically as:
+The sigmoid function, also known as a special case of logistic function, is defined mathematically as:
 
 $$
 \sigma(z) = \frac{1}{1 + e^{-z}}
