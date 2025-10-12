@@ -4,14 +4,28 @@
 
 # Table of Content
 - [Table of Content](#table-of-content)
-- [Machine Learning:](#machine-learning)
-- [Neural Nerwork:](#neural-nerwork)
+  - [Machine Learning (ML) vs Neural Network(NN)](#machine-learning-ml-vs-neural-networknn)
+    - [ML](#ml)
+    - [NN](#nn)
   - [Learning from TextBook](#learning-from-textbook)
     - [Design a learning system for checker game:](#design-a-learning-system-for-checker-game)
       - [1. Choose the E (what data ML want to learn from)](#1-choose-the-e-what-data-ml-want-to-learn-from)
       - [2. Choose the Target Function (what ML want to get from learning)](#2-choose-the-target-function-what-ml-want-to-get-from-learning)
       - [3. Choose the representation for the Target Function (what would the Rep Func look like)](#3-choose-the-representation-for-the-target-function-what-would-the-rep-func-look-like)
       - [4. Choose a Function approximation Algorithm (how to learn)](#4-choose-a-function-approximation-algorithm-how-to-learn)
+      - [5 The Final Design](#5-the-final-design)
+    - [Decision Tree Learning](#decision-tree-learning)
+        - [Decision tree is basically the **representation function**.](#decision-tree-is-basically-the-representation-function)
+        - [Classification problems (targe problems for decision tree)](#classification-problems-targe-problems-for-decision-tree)
+      - [ID 3 algorithm, the basic decision tree algorithm](#id-3-algorithm-the-basic-decision-tree-algorithm)
+      - [Best Classifier](#best-classifier)
+      - [ID3's Characteristics](#id3s-characteristics)
+      - [Inductive Bias in decision tree learning](#inductive-bias-in-decision-tree-learning)
+      - [Avoid Overfitting](#avoid-overfitting)
+        - [Reasons for this to happen:](#reasons-for-this-to-happen)
+        - [Approaches to avoid:](#approaches-to-avoid)
+    - [Neural Networks](#neural-networks)
+      - [Perceptrons](#perceptrons)
   - [Intro(8/26/2024)](#intro8262024)
     - [Inductive vs Deductive](#inductive-vs-deductive)
       - [Supervised Learning (SL):](#supervised-learning-sl)
@@ -42,16 +56,31 @@
     - [Optimizing Weights](#optimizing-weights)
     - [Restriction Bias](#restriction-bias)
     - [Preference Bias](#preference-bias)
+  - [Instance Based Learning (9/4/2024)](#instance-based-learning-942024)
+    - [K-Nearest Neighbors algorithm (K-NN)](#k-nearest-neighbors-algorithm-k-nn)
+      - [Distance measurement](#distance-measurement)
+      - [K-NN Bias](#k-nn-bias)
+    - [Curse of Dimensionality](#curse-of-dimensionality)
+  - [Ensemble Learning Boosting (9/4/2024)](#ensemble-learning-boosting-942024)
+    - [Ensemble Learning Algorithms](#ensemble-learning-algorithms)
+    - [Ensumble Boosting](#ensumble-boosting)
+      - ["hardest" examples:](#hardest-examples)
+      - ["weak" learning algorithm ('weak' learner):](#weak-learning-algorithm-weak-learner)
+      - [Adaboost](#adaboost)
+        - [Note **weight** can be for anything, the training data, the hypothesis or the parameter in hypothesis.](#note-weight-can-be-for-anything-the-training-data-the-hypothesis-or-the-parameter-in-hypothesis)
+  - [Kernel Methods \& SVMs (9/10/2024)](#kernel-methods--svms-9102024)
+    - [Support Vector Machines (SVM)](#support-vector-machines-svm)
 
 
 
-# Machine Learning: 
+## Machine Learning (ML) vs Neural Network(NN)
+### ML
 Generate **rules** for us based on data and answers, however, details of the rules are unclear.
 
     data + answer ==ML==> rules
 
 
-# Neural Nerwork: 
+### NN
 Layers of data processes
 
 ```
@@ -141,21 +170,147 @@ $$
   - $\hat{V}(Successor(b))$ is the next board state's representation function value.
   - The end game state is either 0 or 100 (loss or win), values are arbitary. 
 - **Adjust the weights**
-  specify learning algorithm for any training examples $\{ <b,\;\substack{V}{train}(b)> \}$.
-  e.g., one common approach is to define the best hypothesis(weights) by minimizing the squared error E
+  specify learning algorithm for any training examples $\{ <b,{V}_{train}(b)> \}$.
+  e.g., one common approach is to define the best hypothesis (combination of weights) by minimizing the squared error E
   $$
-    E \equiv\underset{<b,\;V_{train}(b)> \;\subseteq{\text{ training examples}} }{\sum}(V_{train}(b)-\hat{V}{b})^{2}
+    E \equiv\underset{<b,\;V_{train}(b)> \;\subseteq{\text{ training examples}}}{\sum}(V_{train}(b)-\hat{V}{b})^{2}
   $$
 
-  - Least mean squares (LMS) is known for finding weights of a linear function that minimize $E$ based on gradient descent. For each training example $\{ <b,\;\substack{V}{train}(b)> \}$:
+  - **Least mean squares** (LMS) is known for finding weights of a linear function that minimize $E$ based on gradient descent. For each training example $\{ <b,\;\substack{V}{train}(b)> \}$:
       - use current weigths to calculate $\hat{V}(b)$
       - for each weigth $w_{i}$, update it as
         $$
             w_{i} \larr w_{i} + \eta\;(V_{train}(b) - \hat{V}(b))\;x_{i}
         $$
           - $\eta$ is a small constant (e.g., 0.1) that moderates the size of the weight update.
-      - update happends after each training example (data instance), which is called stochastic gradient descent.
+      - update happends after each training example (data instance), which is called **stochastic gradient descent**.
       - data order matters for this algorithm, so usually use the same set of data to train multiple times or use crose-validation to get more reliable estimate.
+  
+#### 5 The Final Design
+  Iterate over 4 distinct program modules: Many machine learning systems can-beusefully characterized in terms of these four generic modules.
+  ```
+    Performance       
+      System       >>> Solution trace (game history) >>>    Critic
+
+         ^                                                    v
+         ^                                                    v
+     New Problem                                         Training examples
+ (initial game board)                  (<b_1, V_train(b_1)>, <b_2, V_train(b_12)>, ...)
+         ^                                                    v  
+         ^                                                    v
+         ^                                                    v
+                             
+    Experiment      <<<<<< Hypothesis (V_hat) <<<<<<<      Generalizer
+     Generator
+  ```
+
+  - The **Performance System**: Solve the given performance task.
+    - for checker game: given a new game as input, use $\hat{V}$ to evaluate a trace of its solution (game history) as output.
+  - The **Critic**: Takes the inputs $\{b_{1}, b_{2}, ...\}$ and produces a set of training examples  $\{<b_{1},{V}_{train}(b_{1})>, <b_{2},{V}_{train}(b_{2})>, ... \}$ of the target functions .
+    - for checker game: takes game history and produces the estimate $V_{train}$ according to the successor rule defined before
+  - The **Generalizer**: takes the training examples as input and produces an output hypothesis that is estimate of the target function.
+    - for checker game: the generalizer corresponds to the LMS algorithm and the output hypothesis is the function $\hat{V}$ described by learned weightes $w_{0}, w_{1}, ...$
+  - The **Experiment Generator**: takes the current hypothesis from generalizer and produces a new problem for the **Performance System** to explore, following certain stragegy.
+    - for checker game: use the new hypothesis to generate a new game start from initial game board, each step using the optimal move.
+  
+### Decision Tree Learning
+A method for approximating discrete-valued functions that is *robust to noisy data* and capable of learning disjunctive expressions.
+
+##### Decision tree is basically the **representation function**.
+```
+                  [Feature 1]
+                /             \
+              A1                A2
+              |                  |
+          [Feature 2]         [Feature 3]
+        /     |     \           /      \
+       B1     B2    B3         C1       C2
+       |      |      |         |        |
+   ActionX ActionY ActionZ  ActionY  ActionX
+```
+##### Classification problems (targe problems for decision tree)
+  - Instances are represented by **attribute-value pairs**
+  - The target function has **discrete output** values (not necessarily binary)
+  - *Disjunctive descriptions may be required.*
+  - *The training data may **contain errors** or may contain **missing attribute** values*
+
+
+#### ID 3 algorithm, the basic decision tree algorithm
+Construct the tree top-down using $ID3(Examples,\;Target\_attribute,\;Attributes)$ algorithm:
+
+  - create a $Root$ node
+    - if all examples are the same, return the $Root$ node with lable = that value
+    - if no more target attribute, return the $Root$ node with label = the most common value of the target attribute
+    - otherwise
+      - From $Target\_attributes$, find the attribute $A$ that best classifies $Examples$
+      - Use $A$ as the dicision attribute for $Root$
+      - For each possible value, $v_{i}$ of $A$
+        - Add a new tree branch below $Root$, corresponding to $A=v_{i}$
+        - Let $Examples_{A:v_{i}}$ be subset of Examples that have $v_{i}$ for $A$
+          - If $Examples_{A:v_{i}}$ is empty, then add a leaf node with label = most common value of $Target\_attribute$ in $Example$
+          - Else below this new branch add the subtree $ID3(Examples_{A:v_{i}},\;Target\_attribute,\;Attributes - {A})$
+
+#### Best Classifier
+
+- ##### Entropy measures the homogeneity of *Examples*:
+  Entropy is a measure of the expected encoding length measured in bits, if the 
+  $$
+  Entropy(S) = - \sum_{i=1}^{n} p_{s_i} \log_2 p_{s_i}
+  $$
+  - Maximum Entropy is $\log_2 k$, where k is the number of classes and all classes are equally likely.
+    - For **boolean classification** (true or false), $0 \le Entropy\le1$.
+  - Minimum Entropy is 0, where one class has a probability of 1 and others have a probability of 0.
+
+- ##### Information Gain (IG)
+  IG is the reduction in entropy caused by partitioning the examples according to attribute $A$.
+  $$
+  IG(S, A) = Entropy(S) - \sum_{v \in \text{Values}(A)} \frac{|S_v|}{|S|} Entropy(S_v)
+  $$
+  The **larger** the IG, the **better the attribute** for classifying current trainig examples.
+
+
+#### ID3's Characteristics
+- Pros:
+  - Simplicity
+  - Efficiency
+  - Interpretability
+- Cons:
+  - Local optimal solution over global optimal solution due to its simple-to-complex, hill-climbing search through
+  - Overfitting (pruning methods can mitigate this)
+  - Continous attributes require preprocessing techniques
+
+
+#### Inductive Bias in decision tree learning
+- **Only** preference bias (search strategy bias)
+  - solely a consequence of the ordering of hypotheses
+- **No** representation bias (hypothesis space bias)
+  - the hypothesis space is complete (*search from finite discrete-valued hypothesis*)
+
+#### Avoid Overfitting
+Hypothesis that fits the training examples better over the entire distribution of instance
+
+##### Reasons for this to happen:
+- there is noise in the data 
+- training examples is too small or not representative enough
+  
+##### Approaches to avoid:
+- Stop growing the tree earlier, but hard to know when
+- Overfit the data and then post-prune (**preferred**)
+  - **reduced-error pruning**
+
+
+### Neural Networks
+Target problem for NN:
+- Instances are attribute-value pairs
+- Target function output may be **scalar** or **vector** of scalars
+- Training examples may contain errors
+- Long trainig times are acceptable
+- Fast evaluation of the learned target function may be required
+- Not necessarily human understandable
+
+#### Perceptrons
+
+
 ---
 
 ## Intro(8/26/2024)
@@ -226,21 +381,15 @@ Terms:
 **A concept, a representation tool**
 
 Decision 1: [Main question or decision]  
-│  
 ├── Option A: [First option]  
-│   │  
 │   ├── Decision 2: [Follow-up question or decision for Option A]  
-│   │   │  
 │   │   ├── Option A1: [First option for Decision 2]  
 │   │   │   ├── Outcome A1a: [Result of choosing Option A1]  
 │   │   │   └── Outcome A1b: [Alternative result of choosing Option A1]  
-│   │   │  
 │   │   └── Option A2: [Second option for Decision 2]  
 │   │       ├── Outcome A2a: [Result of choosing Option A2]  
 │   │       └── Outcome A2b: [Alternative result of choosing Option A2]  
-│   │  
 │   └── Outcome A: [Direct outcome of choosing Option A]  
-│
 └── Outcome B: [Direct outcome of choosing Option B]  
 
 1. Pick best attribute
@@ -267,12 +416,12 @@ N attributes:
 A top-down learning algorithm
 
 loop: 
-- find best attribute: A
-- assign A as decision attribute for Node
-- for each value of A, create a descendant of node
-- sort training examples of leaves
-- if examples perfectly classified, stop
-- else, iterate over leaves
+1. find best attribute: A
+2. assign A as decision attribute for Node
+3. for each value of A, create a descendant of node
+4. sort training examples of leaves
+5. if examples perfectly classified, stop
+6. else, iterate over leaves
   
 --
 
@@ -523,7 +672,7 @@ Given:
 
 -	Inputs:  $x_1, x_2, \ldots, x_n$  (features of the training example)
 -	Weights:  $w_1, w_2, \ldots, w_n$  (weights corresponding to each input)
--	Bias:  $b$  (bias term)
+-	Bias:  $b$  (bias term) or $w_0$ while $x_0 = 1$
 -	Learning rate:  $\eta$  (a small positive number, typically less than 1)
 -	Actual output:  $y$  (target label, usually 1 or -1 for binary classification)
 -	Predicted output:  $\hat{y}$  (output of the perceptron after applying the activation function)
@@ -567,7 +716,7 @@ Perceptron Learning Algorithm
 
 1.	Initialize the weights  $w_i$  and bias  $b$  to small random values (or zeros).
 2.	For each training example  $(x, y)$ :
-•	Compute the predicted output  $\hat{y} = f(z)  where  z = \sum_{i=1}^{n} w_i x_i + b$ .
+•	Compute the predicted output  $\hat{y} = f(z)$  where  $z = \sum_{i=1}^{n} w_i x_i + b$ .
 •	Update each weight  $w_i$  using the perceptron update rule.
 •	Update the bias  $b$  using the perceptron update rule.
 3.	Repeat steps 2 until the perceptron correctly classifies all training examples or a predefined number of iterations is reached.
@@ -663,3 +812,196 @@ What algorigthm?
     - variability -> avoid local minimal
     - low complexity -> simpler explanations
     - better generalization error ($Occam's Razor: entities\;should\;not\;be\;multiplied\;unnecessarily.$)
+
+
+---
+
+## Instance Based Learning (9/4/2024)
+Take all data and put them in the database, and search over database when query
+
+Problem:
+- no generalization 
+- High chance of overfitting
+- Same data input might have different data output
+
+Solution:
+- find the $K$ nearest neighbors (distance = similarity)
+
+### K-Nearest Neighbors algorithm (K-NN)
+**Lazy learner**
+
+**Can be used for both classification and regression**
+
+Given: 
+- Training Data $D = \{x_i, y_i\}$ 
+- Query point $q$
+- Distance metric: $d(q,x)$  (domain knowledge)
+- Number of Neighbors $K$
+
+Find:
+- $NN=\{i: d(q, x_i) \text{ K smallest}\}$
+- return 
+  - classification: vote (weighted, plurity)
+  - regression: mean (weighted)
+
+Tradeoff comparing K-NN (lazy learner) to linear regression (eager learner):
+- learning time: 
+  - K-NN: $O(1)$
+  - linear regression: $O(n)$
+- query time:
+  - K-NN: $O(lgn + K)$
+  - linear regression: $O(1)$
+
+#### Distance measurement
+**Choice of distance function really matter**
+
+$d(x, q)$
+- **Euclidean** (weighted or not): $d(\mathbf{x_q}, \mathbf{x_i}) = \sqrt{(x_{q_{1}} - x_{i_{1}})^2 + (x_{q_{2}} - x_{i_{2}})^2 + \ldots + (x_{q_{n}} - x_{i_{n}})^2}$
+- **Manhattan** (weighted or not): $d=\min{\sum{\{up, down, left, right\}}}$
+- **Locally weighted regression**: only use near $K$ points for the regression
+
+#### K-NN Bias
+Preference Bias: **perferred bias we choose to believe that is true**
+
+- Similarity
+  - Locality -> near points are similar
+  - Smootheness -> averaging
+- All freatures matter equally ($x_1,x_2,...$)
+  - for $y=x_1^2 + x_2$, $x_1$ and $x_2$ are treated equally
+
+### Curse of Dimensionality
+As the number of **features or dimensions grows**, the amount of data we need to *generalize accurately* also **grow exponentially**.
+
+## Ensemble Learning Boosting (9/4/2024)
+Combine simples rules together to create a more complex rule that works better than simple rules.
+### Ensemble Learning Algorithms
+From training examples:
+
+- **Bagging** (or bootstrap aggregation):
+  - Learn over a subset of examples -> rule 1
+  - Learn over another subset of examples -> rule 2
+  - ...
+  - all rules are independent -> averaging the output of all rules
+
+  e.g., use uniformly random subsets and average the regressions, 
+
+- **Boosting**:
+  1. use a subset of examples => model 1
+  2. use model 1 to test all training examples => poorly behaved examples ("hardest")
+  3. use hardest examples => model 2 
+  4. combine model 1 and 2 => model 3  
+  5. go to step 2 until m cycles
+
+### Ensumble Boosting
+Instead of pick subset randomly, use hardest examples (doesn't fit for current hypothesis) and use weighted mean.
+
+e.g.,
+Error:
+$$
+  Pr_\mathbb{D:x}[h(x)\neq c(x)]
+$$
+- $Pr$ is the probability
+- $\mathbb{D}$ is the example set distribution, $\sum\mathbb{D(i)} = 1$, e.g., for uniformly distributed discrete $n$ examples, $\mathbb{D}(i)=1/n$
+- $x$ is the example instance
+- $h$ is the candidate hypothesis 
+- $c$ is the target hypothesis
+  
+for classification, 
+- Error: number of mismatch
+- Error rate:  number of mismatch over total number of examples
+  - **Implicit idea:** saying all examples are equally as important, or having the same probability of showing up
+
+#### "hardest" examples:
+Examples that have less probability to show up in the example set
+  - weigthed mean
+
+#### "weak" learning algorithm ('weak' learner):
+A weak learning is the algorithm that tries to find a model that can perfrom slightly better than random hypothesis (just above 50% in terms of the **weighted** examples).
+
+- Example set distribution **MUST** not be evil distribution (a distribution that no hypothesis in $\mathbb{H}$ can get over 50% accuracy, rarely happen)
+
+#### Adaboost
+
+##### Note **weight** can be for anything, the training data, the hypothesis or the parameter in hypothesis.
+
+1. **Initialization**:
+
+-	Initialize the **weights of the training data** for all $i = 1, 2, \dots, m$.
+$$
+w_i^{(1)} = \frac{1}{m} \quad 
+$$
+where  $m$  is the number of training examples.
+
+2. **For each iteration  $t$  (from  $t = 1$  to  $T$ )**:
+   
+-  Train a classifier $h_t(x)$ from the weak learner, minimizes the weighted error.
+-  Compute the weighted error of  $h_t$ :
+
+$$\epsilon_t  = \frac{\sum_{i=1}^{m} w_i^{(t)} \mathbf{1}(h_t(x_i) \neq y_i)}{\sum_{i=1}^{m} w_i^{(t)}}$$
+
+where  $\mathbf{1}(\cdot)$  is the indicator function that is 1 if the condition is true and 0 otherwise. 
+
+If $h_t(x_i)$ is a match to $y_i$ can be decide with thresholding (classificaton) or difference smaller than a tolerance value (regression).
+
+- Compute the weight  $\alpha_t$  for the weak classifier based on its error:
+
+$$\alpha_t = \frac{1}{2} \ln \left( \frac{1 - \epsilon_t }{\epsilon_t } \right)$$
+
+This value  $\alpha_t$  indicates the importance or confidence of the weak classifier in the final decision, basically $\alpha_t$ is the **weight of the current hypothesis**.
+
+- update the weight of **data $i$** for $t+1$:
+
+$$w_i^{(t+1)} = w_i^{(t)} e^{-\alpha_t y_i h_t(x_i)}$$
+
+where values of $y_i$ and $h_t(i)$ are either 1 or -1.
+
+or
+
+$$w_i^{(t+1)} = w_i^{(t)} e^{\alpha_t \cdot \mathbb{1}(h_t(x_i) \neq y_i)}$$
+
+where $1(\cdot)$ is indicator function and its value is 1 if the condition is true, otherwise 0.
+
+- after all weight for data are updated, normalize the updated weights:
+  
+$$Z_t = \sum_{i=1}^{m} w_i^{(t+1)}$$
+
+$$w_i^{(t+1)} = \frac{w_i^{(t+1)}}{Z_t}$$
+
+- then train the next classifier with the new data weight $w_i^{(t+1)}$ for each $x_i$
+
+1. **Final Hypothesis:**
+
+The final classifier is a weighted combination of all the weak classifiers:
+
+$$H(x) = \text{sign} \left( \sum\limits_{t} \alpha_t h_t(x) \right)$$
+
+Where $sign()$ is the sign function, which outputs $1$ if the sum is positive and $-1$ if negative
+
+<br />
+
+- Usually, overfitting is not an issue in Boosting, but for complex artificial neural network (A.N.N) learner tend to make it overfit
+
+---
+
+## Kernel Methods & SVMs (9/10/2024)
+
+### Support Vector Machines (SVM)
+
+For vector $\vec{A}$ ($n \times 1$),  $||A||$ is the norm of $\vec{A}$. Most common form is Euclidean norm ($p = 2$), which is 
+$$
+
+\|\mathbf{v}\|_2 = \sqrt{x_1^2 + x_2^2 + \dots + x_n^2}
+
+$$
+- represent the straight line distance (magnitude) of the vector
+
+For linearly separable dataset to get:
+- hyperplane: $w^TX + b = 0$
+- classify each data correctly: $\forall{i}: y_i(w^Tx_i + b) \geqslant 1$, where $y_i \in \{-1, +1\}$
+- to get the $w$ and $b$, need to find the maximum margin: $\frac{2}{||w||}$ (minimize overfitting)
+- find $w$ and $b$ that maximize margin:
+  - $w$: 
+    $$
+      w: \max(\frac{2}{||w||}) \\ \uparrow\downarrow \\ w: \min(\frac{||w||^2}{2}) \\\uparrow\downarrow\\ \alpha_i: \max(W(\alpha) = \sum\limits_{i}{\alpha_i} - \frac{1}{2}\sum\limits_{ij}{\alpha_i \alpha_j y_iy_jx_i^Tx_j}), \; \alpha_i \geqslant 0, \; \sum\limits_{i}\alpha_i y_i = 0 \\ \downarrow\downarrow \\ w = \sum\limits_{i}{\alpha_i y_i x_i}
+    $$
+  - $b$: use any $x_i, y_i$ for $b$

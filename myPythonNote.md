@@ -288,3 +288,56 @@
   
 [back to top](#table-of-content)
 <br>
+
+
+List: 
+```
+Python_list = [1, 2, 3, 4, 5]  
+Python_list[index] = value            
+Python_list.append(value)          
+Python_list.pop([index])    
+Python_list.insert(index, value)    
+Python_list.remove(value)      # first occurance
+```
+Tuple: ordered and unchangeable
+```
+Python_tuple = (1, 2, 3, 4, 5)    # immuttable
+Python_list = list(Python_tuple)
+Python_list[index] = value
+Python_tuple = tuple(y)
+```
+
+Set: unordered, unchangeable, unindexed, and do not allow duplicates
+```
+Python_set = {"apple", "banana", "cherry"}   
+Python_set.add(value)
+Python_set.remove(value)
+```
+
+Dictionary: like JS set, changeable and do not allow duplicates
+```
+Python_dict = {"India": "New Delhi", "Australia": "Canberra", "Japan": "Tokyo"}
+Python_dict[key] = value
+Python_dict[new_key] = value
+Python_dict.pop(key)
+```
+
+
+<br>
+
+function parameters, positional arguments must be in front of keyword arguments
+`*args`: Arbitrary Positional Arguments
+`**kwargs`: Arbitrary Keyword Arguments
+```
+def combined_args(a, *args, b=3, **kwargs):
+    print('a', a)
+    print('b', b)
+    print("Positional arguments:", args)
+    print("Keyword arguments:", kwargs)
+
+combined_args(1, 2, 3, name="Bob", city="London", b=4)
+#   a 1
+#   b 4
+#   Positional arguments: (2, 3)
+#   Keyword arguments: {'name': 'Bob', 'city': 'London'}
+```

@@ -405,7 +405,7 @@
         element2.addEventListener('click', element2Handler, false);
         ```
         1. Click `element2`, event propagation starts
-        2. event starts capturing phase: `root`->`element2`->`element2`
+        2. event starts capturing phase: `root`->`element1`->`element2`
         3. `root` is in bubbling phase, pass
         4. `element1` is in capturing phase, `element1Handler` trigger 
         5. `element2` is the target element, `element2Handler` trigger
