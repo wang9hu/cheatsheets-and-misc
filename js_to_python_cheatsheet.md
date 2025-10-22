@@ -4,25 +4,168 @@ A quick, editable mapping from common JavaScript methods to their Python equival
 
 ## Table of Contents
 
-- [Strings](#strings)
-- [Arrays → Lists](#arrays---lists)
-- [Objects → Dicts](#objects---dicts)
-- [Map / Set](#map---set)
-- [Tuples & Immutability](#tuples---immutability)
-- [Comprehensions & Iterators](#comprehensions---iterators)
-- [Numbers & Math](#numbers---math)
-- [Dates & Time](#dates---time)
-- [Regex](#regex)
-- [Errors & Control Flow](#errors---control-flow)
-- [Modules & Imports](#modules---imports)
-- [Classes & Methods](#classes---methods)
-- [Async & Promises](#async---promises)
-- [Truthiness, Nullish & Coalescing](#truthiness-nullish---coalescing)
-- [Copying & Equality](#copying---equality)
-- [Common Built‑in Helpers](#common-built-in-helpers)
-- [Dict Patterns You’ll Use Often](#dict-patterns-youll-use-often)
+- [JS → Python Cheatsheet](#js--python-cheatsheet)
+  - [Table of Contents](#table-of-contents)
+  - [Python Basics](#python-basics)
+    - [Variables and Types](#variables-and-types)
+    - [Operators](#operators)
+    - [Conditionals](#conditionals)
+    - [Loops](#loops)
+    - [Functions](#functions)
+    - [Conventions (PEP 8 highlights)](#conventions-pep-8-highlights)
+    - [Input / Output](#input--output)
+    - [Comments \& Docstrings](#comments--docstrings)
+    - [Example Full Program](#example-full-program)
+  - [Strings](#strings)
+  - [Arrays---Lists](#arrays---lists)
+  - [Objects---Dicts](#objects---dicts)
+  - [Map---Set](#map---set)
+  - [Tuples---Immutability](#tuples---immutability)
+  - [Comprehensions---Iterators](#comprehensions---iterators)
+  - [Numbers---Math](#numbers---math)
+  - [Dates---Time](#dates---time)
+  - [Regex](#regex)
+  - [Errors---Control Flow](#errors---control-flow)
+  - [Modules---Imports](#modules---imports)
+  - [Classes---Methods](#classes---methods)
+  - [Async---Promises](#async---promises)
+  - [Truthiness, Nullish---Coalescing](#truthiness-nullish---coalescing)
+  - [Copying---Equality](#copying---equality)
+  - [Common Built-in Helpers](#common-built-in-helpers)
+  - [Dict Patterns You’ll Use Often](#dict-patterns-youll-use-often)
+    - [Notes / Gotchas](#notes--gotchas)
 
 ---
+
+---
+
+## Python Basics
+
+### Variables and Types
+```python
+x = 10              # int
+y = 3.14            # float
+name = "Alice"      # str
+is_active = True    # bool
+nums = [1, 2, 3]    # list
+```
+
+- **Dynamic typing:** no need to declare types explicitly.
+- Use `type(x)` to inspect, `isinstance(x, int)` for type checking.
+
+---
+
+### Operators
+
+| **Type**       | **Examples**                        | **Notes** |
+|----------------|--------------------------------------|------------|
+| **Arithmetic** | `+` `-` `*` `/` `//` `%` `**`              | `//` floor-divides; `**` is power |
+| **Comparison** | `==` `!=` `>` `<` `>=` `<=`              | Returns `bool` |
+| **Logical**    | `and`  `or`  `not`                      | No `&&` or `\|\|` |
+| **Membership** | `in` `not in`                      | `'a' in 'cat'` → `True` |
+| **Identity**   | `is` `is not`                      | Object identity, not equality |
+| **Bitwise**    | `&`  `\|`  `^`  `~`  `<<`  `>>`                | Bit operations |
+
+---
+
+### Conditionals
+```python
+if x > 10:
+    print("large")
+elif x == 10:
+    print("equal")
+else:
+    print("small")
+```
+
+- Use `if condition:` — **indent with 4 spaces**.
+- Ternary: `a if cond else b`.
+
+---
+
+### Loops
+```python
+# For
+for i in range(5):
+    print(i)
+
+# While
+while n > 0:
+    n -= 1
+
+# Loop control
+for x in data:
+    if x == 0:
+        continue
+    if x < 0:
+        break
+else:
+    print("completed without break")
+```
+
+---
+
+### Functions
+```python
+def add(a, b=0):
+    return a + b
+
+def greet(name: str) -> str:
+    return f"Hello, {name}"
+```
+
+- Default args allowed.
+- Type hints are optional.
+- Functions are first-class (can be passed or stored).
+
+---
+
+### Conventions (PEP 8 highlights)
+
+| **Element**         | **Convention** |
+|----------------------|----------------|
+| Variable / function  | `snake_case` |
+| Class name           | `PascalCase` |
+| Constant             | `UPPER_CASE` |
+| Indentation          | 4 spaces (no tabs) |
+| Imports              | one per line, at top |
+| Docstrings           | triple quotes `\"\"\"...\"\"\"` |
+| Line length          | ≤ 79 chars (recommended) |
+
+---
+
+### Input / Output
+```python
+name = input("Name: ")
+print(f"Hello, {name}")
+```
+
+---
+
+### Comments & Docstrings
+```python
+# single line
+"""
+This is a docstring.
+It can span multiple lines.
+"""
+```
+
+---
+
+### Example Full Program
+```python
+def factorial(n):
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+print(factorial(5))  # 120
+```
+
+---
+
 
 ## Strings
 
