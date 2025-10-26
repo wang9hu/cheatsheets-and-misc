@@ -15,33 +15,44 @@ A quick, editable mapping from common JavaScript methods to their Python equival
     - [Conventions (PEP 8 highlights)](#conventions-pep-8-highlights)
     - [Input / Output](#input--output)
     - [Comments \& Docstrings](#comments--docstrings)
-    - [Example Full Program](#example-full-program)
+    - [Example: Factorial](#example-factorial)
+    - [Names \& Binding](#names--binding)
+    - [Slicing](#slicing)
+    - [Strings \& f-strings](#strings--f-strings)
+    - [Scope (LEGB)](#scope-legb)
+    - [Exceptions](#exceptions)
+    - [Context Managers \& Files](#context-managers--files)
+    - [Iterables \& `itertools`](#iterables--itertools)
+    - [Data Classes \& Pattern Matching](#data-classes--pattern-matching)
+    - [Type Hints](#type-hints)
+    - [Standard Library Quick Wins](#standard-library-quick-wins)
+    - [CLI, Environments, Testing](#cli-environments-testing)
+    - [Concurrency \& Performance](#concurrency--performance)
   - [Strings](#strings)
-  - [Arrays---Lists](#arrays---lists)
-  - [Objects---Dicts](#objects---dicts)
-  - [Map---Set](#map---set)
-  - [Tuples---Immutability](#tuples---immutability)
-  - [Comprehensions---Iterators](#comprehensions---iterators)
-  - [Numbers---Math](#numbers---math)
-  - [Dates---Time](#dates---time)
+  - [Arrays-Lists](#arrays-lists)
+  - [Objects-Dicts](#objects-dicts)
+  - [Map-Set](#map-set)
+  - [Tuples-Immutability](#tuples-immutability)
+  - [Comprehensions-Iterators](#comprehensions-iterators)
+  - [Numbers-Math](#numbers-math)
+  - [Dates-Time](#dates-time)
   - [Regex](#regex)
-  - [Errors---Control Flow](#errors---control-flow)
-  - [Modules---Imports](#modules---imports)
-  - [Classes---Methods](#classes---methods)
-  - [Async---Promises](#async---promises)
-  - [Truthiness, Nullish---Coalescing](#truthiness-nullish---coalescing)
-  - [Copying---Equality](#copying---equality)
+  - [Errors-Control Flow](#errors-control-flow)
+  - [Modules-Imports](#modules-imports)
+  - [Classes-Methods](#classes-methods)
+  - [Async-Promises](#async-promises)
+  - [Truthiness, Nullish-Coalescing](#truthiness-nullish-coalescing)
+  - [Copying-Equality](#copying-equality)
   - [Common Built-in Helpers](#common-built-in-helpers)
   - [Dict Patterns You’ll Use Often](#dict-patterns-youll-use-often)
     - [Notes / Gotchas](#notes--gotchas)
 
 ---
 
----
-
 ## Python Basics
 
 ### Variables and Types
+
 ```python
 x = 10              # int
 y = 3.14            # float
@@ -57,43 +68,46 @@ nums = [1, 2, 3]    # list
 
 ### Operators
 
-| **Type**       | **Examples**                        | **Notes** |
-|----------------|--------------------------------------|------------|
-| **Arithmetic** | `+` `-` `*` `/` `//` `%` `**`              | `//` floor-divides; `**` is power |
-| **Comparison** | `==` `!=` `>` `<` `>=` `<=`              | Returns `bool` |
-| **Logical**    | `and`  `or`  `not`                      | No `&&` or `\|\|` |
-| **Membership** | `in` `not in`                      | `'a' in 'cat'` → `True` |
-| **Identity**   | `is` `is not`                      | Object identity, not equality |
-| **Bitwise**    | `&`  `\|`  `^`  `~`  `<<`  `>>`                | Bit operations |
+| **Type**       | **Examples**                  | **Notes**                         |
+| -------------- | ----------------------------- | --------------------------------- |
+| **Arithmetic** | `+` `-` `*` `/` `//` `%` `**` | `//` floor-divides; `**` is power |
+| **Comparison** | `==` `!=` `>` `<` `>=` `<=`   | Returns `bool`                    |
+| **Logical**    | `and` `or` `not`              | No `&&` or `\|\|`; short-circuits |
+| **Membership** | `in` `not in`                 | `'a' in 'cat'` → `True`           |
+| **Identity**   | `is` `is not`                 | Object identity, not equality     |
+| **Bitwise**    | `&` `\|` `^` `~` `<<` `>>`    | Bit operations                    |
+
+**Truthiness (falsy):** `False, 0, 0.0, '', [], {}, set(), None`.
 
 ---
 
 ### Conditionals
-```python
-if x > 10:
-    print("large")
-elif x == 10:
-    print("equal")
-else:
-    print("small")
-```
 
-- Use `if condition:` — **indent with 4 spaces**.
-- Ternary: `a if cond else b`.
+```python
+x = 10
+if x > 0:
+    print("positive")
+elif x == 0:
+    print("zero")
+else:
+    print("negative")
+```
 
 ---
 
 ### Loops
+
 ```python
 # For
 for i in range(5):
     print(i)
 
 # While
-while n > 0:
+n = 3
+while n:
     n -= 1
 
-# Loop control
+# Loop control with else
 for x in data:
     if x == 0:
         continue
@@ -103,9 +117,18 @@ else:
     print("completed without break")
 ```
 
+**Everyday patterns**
+
+```python
+for i, item in enumerate(items, start=1): ...
+for a, b in zip(xs, ys): ...
+squares = [n*n for n in range(10) if n % 2 == 0]  # comprehension
+```
+
 ---
 
 ### Functions
+
 ```python
 def add(a, b=0):
     return a + b
@@ -114,27 +137,36 @@ def greet(name: str) -> str:
     return f"Hello, {name}"
 ```
 
-- Default args allowed.
-- Type hints are optional.
+- Default args & type hints are optional.
 - Functions are first-class (can be passed or stored).
+
+**Parameters in practice**
+
+```python
+def f(pos, /, a, b=0, *args, key, **kwargs):
+    ...
+```
+
+- `/` = positional-only; `*` = keyword-only after it.
 
 ---
 
 ### Conventions (PEP 8 highlights)
 
-| **Element**         | **Convention** |
-|----------------------|----------------|
-| Variable / function  | `snake_case` |
-| Class name           | `PascalCase` |
-| Constant             | `UPPER_CASE` |
-| Indentation          | 4 spaces (no tabs) |
-| Imports              | one per line, at top |
-| Docstrings           | triple quotes `\"\"\"...\"\"\"` |
-| Line length          | ≤ 79 chars (recommended) |
+| **Element**         | **Convention**            |
+| ------------------- | ------------------------- |
+| Variable / function | `snake_case`              |
+| Class name          | `PascalCase`              |
+| Constant            | `UPPER_CASE`              |
+| Indentation         | 4 spaces                  |
+| Imports             | one per line, at top      |
+| Docstrings          | triple quotes `"""..."""` |
+| Line length         | ≤ 79 chars (recommended)  |
 
 ---
 
 ### Input / Output
+
 ```python
 name = input("Name: ")
 print(f"Hello, {name}")
@@ -143,6 +175,7 @@ print(f"Hello, {name}")
 ---
 
 ### Comments & Docstrings
+
 ```python
 # single line
 """
@@ -153,7 +186,8 @@ It can span multiple lines.
 
 ---
 
-### Example Full Program
+### Example: Factorial
+
 ```python
 def factorial(n):
     result = 1
@@ -166,55 +200,190 @@ print(factorial(5))  # 120
 
 ---
 
+### Names & Binding
+
+- Names point to objects: `a = [1,2]; b = a` → same list.
+- Copy when needed: `b = a[:]` / `list(a)`; deep copy with `copy.deepcopy`.
+
+```python
+x, y = 1, 2
+x, y = y, x
+head, *middle, tail = [1,2,3,4,5]
+```
+
+### Slicing
+
+```python
+a = [0,1,2,3,4,5]
+a[1:4]; a[:3]; a[-3:]; a[::2]; a[::-1]
+```
+
+### Strings & f-strings
+
+```python
+s = "Pythonic"
+s.upper(), s.split(), "-".join(["a","b"])
+f"Hello {s.lower()}!"
+x = 1234.567
+f"{x:,.2f}"
+```
+
+### Scope (LEGB)
+
+```python
+x = 0
+def outer():
+    x = 1
+    def inner():
+        nonlocal x
+        x += 1
+    inner()
+    return x
+```
+
+### Exceptions
+
+```python
+try:
+    price = float(s)
+except ValueError:
+    price = 0.0
+```
+
+### Context Managers & Files
+
+```python
+from pathlib import Path
+with Path("notes.txt").open("w", encoding="utf-8") as f:
+    f.write("hello\n")
+```
+
+### Iterables & `itertools`
+
+```python
+from itertools import islice, count
+list(islice(count(10,2), 5))  # [10,12,14,16,18]
+```
+
+### Data Classes & Pattern Matching
+
+```python
+from dataclasses import dataclass
+@dataclass(slots=True)
+class Point:
+    x: int
+    y: int
+```
+
+```python
+def render(shape):
+    match shape:
+        case {"type":"circle","r": r}: return f"Circle r={r}"
+        case [x, y, *_]: return f"Seq {x},{y}"
+        case _: return "Unknown"
+```
+
+### Type Hints
+
+```python
+from typing import Iterable, TypedDict, Protocol
+
+def take(n: int, xs: Iterable[int]) -> list[int]: ...
+
+class User(TypedDict):
+    id: int
+    name: str
+
+class Sized(Protocol):
+    def __len__(self) -> int: ...
+```
+
+### Standard Library Quick Wins
+
+```python
+from collections import Counter, defaultdict, deque
+from functools import lru_cache
+```
+
+### CLI, Environments, Testing
+
+```bash
+python -m venv .venv
+```
+
+```python
+# pytest
+def add(a, b):
+    return a + b
+
+def test_add():
+    assert add(2, 3) == 5
+```
+
+### Concurrency & Performance
+
+```python
+import asyncio
+async def hello():
+    return "hi"
+```
+
+```python
+# Mutable default pattern
+def good(x, seen=None):
+    seen = [] if seen is None else seen
+```
+
+---
 
 ## Strings
 
-| **Concept**               | JavaScript                                                | Python                                                           |
-| ------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------- |
-| **Length**                | `str.length`                                              | `len(s)`                                                         |
-| **Contains**              | `str.includes(x)`                                         | `x in s`                                                         |
-| **Index / Last index**    | `str.indexOf(x)` / `str.lastIndexOf(x)`                   | `s.find(x)` / `s.rfind(x)` _(−1 if not found)_                   |
-| **Starts / Ends with**    | `str.startsWith(x)` / `str.endsWith(x)`                   | `s.startswith(x)` / `s.endswith(x)`                              |
-| **Slice / Substring**     | `str.slice(i, j)` / `str.substring(i, j)`                 | `s[i:j]`; `s[-n:]`, `s[:n]`                                      |
-| **Case**                  | `toUpperCase()` / `toLowerCase()` / `toLocaleUpperCase()` | `s.upper()` / `s.lower()` / `s.casefold()`                       |
-| **Trim**                  | `trim()` / `trimStart()` / `trimEnd()`                    | `s.strip()` / `s.lstrip()` / `s.rstrip()`                        |
-| **Split / Join**          | `s.split(',')` / `arr.join(',')`                          | `s.split(',')` / `','.join(arr) #all elements in arr are string` |
-| **Replace / Replace all** | `s.replace(a,b)` / `s.replaceAll(a,b)`                    | `s.replace(a, b, count)`; regex: `re.sub(pat, repl, s, count=0)` |
-| **Pad**                   | `padStart(n,ch)` / `padEnd(n,ch)`                         | `s.rjust(n, ch)` / `s.ljust(n, ch)`; zeros: `s.zfill(n)`         |
-| **Repeat**                | `str.repeat(n)`                                           | `s * n`                                                          |
-| **Regex match / test**    | `str.match(re)` / `re.test(s)`                            | `re.findall(p, s)` / `bool(re.search(p, s))`                     |
-| **Template literal**      | `` `Hi ${x}` ``                                           | `f"Hi {x}"`                                                      |
-| **To string**             | `String(x)`                                               | `str(x)`                                                         |
-| **Code point**            | `str.codePointAt(i)` / `String.fromCodePoint(n)`          | `ord(s[i])` / `chr(n)`                                           |
+| **Concept**               | JavaScript                                                | Python                                                            |
+| ------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Length**                | `str.length`                                              | `len(s)`                                                          |
+| **Contains**              | `str.includes(x)`                                         | `x in s`                                                          |
+| **Index / Last index**    | `str.indexOf(x)` / `str.lastIndexOf(x)`                   | `s.find(x)` / `s.rfind(x)` _(−1 if not found)_                    |
+| **Starts / Ends with**    | `str.startsWith(x)` / `str.endsWith(x)`                   | `s.startswith(x)` / `s.endswith(x)`                               |
+| **Slice / Substring**     | `str.slice(i, j)` / `str.substring(i, j)`                 | `s[i:j]`; `s[-n:]`, `s[:n]`                                       |
+| **Case**                  | `toUpperCase()` / `toLowerCase()` / `toLocaleUpperCase()` | `s.upper()` / `s.lower()` / `s.casefold()`                        |
+| **Trim**                  | `trim()` / `trimStart()` / `trimEnd()`                    | `s.strip()` / `s.lstrip()` / `s.rstrip()`                         |
+| **Split / Join**          | `s.split(',')` / `arr.join(',')`                          | `s.split(',')` / `','.join(arr)` _(all elements must be strings)_ |
+| **Replace / Replace all** | `s.replace(a,b)` / `s.replaceAll(a,b)`                    | `s.replace(a, b, count)`; regex: `re.sub(pat, repl, s, count=0)`  |
+| **Pad**                   | `padStart(n,ch)` / `padEnd(n,ch)`                         | `s.rjust(n, ch)` / `s.ljust(n, ch)`; zeros: `s.zfill(n)`          |
+| **Repeat**                | `str.repeat(n)`                                           | `s * n`                                                           |
+| **Regex match / test**    | `str.match(re)` / `re.test(s)`                            | `re.findall(p, s)` / `bool(re.search(p, s))`                      |
+| **Template literal**      | ` `Hi ${x}` `                                             | `f"Hi {x}"`                                                       |
+| **To string**             | `String(x)`                                               | `str(x)`                                                          |
+| **Code point**            | `str.codePointAt(i)` / `String.fromCodePoint(n)`          | `ord(s[i])` / `chr(n)`                                            |
 
 ---
 
-## Arrays---Lists
+## Arrays-Lists
 
-| **Concept**                 | JavaScript                             | Python                                                                                        |
-| --------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Literal / Length**        | `[]` / `.length`                       | `[]` / `len(a)`                                                                               |
-| **Push / Pop (end)**        | `a.push(x)` / `a.pop()`                | `a.append(x)` / `a.pop()`                                                                     |
-| **Shift / Unshift (front)** | `a.shift()` / `a.unshift(x)`           | `a.pop(0)` / `a.insert(0, x)` _(prefer `collections.deque` for heavy front ops)_              |
-| **Random access / assign**  | `a[i]` / `a[i] = v`                    | same                                                                                          |
-| **Slice / Splice**          | `a.slice(i,j)` / `a.splice(i,k,...xs)` | `a[i:j]` / `a[i:i+k] = xs`                                                                    |
-| **Concat / Extend**         | `a.concat(b)`                          | `a + b` or `a.extend(b)`                                                                      |
-| **Copy (shallow)**          | `[...a]` / `Array.from(a)`             | `a[:]` or `list(a)` _(deep: `copy.deepcopy(a)`)_                                              |
-| **Search / Includes**       | `a.indexOf(x)` / `a.includes(x)`       | `a.index(x)` _(raises `ValueError` if not found)_ / `x in a`                                  |
-| **Find / FindIndex**        | `arr.find(fn)` / `arr.findIndex(fn)`   | `next((x for x in a if fn(x)), None)` / `next((i for i,x in enumerate(a) if fn(x)), -1)`      |
-| **Filter / Map**            | `arr.filter(fn)` / `arr.map(fn)`       | `[x for x in a if fn(x)]` / `[fn(x) for x in a]`                                              |
-| **Reduce**                  | `reduce(fn, init)`                     | `functools.reduce(fn, a, init)` _(often `sum`, `any`, `all`)_                                 |
-| **Some / Every**            | `some(fn)` / `every(fn)`               | `any(fn(x) for x in a)` / `all(fn(x) for x in a)`                                             |
-| **Sort**                    | `arr.sort()` / custom compare          | `a.sort()` / `a.sort(key=..., reverse=True)`; non‑mutating: `sorted(a, key=..., reverse=...)` |
-| **Reverse**                 | `arr.reverse()`                        | `a.reverse()`; non‑mutating: `a[::-1]`                                                        |
-| **Flat / FlatMap**          | `arr.flat(d=1)` / `arr.flatMap(fn)`    | `itertools.chain.from_iterable(a)` / `[y for x in a for y in fn(x)]`                          |
-| **Unique**                  | `Array.from(new Set(a))`               | `list(dict.fromkeys(a))` _(preserves order)_ or `list(set(a))`                                |
-| **Fill**                    | `a.fill(v, i, j)`                      | `a[i:j] = [v] * (j-i)`                                                                        |
-| **Repeat N times**          | `Array(n).fill(v)`                     | `[v] * n`                                                                                     |
+| **Concept**                 | JavaScript                             | Python                                                                                   |
+| --------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **Literal / Length**        | `[]` / `.length`                       | `[]` / `len(a)`                                                                          |
+| **Push / Pop (end)**        | `a.push(x)` / `a.pop()`                | `a.append(x)` / `a.pop()`                                                                |
+| **Shift / Unshift (front)** | `a.shift()` / `a.unshift(x)`           | `a.pop(0)` / `a.insert(0, x)` _(prefer `collections.deque` for heavy front ops)_         |
+| **Random access / assign**  | `a[i]` / `a[i] = v`                    | same                                                                                     |
+| **Slice / Splice**          | `a.slice(i,j)` / `a.splice(i,k,...xs)` | `a[i:j]` / `a[i:i+k] = xs`                                                               |
+| **Concat / Extend**         | `a.concat(b)`                          | `a + b` or `a.extend(b)`                                                                 |
+| **Copy (shallow)**          | `[...a]` / `Array.from(a)`             | `a[:]` or `list(a)` _(deep: `copy.deepcopy(a)`)_                                         |
+| **Search / Includes**       | `a.indexOf(x)` / `a.includes(x)`       | `a.index(x)` _(raises `ValueError` if not found)_ / `x in a`                             |
+| **Find / FindIndex**        | `arr.find(fn)` / `arr.findIndex(fn)`   | `next((x for x in a if fn(x), None))` / `next((i for i,x in enumerate(a) if fn(x)), -1)` |
+| **Filter / Map**            | `arr.filter(fn)` / `arr.map(fn)`       | `[x for x in a if fn(x)]` / `[fn(x) for x in a]`                                         |
+| **Reduce**                  | `reduce(fn, init)`                     | `functools.reduce(fn, a, init)` _(often `sum`, `any`, `all`)_                            |
+| **Some / Every**            | `some(fn)` / `every(fn)`               | `any(fn(x) for x in a)` / `all(fn(x) for x in a)`                                        |
+| **Sort**                    | `arr.sort()` / custom compare          | `a.sort(key=..., reverse=True)`; non‑mutating: `sorted(a, key=..., reverse=...)`         |
+| **Reverse**                 | `arr.reverse()`                        | `a.reverse()`; non‑mutating: `a[::-1]`                                                   |
+| **Flat / FlatMap**          | `arr.flat(d=1)` / `arr.flatMap(fn)`    | `itertools.chain.from_iterable(a)` / `[y for x in a for y in fn(x)]`                     |
+| **Unique**                  | `Array.from(new Set(a))`               | `list(dict.fromkeys(a))` _(preserves order)_ or `list(set(a))`                           |
+| **Fill**                    | `a.fill(v, i, j)`                      | `a[i:j] = [v] * (j-i)`                                                                   |
+| **Repeat N times**          | `Array(n).fill(v)`                     | `[v] * n`                                                                                |
 
 ---
 
-## Objects---Dicts
+## Objects-Dicts
 
 | **Concept**                     | JavaScript                                 | Python                                           |
 | ------------------------------- | ------------------------------------------ | ------------------------------------------------ |
@@ -229,38 +398,38 @@ print(factorial(5))  # 120
 | **Iterate**                     | `for (k,v of Object.entries(o))`           | `for k, v in d.items():`                         |
 | **Copy**                        | `{...d}`                                   | `d.copy()` _(shallow); deep: `copy.deepcopy(d)`_ |
 | **From entries**                | `Object.fromEntries(pairs)`                | `dict(pairs)`                                    |
-| **From keys**                   | —                                          | `dict.fromkeys(keys, value)`                     |
+| **From keys**                   | -                                          | `dict.fromkeys(keys, value)`                     |
 | **Unpack (spread)**             | `{...a, x:1}`                              | `{**a, 'x':1}`                                   |
 
 ---
 
-## Map---Set
+## Map-Set
 
-| **Concept**                        | JavaScript                                             | Python                                                                       |
-| ---------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------- |
-| **Map literal / size**             | `new Map(iter)` / `m.size`                             | `dict(iter)` / `len(d)`                                                      |
-| **Map get / set / has / delete**   | `m.get(k)` / `m.set(k,v)` / `m.has(k)` / `m.delete(k)` | `d.get(k)` / `d[k]=v` / `k in d` / `del d[k]`                                |
-| **Map iterate**                    | `for (k,v) of m`                                       | `for k, v in d.items()`                                                      |
-| **Set literal**                    | `new Set([1,2])`                                       | `set([1,2])` or `{1,2}`                                                      |
-| **Set add / has / delete / clear** | `s.add(x)` / `s.has(x)` / `s.delete(x)` / `s.clear()`  | `s.add(x)` / `x in s` / `s.remove(x)` _(safe: `s.discard(x)`)_ / `s.clear()` |
-| **Set unions / intersections**     | `s.union(t)` / `s.intersection(t)` _(manual)_          | `s \| t` / `s & t` _(in-place: `\|=`, `&=`)_                                 |
-| **Set difference / symmetric**     | — _(manual only)_                                      | `s - t` / `s ^ t` _(in-place: `-=`, `^=`)_                                   |
-| **Subset / Superset**              | `s.isSubsetOf(t)` / `s.isSupersetOf(t)` _(manual)_     | `s <= t` / `s >= t`                                                          |
-| **Frozen set**                     | —                                                      | `frozenset(iter)`                                                            |
+| **Concept**                        | JavaScript                                             | Python                                                                     |
+| ---------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------- |
+| **Map literal / size**             | `new Map(iter)` / `m.size`                             | `dict(iter)` / `len(d)`                                                    |
+| **Map get / set / has / delete**   | `m.get(k)` / `m.set(k,v)` / `m.has(k)` / `m.delete(k)` | `d.get(k)` / `d[k]=v` / `k in d` / `del d[k]`                              |
+| **Map iterate**                    | `for (k,v) of m`                                       | `for k, v in d.items()`                                                    |
+| **Set literal**                    | `new Set([1,2])`                                       | `set([1,2])` or `{1,2}`                                                    |
+| **Set add / has / delete / clear** | `s.add(x)` / `s.has(x)` / `s.delete(x)` / `s.clear()`  | `s.add(x)` / `x in s` / `s.remove(x)` (safe: `s.discard(x)`) / `s.clear()` |
+| **Set unions / intersections**     | `s.union(t)` / `s.intersection(t)`                     | `s \| t` / `s & t` (in-place: `\|=`, `&=`)                                 |
+| **Set difference / symmetric**     | _(manual only)_                                        | `s - t` / `s ^ t` (in-place: `-=`, `^=`)                                   |
+| **Subset / Superset**              | `s.isSubsetOf(t)` / `s.isSupersetOf(t)`                | `s <= t` / `s >= t`                                                        |
+| **Frozen set**                     | -                                                      | `frozenset(iter)`                                                          |
 
 ---
 
-## Tuples---Immutability
+## Tuples-Immutability
 
 | **Concept**              | JavaScript           | Python        |
 | ------------------------ | -------------------- | ------------- |
-| **Python tuple literal** | —                    | `(a, b)`      |
+| **Python tuple literal** | -                    | `(a, b)`      |
 | **Unpack**               | `const [x, y] = arr` | `x, y = tup`  |
 | **Swap**                 | `[a, b] = [b, a]`    | `a, b = b, a` |
 
 ---
 
-## Comprehensions---Iterators
+## Comprehensions-Iterators
 
 | **Concept**          | JavaScript                                  | Python                                        |
 | -------------------- | ------------------------------------------- | --------------------------------------------- |
@@ -271,17 +440,17 @@ print(factorial(5))  # 120
 | **Set comp**         | `new Set(arr.map(...))`                     | `{f(x) for x in a}`                           |
 | **Generator (lazy)** | `function*(){...}`                          | `(f(x) for x in a)` or `def gen(): yield ...` |
 | **Enumerate**        | `arr.entries()`                             | `enumerate(a)`                                |
-| **Zip**              | —                                           | `zip(a, b)`                                   |
+| **Zip**              | -                                           | `zip(a, b)`                                   |
 
 ---
 
-## Numbers---Math
+## Numbers-Math
 
 | **Concept**              | JavaScript                                         | Python                                                  |
 | ------------------------ | -------------------------------------------------- | ------------------------------------------------------- |
 | **Round / Floor / Ceil** | `Math.round(x)` / `Math.floor(x)` / `Math.ceil(x)` | `round(x)` / `math.floor(x)` / `math.ceil(x)`           |
 | **Abs / Sign**           | `Math.abs(x)` / `Math.sign(x)`                     | `abs(x)` / `(x>0)-(x<0)`                                |
-| **Random / randint**     | `Math.random()` / custom                           | `random.random()` / `random.randint(a,b)` _(inclusive)_ |
+| **Random / randint**     | `Math.random()`                                    | `random.random()` / `random.randint(a,b)` _(inclusive)_ |
 | **Parse int / float**    | `parseInt(s, base)` / `parseFloat(s)`              | `int(s, base)` / `float(s)`                             |
 | **NaN / finite**         | `Number.isNaN(x)` / `isFinite(x)`                  | `math.isnan(x)` / `math.isfinite(x)`                    |
 | **BigInt**               | `123n`                                             | `int` _(arbitrary precision)_                           |
@@ -289,7 +458,7 @@ print(factorial(5))  # 120
 
 ---
 
-## Dates---Time
+## Dates-Time
 
 | **Concept**         | JavaScript                  | Python                                                                |
 | ------------------- | --------------------------- | --------------------------------------------------------------------- |
@@ -314,12 +483,18 @@ print(factorial(5))  # 120
 
 ---
 
-## Errors---Control Flow
+## Errors-Control Flow
 
 ```js
-// JS
-try { ... } catch(e) { ... } finally { ... }
-throw new Error('msg')
+// JavaScript
+try {
+  /* ... */
+} catch (e) {
+  /* ... */
+} finally {
+  /* ... */
+}
+throw new Error('msg');
 class MyError extends Error {}
 ```
 
@@ -332,12 +507,13 @@ except Exception as e:
 finally:
     ...
 raise Exception('msg')
-class MyError(Exception): pass
+class MyError(Exception):
+    pass
 ```
 
 ---
 
-## Modules---Imports
+## Modules-Imports
 
 | **Concept**                | JavaScript                                       | Python                                                                                        |
 | -------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
@@ -348,7 +524,7 @@ class MyError(Exception): pass
 
 ---
 
-## Classes---Methods
+## Classes-Methods
 
 | **Concept**               | JavaScript                | Python                                                                |
 | ------------------------- | ------------------------- | --------------------------------------------------------------------- |
@@ -359,7 +535,7 @@ class MyError(Exception): pass
 
 ---
 
-## Async---Promises
+## Async-Promises
 
 | **Concept**              | JavaScript                               | Python                          |
 | ------------------------ | ---------------------------------------- | ------------------------------- |
@@ -369,18 +545,18 @@ class MyError(Exception): pass
 
 ---
 
-## Truthiness, Nullish---Coalescing
+## Truthiness, Nullish-Coalescing
 
-| **Concept**            | JavaScript                           | Python                                               |
-| ---------------------- | ------------------------------------ | ---------------------------------------------------- |
-| **Falsy values**       | `false, 0, '', null, undefined, NaN` | `False, 0, 0.0, '', [], {}, set(), None`             |
-| **Nullish coalescing** | `a ?? b`                             | `a if a is not None else b`                          |
-| **Or with truthiness** | `a \|\| b`                           | `a or b` _(treats empty as False)_                   |
-| **Optional chaining**  | `a?.b?.c`                            | `getattr(a, 'b', None)` chaining / nested `dict.get` |
+| **Concept**            | JavaScript                                   | Python                                               |
+| ---------------------- | -------------------------------------------- | ---------------------------------------------------- |
+| **Falsy values**       | `false, 0, '', null, undefined, NaN`         | `False, 0, 0.0, '', [], {}, set(), None`             |
+| **Nullish coalescing** | `a ?? b`                                     | `a if a is not None else b`                          |
+| **Or with truthiness** | `a                                   \|\| b` | `a or b` _(treats empty as False)_                   |
+| **Optional chaining**  | `a?.b?.c`                                    | `getattr(a, 'b', None)` chaining / nested `dict.get` |
 
 ---
 
-## Copying---Equality
+## Copying-Equality
 
 | **Concept**             | JavaScript                                    | Python                              |
 | ----------------------- | --------------------------------------------- | ----------------------------------- |
@@ -396,8 +572,8 @@ class MyError(Exception): pass
 | **Range / Times**        | `[...Array(n).keys()]`     | `list(range(n))`                                                                   |
 | **Sort by key**          | `arr.sort((a,b)=>a.k-b.k)` | `a.sort(key=lambda x: x.k)`                                                        |
 | **GroupBy**              | custom reduce              | `itertools.groupby(sorted(a, key=key), key=key)` / `collections.defaultdict(list)` |
-| **Counters / Multisets** | —                          | `collections.Counter(iter)`                                                        |
-| **Default dict**         | —                          | `collections.defaultdict(T)`                                                       |
+| **Counters / Multisets** | -                          | `collections.Counter(iter)`                                                        |
+| **Default dict**         | -                          | `collections.defaultdict(T)`                                                       |
 
 ---
 
@@ -405,11 +581,11 @@ class MyError(Exception): pass
 
 | **Concept**            | JavaScript | Python                                           |
 | ---------------------- | ---------- | ------------------------------------------------ |
-| **Safe read**          | —          | `d.get(k, default)`                              |
-| **Set default once**   | —          | `d.setdefault(k, init)`                          |
-| **Merge with compute** | —          | `for k, v in new.items(): d[k] = f(d.get(k), v)` |
-| **Update many**        | —          | `d.update(other)`                                |
-| **Pop with default**   | —          | `d.pop(k, default)`                              |
+| **Safe read**          | -          | `d.get(k, default)`                              |
+| **Set default once**   | -          | `d.setdefault(k, init)`                          |
+| **Merge with compute** | -          | `for k, v in new.items(): d[k] = f(d.get(k), v)` |
+| **Update many**        | -          | `d.update(other)`                                |
+| **Pop with default**   | -          | `d.pop(k, default)`                              |
 
 ---
 
